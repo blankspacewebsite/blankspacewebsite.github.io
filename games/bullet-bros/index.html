@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bullet Bros</title>
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; background: #050816; overflow: hidden; font-family: Arial, sans-serif; color: #fff; }
+    iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+    .fallback { position: fixed; right: 16px; bottom: 16px; width: min(380px, calc(100vw - 32px)); padding: 14px 16px; border-radius: 18px; background: rgba(5,8,22,.9); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 18px 42px rgba(0,0,0,.42); display: grid; grid-template-columns: 58px 1fr; gap: 12px; align-items: center; opacity: 0; transform: translateY(18px); pointer-events: none; transition: .3s ease; }
+    .fallback.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .fallback img { width: 58px; height: 58px; border-radius: 14px; object-fit: cover; }
+    .fallback b { display: block; margin-bottom: 4px; font-size: 15px; }
+    .fallback p { margin: 0 0 10px; color: #dbe7ff; font-size: 13px; line-height: 1.35; }
+    .fallback a { display: inline-flex; padding: 9px 12px; border-radius: 999px; background: #fff; color: #111827; text-decoration: none; font-weight: 900; font-size: 12px; }
+    .topnote { position: fixed; left: 16px; top: 16px; padding: 9px 12px; border-radius: 999px; background: rgba(0,0,0,.45); color: #e5efff; font-size: 12px; letter-spacing: .02em; }
+  </style>
+</head>
+<body>
+  <iframe src="https://class811.github.io/g69/bullet-bros/" allow="fullscreen *; autoplay *; gamepad *; clipboard-read *; clipboard-write *; pointer-lock *" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+  <div class="topnote">Loading alternate Bullet Bros source...</div>
+  <div class="fallback" id="fallback">
+    <img src="https://img.poki-cdn.com/cdn-cgi/image/q%3D78%2Cscq%3D50%2Cwidth%3D204%2Cheight%3D204%2Cfit%3Dcover%2Cf%3Dauto/084675aa53d52f2fbfb09a3b7016c620/bullet-bros-logo.png" alt="Bullet Bros icon" />
+    <div>
+      <b>Bullet Bros</b>
+      <p>This avoids the Poki paper/frame error by using a different hosted source that points directly at the playable Bullet Bros build.</p>
+      <a href="https://class811.github.io/g69/bullet-bros/" target="_blank" rel="noopener noreferrer">Open Source</a>
+    </div>
+  </div>
+  <script>
+    setTimeout(() => document.getElementById('fallback').classList.add('show'), 6500);
+  </script>
+</body>
+</html>

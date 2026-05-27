@@ -1,0 +1,15 @@
+Blank Space v77 source notes
+
+Self-hosted folders added from files uploaded by the user:
+- A Small World Cup -> games/a-small-world-cup/index.html
+- Basket Random -> games/basket-random/index.html
+- BitLife -> games/bitlife/index.html
+- Drive Mad -> games/drive-mad/index.html
+- Snake / Google Snake -> games/google-snake/index.html
+- Run 3 -> games/run-3/index.html
+- Slope -> games/slope/index.html
+- Tiny Fishing -> games/tiny-fishing/index.html
+
+Big Shot Boxing was not self-hosted in v77. Its old broken GitHub 404 source was replaced with a fallback wrapper at games/big-shot-boxing/index.html. The wrapper starts with classroom8.github.io/big-shot-boxing and includes two backup source buttons.
+
+No new Supabase SQL is required for v77.

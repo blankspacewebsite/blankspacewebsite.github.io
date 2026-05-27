@@ -1,0 +1,10 @@
+Blank Space v79 source notes
+
+Run 3:
+- The previous self-hosted source was kept as local-run3.html as a fallback.
+- The new default Run 3 wrapper uses https://lekug.github.io/tn6pS9dCf37xAhkJv/ as Source 1 and https://realpeanut.github.io/games/run3/index.html as Source 2.
+- I found an Internet Archive Run 3 HTML5 files archive, but this v79 build uses the external fallback wrapper rather than importing that archive because the download could not be pulled directly into the build environment.
+
+Big Shot Boxing:
+- Uses the working classroom8 source only.
+- The old source switcher toolbar has been removed.

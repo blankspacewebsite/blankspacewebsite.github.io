@@ -1,0 +1,111 @@
+# Blank Space v44 Netlify headers
+
+/games/escape-road-1-v44/escape-road-v44.wasm
+  Content-Type: application/wasm
+  Cache-Control: no-cache
+
+/games/escape-road-1-v44/escape-road-v44.data
+  Content-Type: application/octet-stream
+  Cache-Control: no-cache
+
+/games/escape-road-1-v44/framework.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+/games/escape-road-1-v44/main.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+/games/escape-road-1-v44/index.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: no-cache
+
+/games/eaglercraft/index.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: no-cache
+
+
+# Escape Road 3 self-hosted files
+/games/escape-road-3/index.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: no-cache
+
+/games/escape-road-3/game.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: no-cache
+
+/games/escape-road-3/Build/*.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+/games/escape-road-3/Build/*.part*
+  Content-Type: application/octet-stream
+  Cache-Control: no-cache
+
+/games/escape-road-3/Build/webgl/*.json
+  Content-Type: application/json
+  Cache-Control: no-cache
+
+/games/escape-road-3/StreamingAssets/*.json
+  Content-Type: application/json
+  Cache-Control: no-cache
+
+
+# Moto X3M self-hosted files
+/games/moto-x3m/index.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: no-cache
+
+/games/moto-x3m/*.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+/games/moto-x3m/assets/sound/*.ogg
+  Content-Type: audio/ogg
+  Cache-Control: public, max-age=31536000, immutable
+
+/games/moto-x3m/assets/fonts/*/*.woff
+  Content-Type: font/woff
+  Cache-Control: public, max-age=31536000, immutable
+
+
+
+
+# Soccer Random self-hosted files
+/games/soccer-random/index.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: no-cache
+
+/games/soccer-random/box2d.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+/games/soccer-random/*.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+/games/soccer-random/scripts/*.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+# Liquid Soccer self-hosted files
+/games/liquid-soccer/index.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: no-cache
+
+/games/liquid-soccer/index.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+/games/liquid-soccer/index.pck
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=31536000, immutable
+
+/games/liquid-soccer/*.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+# SVG assets
+/assets/*.svg
+  Content-Type: image/svg+xml; charset=utf-8
+  Cache-Control: public, max-age=31536000, immutable

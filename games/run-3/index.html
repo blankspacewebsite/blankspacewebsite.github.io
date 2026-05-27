@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Run 3</title>
+  <style>
+    html,body{margin:0;width:100%;height:100%;background:#050505;color:white;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+    iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#000}
+    .fallback{position:fixed;left:14px;bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:10px;z-index:5;backdrop-filter:blur(8px)}
+    .fallback span{font-size:12px;color:#ddd;font-weight:800}.fallback button,.fallback a{border:0;border-radius:999px;padding:8px 10px;background:#fff;color:#111;font-weight:900;font-size:12px;text-decoration:none;cursor:pointer}.fallback .dark{background:#111827;color:#fff;border:1px solid rgba(255,255,255,.2)}
+  </style>
+</head>
+<body>
+  <iframe id="runFrame" src="https://lekug.github.io/tn6pS9dCf37xAhkJv/" allow="fullscreen *; autoplay *; gamepad *; pointer-lock *" allowfullscreen></iframe>
+  <div class="fallback">
+    <span>Run 3 backup source</span>
+    <button class="dark" onclick="loadSource('https://lekug.github.io/tn6pS9dCf37xAhkJv/')">Source 1</button>
+    <button class="dark" onclick="loadSource('https://realpeanut.github.io/games/run3/index.html')">Source 2</button>
+    <button class="dark" onclick="loadSource('local-run3.html')">Local copy</button>
+    <a id="openRun3" href="https://lekug.github.io/tn6pS9dCf37xAhkJv/" target="_blank" rel="noopener noreferrer">Open External</a>
+  </div>
+  <script>
+    const frame = document.getElementById('runFrame');
+    const openLink = document.getElementById('openRun3');
+    function loadSource(url){ frame.src = url; openLink.href = url; }
+  </script>
+</body>
+</html>
