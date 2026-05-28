@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v90 full update: verified Slope score bridge, achievement backend hard fix, and accidental Slope fallback rollback -->
+<!-- Blank Space v91 full update: restored real Unity Slope and patched its score bridge; hard-fixes achievements -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -348,18 +348,18 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v90</span>
+        <span class="update-version-badge">Blank Space v91</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
-        <li>Replaced Slope with a verified self-hosted Slope runner that sends the real score to Blank Space when you play.</li>
-        <li>Fixed Slope achievements so they unlock from actual saved scores again, not from simply opening the game.</li>
-        <li>Added a Supabase hard-fix that removes the accidental Slope play-count fallback and restores score-based Slope achievement rows.</li>
+        <li>Restored the real Unity Slope game files instead of the temporary replacement runner.</li>
+        <li>Patched the real Slope Unity WebGL score function so real Slope scores can be sent to Blank Space achievements.</li>
+        <li>Hard-fixed the achievement backend so score/stat milestones can unlock every matching achievement, not just the first one.</li>
+        <li>Cleaned the bad Slope play-count fallback so Slope achievements are score-based again.</li>
         <li>Kept group chats, rank badges, Admin Panel rank controls, moderation tools, Browser iframe fixes, and the removed player Achievement Tester button.</li>
-        <li>Strengthened the achievement bridge so same-origin verified games can send safe score/stat messages to Supabase.</li>
       </ul>
-      <div class="update-note">Supabase note: run <b>supabase_v90_update.sql</b> before testing Slope achievements. Then upload this v90 website code to GitHub.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v91_update.sql</b> first. Then upload this v91 website code to GitHub and test real Slope.</div>
     </div>
   </section>
 

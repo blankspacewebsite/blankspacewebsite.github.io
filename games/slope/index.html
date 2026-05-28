@@ -1,224 +1,90 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>Slope - Blank Space Verified</title>
-<style>
-  :root{color-scheme:dark}*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden;background:#020403;color:white;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}body{touch-action:none}.hud{position:fixed;inset:0;pointer-events:none;z-index:3}.top{position:absolute;left:14px;right:14px;top:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.pill{border:1px solid rgba(134,239,172,.35);background:rgba(3,7,18,.72);backdrop-filter:blur(10px);border-radius:999px;padding:8px 11px;font-weight:900;box-shadow:0 14px 42px rgba(0,0,0,.32)}.score{font-size:18px}.hint{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);text-align:center;color:#d1fae5;background:rgba(3,7,18,.72);border:1px solid rgba(134,239,172,.25);border-radius:18px;padding:9px 12px;font-size:13px;line-height:1.35;max-width:min(640px,calc(100vw - 22px))}.overlay{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,rgba(22,163,74,.22),rgba(0,0,0,.86) 58%);padding:20px}.card{width:min(560px,calc(100vw - 28px));border:1px solid rgba(134,239,172,.28);border-radius:30px;background:rgba(5,9,14,.88);box-shadow:0 32px 96px rgba(0,0,0,.72);padding:24px;text-align:center}.title{font-size:clamp(44px,9vw,82px);font-weight:1000;letter-spacing:-.08em;line-height:.9;margin:0 0 8px;background:linear-gradient(90deg,#22c55e,#a3e635);-webkit-background-clip:text;color:transparent}.sub{color:#cbd5e1;line-height:1.5;margin:0 auto 18px;max-width:430px}.btn{pointer-events:auto;border:0;border-radius:999px;background:white;color:#020403;font-weight:1000;padding:13px 18px;cursor:pointer;box-shadow:0 18px 44px rgba(255,255,255,.12)}.btn:hover{filter:brightness(.92)}.small{font-size:12px;color:#94a3b8;margin-top:14px}.hidden{display:none!important}canvas{display:block;width:100vw;height:100vh;background:linear-gradient(#05140b,#020403)}.mobile{position:fixed;left:12px;right:12px;bottom:72px;z-index:4;display:none;justify-content:space-between;pointer-events:none}.mobile button{pointer-events:auto;width:92px;height:64px;border-radius:22px;border:1px solid rgba(134,239,172,.28);background:rgba(15,23,42,.72);color:white;font-size:28px;font-weight:1000}@media(pointer:coarse){.mobile{display:flex}}
-</style>
-</head>
-<body>
-<canvas id="game"></canvas>
-<div class="hud">
-  <div class="top">
-    <div class="pill score">Score: <span id="score">0</span></div>
-    <div class="pill">Best: <span id="best">0</span></div>
-  </div>
-  <div class="hint">Use ← → or A/D. On touch, hold the left/right buttons. This verified version sends your real Slope score to Blank Space achievements.</div>
-</div>
-<div class="mobile"><button id="leftBtn">←</button><button id="rightBtn">→</button></div>
-<div id="startOverlay" class="overlay">
-  <div class="card">
-    <h1 class="title">SLOPE</h1>
-    <p class="sub">Verified Blank Space version. Dodge blocks, stay on the neon track, and your score saves to achievements automatically.</p>
-    <button id="startBtn" class="btn">Play Slope</button>
-    <div class="small">Score milestones unlock the Slope achievement cards.</div>
-  </div>
-</div>
-<div id="gameOverOverlay" class="overlay hidden">
-  <div class="card">
-    <h1 class="title">Game Over</h1>
-    <p class="sub">Score: <b id="finalScore">0</b><br>Best: <b id="finalBest">0</b><br><span id="saveStatus">Saving score...</span></p>
-    <button id="retryBtn" class="btn">Play Again</button>
-    <div class="small">The score is sent to Blank Space using <code>best_score</code>.</div>
-  </div>
-</div>
+<!DOCTYPE html>
 <script>
-(() => {
-  const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d');
-  const scoreEl = document.getElementById('score');
-  const bestEl = document.getElementById('best');
-  const startOverlay = document.getElementById('startOverlay');
-  const gameOverOverlay = document.getElementById('gameOverOverlay');
-  const finalScoreEl = document.getElementById('finalScore');
-  const finalBestEl = document.getElementById('finalBest');
-  const saveStatus = document.getElementById('saveStatus');
-  const keys = { left:false, right:false };
-  let W = 0, H = 0, DPR = 1;
-  let running = false;
-  let last = 0;
-  let distance = 0;
-  let score = 0;
-  let sentScore = 0;
-  let player, obstacles, particles;
-  let speed = 430;
-  let laneOffset = 0;
-  let trackHalf = 180;
-  let best = Number(localStorage.getItem('blank_space_slope_best_score') || 0) || 0;
-  bestEl.textContent = best;
-
-  function resize(){
-    DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    W = Math.floor(innerWidth); H = Math.floor(innerHeight);
-    canvas.width = Math.floor(W * DPR); canvas.height = Math.floor(H * DPR);
-    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-  }
-  addEventListener('resize', resize); resize();
-
-  function reportScore(force=false){
-    const safe = Math.max(0, Math.floor(score));
-    if (!force && safe < sentScore + 5) return;
-    sentScore = Math.max(sentScore, safe);
+  if (window.parent !== window.self) window.parent.postMessage("bonk", "*");
+  window.addEventListener("DOMContentLoaded", function () {
+    document.body.style.margin = "0";
+    document.body.style.height = "100vh";
+    document.body.style.overflow = "hidden";
+  });
+</script>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Slope - topVAZ </title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link href="shared/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="TemplateData56/style.css" />
+    <script src="TemplateData56/UnityProgress.js"></script>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
+    <link rel="icon" href="slope4.jpeg" />
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+      window.rWS = WebSocket;
+      WebSocket = function (url, options) {
+        var split = url.split("://");
+        var prefix = "";
+        if (!url.includes("arc.io")) {
+          switch (split[0].toLowerCase()) {
+            case "ws":
+              prefix = "wss://onebigorange-tmm.tbt.mx/websocket/http://";
+              break;
+            case "wss":
+              prefix = "wss://onebigorange-tmm.tbt.mx/websocket/https://";
+              break;
+            default:
+              prefix = split[0];
+          }
+          return new (Function.prototype.bind.call(window.rWS, null, (split[1].match(/\//g) || []).length === 0 ? (split[1].includes("?") ? prefix + split[1].replace("?", "/?") : prefix + split[1] + "/") : prefix + split[1], options))();
+        } else {
+          return new window.rWS(url, options);
+        }
+      };
+      var origOpen = XMLHttpRequest.prototype.open;
+      XMLHttpRequest.prototype.open = function (...args) {
+        if (!args[1].includes("arc.io")) args[1] = /^http/.test(args[1]) ? "https://onebigstatic-tmm.tbt.mx/static/" + args[1] : args[1];
+        origOpen.apply(this, args);
+      };
+      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/slope_27Sept.json", {
+        onProgress: UnityProgress,
+        Module: {
+          onRuntimeInitialized: function () {
+            UnityProgress(gameInstance, "complete");
+          },
+        },
+      });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-98DP5VKS42"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-98DP5VKS42");
+    </script>
+    <script src="shared/lib.js" type="text/javascript"></script>
+    <script src="shared/gamebreak/gamebreak.js" type="text/javascript"></script>
+  
+<script>
+// Blank Space v91 real Unity Slope bridge. This keeps the real Slope game and listens for score reports
+// from the patched Unity GameCenter_ReportScore import inside Build/slope_27Sept.wasm.framework.unityweb.
+(function(){
+  function postReady(){
     try {
-      localStorage.setItem('blank_space_slope_score', String(safe));
-      localStorage.setItem('blank_space_slope_best_score', String(Math.max(best, safe)));
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({blankSpaceGame:'Slope', gameTitle:'Slope', metric:'best_score', value:0, mode:'max', source:'real-unity-slope-ready'}, '*');
+      }
     } catch(e) {}
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        blankSpaceGame: 'Slope',
-        gameTitle: 'Slope',
-        metric: 'best_score',
-        stat: 'best_score',
-        value: safe,
-        score: safe,
-        mode: 'max',
-        source: 'blank-space-verified-slope'
-      }, '*');
-    }
   }
-
-  function reset(){
-    player = { x: W/2, y: H*0.74, vx:0, r:16, alive:true };
-    obstacles = [];
-    particles = [];
-    distance = 0; score = 0; sentScore = 0; speed = 430; laneOffset = 0; trackHalf = Math.max(145, Math.min(235, W*0.22));
-    scoreEl.textContent = '0';
-    spawnWave(0);
-  }
-
-  function start(){
-    reset(); running = true; last = performance.now();
-    startOverlay.classList.add('hidden'); gameOverOverlay.classList.add('hidden');
-    requestAnimationFrame(loop);
-  }
-
-  function end(){
-    if (!running) return;
-    running = false;
-    score = Math.max(score, Math.floor(distance/32));
-    best = Math.max(best, score);
-    try { localStorage.setItem('blank_space_slope_best_score', String(best)); } catch(e) {}
-    bestEl.textContent = best;
-    scoreEl.textContent = score;
-    finalScoreEl.textContent = score;
-    finalBestEl.textContent = best;
-    saveStatus.textContent = 'Saving score...';
-    reportScore(true);
-    setTimeout(() => { saveStatus.textContent = 'Score sent to Blank Space achievements.'; }, 350);
-    gameOverOverlay.classList.remove('hidden');
-  }
-
-  function spawnWave(offsetY){
-    const count = 2 + Math.floor(Math.random()*3);
-    const trackCenter = W/2 + laneOffset;
-    for(let i=0;i<count;i++){
-      const ox = trackCenter + (Math.random()*2-1) * (trackHalf-34);
-      const oy = -offsetY - Math.random()*H*0.85 - 120;
-      const size = 28 + Math.random()*26;
-      obstacles.push({x:ox,y:oy,w:size,h:size*0.85,spin:Math.random()*6});
-    }
-  }
-
-  function update(dt){
-    const steer = (keys.left?-1:0) + (keys.right?1:0);
-    player.vx += steer * 1250 * dt;
-    player.vx *= Math.pow(0.075, dt);
-    player.x += player.vx * dt;
-    distance += speed * dt;
-    speed += 8 * dt;
-    laneOffset = Math.sin(distance * 0.0022) * Math.min(190, W*0.23);
-    trackHalf = Math.max(126, Math.min(235, W*0.23) - Math.min(80, distance/850));
-    score = Math.floor(distance / 32);
-    scoreEl.textContent = score;
-    if (score > best) { bestEl.textContent = score; }
-    if (score > 0 && score % 5 === 0) reportScore(false);
-
-    const scroll = speed * dt;
-    for(const o of obstacles){ o.y += scroll; o.spin += dt*2.5; }
-    obstacles = obstacles.filter(o => o.y < H + 120);
-    if (obstacles.length < 10) spawnWave(H*.4);
-
-    const center = W/2 + laneOffset;
-    const left = center - trackHalf;
-    const right = center + trackHalf;
-    if (player.x < left + player.r || player.x > right - player.r) end();
-    for(const o of obstacles){
-      const cx = Math.max(o.x-o.w/2, Math.min(player.x, o.x+o.w/2));
-      const cy = Math.max(o.y-o.h/2, Math.min(player.y, o.y+o.h/2));
-      const dx = player.x - cx, dy = player.y - cy;
-      if (dx*dx + dy*dy < player.r*player.r) end();
-    }
-  }
-
-  function drawTrack(){
-    const horizon = H*0.1;
-    const centerBottom = W/2 + laneOffset;
-    const centerTop = W/2 - laneOffset*0.55;
-    const halfBottom = trackHalf;
-    const halfTop = trackHalf*0.32;
-    const grad = ctx.createLinearGradient(0,horizon,0,H);
-    grad.addColorStop(0,'#052e16'); grad.addColorStop(1,'#0f172a');
-    ctx.beginPath();
-    ctx.moveTo(centerTop-halfTop,horizon); ctx.lineTo(centerTop+halfTop,horizon); ctx.lineTo(centerBottom+halfBottom,H); ctx.lineTo(centerBottom-halfBottom,H); ctx.closePath();
-    ctx.fillStyle = grad; ctx.fill();
-    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(34,197,94,.8)'; ctx.stroke();
-    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(134,239,172,.18)';
-    for(let i=0;i<18;i++){
-      const y = (horizon + ((i*80 + distance*0.65) % (H-horizon+120))) - 100;
-      const t = (y-horizon)/(H-horizon);
-      const c = centerTop + (centerBottom-centerTop)*t;
-      const h = halfTop + (halfBottom-halfTop)*t;
-      ctx.beginPath(); ctx.moveTo(c-h,y); ctx.lineTo(c+h,y); ctx.stroke();
-    }
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const sky = ctx.createRadialGradient(W/2,H*.3,10,W/2,H*.2,Math.max(W,H));
-    sky.addColorStop(0,'#052e16'); sky.addColorStop(.55,'#020617'); sky.addColorStop(1,'#000');
-    ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
-    for(let i=0;i<90;i++){
-      const x=(i*97+distance*.13)%W, y=(i*53+distance*.04)%H;
-      ctx.fillStyle='rgba(134,239,172,.12)'; ctx.fillRect(x,y,2,2);
-    }
-    drawTrack();
-    for(const o of obstacles){
-      ctx.save(); ctx.translate(o.x,o.y); ctx.rotate(o.spin); ctx.fillStyle='#ef4444'; ctx.strokeStyle='rgba(254,202,202,.75)'; ctx.lineWidth=2; ctx.fillRect(-o.w/2,-o.h/2,o.w,o.h); ctx.strokeRect(-o.w/2,-o.h/2,o.w,o.h); ctx.restore();
-    }
-    const g=ctx.createRadialGradient(player.x-6,player.y-8,2,player.x,player.y,player.r+8);
-    g.addColorStop(0,'#bbf7d0'); g.addColorStop(.45,'#22c55e'); g.addColorStop(1,'#065f46');
-    ctx.beginPath(); ctx.arc(player.x,player.y,player.r,0,Math.PI*2); ctx.fillStyle=g; ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle='rgba(187,247,208,.85)'; ctx.stroke();
-  }
-
-  function loop(now){
-    if (!running) return;
-    const dt = Math.min(.035, (now-last)/1000 || .016); last = now;
-    update(dt); draw();
-    if (running) requestAnimationFrame(loop); else draw();
-  }
-
-  addEventListener('keydown', e => { if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a') keys.left=true; if(e.key==='ArrowRight'||e.key.toLowerCase()==='d') keys.right=true; if(e.key===' ' && !running) start(); });
-  addEventListener('keyup', e => { if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a') keys.left=false; if(e.key==='ArrowRight'||e.key.toLowerCase()==='d') keys.right=false; });
-  const bindHold=(el,key)=>{ const on=ev=>{ev.preventDefault();keys[key]=true}; const off=ev=>{ev.preventDefault();keys[key]=false}; el.addEventListener('pointerdown',on); el.addEventListener('pointerup',off); el.addEventListener('pointercancel',off); el.addEventListener('pointerleave',off); };
-  bindHold(document.getElementById('leftBtn'),'left'); bindHold(document.getElementById('rightBtn'),'right');
-  document.getElementById('startBtn').addEventListener('click',start);
-  document.getElementById('retryBtn').addEventListener('click',start);
-  draw();
-  if (window.parent && window.parent !== window) window.parent.postMessage({blankSpaceGame:'Slope', metric:'best_score', value:0, mode:'max', source:'blank-space-verified-slope-ready'}, '*');
+  window.addEventListener('DOMContentLoaded', postReady);
+  setTimeout(postReady, 1200);
 })();
 </script>
-</body>
+</head>
+  <body>
+    <div class="webgl-content">
+      <div id="gameContainer" style="width: 100vw; height: 100vh;"></div>
+    </div>
+  </body>
 </html>
