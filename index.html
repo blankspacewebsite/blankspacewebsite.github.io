@@ -12,7 +12,7 @@
 <!-- Blank Space v75: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
 <!-- Blank Space v74: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
 <!-- Blank Space v73: added Supabase username accounts and on-site suggestions database -->
-<!-- Blank Space v83: suggestions workflow, 250 achievements, Icons/Trade/Admin Panel, image chat, verified Chess Bot, and game cleanup -->
+<!-- Blank Space v84: admin-only main Admin Panel tab, achievement debug/testing, detector patch, and stable achievement schema -->
 <!-- Blank Space v82: added Chess-AI, Stick Merge, deeper achievements, Chat tab, game quick chat, and browser polish -->
 <!-- Blank Space v81: added achievements, equipped icons, Google Doodle Baseball, suggestion filters, and thumbnail fixes -->
 <!-- Blank Space v80: iframe browser searches restored, with fallback for sites that block embedding -->
@@ -255,6 +255,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
+.debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
 </head>
 <body>
@@ -295,6 +296,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <button class="tab chat-tab" data-tab="chat"><span id="chatTabBadge" class="tab-badge hidden">0</span>Chat</button>
     <button class="tab" data-tab="friends">Friends</button>
     <button class="tab" data-tab="account">Account</button>
+    <button class="tab hidden" id="adminPanelTab" data-tab="adminpanel">Admin Panel</button>
   </nav>
 </header>
 
@@ -658,21 +660,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
       </div>
 
 
-      <div class="panel suggestion-card account-tools-bottom hidden" id="accountAdminPanel">
-        <h2 class="bottom-tools-title">Admin Panel</h2>
-        <p class="admin-only-note">Admin only. These tools help manage accounts, points, suggestions, chats, trades, icons, and site safety.</p>
-        <div class="admin-grid">
-          <div class="admin-tile"><h3>User Lookup</h3><input id="adminUserSearch" placeholder="Search username..." maxlength="20"/><button class="mini-btn" id="adminSearchUsersBtn">Search</button><div id="adminUserResults" class="admin-mini-list"></div></div>
-          <div class="admin-tile"><h3>Change Username</h3><input id="adminTargetUsername" placeholder="Current username"/><input id="adminNewUsername" placeholder="New username"/><button class="mini-btn" id="adminChangeUsernameBtn">Change Username</button></div>
-          <div class="admin-tile"><h3>Delete Account</h3><input id="adminDeleteUsername" placeholder="Username to delete"/><button class="mini-btn danger-btn" id="adminDeleteUserBtn">Delete User</button></div>
-          <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
-          <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
-          <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
-          <div class="admin-tile"><h3>Important Admin Tools</h3><ul class="small-note"><li>Change usernames</li><li>Delete accounts</li><li>Give/remove points</li><li>Approve suggestions</li><li>Deny suggestions</li><li>Add comments</li><li>Delete suggestions</li><li>Review pending ideas</li><li>Review in-progress ideas</li><li>Search users</li><li>Check user points</li><li>See equipped icons</li><li>Manage blocked words</li><li>Refresh leaderboard</li><li>Refresh achievements</li><li>Refresh chat</li><li>Refresh trades</li><li>Open game lists</li><li>Open links</li><li>Copy user IDs</li><li>Reload session</li><li>Sign out</li><li>Clear local cache</li><li>Test notification</li><li>Export admin notes</li></ul></div>
-          <div class="admin-tile"><h3>Fun Admin Tools</h3><button class="mini-btn" id="adminConfettiBtn">Confetti Test</button><button class="mini-btn" id="adminToastBtn">Toast Test</button><button class="mini-btn" id="adminRandomIconBtn">Random Icon Idea</button><p id="adminFunOutput" class="form-message"></p><ul class="small-note"><li>Confetti</li><li>Toast</li><li>Random icon</li><li>Motivation line</li><li>Random game pick</li><li>Badge preview</li><li>Leaderboard shoutout</li><li>Theme hint</li><li>Admin quote</li><li>Lucky number</li></ul></div>
-        </div>
-        <p id="adminPanelStatus" class="form-message"></p>
-      </div>
+      <div class="panel suggestion-card account-tools-bottom hidden" id="accountAdminMovedNote"><h2 class="bottom-tools-title">Admin Panel</h2><p class="admin-only-note">Admin tools have moved to the main Admin Panel tab.</p></div>
 
       <div class="panel suggestion-card my-suggestions-card">
         <div class="suggestions-toolbar">
@@ -704,6 +692,41 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
       </div>
     </div>
   </section>
+
+  <section id="adminpanel">
+    <h1 class="page-title">Admin Panel</h1>
+    <p class="tagline">Admin-only tools for accounts, points, suggestions, achievements, chat, icons, trades, and site checks.</p>
+    <div class="achievement-shell">
+      <div class="panel suggestion-card account-tools-bottom hidden" id="accountAdminPanel">
+        <h2 class="bottom-tools-title">Admin Panel</h2>
+        <p class="admin-only-note">Admin only. These tools help manage accounts, points, suggestions, chats, trades, icons, and site safety.</p>
+        <div class="admin-grid">
+          <div class="admin-tile"><h3>User Lookup</h3><input id="adminUserSearch" placeholder="Search username..." maxlength="20"/><button class="mini-btn" id="adminSearchUsersBtn">Search</button><div id="adminUserResults" class="admin-mini-list"></div></div>
+          <div class="admin-tile"><h3>Change Username</h3><input id="adminTargetUsername" placeholder="Current username"/><input id="adminNewUsername" placeholder="New username"/><button class="mini-btn" id="adminChangeUsernameBtn">Change Username</button></div>
+          <div class="admin-tile"><h3>Delete Account</h3><input id="adminDeleteUsername" placeholder="Username to delete"/><button class="mini-btn danger-btn" id="adminDeleteUserBtn">Delete User</button></div>
+          <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
+          <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
+          <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
+          <div class="admin-tile"><h3>Important Admin Tools</h3><ul class="small-note"><li>Change usernames</li><li>Delete accounts</li><li>Give/remove points</li><li>Approve suggestions</li><li>Deny suggestions</li><li>Add comments</li><li>Delete suggestions</li><li>Review pending ideas</li><li>Review in-progress ideas</li><li>Search users</li><li>Check user points</li><li>See equipped icons</li><li>Manage blocked words</li><li>Refresh leaderboard</li><li>Refresh achievements</li><li>Refresh chat</li><li>Refresh trades</li><li>Open game lists</li><li>Open links</li><li>Copy user IDs</li><li>Reload session</li><li>Sign out</li><li>Clear local cache</li><li>Test notification</li><li>Export admin notes</li></ul></div>
+          <div class="admin-tile"><h3>Fun Admin Tools</h3><button class="mini-btn" id="adminConfettiBtn">Confetti Test</button><button class="mini-btn" id="adminToastBtn">Toast Test</button><button class="mini-btn" id="adminRandomIconBtn">Random Icon Idea</button><p id="adminFunOutput" class="form-message"></p><ul class="small-note"><li>Confetti</li><li>Toast</li><li>Random icon</li><li>Motivation line</li><li>Random game pick</li><li>Badge preview</li><li>Leaderboard shoutout</li><li>Theme hint</li><li>Admin quote</li><li>Lucky number</li></ul></div>
+        </div>
+        <p id="adminPanelStatus" class="form-message"></p>
+      </div>
+
+      
+      <div class="panel suggestion-card">
+        <h2>Achievement Debug</h2>
+        <p class="small-note">Use this when achievements seem broken. It checks the database connection and lets admins simulate real game metrics to prove the reward system works.</p>
+        <div class="admin-grid">
+          <div class="admin-tile"><h3>Connection Check</h3><button class="mini-btn" id="adminAchievementCheckBtn">Check Achievement System</button><pre id="adminAchievementDebugOutput" class="debug-output">Not checked yet.</pre></div>
+          <div class="admin-tile"><h3>Metric Test</h3><select id="adminAchievementTestGame"><option>Google Snake</option><option>Slope</option><option>A Small World Cup</option><option>Basket Random</option><option>Tiny Fishing</option><option>Chess-AI</option><option>Stick Merge</option></select><input id="adminAchievementTestMetric" placeholder="metric: best_score, wins, goals, checkmates" value="best_score"/><input id="adminAchievementTestValue" type="number" placeholder="value" value="50"/><select id="adminAchievementTestMode"><option value="max">max</option><option value="add">add</option></select><button class="mini-btn primary" id="adminAchievementMetricBtn">Record Test Metric</button><p class="small-note">This records a real metric for your signed-in admin account and should unlock any matching achievements.</p></div>
+          <div class="admin-tile"><h3>Quick Tests</h3><button class="mini-btn" onclick="adminRecordPresetAchievement('Google Snake','best_score',10,'max')">Google Snake 10</button><button class="mini-btn" onclick="adminRecordPresetAchievement('Slope','best_score',50,'max')">Slope 50</button><button class="mini-btn" onclick="adminRecordPresetAchievement('A Small World Cup','wins',1,'add')">World Cup Win</button><button class="mini-btn" onclick="adminRecordPresetAchievement('Chess-AI','checkmates',1,'add')">Chess Checkmate</button></div>
+          <div class="admin-tile"><h3>Live Game Detector</h3><p class="small-note">When a self-hosted game loads, Blank Space now tries to watch same-origin game text, localStorage, and game messages. Compiled canvas-only games may still not expose scores.</p><div id="liveAchievementDebug" class="debug-output">Open a game to see detector status.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <div id="playerOverlay">
@@ -4734,6 +4757,7 @@ async function lookupLoginEmail(username) {
   if (validation) throw new Error(validation);
   const result = await getSupabaseClient().rpc("lookup_login_email", { username_input: username });
   if (result.error) {
+    addAchievementDebug(`Award error for ${achievement.id}: ${result.error.message || "unknown error"}`);
     const msg = String(result.error.message || "");
     if (msg.toLowerCase().includes("lookup_login_email")) {
       throw new Error("Run supabase_v78_update.sql in Supabase first, then refresh this site.");
@@ -4811,7 +4835,7 @@ async function signInWithPasswordAccount() {
     if (loginEmail === null) return setMessage("usernameMessage", "No account with that username was found.", "error");
     if (!loginEmail) return setMessage("usernameMessage", "That account does not have password login yet. Open it on the original device and use Add Password Login.", "error");
     const result = await getSupabaseClient().auth.signInWithPassword({ email: loginEmail, password });
-    if (result.error) throw result.error;
+    if (result.error) { addAchievementDebug(`Metric save error: ${result.error.message}`); throw result.error; }
     await loadExistingSession();
     if (!blankSpaceProfile) return setMessage("usernameMessage", "Signed in, but this account has no profile yet.", "error");
     setMessage("usernameMessage", "Signed in as " + blankSpaceProfile.username + ".", "good");
@@ -4866,6 +4890,8 @@ async function checkAdmin() {
   blankSpaceIsAdmin = false;
   if (!blankSpaceUser) {
     document.getElementById("adminPanel")?.classList.add("hidden");
+    document.getElementById("accountAdminMovedNote")?.classList.add("hidden");
+    document.getElementById("adminPanelTab")?.classList.add("hidden");
     document.getElementById("adminFilterOption")?.classList.add("hidden");
     return false;
   }
@@ -4876,6 +4902,9 @@ async function checkAdmin() {
     .maybeSingle();
   if (!result.error && result.data) blankSpaceIsAdmin = true;
   document.getElementById("adminPanel")?.classList.toggle("hidden", !blankSpaceIsAdmin);
+  document.getElementById("accountAdminMovedNote")?.classList.toggle("hidden", !blankSpaceIsAdmin);
+  document.getElementById("adminPanelTab")?.classList.toggle("hidden", !blankSpaceIsAdmin);
+  if (!blankSpaceIsAdmin && document.getElementById("adminpanel")?.classList.contains("active-section")) showTab("home");
   document.getElementById("adminFilterOption")?.classList.toggle("hidden", !blankSpaceIsAdmin);
   renderProfile();
   return blankSpaceIsAdmin;
@@ -5951,6 +5980,61 @@ async function initFriendsPage() {
 }
 
 
+
+let achievementDebugLog = [];
+function addAchievementDebug(line){
+  const stamp = new Date().toLocaleTimeString();
+  achievementDebugLog.unshift(`[${stamp}] ${line}`);
+  achievementDebugLog = achievementDebugLog.slice(0, 18);
+  const live = document.getElementById("liveAchievementDebug");
+  if (live) live.textContent = achievementDebugLog.join("\n") || "No detector events yet.";
+  const out = document.getElementById("adminAchievementDebugOutput");
+  if (out && document.getElementById("adminpanel")?.classList.contains("active-section")) out.textContent = achievementDebugLog.join("\n") || out.textContent;
+}
+function setAchievementDebug(text){
+  const out = document.getElementById("adminAchievementDebugOutput");
+  if (out) out.textContent = text;
+}
+async function checkAchievementSystem(){
+  try{
+    await loadExistingSession();
+    if(!blankSpaceProfile) return setAchievementDebug("Not signed in.");
+    const c=getSupabaseClient();
+    const tables = await c.from("user_achievements").select("achievement_id",{count:"exact",head:true});
+    const stats = await c.from("game_stats").select("game_title, best_score, goals, wins, checkmates, merges, best_level").eq("user_id", blankSpaceUser.id).limit(10);
+    const test = await c.rpc("record_game_metric", {p_game_title:"Google Snake", p_metric:"best_score", p_value:0, p_mode:"max"});
+    const lines=[];
+    lines.push(`Signed in: @${blankSpaceProfile.username}`);
+    lines.push(`Admin: ${blankSpaceIsAdmin ? "yes" : "no"}`);
+    lines.push(`user_achievements table: ${tables.error ? "ERROR " + tables.error.message : "OK"}`);
+    lines.push(`record_game_metric function: ${test.error ? "ERROR " + test.error.message : "OK"}`);
+    lines.push(`Known achievement cards: ${ACHIEVEMENTS.length}`);
+    lines.push(`Existing stats rows: ${stats.error ? "ERROR " + stats.error.message : (stats.data||[]).length}`);
+    if(stats.data?.length) lines.push(JSON.stringify(stats.data,null,2));
+    setAchievementDebug(lines.join("\n"));
+  } catch(err){ setAchievementDebug(err.message || String(err)); }
+}
+async function adminRecordPresetAchievement(game, metric, value, mode){
+  if(!blankSpaceIsAdmin) return alert("Admin only.");
+  addAchievementDebug(`Admin test: ${game} ${metric} ${value} (${mode})`);
+  await recordGameMetric(game, metric, value, mode);
+  await checkAchievementSystem();
+}
+async function adminRecordCustomAchievementMetric(){
+  const game=document.getElementById("adminAchievementTestGame")?.value || "Google Snake";
+  const metric=document.getElementById("adminAchievementTestMetric")?.value || "best_score";
+  const value=Number(document.getElementById("adminAchievementTestValue")?.value || 0);
+  const mode=document.getElementById("adminAchievementTestMode")?.value || "max";
+  await adminRecordPresetAchievement(game, metric, value, mode);
+}
+async function initAdminPanelPage(){
+  await loadExistingSession();
+  await checkAdmin();
+  if(!blankSpaceIsAdmin){ showTab("home"); return; }
+  await refreshAdminPanel();
+  setMessage("adminPanelStatus", "Admin tools loaded.", "good");
+}
+
 async function awardAchievement(achievement) {
   if (!achievement || !blankSpaceProfile || !blankSpaceUser) return false;
   const result = await getSupabaseClient().rpc("award_achievement", {
@@ -5962,12 +6046,14 @@ async function awardAchievement(achievement) {
     p_reward_points: achievement.reward || 0
   });
   if (result.error) {
+    addAchievementDebug(`Award error for ${achievement.id}: ${result.error.message || "unknown error"}`);
     const msg = String(result.error.message || "");
     if (msg.toLowerCase().includes("award_achievement")) setMessage("achievementsStatus", "Run supabase_v81_update.sql to turn on achievements.", "error");
     else console.warn("Achievement error", result.error);
     return false;
   }
   if (result.data === true) {
+    addAchievementDebug(`Unlocked ${achievement.id} (+${achievement.reward || 0})`);
     await loadProfile();
     await refreshAchievements(false);
     await refreshLeaderboard();
@@ -6009,6 +6095,7 @@ async function recordGameMetric(gameTitle, metric, value = 1, mode = "max") {
     if (!blankSpaceProfile || !blankSpaceUser || !gameTitle || !metric) return;
     const safeMetric = String(metric).replace(/[^a-z0-9_]/gi, "").toLowerCase();
     const numericValue = Math.max(0, Number(value || 0));
+    addAchievementDebug(`Metric received: ${gameTitle} ${safeMetric}=${numericValue} (${mode || "max"})`);
     const result = await getSupabaseClient().rpc("record_game_metric", { p_game_title: gameTitle, p_metric: safeMetric, p_value: numericValue, p_mode: mode || "max" });
     if (result.error) throw result.error;
     const stat = Array.isArray(result.data) ? result.data[0] : result.data;
@@ -6029,19 +6116,8 @@ async function evaluateAchievementsForGame(game, stat) {
 }
 
 async function evaluateAggregateAchievements(game) {
-  await awardAchievement(achievementById("first_game"));
-  if (game?.verified) await awardAchievement(achievementById("verified_first"));
-  try {
-    const verifiedTitles = GAMES.filter(g => g.verified).map(g => g.title);
-    const stats = await getSupabaseClient().from("game_stats").select("game_title, play_count").eq("user_id", blankSpaceUser.id).in("game_title", verifiedTitles);
-    if (stats.error) return;
-    const played = new Set((stats.data || []).filter(r => Number(r.play_count || 0) > 0).map(r => r.game_title));
-    for (const achievement of ACHIEVEMENTS.filter(a => a.kind === "verified_count")) {
-      if (played.size >= Number(achievement.target || 1)) await awardAchievement(achievement);
-    }
-  } catch (err) {
-    console.warn("Aggregate achievements skipped", err);
-  }
+  // v84: no automatic "open a game" achievements. Only real game metrics unlock rewards.
+  return;
 }
 
 function handleGameProgressMessage(event) {
@@ -6056,6 +6132,69 @@ function handleGameProgressMessage(event) {
   recordGameMetric(gameTitle, metric, value, mode);
 }
 window.addEventListener("message", handleGameProgressMessage);
+
+
+function setupGameAchievementDetector(game){
+  const frame=document.getElementById("gameFrame");
+  if(!frame || !game) return;
+  addAchievementDebug(`Loaded game frame: ${game.title}`);
+  setTimeout(()=>{
+    try{
+      const win=frame.contentWindow;
+      const doc=win?.document;
+      if(!win || !doc || !doc.body){ addAchievementDebug(`Detector unavailable for ${game.title}: no same-origin document`); return; }
+      if(win.__blankSpaceDetectorInstalled){ addAchievementDebug(`Detector already active for ${game.title}`); return; }
+      win.__blankSpaceDetectorInstalled=true;
+      addAchievementDebug(`Detector active for ${game.title}`);
+      const gameTitle=game.title;
+      const sent={};
+      function post(metric,value,mode="max"){
+        value=Number(value)||0; if(value<=0) return;
+        const key=metric+":"+value+":"+mode;
+        if(sent[key]) return; sent[key]=true;
+        window.postMessage({type:"blank-space-achievement", game:gameTitle, metric, value, mode}, "*");
+      }
+      function maxNumberFromText(text){
+        const nums=(String(text||"").match(/\b\d{1,5}\b/g)||[]).map(Number).filter(n=>Number.isFinite(n));
+        if(!nums.length) return 0;
+        return Math.max(...nums.filter(n=>n>=0 && n<10000));
+      }
+      function scan(){
+        let text="";
+        try{text=(doc.body?.innerText||doc.body?.textContent||"").slice(0,25000);}catch(e){}
+        let storage="";
+        try{for(let i=0;i<win.localStorage.length;i++){const k=win.localStorage.key(i); storage += " "+k+" "+win.localStorage.getItem(k);}}catch(e){}
+        const all=(text+" "+storage).toLowerCase();
+        const max=maxNumberFromText(text+" "+storage);
+        if(gameTitle==="Google Snake" && max>0) post("best_score", max, "max");
+        if(gameTitle==="Slope" && max>0) post("best_score", max, "max");
+        if(gameTitle==="Basket Random" && max>0) post("best_score", max, "max");
+        if(gameTitle==="Tiny Fishing"){
+          if(max>0) post("money_earned", max, "max");
+          if(/fish|caught|catch/.test(all)) post("fish_caught", 1, "add");
+        }
+        if(gameTitle==="A Small World Cup"){
+          if(/champion|world cup|winner|you won|cup won/.test(all)) post("wins", 1, "add");
+          if(max>0) post("goals", Math.min(max,25), "add");
+        }
+        if(gameTitle==="Chess-AI"){
+          if(/checkmate|mate/.test(all)) post("checkmates", 1, "add");
+          else if(/check/.test(all)) post("checks", 1, "add");
+        }
+        if(gameTitle==="Stick Merge"){
+          if(/merge|merged/.test(all)) post("merges", 1, "add");
+          if(/level/.test(all) && max>0) post("best_level", max, "max");
+          if(max>0) post("best_score", max, "max");
+        }
+      }
+      scan();
+      win.__blankSpaceDetectorTimer=setInterval(scan,2000);
+      const observer=new MutationObserver(()=>scan());
+      observer.observe(doc.body,{childList:true,subtree:true,characterData:true});
+      win.__blankSpaceDetectorObserver=observer;
+    }catch(err){ addAchievementDebug(`Detector blocked for ${game.title}: ${err.message || err}`); }
+  },900);
+}
 
 function startGameTimer(game) {
   if (currentPlayTimer) clearInterval(currentPlayTimer);
@@ -6241,6 +6380,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
+.debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
 <script>
 window.addEventListener("keydown", function(e) {
@@ -6294,6 +6434,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
+.debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
 <script>
 window.addEventListener("keydown",function(e){if((e.keyCode==32||e.keyCode==38||e.keyCode==40)&&e.target==document.body)e.preventDefault();});
@@ -6344,7 +6485,7 @@ function playGame(encodedTitle) {
   const loading = document.getElementById("loadingMsg");
   loading.style.display = "block";
   loading.textContent = "Loading...";
-  frame.onload = () => loading.style.display = "none";
+  frame.onload = () => { loading.style.display = "none"; setupGameAchievementDetector(game); };
   if (game.inline === "soccer-bros") {
     frame.removeAttribute("src");
     frame.srcdoc = soccerBrosHTML();
@@ -6407,12 +6548,14 @@ function showTab(tabId) {
   if (tabId === "chat") initChatPage();
   if (tabId === "friends") initFriendsPage();
   if (tabId === "account") initAccountPage();
+  if (tabId === "adminpanel") initAdminPanelPage();
 }
 
 const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:650;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
+.debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block being embedded inside other websites, so those may still need the Open New Tab button.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
 let browserLastURL = "";
 const browserHistory = [];
@@ -6594,7 +6737,7 @@ async function refreshTradeRequests(){
   const rows=r.data||[]; box.innerHTML=rows.length?rows.map(t=>`<div class="trade-card"><h3>${t.requester_id===blankSpaceUser.id?'Sent to @'+escapeHTML(t.receiver?.username||'friend'):'From @'+escapeHTML(t.requester?.username||'friend')}</h3><p class="small-note">Offer: ${escapeHTML(t.offered_icon_id)} → ${escapeHTML(t.requested_icon_id)}</p><p><span class="suggestion-status ${escapeHTML(t.status)}">${escapeHTML(t.status)}</span></p>${t.receiver_id===blankSpaceUser.id&&t.status==='pending'?`<button class="mini-btn primary" onclick="answerTrade(${t.id}, 'accepted')">Accept</button><button class="mini-btn" onclick="answerTrade(${t.id}, 'rejected')">Deny</button>`:``}${t.requester_id===blankSpaceUser.id&&t.status==='pending'?`<button class="mini-btn" onclick="answerTrade(${t.id}, 'cancelled')">Cancel</button>`:``}</div>`).join(''):`<div class="empty-state">No trade requests.</div>`; setMessage('tradeRequestsStatus', `${rows.length} trade request${rows.length===1?'':'s'}.`);
 }
 async function answerTrade(id,status){ const r=await getSupabaseClient().rpc('answer_icon_trade_v83',{p_trade_id:id,p_status:status}); if(r.error) alert(r.error.message); await refreshTradeRequests(); await refreshIcons(); }
-async function refreshAdminPanel(){ const panel=document.getElementById('accountAdminPanel'); if(panel) panel.classList.toggle('hidden', !blankSpaceIsAdmin); }
+async function refreshAdminPanel(){ const panel=document.getElementById('accountAdminPanel'); if(panel) panel.classList.toggle('hidden', !blankSpaceIsAdmin); document.getElementById('accountAdminMovedNote')?.classList.toggle('hidden', !blankSpaceIsAdmin); document.getElementById('adminPanelTab')?.classList.toggle('hidden', !blankSpaceIsAdmin); }
 async function adminSearchUsers(){ const q=(document.getElementById('adminUserSearch')?.value||'').trim(); const box=document.getElementById('adminUserResults'); if(!box)return; const r=await getSupabaseClient().from('profiles').select('id,username,points,equipped_icon').ilike('username', `%${q}%`).limit(25); if(r.error){box.innerHTML=escapeHTML(r.error.message);return;} box.innerHTML=(r.data||[]).map(u=>`<div class="admin-user-row"><span>@${escapeHTML(u.username)} ${escapeHTML(u.equipped_icon||'')} • ${u.points||0} pts</span><button class="mini-btn" onclick="navigator.clipboard.writeText('${u.id}')">Copy ID</button></div>`).join('')||'<div class="empty-state">No users found.</div>'; }
 async function adminChangeUsername(){ const r=await getSupabaseClient().rpc('admin_change_username_v83',{p_old_username:document.getElementById('adminTargetUsername').value,p_new_username:document.getElementById('adminNewUsername').value}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Username changed.','good'); }
 async function adminDeleteUser(){ const name=document.getElementById('adminDeleteUsername').value; if(!confirm('Delete account '+name+'?')) return; const r=await getSupabaseClient().rpc('admin_delete_user_by_username_v83',{p_username:name}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Account deleted.','good'); }
@@ -6660,6 +6803,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminConfettiBtn")?.addEventListener("click", () => adminFun('confetti'));
   document.getElementById("adminToastBtn")?.addEventListener("click", () => adminFun('toast'));
   document.getElementById("adminRandomIconBtn")?.addEventListener("click", () => adminFun('icon'));
+  document.getElementById("adminAchievementCheckBtn")?.addEventListener("click", checkAchievementSystem);
+  document.getElementById("adminAchievementMetricBtn")?.addEventListener("click", adminRecordCustomAchievementMetric);
 
   startChatNotifications();
   document.getElementById("sendFriendRequestBtn")?.addEventListener("click", sendFriendRequest);

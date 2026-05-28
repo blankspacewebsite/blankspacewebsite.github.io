@@ -17,3 +17,6 @@ Important:
 - Run supabase_v82_update.sql in Supabase before deploying this folder to Netlify.
 - The SQL is a safe update and should not delete accounts, points, friends, messages, suggestions, or achievements.
 - Some achievements are marked experimental because compiled games do not always expose exact scores to the website.
+
+
+Blank Space v84: added main admin-only Admin Panel tab, achievement debug/testing, and live iframe detector improvements. Run supabase_v84_update.sql before publishing.
