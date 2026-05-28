@@ -12,6 +12,7 @@
 <!-- Blank Space v75: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
 <!-- Blank Space v74: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
 <!-- Blank Space v73: added Supabase username accounts and on-site suggestions database -->
+<!-- Blank Space v86: fixed achievement thresholds/progress, reset Admin achievements, leaderboard admin visibility, and hideable score submitter -->
 <!-- Blank Space v85: achievement reliability fix, manual score submit fallback, and corrected Supabase achievement SQL -->
 <!-- Blank Space v84: admin-only main Admin Panel tab, achievement debug/testing, detector patch, and stable achievement schema -->
 <!-- Blank Space v82: added Chess-AI, Stick Merge, deeper achievements, Chat tab, game quick chat, and browser polish -->
@@ -267,6 +268,19 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
 @media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
+/* v86 achievement fixes */
+.achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
+.achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
+.achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
+.achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
+.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.achievement-submit-head h3{margin:0}
+.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
+.achievement-submit-mini.hidden{display:none!important}
+.achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
+.achievement-card .achievement-actions{display:none!important}
+
+
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
 </head>
@@ -485,7 +499,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 
   <section id="leaderboard">
     <h1 class="page-title">Leaderboard</h1>
-    <p class="tagline">Regular accounts with the most points appear at the top. Admins are hidden from the public leaderboard.</p>
+    <p class="tagline">Accounts with the most points appear at the top. Admin accounts can appear too if they earn points.</p>
     <div class="leaderboard-shell">
       <div class="panel suggestion-card">
         <div class="suggestions-toolbar">
@@ -762,9 +776,10 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <div id="gameQuickMessages" class="quick-messages"><div class="empty-state">Choose a friend.</div></div>
         <div class="quick-compose"><label class="mini-btn image-btn" for="gameQuickImageInput">📷</label><input id="gameQuickImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><input id="gameQuickInput" placeholder="Message..." maxlength="500" autocomplete="off" /><button class="mini-btn primary" id="gameQuickSendBtn">Send</button></div>
       </div>
+      <button id="achievementSubmitMiniBtn" class="achievement-submit-mini hidden" onclick="showAchievementSubmitPanel()">🏆 Achievement Tester</button>
       <div id="achievementSubmitPanel" class="achievement-submit-panel hidden">
-        <h3>Achievement Score Submit</h3>
-        <p>Automatic tracking still tries to detect scores. If a game hides the score in canvas/WebGL, submit your score or win here so achievements can unlock.</p>
+        <div class="achievement-submit-head"><h3>Achievement Score Submit</h3><button class="mini-btn" onclick="hideAchievementSubmitPanel()">Hide</button></div>
+        <p>Submit the score/win/level you actually got. The tracker now only unlocks achievements at or below that real progress.</p>
         <div class="achievement-submit-row">
           <select id="achievementSubmitMetric"></select>
           <input id="achievementSubmitValue" type="number" min="0" step="1" placeholder="value" />
@@ -2076,182 +2091,182 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_25_18",
-    "title": "25 points",
-    "desc": "Get 25 points in Slope",
+    "title": "Get 10 points in Slope",
+    "desc": "Get 10 points in one Slope round",
     "icon": "🟢",
-    "reward": 5,
-    "difficulty": "medium",
+    "reward": 2,
+    "difficulty": "not_so_hard",
     "game": "Slope",
     "stat": "best_score",
-    "target": 25,
+    "target": 10,
     "experimental": true
   },
   {
     "id": "slope_best_score_50_19",
-    "title": "50 points",
-    "desc": "Get 50 points in Slope",
+    "title": "Get 20 points in Slope",
+    "desc": "Get 20 points in one Slope round",
     "icon": "🟢",
-    "reward": 5,
-    "difficulty": "medium",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 20,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_75_20",
+    "title": "Get 30 points in Slope",
+    "desc": "Get 30 points in one Slope round",
+    "icon": "🟢",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 30,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_100_21",
+    "title": "Get 40 points in Slope",
+    "desc": "Get 40 points in one Slope round",
+    "icon": "🟢",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 40,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_125_22",
+    "title": "Get 50 points in Slope",
+    "desc": "Get 50 points in one Slope round",
+    "icon": "🟢",
+    "reward": 2,
+    "difficulty": "not_so_hard",
     "game": "Slope",
     "stat": "best_score",
     "target": 50,
     "experimental": true
   },
   {
-    "id": "slope_best_score_75_20",
-    "title": "75 points",
-    "desc": "Get 75 points in Slope",
+    "id": "slope_best_score_150_23",
+    "title": "Get 60 points in Slope",
+    "desc": "Get 60 points in one Slope round",
     "icon": "🟢",
-    "reward": 10,
-    "difficulty": "hard",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 60,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_200_24",
+    "title": "Get 75 points in Slope",
+    "desc": "Get 75 points in one Slope round",
+    "icon": "🟢",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
     "target": 75,
     "experimental": true
   },
   {
-    "id": "slope_best_score_100_21",
-    "title": "100 points",
-    "desc": "Get 100 points in Slope",
+    "id": "slope_best_score_250_25",
+    "title": "Get 90 points in Slope",
+    "desc": "Get 90 points in one Slope round",
     "icon": "🟢",
-    "reward": 10,
-    "difficulty": "hard",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
-    "target": 100,
+    "target": 90,
     "experimental": true
   },
   {
-    "id": "slope_best_score_125_22",
-    "title": "125 points",
-    "desc": "Get 125 points in Slope",
+    "id": "slope_best_score_300_26",
+    "title": "Get 110 points in Slope",
+    "desc": "Get 110 points in one Slope round",
     "icon": "🟢",
-    "reward": 10,
-    "difficulty": "hard",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
-    "target": 125,
+    "target": 110,
     "experimental": true
   },
   {
-    "id": "slope_best_score_150_23",
-    "title": "150 points",
-    "desc": "Get 150 points in Slope",
+    "id": "slope_best_score_400_27",
+    "title": "Get 130 points in Slope",
+    "desc": "Get 130 points in one Slope round",
     "icon": "🟢",
-    "reward": 10,
-    "difficulty": "hard",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 130,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_500_28",
+    "title": "Get 150 points in Slope",
+    "desc": "Get 150 points in one Slope round",
+    "icon": "🟢",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
     "target": 150,
     "experimental": true
   },
   {
-    "id": "slope_best_score_200_24",
-    "title": "200 points",
-    "desc": "Get 200 points in Slope",
+    "id": "slope_best_score_650_29",
+    "title": "Get 175 points in Slope",
+    "desc": "Get 175 points in one Slope round",
     "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 175,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_800_30",
+    "title": "Get 200 points in Slope",
+    "desc": "Get 200 points in one Slope round",
+    "icon": "🟢",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
     "target": 200,
     "experimental": true
   },
   {
-    "id": "slope_best_score_250_25",
-    "title": "250 points",
-    "desc": "Get 250 points in Slope",
+    "id": "slope_best_score_1000_31",
+    "title": "Get 250 points in Slope",
+    "desc": "Get 250 points in one Slope round",
     "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
     "target": 250,
     "experimental": true
   },
   {
-    "id": "slope_best_score_300_26",
-    "title": "300 points",
-    "desc": "Get 300 points in Slope",
+    "id": "slope_best_score_1250_32",
+    "title": "Get 300 points in Slope",
+    "desc": "Get 300 points in one Slope round",
     "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
     "target": 300,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_400_27",
-    "title": "400 points",
-    "desc": "Get 400 points in Slope",
-    "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 400,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_500_28",
-    "title": "500 points",
-    "desc": "Get 500 points in Slope",
-    "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 500,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_650_29",
-    "title": "650 points",
-    "desc": "Get 650 points in Slope",
-    "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 650,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_800_30",
-    "title": "800 points",
-    "desc": "Get 800 points in Slope",
-    "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 800,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_1000_31",
-    "title": "1000 points",
-    "desc": "Get 1000 points in Slope",
-    "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 1000,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_1250_32",
-    "title": "1250 points",
-    "desc": "Get 1250 points in Slope",
-    "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 1250,
     "experimental": true
   },
   {
@@ -4151,14 +4166,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1100_201",
-    "title": "Get 1100 points in Slope",
-    "desc": "Get 1100 points in Slope",
+    "title": "Get 350 points in Slope",
+    "desc": "Get 350 points in one Slope round",
     "icon": "🟢",
-    "reward": 20,
-    "difficulty": "crazy",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
-    "target": 1100,
+    "target": 350,
     "experimental": true
   },
   {
@@ -4265,14 +4280,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1150_211",
-    "title": "Get 1150 points in Slope",
-    "desc": "Get 1150 points in Slope",
+    "title": "Get 400 points in Slope",
+    "desc": "Get 400 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 1150,
+    "target": 400,
     "experimental": true
   },
   {
@@ -4379,14 +4394,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1200_221",
-    "title": "Get 1200 points in Slope",
-    "desc": "Get 1200 points in Slope",
+    "title": "Get 500 points in Slope",
+    "desc": "Get 500 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 1200,
+    "target": 500,
     "experimental": true
   },
   {
@@ -4493,14 +4508,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1250_231",
-    "title": "Get 1250 points in Slope",
-    "desc": "Get 1250 points in Slope",
+    "title": "Get 650 points in Slope",
+    "desc": "Get 650 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 1250,
+    "target": 650,
     "experimental": true
   },
   {
@@ -4607,14 +4622,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1300_241",
-    "title": "Get 1300 points in Slope",
-    "desc": "Get 1300 points in Slope",
+    "title": "Get 800 points in Slope",
+    "desc": "Get 800 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 1300,
+    "target": 800,
     "experimental": true
   },
   {
@@ -4972,10 +4987,10 @@ function renderProfile() {
     setAccountState("Signed in as " + blankSpaceProfile.username, "good");
     if (currentUsername) currentUsername.textContent = blankSpaceProfile.username;
     if (profileDisplayName) profileDisplayName.textContent = blankSpaceProfile.username;
-    if (profileSubtitle) profileSubtitle.textContent = blankSpaceIsAdmin ? "Admin account. You are hidden from the public leaderboard." : (blankSpaceProfile.login_email ? "Password login is enabled. You can use this account on other devices." : "Browser-only account. Add a password to use this account on other devices.");
+    if (profileSubtitle) profileSubtitle.textContent = blankSpaceIsAdmin ? "Admin account. You can still earn achievement points and appear on the leaderboard." : (blankSpaceProfile.login_email ? "Password login is enabled. You can use this account on other devices." : "Browser-only account. Add a password to use this account on other devices.");
     if (pointsPill) {
       pointsPill.textContent = points + " point" + (points === 1 ? "" : "s");
-      pointsPill.classList.toggle("hidden", !!blankSpaceIsAdmin);
+      pointsPill.classList.remove("hidden");
     }
     adminBadge?.classList.toggle("hidden", !blankSpaceIsAdmin);
     if (equippedIcon) { equippedIcon.textContent = blankSpaceProfile.equipped_icon || ""; equippedIcon.classList.toggle("hidden", !blankSpaceProfile.equipped_icon); }
@@ -6004,6 +6019,7 @@ async function initFriendsPage() {
 
 
 let achievementDebugLog = [];
+let achievementSubmitHidden = localStorage.getItem("blank_space_hide_achievement_tester") === "1";
 function addAchievementDebug(line){
   const stamp = new Date().toLocaleTimeString();
   achievementDebugLog.unshift(`[${stamp}] ${line}`);
@@ -6222,19 +6238,32 @@ function setAchievementSubmitStatus(text, isError=false){
   el.style.color = isError ? "#fca5a5" : "#a7f3d0";
 }
 
+function hideAchievementSubmitPanel(){
+  achievementSubmitHidden = true;
+  localStorage.setItem("blank_space_hide_achievement_tester", "1");
+  document.getElementById("achievementSubmitPanel")?.classList.add("hidden");
+  document.getElementById("achievementSubmitMiniBtn")?.classList.remove("hidden");
+}
+function showAchievementSubmitPanel(){
+  achievementSubmitHidden = false;
+  localStorage.removeItem("blank_space_hide_achievement_tester");
+  if (currentGame) updateAchievementSubmitPanel(currentGame);
+}
 function updateAchievementSubmitPanel(game){
   const panel = document.getElementById("achievementSubmitPanel");
+  const mini = document.getElementById("achievementSubmitMiniBtn");
   const select = document.getElementById("achievementSubmitMetric");
   const input = document.getElementById("achievementSubmitValue");
   if (!panel || !select || !input) return;
   const hasAchievements = !!game && ACHIEVEMENTS.some(a => a.game === game.title);
-  panel.classList.toggle("hidden", !hasAchievements);
+  panel.classList.toggle("hidden", !hasAchievements || achievementSubmitHidden);
+  mini?.classList.toggle("hidden", !hasAchievements || !achievementSubmitHidden);
   if (!hasAchievements) return;
   const opts = metricOptionsForGame(game.title);
   select.innerHTML = opts.map(o => `<option value="${escapeHTML(o.value)}" data-mode="${escapeHTML(o.mode)}" data-placeholder="${escapeHTML(o.placeholder)}">${escapeHTML(o.label)}</option>`).join("");
   input.value = "";
   input.placeholder = opts[0]?.placeholder || "value";
-  setAchievementSubmitStatus("Enter your score/win/level after playing.");
+  setAchievementSubmitStatus("Enter your real score/win/level after playing. You can hide this tester.");
   select.onchange = () => {
     const chosen = select.selectedOptions?.[0];
     input.placeholder = chosen?.dataset?.placeholder || "value";
@@ -6332,7 +6361,7 @@ async function refreshAchievements(showLoading = true) {
     await loadExistingSession();
     if (!blankSpaceProfile) {
       earnedAchievementsCache = [];
-      grid.innerHTML = `<div class="empty-state">Sign in to earn and equip achievement icons.</div>`;
+      grid.innerHTML = `<div class="empty-state">Sign in to earn achievement points.</div>`;
       setMessage("achievementsStatus", "Sign in to load achievements.");
       renderAccountIconPicker();
       return;
@@ -6342,55 +6371,62 @@ async function refreshAchievements(showLoading = true) {
     if (result.error) throw result.error;
     earnedAchievementsCache = result.data || [];
     const earnedIds = new Set(earnedAchievementsCache.map(a => a.achievement_id));
+    const statsResult = await getSupabaseClient().from("game_stats").select("game_title, play_count, play_seconds, best_score, goals, wins, fish_caught, money_earned, checks, checkmates, merges, best_level, hits").eq("user_id", blankSpaceUser.id);
+    const statsByGame = {};
+    if (!statsResult.error) (statsResult.data || []).forEach(row => { statsByGame[row.game_title] = row; });
+    else addAchievementDebug(`Progress load warning: ${statsResult.error.message || "could not load game_stats"}`);
+
     grid.innerHTML = ACHIEVEMENTS.map(a => {
       const earned = earnedIds.has(a.id);
       const earnedRow = earnedAchievementsCache.find(row => row.achievement_id === a.id);
-      const equipped = blankSpaceProfile.equipped_achievement_id === a.id;
-      return `<div class="achievement-card ${earned ? "" : "locked"}">
+      const progress = getAchievementProgress(a, statsByGame);
+      const pct = Math.max(0, Math.min(100, Math.round((progress.current / Math.max(1, progress.target)) * 100)));
+      const progressHTML = (!earned && progress.current > 0) ? `<div class="achievement-progress-wrap"><div class="achievement-progress-label">Progress: ${escapeHTML(String(progress.current))} / ${escapeHTML(String(progress.target))}</div><div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${pct}%"></div></div></div>` : (earned ? `<div class="achievement-progress-wrap"><div class="achievement-progress-label">Completed: ${escapeHTML(String(progress.target))} / ${escapeHTML(String(progress.target))}</div><div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:100%"></div></div></div>` : ``);
+      return `<div class="achievement-card ${earned ? "earned" : "locked"}">
         <div class="achievement-icon">${escapeHTML(a.icon)}</div>
-        <div><h3>${escapeHTML(a.title)}</h3><p>${escapeHTML(a.desc)}</p><div class="achievement-meta"><span class="achievement-tag">${a.reward || 0} pts</span><span class="achievement-tag achievement-need">${escapeHTML(achievementRequirementLabel(a))}</span>${a.game ? `<span class="achievement-tag">${escapeHTML(a.game)}</span>` : `<span class="achievement-tag">Blank Space</span>`}${a.experimental ? `<span class="achievement-tag">experimental detector</span>` : ``}${earned ? `<span class="achievement-tag">Earned ${escapeHTML(formatDate(earnedRow?.earned_at))}</span>` : `<span class="achievement-tag">Locked</span>`}</div></div>
-        <div class="achievement-actions">${earned ? (equipped ? `<span class="equipped-label">Equipped</span>` : `<button class="mini-btn" onclick="equipAchievementIcon('${a.id}')">Equip Icon</button>`) : `<span class="small-note">Keep playing to unlock.</span>`}</div>
+        <div><h3>${escapeHTML(a.title)}</h3><p>${escapeHTML(a.desc)}</p><div class="achievement-meta"><span class="achievement-tag reward-${escapeHTML(a.difficulty||'medium')}">${a.reward || 0} pts</span><span class="achievement-tag achievement-need">${escapeHTML(achievementRequirementLabel(a))}</span>${a.game ? `<span class="achievement-tag">${escapeHTML(a.game)}</span>` : `<span class="achievement-tag">Blank Space</span>`}${a.experimental ? `<span class="achievement-tag">manual/tester supported</span>` : ``}${earned ? `<span class="achievement-tag">Earned ${escapeHTML(formatDate(earnedRow?.earned_at))}</span>` : `<span class="achievement-tag">Locked</span>`}</div></div>
+        ${progressHTML}
       </div>`;
     }).join("");
-    setMessage("achievementsStatus", `${earnedAchievementsCache.length} of ${ACHIEVEMENTS.length} achievement${ACHIEVEMENTS.length === 1 ? "" : "s"} earned.`);
+    setMessage("achievementsStatus", `${earnedAchievementsCache.length} of ${ACHIEVEMENTS.length} achievement${ACHIEVEMENTS.length === 1 ? "" : "s"} earned. Achievements now award points only; icons come from icon packs.`);
     renderAccountIconPicker();
   } catch (err) {
     setMessage("achievementsStatus", err.message || "Could not load achievements.", "error");
   }
 }
 
-function renderAccountIconPicker() {
+function getAchievementProgress(a, statsByGame){
+  const statRow = a?.game ? (statsByGame?.[a.game] || {}) : {};
+  const current = getStatValue(statRow, a?.stat || "play_count");
+  return { current, target: Number(a?.target || 1) };
+}
+
+async function renderAccountIconPicker() {
   const box = document.getElementById("iconsEquippedPicker") || document.getElementById("accountIconPicker");
   if (!box) return;
-  if (!blankSpaceProfile) {
+  if (!blankSpaceProfile || !blankSpaceUser) {
     box.innerHTML = `<div class="empty-state">Sign in first.</div>`;
     return;
   }
-  if (!earnedAchievementsCache.length) {
-    box.innerHTML = `<div class="empty-state">No icons unlocked yet. Play games to earn achievements.</div>`;
+  const result = await getSupabaseClient().from("user_icons").select("icon_id, icon, name, rarity, acquired_at").eq("user_id", blankSpaceUser.id).order("acquired_at", { ascending:false });
+  if (result.error) {
+    box.innerHTML = `<div class="empty-state">Could not load owned icons.</div>`;
     return;
   }
-  box.innerHTML = earnedAchievementsCache.map(a => {
-    const equipped = blankSpaceProfile.equipped_achievement_id === a.achievement_id;
-    return `<button class="icon-pick ${equipped ? "equipped" : ""}" onclick="equipAchievementIcon('${escapeHTML(a.achievement_id)}')"><span>${escapeHTML(a.icon)}</span><div><b>${escapeHTML(a.title)}</b><small>${equipped ? "Equipped" : "Click to equip"}</small></div></button>`;
+  const owned = result.data || [];
+  if (!owned.length) {
+    box.innerHTML = `<div class="empty-state">No pack icons owned yet. Buy packs below to collect icons.</div>`;
+    return;
+  }
+  box.innerHTML = `<p class="small-note">${owned.length} pack icon${owned.length===1?"":"s"} owned. Achievement icons are no longer equip rewards.</p>` + owned.map(i => {
+    const equipped = blankSpaceProfile.equipped_icon === i.icon;
+    return `<button class="icon-pick ${equipped ? "equipped" : ""}" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')"><span>${escapeHTML(i.icon)}</span><div><b>${escapeHTML(i.name)}</b><small>${equipped ? "Equipped" : "Click to equip"}</small></div></button>`;
   }).join("");
 }
 
 async function equipAchievementIcon(achievementId) {
-  try {
-    await loadExistingSession();
-    if (!blankSpaceProfile) return setMessage("profileMessage", "Sign in first.", "error");
-    const result = await getSupabaseClient().rpc("equip_achievement_icon", { p_achievement_id: achievementId });
-    if (result.error) throw result.error;
-    await loadProfile();
-    await refreshAchievements(false);
-    await refreshLeaderboard();
-    await refreshFriends();
-    setMessage("profileMessage", "Icon equipped.", "good");
-  } catch (err) {
-    setMessage("profileMessage", err.message || "Could not equip icon.", "error");
-    setMessage("achievementsStatus", err.message || "Could not equip icon.", "error");
-  }
+  setMessage("profileMessage", "Achievement icons are no longer equip rewards. Use the Icons tab to equip pack icons.", "error");
+  setMessage("achievementsStatus", "Achievement icons are no longer equip rewards. Use the Icons tab to equip pack icons.", "error");
 }
 
 async function clearEquippedIcon() {
@@ -6401,6 +6437,7 @@ async function clearEquippedIcon() {
     if (result.error) throw result.error;
     await loadProfile();
     await refreshAchievements(false);
+    await refreshIcons();
     await refreshLeaderboard();
     await refreshFriends();
     setMessage("profileMessage", "Equipped icon cleared.", "good");
@@ -6511,6 +6548,19 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
 @media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
+/* v86 achievement fixes */
+.achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
+.achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
+.achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
+.achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
+.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.achievement-submit-head h3{margin:0}
+.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
+.achievement-submit-mini.hidden{display:none!important}
+.achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
+.achievement-card .achievement-actions{display:none!important}
+
+
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
 <script>
@@ -6575,6 +6625,19 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
 .achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
 @media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
+
+/* v86 achievement fixes */
+.achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
+.achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
+.achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
+.achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
+.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.achievement-submit-head h3{margin:0}
+.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
+.achievement-submit-mini.hidden{display:none!important}
+.achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
+.achievement-card .achievement-actions{display:none!important}
+
 
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
@@ -6670,6 +6733,7 @@ function closeGame() {
   currentTimedGameTitle = "";
   hideGameQuickChat();
   document.getElementById("achievementSubmitPanel")?.classList.add("hidden");
+  document.getElementById("achievementSubmitMiniBtn")?.classList.add("hidden");
   document.getElementById("playerOverlay").style.display = "none";
   const frame = document.getElementById("gameFrame");
   frame.removeAttribute("srcdoc");
@@ -6709,6 +6773,19 @@ const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style
 .achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
 .achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
 @media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
+
+/* v86 achievement fixes */
+.achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
+.achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
+.achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
+.achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
+.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.achievement-submit-head h3{margin:0}
+.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
+.achievement-submit-mini.hidden{display:none!important}
+.achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
+.achievement-card .achievement-actions{display:none!important}
+
 
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block being embedded inside other websites, so those may still need the Open New Tab button.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
@@ -6864,7 +6941,7 @@ async function refreshIcons(){
   const owned=result.data||[];
   ownedGrid.innerHTML=owned.length?owned.map(i=>`<div class="icon-card owned-icon"><div class="icon-large">${escapeHTML(i.icon)}</div><h3>${escapeHTML(i.name)}</h3><p class="rarity-${escapeHTML(i.rarity)}">${escapeHTML(i.rarity)}</p><button class="mini-btn" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')">Equip</button></div>`).join(""):`<div class="empty-state">No icons yet. Buy a pack.</div>`;
   picker.innerHTML=owned.length?owned.map(i=>`<button class="icon-choice ${blankSpaceProfile.equipped_icon===i.icon?'active':''}" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')"><span>${escapeHTML(i.icon)}</span><small>${escapeHTML(i.name)}</small></button>`).join(""):`<div class="empty-state">No icons to equip yet.</div>`;
-  setMessage("iconsStatus", `${owned.length} icon${owned.length===1?"":"s"} owned.`);
+  setMessage("iconsStatus", `${owned.length} pack icon${owned.length===1?"":"s"} owned. Achievements give points only; icons come from packs.`);
 }
 async function buyIconPack(packId){
   await loadExistingSession(); if(!blankSpaceProfile) return alert("Sign in first.");
