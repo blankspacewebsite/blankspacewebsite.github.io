@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v87 full update: adds the Update tab and moves multi-source game switching into the player header -->
+<!-- Blank Space v89 full update: group chats, rank tools, achievement repair, browser iframe fix, and admin moderation tools -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -261,25 +261,12 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
 
-/* v85 achievement reliability panel */
-.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
-.achievement-submit-panel.hidden{display:none!important}
-.achievement-submit-panel h3{margin:0;font-size:15px}
-.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
-.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
-.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
-.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
-@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
 /* v86 achievement fixes */
 .achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
 .achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
 .achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
 .achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
-.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.achievement-submit-head h3{margin:0}
-.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
-.achievement-submit-mini.hidden{display:none!important}
 .achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
 .achievement-card .achievement-actions{display:none!important}
 
@@ -295,6 +282,11 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .update-list{display:grid;gap:10px;margin:12px 0 0;padding-left:22px;color:#e5e7eb;line-height:1.5}
 .update-list li::marker{color:#a7f3d0}
 .update-note{border:1px dashed #3a4050;background:#090a0e;border-radius:16px;padding:12px;margin-top:14px;color:#cbd5e1;line-height:1.45}
+
+/* v89 group chats, ranks, and moderation */
+.rank-badge{display:inline-flex;align-items:center;margin-left:6px;border:1px solid #374151;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:1000;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle;background:#111827;color:#e5e7eb}
+.rank-admin{border-color:#f87171;background:#450a0a;color:#fecaca}.rank-manager{border-color:#60a5fa;background:#172554;color:#bfdbfe}.rank-tester{border-color:#c084fc;background:#3b0764;color:#f3e8ff}.rank-member{border-color:#64748b;background:#111827;color:#cbd5e1}
+.group-chat-box{border-top:1px solid #2b2f3a;margin-top:16px;padding-top:14px}.group-chat-box input{width:100%;text-align:left;margin:6px 0}.group-chat-create{display:grid;gap:8px}.group-chat-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #2b2f3a;border-radius:18px;background:#0b0c10;padding:12px;margin-bottom:10px}.group-chat-meta{font-size:12px;color:#a8a8a8}.chat-header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.chat-header-actions input{width:210px;text-align:left}.group-control.hidden{display:none!important}.admin-action-log{max-height:260px;overflow:auto;display:grid;gap:8px}.admin-action-row{border:1px solid #2b2f3a;border-radius:14px;background:#07080b;padding:9px;color:#d1d5db;font-size:12px;line-height:1.35}.browser-frame-help.show{display:flex}.blocked-page{display:grid;place-items:center;height:100%;padding:28px;text-align:center;color:#fff}
 @media(max-width:720px){.source-select{order:-1;flex-basis:100%;max-width:none;width:100%}.playerBtns{width:100%}}
 </style>
 </head>
@@ -356,18 +348,20 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v87</span>
+        <span class="update-version-badge">Blank Space v89</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
-        <li>Added this Update tab so you can see the newest Blank Space version and the latest changes.</li>
-        <li>Added a header-based source changer for multi-source games, so source switching stays beside Fullscreen, Reload, Open Game, and Close instead of covering the game screen.</li>
-        <li>Added multiple selectable sources for LongCat and Stick Rush.</li>
-        <li>Kept the v87 strict achievement patch in place, including manual achievement submissions and safer unlock behavior.</li>
-        <li>No new chess changes were added in this update.</li>
+        <li>Added group chats so you can create a chat with multiple accepted friends.</li>
+        <li>Repaired achievements with a safer server-side awarding system so reaching a stat unlocks every matching achievement, not just the first one.</li>
+        <li>Kept the player-side Achievement Tester removed from games.</li>
+        <li>Added Admin Panel rank controls for Admin, Manager, Tester, and Member.</li>
+        <li>Ranks now show next to usernames with different colors.</li>
+        <li>Fixed the Blank Browser iframe bug by clearing the old home srcdoc before opening a page.</li>
+        <li>Added extra Admin moderation tools: mute/unmute chat, ban/unban chat, clear user messages, and reset achievements without changing points.</li>
       </ul>
-      <div class="update-note">Supabase note: this UI update does not require new database tables. If you have not already pasted the strict achievement patch SQL, use <b>supabase_v87_strict_update.sql</b> from this ZIP.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v89_update.sql</b> before testing group chats, ranks, moderation, or the repaired achievement backend.</div>
     </div>
   </section>
 
@@ -554,7 +548,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 
   <section id="chat">
     <h1 class="page-title">Chat</h1>
-    <p class="tagline">Message your accepted friends. New messages show here and as pop-up notifications.</p>
+    <p class="tagline">Message accepted friends one-on-one or create group chats with multiple friends.</p>
     <div class="chat-shell">
       <div class="panel chat-friends-panel">
         <div class="suggestions-toolbar">
@@ -566,6 +560,22 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         </div>
         <p id="chatFriendsStatus" class="form-message">Sign in to load friends.</p>
         <div id="chatFriendsList" class="friend-list"></div>
+        <div class="group-chat-box">
+          <div class="suggestions-toolbar">
+            <div>
+              <h2>Group Chats</h2>
+              <p class="small-note">Create groups with accepted friends only.</p>
+            </div>
+            <button class="mini-btn" id="refreshGroupChatsBtn">Refresh Groups</button>
+          </div>
+          <div class="group-chat-create">
+            <input id="groupChatNameInput" placeholder="Group name" maxlength="40" autocomplete="off" />
+            <input id="groupChatMembersInput" placeholder="Friend usernames, comma separated" maxlength="180" autocomplete="off" />
+            <button class="mini-btn primary" id="createGroupChatBtn">Create Group Chat</button>
+          </div>
+          <p id="groupChatStatus" class="form-message">Sign in to load groups.</p>
+          <div id="groupChatsList" class="friend-list"></div>
+        </div>
       </div>
       <div class="panel chat-main-panel hidden" id="chatPanel">
         <div class="chat-header">
@@ -573,7 +583,13 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
             <h2 id="chatTitle">Chat</h2>
             <p class="small-note" id="chatSubtitle">Live chat with your friend.</p>
           </div>
-          <button class="mini-btn" id="closeChatBtn">Close Chat</button>
+          <div class="chat-header-actions">
+            <input id="groupAddMembersInput" class="group-control hidden" placeholder="Add friends by username" maxlength="180" autocomplete="off" />
+            <button class="mini-btn group-control hidden" id="groupAddMembersBtn">Add Members</button>
+            <button class="mini-btn group-control hidden" id="groupLeaveBtn">Leave Group</button>
+            <button class="mini-btn danger-btn group-control hidden" id="groupDeleteBtn">Delete Group</button>
+            <button class="mini-btn" id="closeChatBtn">Close Chat</button>
+          </div>
         </div>
         <div id="chatMessages" class="chat-messages"></div>
         <div class="chat-compose">
@@ -767,8 +783,11 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
           <div class="admin-tile"><h3>Change Username</h3><input id="adminTargetUsername" placeholder="Current username"/><input id="adminNewUsername" placeholder="New username"/><button class="mini-btn" id="adminChangeUsernameBtn">Change Username</button></div>
           <div class="admin-tile"><h3>Delete Account</h3><input id="adminDeleteUsername" placeholder="Username to delete"/><button class="mini-btn danger-btn" id="adminDeleteUserBtn">Delete User</button></div>
           <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
+          <div class="admin-tile"><h3>Ranks</h3><input id="adminRankUsername" placeholder="Username"/><select id="adminRankSelect"><option value="member">Member</option><option value="tester">Tester</option><option value="manager">Manager</option><option value="admin">Admin</option></select><input id="adminRankReason" placeholder="Reason"/><button class="mini-btn primary" id="adminSetRankBtn">Set Rank</button><p class="small-note">Admin gives Admin Panel access. Manager and Tester show colored badges.</p></div>
+          <div class="admin-tile"><h3>Moderation</h3><input id="adminModUsername" placeholder="Username"/><select id="adminModAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="reset_achievements_keep_points">Reset Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminModReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminModerateBtn">Apply Moderation</button><p class="small-note">Uses safe moderation actions only; points are not changed unless you use the points tool.</p></div>
           <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
           <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
+          <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div>
           <div class="admin-tile"><h3>Important Admin Tools</h3><ul class="small-note"><li>Change usernames</li><li>Delete accounts</li><li>Give/remove points</li><li>Approve suggestions</li><li>Deny suggestions</li><li>Add comments</li><li>Delete suggestions</li><li>Review pending ideas</li><li>Review in-progress ideas</li><li>Search users</li><li>Check user points</li><li>See equipped icons</li><li>Manage blocked words</li><li>Refresh leaderboard</li><li>Refresh achievements</li><li>Refresh chat</li><li>Refresh trades</li><li>Open game lists</li><li>Open links</li><li>Copy user IDs</li><li>Reload session</li><li>Sign out</li><li>Clear local cache</li><li>Test notification</li><li>Export admin notes</li></ul></div>
           <div class="admin-tile"><h3>Fun Admin Tools</h3><button class="mini-btn" id="adminConfettiBtn">Confetti Test</button><button class="mini-btn" id="adminToastBtn">Toast Test</button><button class="mini-btn" id="adminRandomIconBtn">Random Icon Idea</button><p id="adminFunOutput" class="form-message"></p><ul class="small-note"><li>Confetti</li><li>Toast</li><li>Random icon</li><li>Motivation line</li><li>Random game pick</li><li>Badge preview</li><li>Leaderboard shoutout</li><li>Theme hint</li><li>Admin quote</li><li>Lucky number</li></ul></div>
         </div>
@@ -812,17 +831,6 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <div id="gameQuickFriends" class="quick-friends"></div>
         <div id="gameQuickMessages" class="quick-messages"><div class="empty-state">Choose a friend.</div></div>
         <div class="quick-compose"><label class="mini-btn image-btn" for="gameQuickImageInput">📷</label><input id="gameQuickImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><input id="gameQuickInput" placeholder="Message..." maxlength="500" autocomplete="off" /><button class="mini-btn primary" id="gameQuickSendBtn">Send</button></div>
-      </div>
-      <button id="achievementSubmitMiniBtn" class="achievement-submit-mini hidden" onclick="showAchievementSubmitPanel()">🏆 Achievement Tester</button>
-      <div id="achievementSubmitPanel" class="achievement-submit-panel hidden">
-        <div class="achievement-submit-head"><h3>Achievement Score Submit</h3><button class="mini-btn" onclick="hideAchievementSubmitPanel()">Hide</button></div>
-        <p>Submit the score/win/level you actually got after playing. Automatic achievement scanning is turned off so old detector bugs cannot unlock extra achievements.</p>
-        <div class="achievement-submit-row">
-          <select id="achievementSubmitMetric"></select>
-          <input id="achievementSubmitValue" type="number" min="0" step="1" placeholder="value" />
-          <button class="mini-btn primary" id="achievementSubmitBtn">Submit</button>
-        </div>
-        <div id="achievementSubmitStatus" class="achievement-submit-status"></div>
       </div>
     </div>
   </div>
@@ -4775,6 +4783,10 @@ const ACHIEVEMENTS = [
 
 function achievementById(id){ return ACHIEVEMENTS.find(a => a.id === id); }
 function equippedIconHTML(profile){ const icon = profile?.equipped_icon; return icon ? `<span class="name-equipped-icon" title="Equipped achievement icon">${escapeHTML(icon)}</span>` : ""; }
+function normalizeUserRank(rank){ const r=String(rank||"member").toLowerCase(); return ["admin","manager","tester","member"].includes(r)?r:"member"; }
+function rankLabel(rank){ const r=normalizeUserRank(rank); return r.charAt(0).toUpperCase()+r.slice(1); }
+function rankBadgeHTML(profileOrRank){ const rank=normalizeUserRank(typeof profileOrRank==="string"?profileOrRank:profileOrRank?.rank); return `<span class="rank-badge rank-${rank}" title="${rankLabel(rank)} rank">${rankLabel(rank)}</span>`; }
+function nameWithBadges(profile, fallback="Unknown"){ return `${escapeHTML(usernameFromProfile(profile, fallback))}${equippedIconHTML(profile)}${rankBadgeHTML(profile?.rank||"member")}`; }
 
 
 const LOCAL_BLOCKED_TERMS = [
@@ -4962,7 +4974,7 @@ async function loadProfile() {
   }
   const result = await getSupabaseClient()
     .from("profiles")
-    .select("id, username, created_at, avatar_url, points, username_last_changed_at, login_email, equipped_icon, equipped_achievement_id")
+    .select("id, username, created_at, avatar_url, points, username_last_changed_at, login_email, equipped_icon, equipped_achievement_id, rank, is_banned, chat_muted_until")
     .eq("id", blankSpaceUser.id)
     .maybeSingle();
   if (result.error) throw result.error;
@@ -4986,6 +4998,7 @@ async function checkAdmin() {
     .eq("user_id", blankSpaceUser.id)
     .maybeSingle();
   if (!result.error && result.data) blankSpaceIsAdmin = true;
+  if (blankSpaceProfile && normalizeUserRank(blankSpaceProfile.rank) === "admin") blankSpaceIsAdmin = true;
   document.getElementById("adminPanel")?.classList.toggle("hidden", !blankSpaceIsAdmin);
   document.getElementById("accountAdminMovedNote")?.classList.toggle("hidden", !blankSpaceIsAdmin);
   document.getElementById("adminPanelTab")?.classList.toggle("hidden", !blankSpaceIsAdmin);
@@ -5034,8 +5047,8 @@ function renderProfile() {
     const points = Number(blankSpaceProfile.points || 0);
     setAccountState("Signed in as " + blankSpaceProfile.username, "good");
     if (currentUsername) currentUsername.textContent = blankSpaceProfile.username;
-    if (profileDisplayName) profileDisplayName.textContent = blankSpaceProfile.username;
-    if (profileSubtitle) profileSubtitle.textContent = blankSpaceIsAdmin ? "Admin account. You can still earn achievement points and appear on the leaderboard." : (blankSpaceProfile.login_email ? "Password login is enabled. You can use this account on other devices." : "Browser-only account. Add a password to use this account on other devices.");
+    if (profileDisplayName) profileDisplayName.innerHTML = nameWithBadges(blankSpaceProfile);
+    if (profileSubtitle) profileSubtitle.textContent = (blankSpaceProfile.is_banned ? "Chat banned. " : "") + (blankSpaceProfile.chat_muted_until && new Date(blankSpaceProfile.chat_muted_until) > new Date() ? "Chat muted. " : "") + (blankSpaceIsAdmin ? "Admin account. You can still earn achievement points and appear on the leaderboard." : (blankSpaceProfile.login_email ? "Password login is enabled. You can use this account on other devices." : "Browser-only account. Add a password to use this account on other devices."));
     if (pointsPill) {
       pointsPill.textContent = points + " point" + (points === 1 ? "" : "s");
       pointsPill.classList.remove("hidden");
@@ -5316,7 +5329,7 @@ async function refreshSuggestions() {
     const filter = document.getElementById("suggestionFilter")?.value || "approved";
     let query = getSupabaseClient()
       .from("suggestions")
-      .select("id, user_id, game_title, message, status, created_at, points_awarded, admin_comment, profiles(username, avatar_url, points, equipped_icon)")
+      .select("id, user_id, game_title, message, status, created_at, points_awarded, admin_comment, profiles(username, avatar_url, points, equipped_icon, rank)")
       .order("created_at", { ascending: false })
       .limit(100);
     if (!blankSpaceIsAdmin) {
@@ -5353,7 +5366,7 @@ async function refreshMySuggestions() {
     setMessage("mySuggestionsStatus", "Loading your suggestions...");
     const result = await getSupabaseClient()
       .from("suggestions")
-      .select("id, user_id, game_title, message, status, created_at, points_awarded, admin_comment, profiles(username, avatar_url, points, equipped_icon)")
+      .select("id, user_id, game_title, message, status, created_at, points_awarded, admin_comment, profiles(username, avatar_url, points, equipped_icon, rank)")
       .eq("user_id", blankSpaceUser.id)
       .order("created_at", { ascending: false })
       .limit(100);
@@ -5477,7 +5490,7 @@ function leaderboardRow(profile, index) {
   return `<div class="leaderboard-item">
     <div class="leader-rank">#${rank}</div>
     <div class="leader-avatar">${leaderboardAvatar(profile)}</div>
-    <div><div class="leader-name">${escapeHTML(profile.username)}${equippedIconHTML(profile)} ${medal ? `<span class="medal">${medal}</span>` : ""}</div><div class="friend-meta">${rank === 1 ? "1st place" : rank === 2 ? "2nd place" : rank === 3 ? "3rd place" : rank + "th place"}</div></div>
+    <div><div class="leader-name">${escapeHTML(profile.username)}${equippedIconHTML(profile)}${rankBadgeHTML(profile)} ${medal ? `<span class="medal">${medal}</span>` : ""}</div><div class="friend-meta">${rank === 1 ? "1st place" : rank === 2 ? "2nd place" : rank === 3 ? "3rd place" : rank + "th place"}</div></div>
     <div class="leader-points">${points} point${points === 1 ? "" : "s"}</div>
   </div>`;
 }
@@ -5491,7 +5504,7 @@ async function refreshLeaderboard() {
     if (rpcResult.error) {
       const fallback = await client
         .from("profiles")
-        .select("id, username, avatar_url, points, equipped_icon")
+        .select("id, username, avatar_url, points, equipped_icon, rank")
         .order("points", { ascending: false })
         .order("username", { ascending: true })
         .limit(100);
@@ -5654,7 +5667,7 @@ function friendItem(row, type) {
     actions = `<button class="mini-btn" onclick="deleteFriendRow(${row.id})">Remove</button>`;
   }
   const points = Number(other?.points || 0);
-  return `<div class="friend-item"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(otherName)}${equippedIconHTML(other)}</div><div class="friend-meta">${type === "friend" ? `${points} point${points === 1 ? "" : "s"}` : escapeHTML(displayStatus(row.status))}</div></div></div><div class="friend-actions">${actions}</div></div>`;
+  return `<div class="friend-item"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(otherName)}${equippedIconHTML(other)}${rankBadgeHTML(other)}</div><div class="friend-meta">${type === "friend" ? `${points} point${points === 1 ? "" : "s"}` : escapeHTML(displayStatus(row.status))}</div></div></div><div class="friend-actions">${actions}</div></div>`;
 }
 
 function setEmptyList(id, text) {
@@ -5681,7 +5694,7 @@ async function refreshFriends() {
     }
     const result = await getSupabaseClient()
       .from("friends")
-      .select("id, requester_id, receiver_id, status, created_at, requester:profiles!friends_requester_id_fkey(id, username, avatar_url, points, equipped_icon), receiver:profiles!friends_receiver_id_fkey(id, username, avatar_url, points, equipped_icon)")
+      .select("id, requester_id, receiver_id, status, created_at, requester:profiles!friends_requester_id_fkey(id, username, avatar_url, points, equipped_icon, rank), receiver:profiles!friends_receiver_id_fkey(id, username, avatar_url, points, equipped_icon, rank)")
       .or(`requester_id.eq.${blankSpaceUser.id},receiver_id.eq.${blankSpaceUser.id}`)
       .order("created_at", { ascending: false });
     if (result.error) throw result.error;
@@ -5737,7 +5750,7 @@ async function getAcceptedFriendRows() {
   if (!blankSpaceProfile) return [];
   const result = await getSupabaseClient()
     .from("friends")
-    .select("id, requester_id, receiver_id, status, created_at, requester:profiles!friends_requester_id_fkey(id, username, avatar_url, points, equipped_icon), receiver:profiles!friends_receiver_id_fkey(id, username, avatar_url, points, equipped_icon)")
+    .select("id, requester_id, receiver_id, status, created_at, requester:profiles!friends_requester_id_fkey(id, username, avatar_url, points, equipped_icon, rank), receiver:profiles!friends_receiver_id_fkey(id, username, avatar_url, points, equipped_icon, rank)")
     .or(`requester_id.eq.${blankSpaceUser.id},receiver_id.eq.${blankSpaceUser.id}`)
     .eq("status", "accepted")
     .order("created_at", { ascending: false });
@@ -5748,10 +5761,11 @@ async function getAcceptedFriendRows() {
 
 function chatMessageRow(message, friendName = activeChatFriendName) {
   const mine = message.sender_id === blankSpaceUser?.id;
-  const sender = message.sender?.username || (mine ? blankSpaceProfile?.username : friendName) || "Friend";
+  const sender = message.sender?.username || message.sender_username || (mine ? blankSpaceProfile?.username : friendName) || "Friend";
+  const senderRank = message.sender?.rank || message.sender_rank || (mine ? blankSpaceProfile?.rank : "member");
   const date = message.created_at ? new Date(message.created_at).toLocaleString() : "";
   const img = message.image_url ? `<br><img class="chat-image-preview" src="${escapeHTML(message.image_url)}" alt="chat image">` : "";
-  return `<div class="chat-bubble ${mine ? "mine" : ""}"><div class="chat-meta">${escapeHTML(sender)} • ${escapeHTML(date)}</div><div>${escapeHTML(message.body || "")}${img}</div></div>`;
+  return `<div class="chat-bubble ${mine ? "mine" : ""}"><div class="chat-meta">${escapeHTML(sender)} ${rankBadgeHTML(senderRank)} • ${escapeHTML(date)}</div><div>${escapeHTML(message.body || "")}${img}</div></div>`;
 }
 
 async function markFriendshipRead(friendshipId) {
@@ -5773,7 +5787,7 @@ async function loadChatMessages() {
   try {
     const result = await getSupabaseClient()
       .from("friend_messages")
-      .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url)")
+      .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url, rank)")
       .eq("friendship_id", activeFriendshipId)
       .order("created_at", { ascending: true })
       .limit(200);
@@ -5806,7 +5820,7 @@ function renderChatFriends(rows) {
     const other = getFriendOther(row);
     const name = usernameFromProfile(other);
     const safeName = escapeHTML(name).replace(/'/g, "&#039;");
-    return `<div class="chat-friend-row"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(name)}${equippedIconHTML(other)}</div><div class="friend-meta">${Number(other?.points || 0)} points</div></div></div><button class="mini-btn primary" onclick="openFriendChat(${row.id}, '${safeName}')">Chat</button></div>`;
+    return `<div class="chat-friend-row"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(name)}${equippedIconHTML(other)}${rankBadgeHTML(other)}</div><div class="friend-meta">${Number(other?.points || 0)} points</div></div></div><button class="mini-btn primary" onclick="openFriendChat(${row.id}, '${safeName}')">Chat</button></div>`;
   }).join("");
 }
 
@@ -5831,12 +5845,14 @@ async function refreshChatFriends() {
 
 async function initChatPage() {
   await refreshChatFriends();
+  await refreshGroupChats();
   await loadUnreadChats(false);
 }
 
 async function openFriendChat(friendshipId, friendName) {
   await loadExistingSession();
   if (!blankSpaceProfile) return;
+  await closeGroupChat();
   activeFriendshipId = friendshipId;
   activeChatFriendName = friendName || "Friend";
   document.getElementById("chatPanel")?.classList.remove("hidden");
@@ -5879,17 +5895,23 @@ async function fileToChatDataURL(inputId) {
 async function sendChatMessage() {
   try {
     await loadExistingSession();
-    if (!blankSpaceProfile || !activeFriendshipId) return setMessage("chatStatus", "Open a friend chat first.", "error");
+    if (!blankSpaceProfile || (!activeFriendshipId && !activeGroupChatId)) return setMessage("chatStatus", "Open a friend or group chat first.", "error");
     const input = document.getElementById("chatInput");
     const body = input?.value.trim() || "";
-    if (body.length < 1) return;
+    const image_url = await fileToChatDataURL("chatImageInput");
+    if (!body && !image_url) return;
     if (body.length > 500) return setMessage("chatStatus", "Messages must be 500 characters or fewer.", "error");
     if (containsBlockedLanguage(body)) return setMessage("chatStatus", "That message contains blocked language.", "error");
-    const result = await getSupabaseClient().from("friend_messages").insert({ friendship_id: activeFriendshipId, sender_id: blankSpaceUser.id, body });
+    let result;
+    if (activeGroupChatId) {
+      result = await getSupabaseClient().rpc("send_group_chat_message", { p_group_id: activeGroupChatId, p_body: body || "Image", p_image_url: image_url });
+    } else {
+      result = await getSupabaseClient().from("friend_messages").insert({ friendship_id: activeFriendshipId, sender_id: blankSpaceUser.id, body: body || "Image", image_url });
+    }
     if (result.error) throw result.error;
     if (input) input.value = "";
     const imgInput = document.getElementById("chatImageInput"); if (imgInput) imgInput.value = "";
-    await loadChatMessages();
+    if (activeGroupChatId) await loadGroupChatMessages(); else await loadChatMessages();
   } catch (err) {
     setMessage("chatStatus", err.message || "Could not send message.", "error");
   }
@@ -5905,6 +5927,86 @@ async function closeFriendChat() {
     try { await getSupabaseClient().removeChannel(chatSubscription); } catch (e) {}
     chatSubscription = null;
   }
+}
+
+let activeGroupChatId = null;
+let activeGroupChatName = "";
+let groupChatSubscription = null;
+let groupChatPollTimer = null;
+function parseUsernameList(value){ return String(value||"").split(/[,\n]/).map(v=>v.trim().replace(/^@/,"")).filter(Boolean).slice(0,20); }
+function groupMessageRow(message){
+  const mine = message.sender_id === blankSpaceUser?.id;
+  const sender = message.sender_username || message.sender?.username || (mine ? blankSpaceProfile?.username : "Member");
+  const date = message.created_at ? new Date(message.created_at).toLocaleString() : "";
+  const img = message.image_url ? `<br><img class="chat-image-preview" src="${escapeHTML(message.image_url)}" alt="chat image">` : "";
+  return `<div class="chat-bubble ${mine ? "mine" : ""}"><div class="chat-meta">${escapeHTML(sender)} ${rankBadgeHTML(message.sender_rank||"member")} • ${escapeHTML(date)}</div><div>${escapeHTML(message.body || "")}${img}</div></div>`;
+}
+function setGroupControls(show){ document.querySelectorAll(".group-control").forEach(el=>el.classList.toggle("hidden", !show)); }
+async function createGroupChat(){
+  try{
+    await loadExistingSession();
+    if(!blankSpaceProfile) return setMessage("groupChatStatus","Sign in first.","error");
+    const name=document.getElementById("groupChatNameInput")?.value.trim()||"";
+    const usernames=parseUsernameList(document.getElementById("groupChatMembersInput")?.value||"");
+    if(!name) return setMessage("groupChatStatus","Add a group name.","error");
+    const r=await getSupabaseClient().rpc("create_group_chat_by_usernames",{p_name:name,p_usernames:usernames});
+    if(r.error) throw r.error;
+    document.getElementById("groupChatNameInput").value=""; document.getElementById("groupChatMembersInput").value="";
+    setMessage("groupChatStatus","Group chat created.","good");
+    await refreshGroupChats();
+  }catch(err){setMessage("groupChatStatus",err.message||"Could not create group.","error");}
+}
+function renderGroupChats(rows){
+  const box=document.getElementById("groupChatsList"); if(!box) return;
+  if(!blankSpaceProfile){ box.innerHTML=`<div class="empty-state">Sign in to load groups.</div>`; return; }
+  box.innerHTML = rows.length ? rows.map(g=>`<div class="group-chat-row"><div><div class="friend-name">${escapeHTML(g.name)}</div><div class="group-chat-meta">${Number(g.member_count||0)} members • ${escapeHTML(g.my_role||"member")}${g.last_message_body?" • "+escapeHTML(String(g.last_message_body).slice(0,50)):""}</div></div><button class="mini-btn primary" onclick="openGroupChat(${g.id}, '${escapeHTML(g.name).replace(/'/g,"&#039;")}')">Open</button></div>`).join("") : `<div class="empty-state">No group chats yet.</div>`;
+}
+async function refreshGroupChats(){
+  try{
+    await loadExistingSession();
+    if(!blankSpaceProfile){ setMessage("groupChatStatus","Sign in to load groups."); renderGroupChats([]); return; }
+    const r=await getSupabaseClient().rpc("get_my_group_chats");
+    if(r.error) throw r.error;
+    renderGroupChats(r.data||[]);
+    setMessage("groupChatStatus", (r.data||[]).length ? "Choose a group chat." : "No group chats yet.");
+  }catch(err){setMessage("groupChatStatus",err.message||"Could not load groups.","error");}
+}
+async function loadGroupChatMessages(){
+  if(!activeGroupChatId) return;
+  const r=await getSupabaseClient().rpc("get_group_chat_messages",{p_group_id:activeGroupChatId,p_limit:100});
+  const box=document.getElementById("chatMessages"); if(!box) return;
+  if(r.error){ box.innerHTML=`<div class="empty-state">${escapeHTML(r.error.message)}</div>`; return; }
+  const rows=(r.data||[]).slice().reverse();
+  box.innerHTML = rows.length ? rows.map(groupMessageRow).join("") : `<div class="empty-state">No group messages yet. Say hi.</div>`;
+  box.scrollTop=box.scrollHeight;
+}
+async function openGroupChat(groupId, groupName){
+  await loadExistingSession(); if(!blankSpaceProfile) return;
+  await closeFriendChat();
+  activeGroupChatId=groupId; activeGroupChatName=groupName||"Group";
+  document.getElementById("chatPanel")?.classList.remove("hidden");
+  document.getElementById("chatTitle").textContent = activeGroupChatName;
+  document.getElementById("chatSubtitle").textContent = "Group chat. Add members by username if you own/manage this group.";
+  setGroupControls(true);
+  await loadGroupChatMessages();
+  if(groupChatSubscription){ try{ await getSupabaseClient().removeChannel(groupChatSubscription); }catch(e){} groupChatSubscription=null; }
+  try{ groupChatSubscription=getSupabaseClient().channel("group-chat-"+groupId).on("postgres_changes",{event:"INSERT",schema:"public",table:"group_chat_messages",filter:`group_id=eq.${groupId}`},loadGroupChatMessages).subscribe(); }catch(e){}
+  if(groupChatPollTimer) clearInterval(groupChatPollTimer);
+  groupChatPollTimer=setInterval(loadGroupChatMessages,5000);
+}
+async function closeGroupChat(){
+  activeGroupChatId=null; activeGroupChatName=""; setGroupControls(false);
+  if(groupChatPollTimer) clearInterval(groupChatPollTimer); groupChatPollTimer=null;
+  if(groupChatSubscription){ try{ await getSupabaseClient().removeChannel(groupChatSubscription); }catch(e){} groupChatSubscription=null; }
+}
+async function addGroupMembers(){
+  try{ if(!activeGroupChatId) return; const names=parseUsernameList(document.getElementById("groupAddMembersInput")?.value||""); const r=await getSupabaseClient().rpc("add_group_chat_members_by_usernames",{p_group_id:activeGroupChatId,p_usernames:names}); if(r.error) throw r.error; document.getElementById("groupAddMembersInput").value=""; setMessage("chatStatus","Members added if they are your accepted friends.","good"); await refreshGroupChats(); }catch(err){setMessage("chatStatus",err.message||"Could not add members.","error");}
+}
+async function leaveGroupChat(){
+  try{ if(!activeGroupChatId) return; if(!confirm("Leave this group chat?")) return; const r=await getSupabaseClient().rpc("leave_group_chat",{p_group_id:activeGroupChatId}); if(r.error) throw r.error; await closeGroupChat(); document.getElementById("chatPanel")?.classList.add("hidden"); await refreshGroupChats(); }catch(err){setMessage("chatStatus",err.message||"Could not leave group.","error");}
+}
+async function deleteGroupChat(){
+  try{ if(!activeGroupChatId) return; if(!confirm("Delete this group chat for everyone?")) return; const r=await getSupabaseClient().rpc("delete_group_chat",{p_group_id:activeGroupChatId}); if(r.error) throw r.error; await closeGroupChat(); document.getElementById("chatPanel")?.classList.add("hidden"); await refreshGroupChats(); }catch(err){setMessage("chatStatus",err.message||"Could not delete group.","error");}
 }
 
 function updateChatBadges(count) {
@@ -5942,7 +6044,7 @@ async function loadUnreadChats(showToasts = false, freshMessage = null) {
     if (!ids.length) { updateChatBadges(0); return; }
     const result = await getSupabaseClient()
       .from("friend_messages")
-      .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username)")
+      .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, rank)")
       .in("friendship_id", ids)
       .neq("sender_id", blankSpaceUser.id)
       .is("read_at", null)
@@ -6009,7 +6111,7 @@ async function loadQuickChatMessages(friendName = "Friend") {
   if (!box || !quickActiveFriendshipId) return;
   const result = await getSupabaseClient()
     .from("friend_messages")
-    .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url)")
+    .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url, rank)")
     .eq("friendship_id", quickActiveFriendshipId)
     .order("created_at", { ascending: true })
     .limit(100);
@@ -6067,7 +6169,6 @@ async function initFriendsPage() {
 
 
 let achievementDebugLog = [];
-let achievementSubmitHidden = localStorage.getItem("blank_space_hide_achievement_tester") === "1";
 function addAchievementDebug(line){
   const stamp = new Date().toLocaleTimeString();
   achievementDebugLog.unshift(`[${stamp}] ${line}`);
@@ -6192,7 +6293,8 @@ async function recordGameMetric(gameTitle, metric, value = 1, mode = "max") {
     if (result.error) throw result.error;
     const stat = Array.isArray(result.data) ? result.data[0] : result.data;
     const game = GAMES.find(g => g.title === gameTitle) || { title: gameTitle, verified:false };
-    const unlocked = await evaluateAchievementsForGame(game, stat || {});
+    const serverUnlocked = Number(stat?.new_awards || 0);
+    const unlocked = serverUnlocked || await evaluateAchievementsForGame(game, stat || {});
     addAchievementDebug(`Metric saved. ${unlocked || 0} new achievement(s).`);
     if (unlocked) setAchievementSubmitStatus(`Saved. ${unlocked} new achievement${unlocked === 1 ? "" : "s"} unlocked!`, false);
     else setAchievementSubmitStatus("Saved. No new achievement reached yet.", false);
@@ -6227,114 +6329,72 @@ async function evaluateAggregateAchievements(game) {
   return;
 }
 
+let gameAchievementDetectorTimer = null;
+const ACHIEVEMENT_METRIC_LIMITS = {best_score:1000000, goals:10000, wins:10000, fish_caught:100000, money_earned:100000000, checks:10000, checkmates:10000, merges:100000, best_level:10000, hits:100000};
+function cleanAchievementMetric(metric){ const m=String(metric||"").replace(/[^a-z0-9_]/gi,"").toLowerCase(); return Object.prototype.hasOwnProperty.call(ACHIEVEMENT_METRIC_LIMITS,m)?m:""; }
+function safeAchievementValue(metric, value){ const n=Number(value); if(!Number.isFinite(n)) return null; return Math.max(0, Math.min(Math.floor(n), ACHIEVEMENT_METRIC_LIMITS[metric]||1000000)); }
 function handleGameProgressMessage(event) {
-  // Strict mode: all automatic/postMessage achievement events are ignored.
-  // The previous detector could read unrelated game numbers and mass-unlock achievements.
-  // Use the Achievement Score Submit panel so only the exact value you type is counted.
+  const frame = document.getElementById("gameFrame");
+  if (!frame || !currentGame || event?.source !== frame.contentWindow) return;
   const data = event?.data;
-  if (data && typeof data === "object" && (data.type === "blank-space-achievement" || data.blankSpaceGame)) {
-    addAchievementDebug("Ignored automatic game message. Use manual submit for exact achievement progress.");
+  if (!data || typeof data !== "object") return;
+  const gameTitle = String(data.gameTitle || data.game || data.blankSpaceGame || currentGame.title || "");
+  if (gameTitle && gameTitle !== currentGame.title) return;
+  let metric = cleanAchievementMetric(data.metric || data.stat);
+  let value = data.value;
+  if (!metric) {
+    const candidates = ["best_score","goals","wins","fish_caught","money_earned","checks","checkmates","merges","best_level","hits"];
+    metric = candidates.find(k => data[k] !== undefined) || "";
+    value = metric ? data[metric] : value;
   }
-  return;
+  metric = cleanAchievementMetric(metric);
+  const safeValue = safeAchievementValue(metric, value);
+  if (!metric || safeValue === null) return;
+  addAchievementDebug(`Safe game message accepted: ${currentGame.title} ${metric}=${safeValue}`);
+  recordGameMetric(currentGame.title, metric, safeValue, data.mode || "max");
 }
 window.addEventListener("message", handleGameProgressMessage);
 
-
-function metricOptionsForGame(gameTitle){
-  const title = String(gameTitle || "");
-  const base = [{value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}];
-  if (title === "A Small World Cup") return [
-    {value:"goals", label:"Total goals", mode:"replace", placeholder:"total goals"},
-    {value:"wins", label:"World Cup wins", mode:"replace", placeholder:"wins"},
-    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
-  ];
-  if (title === "Basket Random") return [
-    {value:"best_score", label:"Score", mode:"replace", placeholder:"score"},
-    {value:"wins", label:"Wins", mode:"replace", placeholder:"wins"}
-  ];
-  if (title === "Tiny Fishing") return [
-    {value:"fish_caught", label:"Total fish caught", mode:"replace", placeholder:"total fish"},
-    {value:"money_earned", label:"Money / best cash", mode:"replace", placeholder:"money"},
-    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
-  ];
-  if (title === "Chess-AI") return [
-    {value:"checkmates", label:"Checkmates", mode:"replace", placeholder:"checkmates"},
-    {value:"checks", label:"Checks", mode:"replace", placeholder:"checks"},
-    {value:"wins", label:"Wins", mode:"replace", placeholder:"wins"}
-  ];
-  if (title === "Stick Merge") return [
-    {value:"merges", label:"Merges", mode:"replace", placeholder:"merges"},
-    {value:"best_level", label:"Best level", mode:"replace", placeholder:"level"},
-    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
-  ];
-  if (title === "Drive Mad" || title === "Run 3") return [
-    {value:"best_level", label:"Best level reached", mode:"replace", placeholder:"level"},
-    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
-  ];
-  if (title === "Google Doodle Baseball") return [
-    {value:"hits", label:"Hits", mode:"replace", placeholder:"hits"},
-    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
-  ];
-  return base;
-}
-
+// v89: no player Achievement Tester button, but safe game messages and same-origin localStorage scans are enabled.
 function setAchievementSubmitStatus(text, isError=false){
-  const el = document.getElementById("achievementSubmitStatus");
-  if (!el) return;
-  el.textContent = text || "";
-  el.style.color = isError ? "#fca5a5" : "#a7f3d0";
+  if (text) addAchievementDebug((isError ? "Achievement status error: " : "Achievement status: ") + text);
 }
-
-function hideAchievementSubmitPanel(){
-  achievementSubmitHidden = true;
-  localStorage.setItem("blank_space_hide_achievement_tester", "1");
-  document.getElementById("achievementSubmitPanel")?.classList.add("hidden");
-  document.getElementById("achievementSubmitMiniBtn")?.classList.remove("hidden");
+function pickMetricForGame(gameTitle){
+  const cards = ACHIEVEMENTS.filter(a => a.game === gameTitle);
+  const order = ["best_score","goals","wins","fish_caught","money_earned","checkmates","checks","merges","best_level","hits"];
+  return order.find(m => cards.some(a => a.stat === m)) || "best_score";
 }
-function showAchievementSubmitPanel(){
-  achievementSubmitHidden = false;
-  localStorage.removeItem("blank_space_hide_achievement_tester");
-  if (currentGame) updateAchievementSubmitPanel(currentGame);
+function extractScoreFromText(text){
+  const t = String(text||"").slice(0,12000);
+  const patterns = [/best\s*score\D{0,12}(\d{1,7})/i,/score\D{0,12}(\d{1,7})/i,/level\D{0,12}(\d{1,5})/i,/wins?\D{0,12}(\d{1,5})/i,/goals?\D{0,12}(\d{1,5})/i,/hits?\D{0,12}(\d{1,6})/i];
+  for (const p of patterns) { const m=t.match(p); if(m) return Number(m[1]); }
+  return null;
 }
-function updateAchievementSubmitPanel(game){
-  const panel = document.getElementById("achievementSubmitPanel");
-  const mini = document.getElementById("achievementSubmitMiniBtn");
-  const select = document.getElementById("achievementSubmitMetric");
-  const input = document.getElementById("achievementSubmitValue");
-  if (!panel || !select || !input) return;
-  const hasAchievements = !!game && ACHIEVEMENTS.some(a => a.game === game.title);
-  panel.classList.toggle("hidden", !hasAchievements || achievementSubmitHidden);
-  mini?.classList.toggle("hidden", !hasAchievements || !achievementSubmitHidden);
-  if (!hasAchievements) return;
-  const opts = metricOptionsForGame(game.title);
-  select.innerHTML = opts.map(o => `<option value="${escapeHTML(o.value)}" data-mode="${escapeHTML(o.mode)}" data-placeholder="${escapeHTML(o.placeholder)}">${escapeHTML(o.label)}</option>`).join("");
-  input.value = "";
-  input.placeholder = opts[0]?.placeholder || "value";
-  setAchievementSubmitStatus("Enter the exact score/total you want counted. Strict mode prevents mass unlocks.");
-  select.onchange = () => {
-    const chosen = select.selectedOptions?.[0];
-    input.placeholder = chosen?.dataset?.placeholder || "value";
-  };
+function scanSameOriginGameForAchievements(game){
+  try{
+    const frame=document.getElementById("gameFrame");
+    if(!frame?.contentWindow || !game || !blankSpaceProfile) return;
+    let text="";
+    try { text += " " + (frame.contentDocument?.body?.innerText || ""); } catch(e) {}
+    try {
+      const ls = frame.contentWindow.localStorage;
+      for (let i=0; ls && i<Math.min(ls.length,80); i++) { const k=ls.key(i)||""; text += ` ${k} ${ls.getItem(k)}`; }
+    } catch(e) {}
+    const value=extractScoreFromText(text);
+    if(value !== null && value > 0){
+      const metric = pickMetricForGame(game.title);
+      recordGameMetric(game.title, metric, value, "max");
+    }
+  } catch(e) {}
 }
-
-async function submitAchievementMetricFromOverlay(){
-  if (!currentGame) return;
-  const select = document.getElementById("achievementSubmitMetric");
-  const input = document.getElementById("achievementSubmitValue");
-  const metric = select?.value || "best_score";
-  const option = select?.selectedOptions?.[0];
-  const mode = option?.dataset?.mode || "replace";
-  const value = Number(input?.value || 0);
-  if (!value || value < 0) return setAchievementSubmitStatus("Type a number first.", true);
-  setAchievementSubmitStatus("Saving achievement progress...");
-  await recordGameMetric(currentGame.title, metric, value, mode);
-}
-
 function setupGameAchievementDetector(game){
-  // v87: Automatic DOM/canvas scanning was disabled because it could read unrelated numbers
-  // from game files/UI and unlock every achievement for a game. Achievements now use
-  // the manual score submit panel and explicit postMessage hooks only.
-  if (game?.title) addAchievementDebug(`Manual achievement mode active for ${game.title}. Use Achievement Score Submit after playing.`);
+  if (gameAchievementDetectorTimer) clearInterval(gameAchievementDetectorTimer);
+  gameAchievementDetectorTimer = null;
+  if (!game?.title) return;
+  const hasCards = ACHIEVEMENTS.some(a => a.game === game.title);
+  if (!hasCards) return addAchievementDebug(`No achievements configured for ${game.title}.`);
+  addAchievementDebug(`Achievement detector active for ${game.title}. Tester button stays removed.`);
+  gameAchievementDetectorTimer = setInterval(() => scanSameOriginGameForAchievements(game), 5000);
 }
 
 
@@ -6531,25 +6591,12 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
 
-/* v85 achievement reliability panel */
-.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
-.achievement-submit-panel.hidden{display:none!important}
-.achievement-submit-panel h3{margin:0;font-size:15px}
-.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
-.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
-.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
-.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
-@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
 /* v86 achievement fixes */
 .achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
 .achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
 .achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
 .achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
-.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.achievement-submit-head h3{margin:0}
-.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
-.achievement-submit-mini.hidden{display:none!important}
 .achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
 .achievement-card .achievement-actions{display:none!important}
 
@@ -6609,25 +6656,12 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
 
-/* v85 achievement reliability panel */
-.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
-.achievement-submit-panel.hidden{display:none!important}
-.achievement-submit-panel h3{margin:0;font-size:15px}
-.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
-.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
-.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
-.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
-@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
 /* v86 achievement fixes */
 .achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
 .achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
 .achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
 .achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
-.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.achievement-submit-head h3{margin:0}
-.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
-.achievement-submit-mini.hidden{display:none!important}
 .achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
 .achievement-card .achievement-actions{display:none!important}
 
@@ -6735,7 +6769,7 @@ function playGame(encodedTitle, preferredSource) {
   recordGameProgress(game, true, 0);
   startGameTimer(game);
   prepareGameQuickChat();
-  updateAchievementSubmitPanel(game);
+  // v88: Player-side Achievement Tester was removed from games.
   document.getElementById("playerTitle").textContent = game.title;
   document.getElementById("playerOverlay").style.display = "block";
   updateGameSourceSelect(game, chosenSource);
@@ -6761,10 +6795,10 @@ function reloadGame() {
 function closeGame() {
   if (currentPlayTimer) clearInterval(currentPlayTimer);
   currentPlayTimer = null;
+  if (gameAchievementDetectorTimer) clearInterval(gameAchievementDetectorTimer);
+  gameAchievementDetectorTimer = null;
   currentTimedGameTitle = "";
   hideGameQuickChat();
-  document.getElementById("achievementSubmitPanel")?.classList.add("hidden");
-  document.getElementById("achievementSubmitMiniBtn")?.classList.add("hidden");
   document.getElementById("playerOverlay").style.display = "none";
   const frame = document.getElementById("gameFrame");
   frame.removeAttribute("srcdoc");
@@ -6797,31 +6831,18 @@ const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
 
-/* v85 achievement reliability panel */
-.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
-.achievement-submit-panel.hidden{display:none!important}
-.achievement-submit-panel h3{margin:0;font-size:15px}
-.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
-.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
-.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
-.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
-@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
 /* v86 achievement fixes */
 .achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
 .achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
 .achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
 .achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
-.achievement-submit-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.achievement-submit-head h3{margin:0}
-.achievement-submit-mini{position:absolute;left:18px;bottom:18px;z-index:8;border:1px solid #334155;border-radius:999px;background:rgba(8,10,16,.94);box-shadow:0 14px 42px rgba(0,0,0,.55);padding:10px 12px;font-weight:1000;color:#fff;cursor:pointer}
-.achievement-submit-mini.hidden{display:none!important}
 .achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
 .achievement-card .achievement-actions{display:none!important}
 
 
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
-</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block being embedded inside other websites, so those may still need the Open New Tab button.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
+</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block embedding, but the v89 browser clears the old home page before loading so iframe-friendly pages show correctly.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
 let browserLastURL = "";
 const browserHistory = [];
 let browserHistoryIndex = -1;
@@ -6847,8 +6868,8 @@ function parseBrowserInput(value) {
     const url = "https://" + text;
     return { url, isSearch: false, label: url };
   }
-  // Google blocks being embedded. Google IGU is the most iframe-friendly Google search page available for this static browser.
-  const url = "https://www.bing.com/search?q=" + encodeURIComponent(text);
+  // Google's IGU search page is much more iframe-friendly than normal search pages.
+  const url = "https://www.google.com/search?igu=1&q=" + encodeURIComponent(text);
   return { url, isSearch: true, label: text };
 }
 
@@ -6873,7 +6894,11 @@ function loadBrowserFrame(url, options = {}) {
   const helper = browserHelp();
   if (helper) helper.classList.remove("show");
   clearTimeout(browserBlockedTimer);
-  frame.src = url;
+  // v89 fix: srcdoc from the browser home overrides src in some browsers, so remove it first.
+  frame.removeAttribute("srcdoc");
+  frame.srcdoc = "";
+  frame.src = "about:blank";
+  setTimeout(() => { frame.src = url; }, 30);
   const kind = options.isSearch ? "Search opened in the iframe" : "Opening in iframe";
   setBrowserStatus(kind + ": " + (options.label || url), url);
   browserBlockedTimer = setTimeout(() => {
@@ -7003,10 +7028,30 @@ async function refreshTradeRequests(){
 }
 async function answerTrade(id,status){ const r=await getSupabaseClient().rpc('answer_icon_trade_v83',{p_trade_id:id,p_status:status}); if(r.error) alert(r.error.message); await refreshTradeRequests(); await refreshIcons(); }
 async function refreshAdminPanel(){ const panel=document.getElementById('accountAdminPanel'); if(panel) panel.classList.toggle('hidden', !blankSpaceIsAdmin); document.getElementById('accountAdminMovedNote')?.classList.toggle('hidden', !blankSpaceIsAdmin); document.getElementById('adminPanelTab')?.classList.toggle('hidden', !blankSpaceIsAdmin); }
-async function adminSearchUsers(){ const q=(document.getElementById('adminUserSearch')?.value||'').trim(); const box=document.getElementById('adminUserResults'); if(!box)return; const r=await getSupabaseClient().from('profiles').select('id,username,points,equipped_icon').ilike('username', `%${q}%`).limit(25); if(r.error){box.innerHTML=escapeHTML(r.error.message);return;} box.innerHTML=(r.data||[]).map(u=>`<div class="admin-user-row"><span>@${escapeHTML(u.username)} ${escapeHTML(u.equipped_icon||'')} • ${u.points||0} pts</span><button class="mini-btn" onclick="navigator.clipboard.writeText('${u.id}')">Copy ID</button></div>`).join('')||'<div class="empty-state">No users found.</div>'; }
+async function adminSearchUsers(){ const q=(document.getElementById('adminUserSearch')?.value||'').trim(); const box=document.getElementById('adminUserResults'); if(!box)return; const r=await getSupabaseClient().from('profiles').select('id,username,points,equipped_icon,rank,is_banned,chat_muted_until').ilike('username', `%${q}%`).limit(25); if(r.error){box.innerHTML=escapeHTML(r.error.message);return;} box.innerHTML=(r.data||[]).map(u=>`<div class="admin-user-row"><span>@${escapeHTML(u.username)} ${escapeHTML(u.equipped_icon||'')} ${rankBadgeHTML(u)} • ${u.points||0} pts${u.is_banned?' • banned':''}${u.chat_muted_until&&new Date(u.chat_muted_until)>new Date()?' • muted':''}</span><button class="mini-btn" onclick="navigator.clipboard.writeText('${u.id}')">Copy ID</button></div>`).join('')||'<div class="empty-state">No users found.</div>'; }
 async function adminChangeUsername(){ const r=await getSupabaseClient().rpc('admin_change_username_v83',{p_old_username:document.getElementById('adminTargetUsername').value,p_new_username:document.getElementById('adminNewUsername').value}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Username changed.','good'); }
 async function adminDeleteUser(){ const name=document.getElementById('adminDeleteUsername').value; if(!confirm('Delete account '+name+'?')) return; const r=await getSupabaseClient().rpc('admin_delete_user_by_username_v83',{p_username:name}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Account deleted.','good'); }
 async function adminAdjustPoints(){ const r=await getSupabaseClient().rpc('admin_adjust_points_v83',{p_username:document.getElementById('adminPointsUsername').value,p_points:parseInt(document.getElementById('adminPointsAmount').value||'0',10),p_reason:document.getElementById('adminPointsReason').value}); if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Points updated.','good'); refreshLeaderboard();} }
+
+async function adminSetRank(){
+  const r=await getSupabaseClient().rpc('admin_set_rank_v89',{p_username:document.getElementById('adminRankUsername').value,p_rank:document.getElementById('adminRankSelect').value,p_reason:document.getElementById('adminRankReason').value});
+  if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Rank updated.','good'); refreshLeaderboard(); adminSearchUsers();}
+}
+async function adminModerateUser(){
+  const action=document.getElementById('adminModAction').value;
+  const username=document.getElementById('adminModUsername').value;
+  const reason=document.getElementById('adminModReason').value;
+  if(!username) return alert('Type a username.');
+  if(['ban_chat','clear_messages','reset_achievements_keep_points'].includes(action) && !confirm('Apply '+action+' to '+username+'?')) return;
+  const r=await getSupabaseClient().rpc('admin_moderate_user_v89',{p_username:username,p_action:action,p_reason:reason});
+  if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Moderation action applied.','good'); adminLoadActions(); refreshLeaderboard();}
+}
+async function adminLoadActions(){
+  const box=document.getElementById('adminActionLog'); if(!box) return;
+  const r=await getSupabaseClient().from('admin_actions_log').select('action,target_username,reason,created_at,admin:profiles!admin_actions_log_admin_id_fkey(username)').order('created_at',{ascending:false}).limit(30);
+  if(r.error){box.innerHTML=`<div class="empty-state">${escapeHTML(r.error.message)}</div>`; return;}
+  box.innerHTML=(r.data||[]).map(a=>`<div class="admin-action-row"><b>${escapeHTML(a.action)}</b> → @${escapeHTML(a.target_username||'unknown')}<br><span>By @${escapeHTML(a.admin?.username||'admin')} • ${escapeHTML(formatDate(a.created_at))}</span>${a.reason?`<br><span>${escapeHTML(a.reason)}</span>`:''}</div>`).join('')||'<div class="empty-state">No admin actions yet.</div>';
+}
 async function adminAddBlockedTerm(){ const term=document.getElementById('adminBlockedTerm').value.trim(); if(!term)return; const r=await getSupabaseClient().from('blocked_terms').insert({term}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Blocked term added.','good'); }
 function adminFun(kind){ const out=document.getElementById('adminFunOutput'); const icons=['🚀','🛸','👑','🐉','🌌','💎','⚡']; if(kind==='confetti'){document.body.insertAdjacentHTML('beforeend','<div class="metric-toast">🎉 Admin confetti!</div>'); setTimeout(()=>document.querySelector('.metric-toast')?.remove(),1500);} if(kind==='toast'){showChatToast('Admin test','This is what a notification looks like.');} if(kind==='icon'&&out){out.textContent='Random icon idea: '+icons[Math.floor(Math.random()*icons.length)];}}
 
@@ -7041,10 +7086,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("deleteAccountBtn")?.addEventListener("click", deleteCurrentAccount);
   document.getElementById("changeUsernameBtn")?.addEventListener("click", changeUsername);
   document.getElementById("upgradePasswordBtn")?.addEventListener("click", upgradePasswordLogin);
-  document.getElementById("closeChatBtn")?.addEventListener("click", closeFriendChat);
+  document.getElementById("closeChatBtn")?.addEventListener("click", async () => { await closeFriendChat(); await closeGroupChat(); document.getElementById("chatPanel")?.classList.add("hidden"); });
   document.getElementById("sendChatBtn")?.addEventListener("click", sendChatMessage);
   document.getElementById("chatInput")?.addEventListener("keydown", e => { if (e.key === "Enter") sendChatMessage(); });
+  document.getElementById("groupChatMembersInput")?.addEventListener("keydown", e => { if (e.key === "Enter") createGroupChat(); });
+  document.getElementById("groupAddMembersInput")?.addEventListener("keydown", e => { if (e.key === "Enter") addGroupMembers(); });
   document.getElementById("refreshChatFriendsBtn")?.addEventListener("click", refreshChatFriends);
+  document.getElementById("createGroupChatBtn")?.addEventListener("click", createGroupChat);
+  document.getElementById("refreshGroupChatsBtn")?.addEventListener("click", refreshGroupChats);
+  document.getElementById("groupAddMembersBtn")?.addEventListener("click", addGroupMembers);
+  document.getElementById("groupLeaveBtn")?.addEventListener("click", leaveGroupChat);
+  document.getElementById("groupDeleteBtn")?.addEventListener("click", deleteGroupChat);
   document.getElementById("gameChatFab")?.addEventListener("click", toggleGameQuickChat);
   document.getElementById("gameQuickChatClose")?.addEventListener("click", () => document.getElementById("gameQuickChatPanel")?.classList.add("hidden"));
   document.getElementById("gameQuickSendBtn")?.addEventListener("click", sendQuickChatMessage);
@@ -7064,6 +7116,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminChangeUsernameBtn")?.addEventListener("click", adminChangeUsername);
   document.getElementById("adminDeleteUserBtn")?.addEventListener("click", adminDeleteUser);
   document.getElementById("adminAdjustPointsBtn")?.addEventListener("click", adminAdjustPoints);
+  document.getElementById("adminSetRankBtn")?.addEventListener("click", adminSetRank);
+  document.getElementById("adminModerateBtn")?.addEventListener("click", adminModerateUser);
+  document.getElementById("adminLoadActionsBtn")?.addEventListener("click", adminLoadActions);
   document.getElementById("adminAddBlockedTermBtn")?.addEventListener("click", adminAddBlockedTerm);
   document.getElementById("adminReloadSchemaBtn")?.addEventListener("click", async () => { await loadProfile(); await refreshAdminPanel(); });
   document.getElementById("adminConfettiBtn")?.addEventListener("click", () => adminFun('confetti'));
@@ -7071,7 +7126,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminRandomIconBtn")?.addEventListener("click", () => adminFun('icon'));
   document.getElementById("adminAchievementCheckBtn")?.addEventListener("click", checkAchievementSystem);
   document.getElementById("adminAchievementMetricBtn")?.addEventListener("click", adminRecordCustomAchievementMetric);
-  document.getElementById("achievementSubmitBtn")?.addEventListener("click", submitAchievementMetricFromOverlay);
 
   startChatNotifications();
   document.getElementById("sendFriendRequestBtn")?.addEventListener("click", sendFriendRequest);

@@ -1,0 +1,4 @@
+Blank Space v88 does not need Supabase SQL.
+
+This update only removes the front-end game-player Achievement Tester UI from index.html.
+There are no new tables, policies, triggers, or functions to run in Supabase.
