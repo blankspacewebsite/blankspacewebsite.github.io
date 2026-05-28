@@ -12,6 +12,7 @@
 <!-- Blank Space v75: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
 <!-- Blank Space v74: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
 <!-- Blank Space v73: added Supabase username accounts and on-site suggestions database -->
+<!-- Blank Space v85: achievement reliability fix, manual score submit fallback, and corrected Supabase achievement SQL -->
 <!-- Blank Space v84: admin-only main Admin Panel tab, achievement debug/testing, detector patch, and stable achievement schema -->
 <!-- Blank Space v82: added Chess-AI, Stick Merge, deeper achievements, Chat tab, game quick chat, and browser polish -->
 <!-- Blank Space v81: added achievements, equipped icons, Google Doodle Baseball, suggestion filters, and thumbnail fixes -->
@@ -254,6 +255,17 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
+
+
+/* v85 achievement reliability panel */
+.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
+.achievement-submit-panel.hidden{display:none!important}
+.achievement-submit-panel h3{margin:0;font-size:15px}
+.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
+.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
+.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
+.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
+@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
@@ -749,6 +761,16 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <div id="gameQuickFriends" class="quick-friends"></div>
         <div id="gameQuickMessages" class="quick-messages"><div class="empty-state">Choose a friend.</div></div>
         <div class="quick-compose"><label class="mini-btn image-btn" for="gameQuickImageInput">📷</label><input id="gameQuickImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><input id="gameQuickInput" placeholder="Message..." maxlength="500" autocomplete="off" /><button class="mini-btn primary" id="gameQuickSendBtn">Send</button></div>
+      </div>
+      <div id="achievementSubmitPanel" class="achievement-submit-panel hidden">
+        <h3>Achievement Score Submit</h3>
+        <p>Automatic tracking still tries to detect scores. If a game hides the score in canvas/WebGL, submit your score or win here so achievements can unlock.</p>
+        <div class="achievement-submit-row">
+          <select id="achievementSubmitMetric"></select>
+          <input id="achievementSubmitValue" type="number" min="0" step="1" placeholder="value" />
+          <button class="mini-btn primary" id="achievementSubmitBtn">Submit</button>
+        </div>
+        <div id="achievementSubmitStatus" class="achievement-submit-status"></div>
       </div>
     </div>
   </div>
@@ -6060,6 +6082,7 @@ async function awardAchievement(achievement) {
     setMessage("achievementsStatus", `Achievement unlocked: ${achievement.icon} ${achievement.title}`, "good");
     return true;
   }
+  addAchievementDebug(`Already earned or no insert: ${achievement.id}`);
   return false;
 }
 
@@ -6092,7 +6115,12 @@ async function recordGameProgress(game, openEvent = false, seconds = 0) {
 async function recordGameMetric(gameTitle, metric, value = 1, mode = "max") {
   try {
     await loadExistingSession();
-    if (!blankSpaceProfile || !blankSpaceUser || !gameTitle || !metric) return;
+    if (!blankSpaceProfile || !blankSpaceUser) {
+      addAchievementDebug("Metric ignored: not signed in.");
+      setAchievementSubmitStatus("Sign in first.", true);
+      return { ok:false, error:"not signed in" };
+    }
+    if (!gameTitle || !metric) return { ok:false, error:"missing game or metric" };
     const safeMetric = String(metric).replace(/[^a-z0-9_]/gi, "").toLowerCase();
     const numericValue = Math.max(0, Number(value || 0));
     addAchievementDebug(`Metric received: ${gameTitle} ${safeMetric}=${numericValue} (${mode || "max"})`);
@@ -6100,19 +6128,34 @@ async function recordGameMetric(gameTitle, metric, value = 1, mode = "max") {
     if (result.error) throw result.error;
     const stat = Array.isArray(result.data) ? result.data[0] : result.data;
     const game = GAMES.find(g => g.title === gameTitle) || { title: gameTitle, verified:false };
-    await evaluateAchievementsForGame(game, stat || {});
+    const unlocked = await evaluateAchievementsForGame(game, stat || {});
+    addAchievementDebug(`Metric saved. ${unlocked || 0} new achievement(s).`);
+    if (unlocked) setAchievementSubmitStatus(`Saved. ${unlocked} new achievement${unlocked === 1 ? "" : "s"} unlocked!`, false);
+    else setAchievementSubmitStatus("Saved. No new achievement reached yet.", false);
+    return { ok:true, stat, unlocked:unlocked || 0 };
   } catch (err) {
+    const message = err.message || String(err);
+    addAchievementDebug(`Metric error: ${message}`);
+    setAchievementSubmitStatus(message, true);
+    setMessage("achievementsStatus", message, "error");
     console.warn("Game metric not recorded", err);
+    return { ok:false, error:message };
   }
 }
 
 async function evaluateAchievementsForGame(game, stat) {
   await evaluateAggregateAchievements(game);
-  for (const achievement of ACHIEVEMENTS) {
-    if (!achievement.game || achievement.game !== game.title) continue;
+  let unlocked = 0;
+  const eligible = ACHIEVEMENTS.filter(a => a.game && a.game === game.title);
+  for (const achievement of eligible) {
     const value = getStatValue(stat, achievement.stat || "play_count");
-    if (value >= Number(achievement.target || 1)) await awardAchievement(achievement);
+    if (value >= Number(achievement.target || 1)) {
+      const didUnlock = await awardAchievement(achievement);
+      if (didUnlock) unlocked++;
+    }
   }
+  if (!eligible.length) addAchievementDebug(`No achievement cards match game title: ${game.title}`);
+  return unlocked;
 }
 
 async function evaluateAggregateAchievements(game) {
@@ -6133,6 +6176,83 @@ function handleGameProgressMessage(event) {
 }
 window.addEventListener("message", handleGameProgressMessage);
 
+
+function metricOptionsForGame(gameTitle){
+  const title = String(gameTitle || "");
+  const base = [{value:"best_score", label:"Best score", mode:"max", placeholder:"score"}];
+  if (title === "A Small World Cup") return [
+    {value:"goals", label:"Goals scored", mode:"add", placeholder:"goals this game"},
+    {value:"wins", label:"World Cup wins", mode:"add", placeholder:"wins"},
+    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+  ];
+  if (title === "Basket Random") return [
+    {value:"best_score", label:"Score", mode:"max", placeholder:"score"},
+    {value:"wins", label:"Wins", mode:"add", placeholder:"wins"}
+  ];
+  if (title === "Tiny Fishing") return [
+    {value:"fish_caught", label:"Fish caught", mode:"add", placeholder:"fish"},
+    {value:"money_earned", label:"Money / best cash", mode:"max", placeholder:"money"},
+    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+  ];
+  if (title === "Chess-AI") return [
+    {value:"checkmates", label:"Checkmates", mode:"add", placeholder:"checkmates"},
+    {value:"checks", label:"Checks", mode:"add", placeholder:"checks"},
+    {value:"wins", label:"Wins", mode:"add", placeholder:"wins"}
+  ];
+  if (title === "Stick Merge") return [
+    {value:"merges", label:"Merges", mode:"add", placeholder:"merges"},
+    {value:"best_level", label:"Best level", mode:"max", placeholder:"level"},
+    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+  ];
+  if (title === "Drive Mad" || title === "Run 3") return [
+    {value:"best_level", label:"Best level reached", mode:"max", placeholder:"level"},
+    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+  ];
+  if (title === "Google Doodle Baseball") return [
+    {value:"hits", label:"Hits", mode:"add", placeholder:"hits"},
+    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+  ];
+  return base;
+}
+
+function setAchievementSubmitStatus(text, isError=false){
+  const el = document.getElementById("achievementSubmitStatus");
+  if (!el) return;
+  el.textContent = text || "";
+  el.style.color = isError ? "#fca5a5" : "#a7f3d0";
+}
+
+function updateAchievementSubmitPanel(game){
+  const panel = document.getElementById("achievementSubmitPanel");
+  const select = document.getElementById("achievementSubmitMetric");
+  const input = document.getElementById("achievementSubmitValue");
+  if (!panel || !select || !input) return;
+  const hasAchievements = !!game && ACHIEVEMENTS.some(a => a.game === game.title);
+  panel.classList.toggle("hidden", !hasAchievements);
+  if (!hasAchievements) return;
+  const opts = metricOptionsForGame(game.title);
+  select.innerHTML = opts.map(o => `<option value="${escapeHTML(o.value)}" data-mode="${escapeHTML(o.mode)}" data-placeholder="${escapeHTML(o.placeholder)}">${escapeHTML(o.label)}</option>`).join("");
+  input.value = "";
+  input.placeholder = opts[0]?.placeholder || "value";
+  setAchievementSubmitStatus("Enter your score/win/level after playing.");
+  select.onchange = () => {
+    const chosen = select.selectedOptions?.[0];
+    input.placeholder = chosen?.dataset?.placeholder || "value";
+  };
+}
+
+async function submitAchievementMetricFromOverlay(){
+  if (!currentGame) return;
+  const select = document.getElementById("achievementSubmitMetric");
+  const input = document.getElementById("achievementSubmitValue");
+  const metric = select?.value || "best_score";
+  const option = select?.selectedOptions?.[0];
+  const mode = option?.dataset?.mode || (metric === "best_score" || metric === "best_level" || metric === "money_earned" ? "max" : "add");
+  const value = Number(input?.value || 0);
+  if (!value || value < 0) return setAchievementSubmitStatus("Type a number first.", true);
+  setAchievementSubmitStatus("Saving achievement progress...");
+  await recordGameMetric(currentGame.title, metric, value, mode);
+}
 
 function setupGameAchievementDetector(game){
   const frame=document.getElementById("gameFrame");
@@ -6290,7 +6410,7 @@ async function clearEquippedIcon() {
 }
 
 async function initAchievementsPage() {
-  if (achievementStarted) return;
+  // v85: always refresh. The old version could get stuck if you opened Achievements before signing in.
   achievementStarted = true;
   try {
     getSupabaseClient();
@@ -6380,6 +6500,17 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
+
+/* v85 achievement reliability panel */
+.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
+.achievement-submit-panel.hidden{display:none!important}
+.achievement-submit-panel h3{margin:0;font-size:15px}
+.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
+.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
+.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
+.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
+@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
+
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
 <script>
@@ -6434,6 +6565,17 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
+
+/* v85 achievement reliability panel */
+.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
+.achievement-submit-panel.hidden{display:none!important}
+.achievement-submit-panel h3{margin:0;font-size:15px}
+.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
+.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
+.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
+.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
+@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
+
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style>
 <script>
@@ -6479,6 +6621,7 @@ function playGame(encodedTitle) {
   recordGameProgress(game, true, 0);
   startGameTimer(game);
   prepareGameQuickChat();
+  updateAchievementSubmitPanel(game);
   document.getElementById("playerTitle").textContent = game.title;
   document.getElementById("playerOverlay").style.display = "block";
   const frame = document.getElementById("gameFrame");
@@ -6526,6 +6669,7 @@ function closeGame() {
   currentPlayTimer = null;
   currentTimedGameTitle = "";
   hideGameQuickChat();
+  document.getElementById("achievementSubmitPanel")?.classList.add("hidden");
   document.getElementById("playerOverlay").style.display = "none";
   const frame = document.getElementById("gameFrame");
   frame.removeAttribute("srcdoc");
@@ -6554,6 +6698,17 @@ function showTab(tabId) {
 const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:650;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}
 /* v83 suggestions, admin, icons, trades, image chat */
 .suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
+
+
+/* v85 achievement reliability panel */
+.achievement-submit-panel{position:absolute;left:18px;bottom:18px;z-index:8;width:min(430px,calc(100vw - 52px));border:1px solid #334155;border-radius:20px;background:rgba(8,10,16,.94);box-shadow:0 18px 54px rgba(0,0,0,.58);padding:12px;display:grid;gap:8px}
+.achievement-submit-panel.hidden{display:none!important}
+.achievement-submit-panel h3{margin:0;font-size:15px}
+.achievement-submit-panel p{margin:0;color:#cbd5e1;font-size:12px;line-height:1.35}
+.achievement-submit-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:8px}
+.achievement-submit-row select,.achievement-submit-row input{width:100%;padding:10px;border-radius:12px;border:1px solid #303846;background:#0b0e14;color:#fff}
+.achievement-submit-status{font-size:12px;color:#a7f3d0;font-weight:900;min-height:16px}
+@media(max-width:700px){.achievement-submit-panel{left:10px;right:10px;bottom:10px;width:auto}.achievement-submit-row{grid-template-columns:1fr}.game-chat-fab{bottom:142px}}
 
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
 </style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block being embedded inside other websites, so those may still need the Open New Tab button.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
@@ -6805,6 +6960,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminRandomIconBtn")?.addEventListener("click", () => adminFun('icon'));
   document.getElementById("adminAchievementCheckBtn")?.addEventListener("click", checkAchievementSystem);
   document.getElementById("adminAchievementMetricBtn")?.addEventListener("click", adminRecordCustomAchievementMetric);
+  document.getElementById("achievementSubmitBtn")?.addEventListener("click", submitAchievementMetricFromOverlay);
 
   startChatNotifications();
   document.getElementById("sendFriendRequestBtn")?.addEventListener("click", sendFriendRequest);

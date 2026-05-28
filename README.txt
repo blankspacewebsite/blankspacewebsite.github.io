@@ -1,3 +1,15 @@
+Blank Space v85
+
+This version fixes the achievement system more directly.
+
+New in v85:
+- Corrected Supabase achievement SQL, including the broken equip_achievement_icon function.
+- Achievements page refreshes every time you open it, even if you opened it before signing in.
+- Added an in-game Achievement Score Submit panel so achievements can work even when a canvas/WebGL game hides its score from the website.
+- The automatic detector still tries to read game data, but the fallback panel is the reliable method for games like Slope and other compiled games.
+
+Run supabase_v85_update.sql before publishing the website files.
+
 Blank Space v82
 
 Changes:
