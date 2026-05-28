@@ -12,6 +12,7 @@
 <!-- Blank Space v75: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
 <!-- Blank Space v74: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
 <!-- Blank Space v73: added Supabase username accounts and on-site suggestions database -->
+<!-- Blank Space v87: disables unsafe automatic achievement detectors, fixes manual-only unlocks, resets Admin achievement stats, and keeps achievements points-only -->
 <!-- Blank Space v86: fixed achievement thresholds/progress, reset Admin achievements, leaderboard admin visibility, and hideable score submitter -->
 <!-- Blank Space v85: achievement reliability fix, manual score submit fallback, and corrected Supabase achievement SQL -->
 <!-- Blank Space v84: admin-only main Admin Panel tab, achievement debug/testing, detector patch, and stable achievement schema -->
@@ -779,7 +780,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
       <button id="achievementSubmitMiniBtn" class="achievement-submit-mini hidden" onclick="showAchievementSubmitPanel()">🏆 Achievement Tester</button>
       <div id="achievementSubmitPanel" class="achievement-submit-panel hidden">
         <div class="achievement-submit-head"><h3>Achievement Score Submit</h3><button class="mini-btn" onclick="hideAchievementSubmitPanel()">Hide</button></div>
-        <p>Submit the score/win/level you actually got. The tracker now only unlocks achievements at or below that real progress.</p>
+        <p>Submit the score/win/level you actually got after playing. Automatic achievement scanning is turned off so old detector bugs cannot unlock extra achievements.</p>
         <div class="achievement-submit-row">
           <select id="achievementSubmitMetric"></select>
           <input id="achievementSubmitValue" type="number" min="0" step="1" placeholder="value" />
@@ -6284,66 +6285,12 @@ async function submitAchievementMetricFromOverlay(){
 }
 
 function setupGameAchievementDetector(game){
-  const frame=document.getElementById("gameFrame");
-  if(!frame || !game) return;
-  addAchievementDebug(`Loaded game frame: ${game.title}`);
-  setTimeout(()=>{
-    try{
-      const win=frame.contentWindow;
-      const doc=win?.document;
-      if(!win || !doc || !doc.body){ addAchievementDebug(`Detector unavailable for ${game.title}: no same-origin document`); return; }
-      if(win.__blankSpaceDetectorInstalled){ addAchievementDebug(`Detector already active for ${game.title}`); return; }
-      win.__blankSpaceDetectorInstalled=true;
-      addAchievementDebug(`Detector active for ${game.title}`);
-      const gameTitle=game.title;
-      const sent={};
-      function post(metric,value,mode="max"){
-        value=Number(value)||0; if(value<=0) return;
-        const key=metric+":"+value+":"+mode;
-        if(sent[key]) return; sent[key]=true;
-        window.postMessage({type:"blank-space-achievement", game:gameTitle, metric, value, mode}, "*");
-      }
-      function maxNumberFromText(text){
-        const nums=(String(text||"").match(/\b\d{1,5}\b/g)||[]).map(Number).filter(n=>Number.isFinite(n));
-        if(!nums.length) return 0;
-        return Math.max(...nums.filter(n=>n>=0 && n<10000));
-      }
-      function scan(){
-        let text="";
-        try{text=(doc.body?.innerText||doc.body?.textContent||"").slice(0,25000);}catch(e){}
-        let storage="";
-        try{for(let i=0;i<win.localStorage.length;i++){const k=win.localStorage.key(i); storage += " "+k+" "+win.localStorage.getItem(k);}}catch(e){}
-        const all=(text+" "+storage).toLowerCase();
-        const max=maxNumberFromText(text+" "+storage);
-        if(gameTitle==="Google Snake" && max>0) post("best_score", max, "max");
-        if(gameTitle==="Slope" && max>0) post("best_score", max, "max");
-        if(gameTitle==="Basket Random" && max>0) post("best_score", max, "max");
-        if(gameTitle==="Tiny Fishing"){
-          if(max>0) post("money_earned", max, "max");
-          if(/fish|caught|catch/.test(all)) post("fish_caught", 1, "add");
-        }
-        if(gameTitle==="A Small World Cup"){
-          if(/champion|world cup|winner|you won|cup won/.test(all)) post("wins", 1, "add");
-          if(max>0) post("goals", Math.min(max,25), "add");
-        }
-        if(gameTitle==="Chess-AI"){
-          if(/checkmate|mate/.test(all)) post("checkmates", 1, "add");
-          else if(/check/.test(all)) post("checks", 1, "add");
-        }
-        if(gameTitle==="Stick Merge"){
-          if(/merge|merged/.test(all)) post("merges", 1, "add");
-          if(/level/.test(all) && max>0) post("best_level", max, "max");
-          if(max>0) post("best_score", max, "max");
-        }
-      }
-      scan();
-      win.__blankSpaceDetectorTimer=setInterval(scan,2000);
-      const observer=new MutationObserver(()=>scan());
-      observer.observe(doc.body,{childList:true,subtree:true,characterData:true});
-      win.__blankSpaceDetectorObserver=observer;
-    }catch(err){ addAchievementDebug(`Detector blocked for ${game.title}: ${err.message || err}`); }
-  },900);
+  // v87: Automatic DOM/canvas scanning was disabled because it could read unrelated numbers
+  // from game files/UI and unlock every achievement for a game. Achievements now use
+  // the manual score submit panel and explicit postMessage hooks only.
+  if (game?.title) addAchievementDebug(`Manual achievement mode active for ${game.title}. Use Achievement Score Submit after playing.`);
 }
+
 
 function startGameTimer(game) {
   if (currentPlayTimer) clearInterval(currentPlayTimer);
