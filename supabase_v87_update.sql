@@ -1,0 +1,3 @@
+-- Blank Space v87 UI/source-selector update
+-- No new Supabase database changes are required for the Update tab or header source changer.
+-- If you have not already applied the v87 strict achievement patch, paste supabase_v87_strict_update.sql instead/first.

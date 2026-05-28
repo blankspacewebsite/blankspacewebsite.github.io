@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
+<!-- Blank Space v87 full update: adds the Update tab and moves multi-source game switching into the player header -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -284,6 +285,17 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 
 
 .debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
+
+/* v87 player source picker and update page */
+.playerBtns{flex-wrap:wrap;justify-content:flex-end}
+.source-select{width:auto;min-width:190px;max-width:260px;text-align:left;padding:9px 12px;border-radius:999px;border:1px solid #333842;background:#080a0f;color:#fff;font-size:13px;font-weight:900}
+.update-panel{max-width:900px;margin:18px auto;text-align:left}
+.update-version-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.update-version-badge{display:inline-flex;align-items:center;border:1px solid #fff;background:#fff;color:#000;border-radius:999px;padding:8px 12px;font-weight:1000}
+.update-list{display:grid;gap:10px;margin:12px 0 0;padding-left:22px;color:#e5e7eb;line-height:1.5}
+.update-list li::marker{color:#a7f3d0}
+.update-note{border:1px dashed #3a4050;background:#090a0e;border-radius:16px;padding:12px;margin-top:14px;color:#cbd5e1;line-height:1.45}
+@media(max-width:720px){.source-select{order:-1;flex-basis:100%;max-width:none;width:100%}.playerBtns{width:100%}}
 </style>
 </head>
 <body>
@@ -313,6 +325,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 <header>
   <nav class="topbar">
     <button class="tab active" data-tab="home">Home</button>
+    <button class="tab" data-tab="update">Update</button>
     <button class="tab" data-tab="games">Games</button>
     <button class="tab" data-tab="browser">Browser</button>
     <button class="tab" data-tab="links">Links</button>
@@ -337,6 +350,27 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
       <div class="home-actions"></div>
     </div>
   </section>
+
+  <section id="update">
+    <h1 class="page-title">Update</h1>
+    <p class="tagline">Latest Blank Space version notes.</p>
+    <div class="panel update-panel">
+      <div class="update-version-row">
+        <span class="update-version-badge">Blank Space v87</span>
+        <span class="small-note">Latest full update</span>
+      </div>
+      <h2>What changed</h2>
+      <ul class="update-list">
+        <li>Added this Update tab so you can see the newest Blank Space version and the latest changes.</li>
+        <li>Added a header-based source changer for multi-source games, so source switching stays beside Fullscreen, Reload, Open Game, and Close instead of covering the game screen.</li>
+        <li>Added multiple selectable sources for LongCat and Stick Rush.</li>
+        <li>Kept the v87 strict achievement patch in place, including manual achievement submissions and safer unlock behavior.</li>
+        <li>No new chess changes were added in this update.</li>
+      </ul>
+      <div class="update-note">Supabase note: this UI update does not require new database tables. If you have not already pasted the strict achievement patch SQL, use <b>supabase_v87_strict_update.sql</b> from this ZIP.</div>
+    </div>
+  </section>
+
 
   <section id="games">
     <h1 class="page-title">Blank Games</h1>
@@ -762,6 +796,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <div class="playerTop">
       <h2 id="playerTitle">Game</h2>
       <div class="playerBtns">
+        <select id="gameSourceSelect" class="source-select hidden" aria-label="Choose game source"></select>
         <button class="btn dark" id="fullscreenBtn">Fullscreen</button>
         <button class="btn dark" id="reloadBtn">Reload</button>
         <button class="btn dark" id="openGameExternalBtn">Open Game</button>
@@ -822,6 +857,11 @@ const GAMES = [
     "title": "LongCat",
     "genre": "Puzzle",
     "source": "https://bulletbros.io/game/longcat/",
+    "sources": [
+      { "label": "BulletBros", "url": "https://bulletbros.io/game/longcat/" },
+      { "label": "Poki", "url": "https://poki.com/en/g/longcat" },
+      { "label": "RiveGames", "url": "https://rivegames.com/game/longcat" }
+    ],
     "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/c318eae8480b4ba85da0b1d15a8fe7a2/longcat.png",
     "featured": true,
     "reliable": true,
@@ -831,6 +871,11 @@ const GAMES = [
     "title": "Stick Rush",
     "genre": "Action",
     "source": "https://poki.com/en/g/stick-rush",
+    "sources": [
+      { "label": "Poki", "url": "https://poki.com/en/g/stick-rush" },
+      { "label": "Poki Mirror", "url": "https://poki.us.org/stick-rush/" },
+      { "label": "MinigamesVille", "url": "https://minigamesville.com/game/stick-rush/" }
+    ],
     "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/3b284c96933c9a0e6c448e56c018a723/stick-rush.png",
     "featured": true,
     "reliable": true,
@@ -1817,6 +1862,7 @@ const GAME_LINKS = [
 ];
 
 let currentGame = null;
+let currentGameSource = "";
 
 const SITE_UNLOCK_CODE = "1213";
 let enteredCode = "";
@@ -6623,19 +6669,32 @@ try{
 </html>`;
 }
 
-function playGame(encodedTitle) {
-  const title = decodeURIComponent(encodedTitle);
-  const game = GAMES.find(g => g.title === title);
-  if (!game) return;
-  currentGame = game;
-  recordGameProgress(game, true, 0);
-  startGameTimer(game);
-  prepareGameQuickChat();
-  updateAchievementSubmitPanel(game);
-  document.getElementById("playerTitle").textContent = game.title;
-  document.getElementById("playerOverlay").style.display = "block";
+function getGameSourceOptions(game) {
+  const options = Array.isArray(game.sources) ? game.sources : [];
+  const normalized = options.map((option, index) => {
+    if (typeof option === "string") return { label: `Source ${index + 1}`, url: option };
+    return { label: option.label || `Source ${index + 1}`, url: option.url || option.source || "" };
+  }).filter(option => option.url);
+  if (game.source && !normalized.some(option => option.url === game.source)) {
+    normalized.unshift({ label: "Main Source", url: game.source });
+  }
+  return normalized;
+}
+
+function updateGameSourceSelect(game, selectedUrl) {
+  const select = document.getElementById("gameSourceSelect");
+  if (!select) return;
+  const options = getGameSourceOptions(game);
+  select.innerHTML = options.map(option => `<option value="${escapeHTML(option.url)}">${escapeHTML(option.label)}</option>`).join("");
+  const nextValue = selectedUrl || game.source || (options[0] && options[0].url) || "";
+  if (nextValue) select.value = nextValue;
+  select.classList.toggle("hidden", options.length < 2 || !!game.inline);
+}
+
+function loadGameIntoFrame(game, sourceUrl) {
   const frame = document.getElementById("gameFrame");
   const loading = document.getElementById("loadingMsg");
+  currentGameSource = sourceUrl || game.source || "";
   loading.style.display = "block";
   loading.textContent = "Loading...";
   frame.onload = () => { loading.style.display = "none"; setupGameAchievementDetector(game); };
@@ -6650,20 +6709,44 @@ function playGame(encodedTitle) {
   } else {
     frame.removeAttribute("srcdoc");
     frame.setAttribute("allow", "fullscreen; autoplay; gamepad; clipboard-read; clipboard-write");
-    frame.src = game.source;
+    frame.src = currentGameSource;
   }
   setTimeout(() => frame.focus(), 500);
   setTimeout(() => {
     if (currentGame && currentGame.title === game.title && loading.style.display !== "none") {
-      loading.textContent = "Still loading. Try Reload once, or choose another game.";
+      loading.textContent = "Still loading. Try Reload once, switch sources, or choose another game.";
     }
   }, 9000);
+}
+
+function changeGameSource() {
+  if (!currentGame) return;
+  const select = document.getElementById("gameSourceSelect");
+  const selectedUrl = select?.value || currentGame.source;
+  loadGameIntoFrame(currentGame, selectedUrl);
+}
+
+function playGame(encodedTitle, preferredSource) {
+  const title = decodeURIComponent(encodedTitle);
+  const game = GAMES.find(g => g.title === title);
+  if (!game) return;
+  currentGame = game;
+  const chosenSource = preferredSource || game.source;
+  recordGameProgress(game, true, 0);
+  startGameTimer(game);
+  prepareGameQuickChat();
+  updateAchievementSubmitPanel(game);
+  document.getElementById("playerTitle").textContent = game.title;
+  document.getElementById("playerOverlay").style.display = "block";
+  updateGameSourceSelect(game, chosenSource);
+  loadGameIntoFrame(game, chosenSource);
 }
 
 
 function openCurrentGameExternal() {
   if (!currentGame) return;
-  const target = currentGame.external || currentGame.source;
+  const selectedSource = document.getElementById("gameSourceSelect")?.value || currentGameSource || currentGame.source;
+  const target = currentGame.external || selectedSource;
   if (target && !target.startsWith("inline:")) {
     window.open(target, "_blank", "noopener,noreferrer");
   }
@@ -6671,7 +6754,8 @@ function openCurrentGameExternal() {
 
 function reloadGame() {
   if (!currentGame) return;
-  playGame(encodeURIComponent(currentGame.title));
+  const selectedSource = document.getElementById("gameSourceSelect")?.value || currentGameSource || currentGame.source;
+  playGame(encodeURIComponent(currentGame.title), selectedSource);
 }
 
 function closeGame() {
@@ -6685,7 +6769,9 @@ function closeGame() {
   const frame = document.getElementById("gameFrame");
   frame.removeAttribute("srcdoc");
   frame.src = "about:blank";
+  document.getElementById("gameSourceSelect")?.classList.add("hidden");
   currentGame = null;
+  currentGameSource = "";
 }
 
 function fullscreenGame() {
@@ -6930,6 +7016,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("gamesRandomBtn")?.addEventListener("click", playRandomGame);
   document.getElementById("reloadBtn")?.addEventListener("click", reloadGame);
   document.getElementById("openGameExternalBtn")?.addEventListener("click", openCurrentGameExternal);
+  document.getElementById("gameSourceSelect")?.addEventListener("change", changeGameSource);
   document.getElementById("closeBtn")?.addEventListener("click", closeGame);
   document.getElementById("fullscreenBtn")?.addEventListener("click", fullscreenGame);
   document.getElementById("browserGo")?.addEventListener("click", goBrowser);
