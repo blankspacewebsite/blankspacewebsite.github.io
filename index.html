@@ -12,6 +12,7 @@
 <!-- Blank Space v75: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
 <!-- Blank Space v74: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
 <!-- Blank Space v73: added Supabase username accounts and on-site suggestions database -->
+<!-- Blank Space v83: suggestions workflow, 250 achievements, Icons/Trade/Admin Panel, image chat, verified Chess Bot, and game cleanup -->
 <!-- Blank Space v82: added Chess-AI, Stick Merge, deeper achievements, Chat tab, game quick chat, and browser polish -->
 <!-- Blank Space v81: added achievements, equipped icons, Google Doodle Baseball, suggestion filters, and thumbnail fixes -->
 <!-- Blank Space v80: iframe browser searches restored, with fallback for sites that block embedding -->
@@ -250,6 +251,10 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .game-chat-fab{position:absolute;right:18px;bottom:18px;z-index:8;width:58px;height:58px;border-radius:999px;border:1px solid #3b4254;background:rgba(17,24,39,.94);color:#fff;font-size:25px;cursor:pointer;box-shadow:0 18px 50px rgba(0,0,0,.55)}.game-chat-fab:hover{filter:brightness(1.08)}.game-chat-badge{position:absolute;right:-4px;top:-5px;min-width:20px;height:20px;border-radius:999px;background:#ef4444;border:2px solid #050505;font-size:11px;font-weight:1000;display:grid;place-items:center;padding:0 5px}.game-chat-badge.hidden{display:none!important}.game-quick-chat{position:absolute;right:18px;bottom:86px;z-index:9;width:min(390px,calc(100vw - 52px));max-height:min(560px,78vh);display:grid;grid-template-rows:auto auto 1fr auto;border:1px solid #323846;border-radius:22px;background:rgba(8,10,16,.96);box-shadow:0 24px 74px rgba(0,0,0,.68);overflow:hidden}.quick-chat-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid #272b35}.quick-chat-title{font-weight:1000}.quick-friends{display:flex;gap:8px;overflow:auto;padding:10px;border-bottom:1px solid #272b35}.quick-friend-btn{border:1px solid #333842;border-radius:999px;background:#151821;color:#fff;padding:8px 10px;font-weight:900;white-space:nowrap;cursor:pointer}.quick-friend-btn.active{background:#fff;color:#000}.quick-messages{min-height:210px;max-height:310px;overflow:auto;padding:10px;display:grid;align-content:start;gap:8px}.quick-compose{display:flex;gap:8px;padding:10px;border-top:1px solid #272b35}.quick-compose input{width:100%;text-align:left;padding:10px 12px}.quick-compose .mini-btn{margin:0}.achievement-card.ready{border-color:#facc15;box-shadow:0 0 0 1px rgba(250,204,21,.22)}.achievement-need{background:#111827;border-color:#475569;color:#e5e7eb}.achievement-note{font-size:12px;color:#fcd34d;line-height:1.4;margin-top:8px}.metric-toast{position:fixed;left:18px;bottom:18px;z-index:10040;border:1px solid #334155;background:rgba(15,23,42,.94);color:#fff;border-radius:999px;padding:9px 12px;font-weight:900;box-shadow:0 14px 42px rgba(0,0,0,.55)}
 @media(max-width:850px){.chat-shell{grid-template-columns:1fr}.chat-friends-panel,.chat-main-panel{min-height:auto}.game-quick-chat{left:12px;right:12px;width:auto}.game-chat-fab{right:14px;bottom:14px}}
 
+
+/* v83 suggestions, admin, icons, trades, image chat */
+.suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
+
 </style>
 </head>
 <body>
@@ -284,6 +289,8 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <button class="tab" data-tab="links">Links</button>
     <button class="tab" data-tab="suggestions">Suggestions</button>
     <button class="tab" data-tab="achievements">Achievements</button>
+    <button class="tab" data-tab="icons">Icons</button>
+    <button class="tab" data-tab="trade">Trade</button>
     <button class="tab" data-tab="leaderboard">Leaderboard</button>
     <button class="tab chat-tab" data-tab="chat"><span id="chatTabBadge" class="tab-badge hidden">0</span>Chat</button>
     <button class="tab" data-tab="friends">Friends</button>
@@ -379,12 +386,13 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <div class="suggestions-toolbar">
           <div>
             <h2>Suggestions List</h2>
-            <p class="small-note">Approved suggestions are visible to everyone. Your pending/denied suggestions show in your Account tab after you sign in.</p>
+            <p class="small-note">Approved suggestions are visible to everyone. Admins can move ideas to In the works, add comments, then Award or Deny them.</p>
           </div>
           <div>
             <select id="suggestionFilter">
               <option value="all">All Suggestions</option>
               <option value="approved">Approved</option>
+              <option value="in_works">In the works</option>
               <option value="denied">Denied</option>
               <option value="pending">Pending</option>
             </select>
@@ -397,7 +405,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 
       <div class="panel suggestion-card admin-card hidden" id="adminPanel">
         <h2>Admin Tools</h2>
-        <p class="small-note">Admin controls are enabled. Use the Admin filter to approve, deny, delete, and award points for suggestions.</p>
+        <p class="small-note">Admin controls are enabled. Click Work on it to move a suggestion to In the works, then add a comment and Award or Deny it.</p>
       </div>
     </div>
   </section>
@@ -421,6 +429,42 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         </div>
         <p id="achievementsStatus" class="form-message">Sign in to load achievements.</p>
         <div id="achievementsGrid" class="achievement-grid"></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="icons">
+    <h1 class="page-title">Icons</h1>
+    <p class="tagline">Equip unlocked icons, buy icon packs with points, and collect rarer icons.</p>
+    <div class="achievement-shell">
+      <div class="panel suggestion-card">
+        <div class="suggestions-toolbar"><div><h2>Equipped Icon</h2><p class="small-note">This icon shows next to your username. Points come from achievements and admin awards, not from icons.</p></div><button class="mini-btn" id="refreshIconsBtn">Refresh</button></div>
+        <p id="iconsStatus" class="form-message">Sign in to load icons.</p>
+        <div id="iconsEquippedPicker" class="icon-picker-grid"></div>
+      </div>
+      <div class="panel suggestion-card">
+        <h2>Icon Packs</h2>
+        <p class="small-note">Cheaper packs mostly give common icons. Expensive packs have better odds for rare, epic, legendary, mythic, and godly icons.</p>
+        <div id="packGrid" class="pack-grid"></div>
+      </div>
+      <div class="panel suggestion-card">
+        <h2>Your Icon Collection</h2>
+        <div id="ownedIconsGrid" class="icons-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trade">
+    <h1 class="page-title">Trade</h1>
+    <p class="tagline">Trade icons with friends. You can only offer icons you own.</p>
+    <div class="trade-subtabs"><button class="trade-subtab active" data-trade-view="trade">Trade</button><button class="trade-subtab" data-trade-view="requests">Requests</button></div>
+    <div class="achievement-shell">
+      <div id="tradeViewTrade" class="trade-subview active">
+        <div class="panel suggestion-card"><div class="suggestions-toolbar"><div><h2>Offer a Trade</h2><p class="small-note">Pick a friend, one of your icons, and one of their icons.</p></div><button class="mini-btn" id="refreshTradeBtn">Refresh</button></div><p id="tradeStatus" class="form-message">Sign in to load trades.</p><div id="tradeFriendsList" class="trade-grid"></div></div>
+      </div>
+      <div id="tradeViewRequests" class="trade-subview">
+        <div class="panel suggestion-card"><div class="suggestions-toolbar"><div><h2>Trade Requests</h2><p class="small-note">Accept or deny incoming trades. Your sent trades show here too.</p></div><button class="mini-btn" id="refreshTradeRequestsBtn">Refresh</button></div><p id="tradeRequestsStatus" class="form-message"></p><div id="tradeRequestsList" class="trade-grid"></div></div>
       </div>
     </div>
   </section>
@@ -469,6 +513,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         </div>
         <div id="chatMessages" class="chat-messages"></div>
         <div class="chat-compose">
+          <label class="mini-btn image-btn" for="chatImageInput">📷</label><input id="chatImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
           <input id="chatInput" placeholder="Type a message..." maxlength="500" autocomplete="off" />
           <button class="mini-btn primary" id="sendChatBtn">Send</button>
         </div>
@@ -590,12 +635,6 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
               <button class="mini-btn" id="changeUsernameBtn">Change Username</button>
             </div>
           </div>
-
-          <div class="username-change-box" id="accountIconPickerBox">
-            <h2>Change Equipped Icon</h2>
-            <p class="small-note">Earn achievements to unlock icons, then equip one so it shows next to your name.</p>
-            <div id="accountIconPicker" class="icon-picker-grid"></div>
-          </div>
           <div class="username-change-box hidden" id="passwordUpgradeBox">
             <h2>Add Password Login</h2>
             <p class="small-note">This upgrades an older browser-only account so you can sign in on other devices with this username and password.</p>
@@ -616,6 +655,23 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
           </div>
           <p id="profileMessage" class="form-message"></p>
         </div>
+      </div>
+
+
+      <div class="panel suggestion-card account-tools-bottom hidden" id="accountAdminPanel">
+        <h2 class="bottom-tools-title">Admin Panel</h2>
+        <p class="admin-only-note">Admin only. These tools help manage accounts, points, suggestions, chats, trades, icons, and site safety.</p>
+        <div class="admin-grid">
+          <div class="admin-tile"><h3>User Lookup</h3><input id="adminUserSearch" placeholder="Search username..." maxlength="20"/><button class="mini-btn" id="adminSearchUsersBtn">Search</button><div id="adminUserResults" class="admin-mini-list"></div></div>
+          <div class="admin-tile"><h3>Change Username</h3><input id="adminTargetUsername" placeholder="Current username"/><input id="adminNewUsername" placeholder="New username"/><button class="mini-btn" id="adminChangeUsernameBtn">Change Username</button></div>
+          <div class="admin-tile"><h3>Delete Account</h3><input id="adminDeleteUsername" placeholder="Username to delete"/><button class="mini-btn danger-btn" id="adminDeleteUserBtn">Delete User</button></div>
+          <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
+          <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
+          <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
+          <div class="admin-tile"><h3>Important Admin Tools</h3><ul class="small-note"><li>Change usernames</li><li>Delete accounts</li><li>Give/remove points</li><li>Approve suggestions</li><li>Deny suggestions</li><li>Add comments</li><li>Delete suggestions</li><li>Review pending ideas</li><li>Review in-progress ideas</li><li>Search users</li><li>Check user points</li><li>See equipped icons</li><li>Manage blocked words</li><li>Refresh leaderboard</li><li>Refresh achievements</li><li>Refresh chat</li><li>Refresh trades</li><li>Open game lists</li><li>Open links</li><li>Copy user IDs</li><li>Reload session</li><li>Sign out</li><li>Clear local cache</li><li>Test notification</li><li>Export admin notes</li></ul></div>
+          <div class="admin-tile"><h3>Fun Admin Tools</h3><button class="mini-btn" id="adminConfettiBtn">Confetti Test</button><button class="mini-btn" id="adminToastBtn">Toast Test</button><button class="mini-btn" id="adminRandomIconBtn">Random Icon Idea</button><p id="adminFunOutput" class="form-message"></p><ul class="small-note"><li>Confetti</li><li>Toast</li><li>Random icon</li><li>Motivation line</li><li>Random game pick</li><li>Badge preview</li><li>Leaderboard shoutout</li><li>Theme hint</li><li>Admin quote</li><li>Lucky number</li></ul></div>
+        </div>
+        <p id="adminPanelStatus" class="form-message"></p>
       </div>
 
       <div class="panel suggestion-card my-suggestions-card">
@@ -669,7 +725,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <div class="quick-chat-top"><span class="quick-chat-title" id="quickChatTitle">Quick Chat</span><button class="mini-btn" id="gameQuickChatClose">X</button></div>
         <div id="gameQuickFriends" class="quick-friends"></div>
         <div id="gameQuickMessages" class="quick-messages"><div class="empty-state">Choose a friend.</div></div>
-        <div class="quick-compose"><input id="gameQuickInput" placeholder="Message..." maxlength="500" autocomplete="off" /><button class="mini-btn primary" id="gameQuickSendBtn">Send</button></div>
+        <div class="quick-compose"><label class="mini-btn image-btn" for="gameQuickImageInput">📷</label><input id="gameQuickImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><input id="gameQuickInput" placeholder="Message..." maxlength="500" autocomplete="off" /><button class="mini-btn primary" id="gameQuickSendBtn">Send</button></div>
       </div>
     </div>
   </div>
@@ -690,6 +746,42 @@ const GAMES = [
     "featured": true,
     "reliable": true,
     "verified": true
+  },
+  {
+    "title": "Chess.com",
+    "genre": "Strategy",
+    "source": "https://www.chess.com/play/computer",
+    "image": "https://www.chess.com/bundles/web/images/offline-play/standardboard.1d6f9426.png",
+    "featured": true,
+    "reliable": true,
+    "verified": false
+  },
+  {
+    "title": "LongCat",
+    "genre": "Puzzle",
+    "source": "https://bulletbros.io/game/longcat/",
+    "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/c318eae8480b4ba85da0b1d15a8fe7a2/longcat.png",
+    "featured": true,
+    "reliable": true,
+    "verified": false
+  },
+  {
+    "title": "Stick Rush",
+    "genre": "Action",
+    "source": "https://poki.com/en/g/stick-rush",
+    "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/3b284c96933c9a0e6c448e56c018a723/stick-rush.png",
+    "featured": true,
+    "reliable": true,
+    "verified": false
+  },
+  {
+    "title": "82-0",
+    "genre": "Sports",
+    "source": "https://www.82-0.com/",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 500 500\"%3E%3Crect width=\"500\" height=\"500\" rx=\"60\" fill=\"%230b1020\"/%3E%3Ccircle cx=\"250\" cy=\"250\" r=\"155\" fill=\"%23f97316\"/%3E%3Cpath d=\"M95 250h310M250 95v310M140 145c60 56 60 154 0 210M360 145c-60 56-60 154 0 210\" stroke=\"%230b1020\" stroke-width=\"18\" fill=\"none\"/%3E%3Ctext x=\"250\" y=\"286\" text-anchor=\"middle\" font-family=\"Arial Black,Arial\" font-size=\"82\" fill=\"white\" stroke=\"%230b1020\" stroke-width=\"8\" paint-order=\"stroke\"%3E82-0%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": false
   },
   {
     "title": "Chess-AI",
@@ -829,15 +921,6 @@ const GAMES = [
     "featured": true,
     "reliable": true,
     "verified": false
-  },
-  {
-    "title": "BitLife",
-    "genre": "Strategy",
-    "source": "games/bitlife/index.html",
-    "image": "games/bitlife/logo.png",
-    "featured": true,
-    "reliable": true,
-    "verified": true
   },
   {
     "title": "Block Blast 3D",
@@ -1749,510 +1832,2836 @@ let currentTimedGameTitle = "";
 
 const ACHIEVEMENTS = [
   {
-    "id": "first_game",
-    "title": "First Launch",
-    "desc": "Open any game on Blank Space.",
-    "icon": "🎮",
-    "reward": 5,
-    "kind": "any_play_count",
-    "target": 1
-  },
-  {
-    "id": "verified_first",
-    "title": "Verified Starter",
-    "desc": "Open any verified game.",
-    "icon": "✅",
-    "reward": 10,
-    "kind": "verified_count",
-    "target": 1
-  },
-  {
-    "id": "verified_sampler",
-    "title": "Verified Sampler",
-    "desc": "Open 3 different verified games.",
-    "icon": "🧭",
-    "reward": 20,
-    "kind": "verified_count",
-    "target": 3
-  },
-  {
-    "id": "verified_collector",
-    "title": "Verified Collector",
-    "desc": "Open 8 different verified games.",
-    "icon": "🌌",
-    "reward": 40,
-    "kind": "verified_count",
-    "target": 8
-  },
-  {
-    "id": "gs_open",
-    "title": "Apple Chaser",
-    "desc": "Open Google Snake.",
-    "icon": "🍎",
-    "reward": 10,
-    "game": "Google Snake",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "gs_score_10",
-    "title": "Snake Snack",
-    "desc": "Get 10 points in Google Snake.",
+    "id": "google_snake_best_score_10_0",
+    "title": "10 points",
+    "desc": "Get 10 points in Google Snake",
     "icon": "🐍",
-    "reward": 20,
+    "reward": 2,
+    "difficulty": "not_so_hard",
     "game": "Google Snake",
     "stat": "best_score",
     "target": 10
   },
   {
-    "id": "gs_score_25",
-    "title": "Long Snake",
-    "desc": "Get 25 points in Google Snake.",
-    "icon": "🍏",
-    "reward": 35,
+    "id": "google_snake_best_score_20_1",
+    "title": "20 points",
+    "desc": "Get 20 points in Google Snake",
+    "icon": "🐍",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Google Snake",
     "stat": "best_score",
-    "target": 25
+    "target": 20
   },
   {
-    "id": "gs_score_50",
-    "title": "Apple Master",
-    "desc": "Get 50 points in Google Snake.",
-    "icon": "👑",
-    "reward": 60,
+    "id": "google_snake_best_score_30_2",
+    "title": "30 points",
+    "desc": "Get 30 points in Google Snake",
+    "icon": "🐍",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 30
+  },
+  {
+    "id": "google_snake_best_score_40_3",
+    "title": "40 points",
+    "desc": "Get 40 points in Google Snake",
+    "icon": "🐍",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 40
+  },
+  {
+    "id": "google_snake_best_score_50_4",
+    "title": "50 points",
+    "desc": "Get 50 points in Google Snake",
+    "icon": "🐍",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Google Snake",
     "stat": "best_score",
     "target": 50
   },
   {
-    "id": "gs_score_100",
-    "title": "Serpent Legend",
-    "desc": "Get 100 points in Google Snake.",
-    "icon": "🐉",
-    "reward": 100,
+    "id": "google_snake_best_score_60_5",
+    "title": "60 points",
+    "desc": "Get 60 points in Google Snake",
+    "icon": "🐍",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 60
+  },
+  {
+    "id": "google_snake_best_score_75_6",
+    "title": "75 points",
+    "desc": "Get 75 points in Google Snake",
+    "icon": "🐍",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 75
+  },
+  {
+    "id": "google_snake_best_score_90_7",
+    "title": "90 points",
+    "desc": "Get 90 points in Google Snake",
+    "icon": "🐍",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 90
+  },
+  {
+    "id": "google_snake_best_score_100_8",
+    "title": "100 points",
+    "desc": "Get 100 points in Google Snake",
+    "icon": "🐍",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Google Snake",
     "stat": "best_score",
     "target": 100
   },
   {
-    "id": "slope_open",
-    "title": "Slope Starter",
-    "desc": "Open Slope.",
-    "icon": "🟢",
+    "id": "google_snake_best_score_125_9",
+    "title": "125 points",
+    "desc": "Get 125 points in Google Snake",
+    "icon": "🐍",
     "reward": 10,
-    "game": "Slope",
-    "stat": "play_count",
-    "target": 1
+    "difficulty": "hard",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 125
   },
   {
-    "id": "slope_score_25",
-    "title": "Slope 25",
-    "desc": "Get 25 points in Slope.",
-    "icon": "🟩",
-    "reward": 25,
+    "id": "google_snake_best_score_150_10",
+    "title": "150 points",
+    "desc": "Get 150 points in Google Snake",
+    "icon": "🐍",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 150
+  },
+  {
+    "id": "google_snake_best_score_175_11",
+    "title": "175 points",
+    "desc": "Get 175 points in Google Snake",
+    "icon": "🐍",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 175
+  },
+  {
+    "id": "google_snake_best_score_200_12",
+    "title": "200 points",
+    "desc": "Get 200 points in Google Snake",
+    "icon": "🐍",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 200
+  },
+  {
+    "id": "google_snake_best_score_250_13",
+    "title": "250 points",
+    "desc": "Get 250 points in Google Snake",
+    "icon": "🐍",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 250
+  },
+  {
+    "id": "google_snake_best_score_300_14",
+    "title": "300 points",
+    "desc": "Get 300 points in Google Snake",
+    "icon": "🐍",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 300
+  },
+  {
+    "id": "google_snake_best_score_350_15",
+    "title": "350 points",
+    "desc": "Get 350 points in Google Snake",
+    "icon": "🐍",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 350
+  },
+  {
+    "id": "google_snake_best_score_400_16",
+    "title": "400 points",
+    "desc": "Get 400 points in Google Snake",
+    "icon": "🐍",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 400
+  },
+  {
+    "id": "google_snake_best_score_500_17",
+    "title": "500 points",
+    "desc": "Get 500 points in Google Snake",
+    "icon": "🐍",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 500
+  },
+  {
+    "id": "slope_best_score_25_18",
+    "title": "25 points",
+    "desc": "Get 25 points in Slope",
+    "icon": "🟢",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
     "target": 25,
     "experimental": true
   },
   {
-    "id": "slope_score_50",
-    "title": "Slope 50",
-    "desc": "Get 50 points in Slope.",
-    "icon": "💚",
-    "reward": 45,
+    "id": "slope_best_score_50_19",
+    "title": "50 points",
+    "desc": "Get 50 points in Slope",
+    "icon": "🟢",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
     "target": 50,
     "experimental": true
   },
   {
-    "id": "slope_score_100",
-    "title": "Slope 100",
-    "desc": "Get 100 points in Slope.",
-    "icon": "⚡",
-    "reward": 80,
+    "id": "slope_best_score_75_20",
+    "title": "75 points",
+    "desc": "Get 75 points in Slope",
+    "icon": "🟢",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 75,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_100_21",
+    "title": "100 points",
+    "desc": "Get 100 points in Slope",
+    "icon": "🟢",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
     "target": 100,
     "experimental": true
   },
   {
-    "id": "slope_score_250",
-    "title": "Slope Champion",
-    "desc": "Get 250 points in Slope.",
-    "icon": "🏅",
-    "reward": 150,
+    "id": "slope_best_score_125_22",
+    "title": "125 points",
+    "desc": "Get 125 points in Slope",
+    "icon": "🟢",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 125,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_150_23",
+    "title": "150 points",
+    "desc": "Get 150 points in Slope",
+    "icon": "🟢",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 150,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_200_24",
+    "title": "200 points",
+    "desc": "Get 200 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 200,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_250_25",
+    "title": "250 points",
+    "desc": "Get 250 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
     "target": 250,
     "experimental": true
   },
   {
-    "id": "wc_open",
-    "title": "World Cup Kickoff",
-    "desc": "Open A Small World Cup.",
-    "icon": "🏆",
-    "reward": 10,
-    "game": "A Small World Cup",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "wc_goal_1",
-    "title": "First Goal",
-    "desc": "Score 1 goal in A Small World Cup.",
-    "icon": "⚽",
+    "id": "slope_best_score_300_26",
+    "title": "300 points",
+    "desc": "Get 300 points in Slope",
+    "icon": "🟢",
     "reward": 20,
-    "game": "A Small World Cup",
-    "stat": "goals",
-    "target": 1
-  },
-  {
-    "id": "wc_goal_5",
-    "title": "Goal Getter",
-    "desc": "Score 5 goals in A Small World Cup.",
-    "icon": "🥅",
-    "reward": 40,
-    "game": "A Small World Cup",
-    "stat": "goals",
-    "target": 5
-  },
-  {
-    "id": "wc_goal_15",
-    "title": "Hat Trick Hero",
-    "desc": "Score 15 goals in A Small World Cup.",
-    "icon": "🔥",
-    "reward": 75,
-    "game": "A Small World Cup",
-    "stat": "goals",
-    "target": 15
-  },
-  {
-    "id": "wc_win_1",
-    "title": "Cup Winner",
-    "desc": "Win the World Cup once in A Small World Cup.",
-    "icon": "🏆",
-    "reward": 90,
-    "game": "A Small World Cup",
-    "stat": "wins",
-    "target": 1
-  },
-  {
-    "id": "br_open",
-    "title": "Random Hooper",
-    "desc": "Open Basket Random.",
-    "icon": "🏀",
-    "reward": 10,
-    "game": "Basket Random",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "br_goal_1",
-    "title": "First Bucket",
-    "desc": "Score 1 basket in Basket Random.",
-    "icon": "🪣",
-    "reward": 20,
-    "game": "Basket Random",
-    "stat": "goals",
-    "target": 1
-  },
-  {
-    "id": "br_goal_5",
-    "title": "Hot Hand",
-    "desc": "Score 5 baskets in Basket Random.",
-    "icon": "🔥",
-    "reward": 40,
-    "game": "Basket Random",
-    "stat": "goals",
-    "target": 5
-  },
-  {
-    "id": "br_goal_10",
-    "title": "Double Digits",
-    "desc": "Score 10 baskets in Basket Random.",
-    "icon": "🔟",
-    "reward": 70,
-    "game": "Basket Random",
-    "stat": "goals",
-    "target": 10
-  },
-  {
-    "id": "br_win_1",
-    "title": "Random Winner",
-    "desc": "Win a Basket Random match.",
-    "icon": "🏅",
-    "reward": 60,
-    "game": "Basket Random",
-    "stat": "wins",
-    "target": 1
-  },
-  {
-    "id": "tf_open",
-    "title": "Tiny Angler",
-    "desc": "Open Tiny Fishing.",
-    "icon": "🎣",
-    "reward": 10,
-    "game": "Tiny Fishing",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "tf_fish_1",
-    "title": "First Catch",
-    "desc": "Catch 1 fish in Tiny Fishing.",
-    "icon": "🐟",
-    "reward": 20,
-    "game": "Tiny Fishing",
-    "stat": "fish_caught",
-    "target": 1
-  },
-  {
-    "id": "tf_fish_10",
-    "title": "School of Fish",
-    "desc": "Catch 10 fish in Tiny Fishing.",
-    "icon": "🐠",
-    "reward": 50,
-    "game": "Tiny Fishing",
-    "stat": "fish_caught",
-    "target": 10
-  },
-  {
-    "id": "tf_fish_25",
-    "title": "Fishing Pro",
-    "desc": "Catch 25 fish in Tiny Fishing.",
-    "icon": "🐡",
-    "reward": 90,
-    "game": "Tiny Fishing",
-    "stat": "fish_caught",
-    "target": 25
-  },
-  {
-    "id": "tf_money_100",
-    "title": "Pocket Change",
-    "desc": "Earn 100 money in Tiny Fishing.",
-    "icon": "💵",
-    "reward": 30,
-    "game": "Tiny Fishing",
-    "stat": "money_earned",
-    "target": 100
-  },
-  {
-    "id": "tf_money_1000",
-    "title": "Fish Fortune",
-    "desc": "Earn 1,000 money in Tiny Fishing.",
-    "icon": "💰",
-    "reward": 100,
-    "game": "Tiny Fishing",
-    "stat": "money_earned",
-    "target": 1000
-  },
-  {
-    "id": "chess_open",
-    "title": "Board Ready",
-    "desc": "Open Chess-AI.",
-    "icon": "♟️",
-    "reward": 10,
-    "game": "Chess-AI",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "chess_check_1",
-    "title": "First Check",
-    "desc": "Put the king in check in Chess-AI.",
-    "icon": "♔",
-    "reward": 25,
-    "game": "Chess-AI",
-    "stat": "checks",
-    "target": 1
-  },
-  {
-    "id": "chess_check_5",
-    "title": "Checking Pressure",
-    "desc": "Get 5 checks in Chess-AI.",
-    "icon": "♕",
-    "reward": 60,
-    "game": "Chess-AI",
-    "stat": "checks",
-    "target": 5
-  },
-  {
-    "id": "chess_mate_1",
-    "title": "Checkmate",
-    "desc": "Get checkmate in Chess-AI.",
-    "icon": "♛",
-    "reward": 100,
-    "game": "Chess-AI",
-    "stat": "checkmates",
-    "target": 1
-  },
-  {
-    "id": "chess_mate_3",
-    "title": "Grandmaster Mood",
-    "desc": "Get 3 checkmates in Chess-AI.",
-    "icon": "🏁",
-    "reward": 150,
-    "game": "Chess-AI",
-    "stat": "checkmates",
-    "target": 3
-  },
-  {
-    "id": "sm_open",
-    "title": "Merge Ready",
-    "desc": "Open Stick Merge.",
-    "icon": "🔫",
-    "reward": 10,
-    "game": "Stick Merge",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "sm_merge_1",
-    "title": "First Merge",
-    "desc": "Merge your first weapon in Stick Merge.",
-    "icon": "➕",
-    "reward": 25,
-    "game": "Stick Merge",
-    "stat": "merges",
-    "target": 1,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 300,
     "experimental": true
   },
   {
-    "id": "sm_merge_5",
-    "title": "Fusion Five",
-    "desc": "Make 5 merges in Stick Merge.",
-    "icon": "🧬",
-    "reward": 60,
-    "game": "Stick Merge",
-    "stat": "merges",
-    "target": 5,
+    "id": "slope_best_score_400_27",
+    "title": "400 points",
+    "desc": "Get 400 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 400,
     "experimental": true
   },
   {
-    "id": "sm_level_5",
-    "title": "Upgrade 5",
-    "desc": "Reach level 5 in Stick Merge.",
-    "icon": "⬆️",
-    "reward": 75,
-    "game": "Stick Merge",
-    "stat": "best_level",
-    "target": 5,
+    "id": "slope_best_score_500_28",
+    "title": "500 points",
+    "desc": "Get 500 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 500,
     "experimental": true
   },
   {
-    "id": "sm_score_1000",
-    "title": "Target Practice",
-    "desc": "Reach 1,000 score in Stick Merge.",
-    "icon": "🎯",
-    "reward": 100,
-    "game": "Stick Merge",
+    "id": "slope_best_score_650_29",
+    "title": "650 points",
+    "desc": "Get 650 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 650,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_800_30",
+    "title": "800 points",
+    "desc": "Get 800 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 800,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_1000_31",
+    "title": "1000 points",
+    "desc": "Get 1000 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
     "stat": "best_score",
     "target": 1000,
     "experimental": true
   },
   {
-    "id": "dm_open",
-    "title": "Mad Driver",
-    "desc": "Open Drive Mad.",
-    "icon": "🚗",
-    "reward": 10,
-    "game": "Drive Mad",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "dm_finish_1",
-    "title": "Level Clear",
-    "desc": "Finish a level in Drive Mad.",
-    "icon": "🏁",
-    "reward": 60,
-    "game": "Drive Mad",
-    "stat": "wins",
-    "target": 1,
+    "id": "slope_best_score_1250_32",
+    "title": "1250 points",
+    "desc": "Get 1250 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 1250,
     "experimental": true
   },
   {
-    "id": "run3_open",
-    "title": "Tunnel Runner",
-    "desc": "Open Run 3.",
-    "icon": "🏃",
+    "id": "a_small_world_cup_goals_5_33",
+    "title": "5 total goals",
+    "desc": "Score 5 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 5
+  },
+  {
+    "id": "a_small_world_cup_goals_10_34",
+    "title": "10 total goals",
+    "desc": "Score 10 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 10
+  },
+  {
+    "id": "a_small_world_cup_goals_15_35",
+    "title": "15 total goals",
+    "desc": "Score 15 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 15
+  },
+  {
+    "id": "a_small_world_cup_goals_20_36",
+    "title": "20 total goals",
+    "desc": "Score 20 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 20
+  },
+  {
+    "id": "a_small_world_cup_goals_30_37",
+    "title": "30 total goals",
+    "desc": "Score 30 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 30
+  },
+  {
+    "id": "a_small_world_cup_goals_40_38",
+    "title": "40 total goals",
+    "desc": "Score 40 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 40
+  },
+  {
+    "id": "a_small_world_cup_goals_50_39",
+    "title": "50 total goals",
+    "desc": "Score 50 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 50
+  },
+  {
+    "id": "a_small_world_cup_goals_75_40",
+    "title": "75 total goals",
+    "desc": "Score 75 total goals in A Small World Cup",
+    "icon": "⚽",
     "reward": 10,
-    "game": "Run 3",
-    "stat": "play_count",
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 75
+  },
+  {
+    "id": "a_small_world_cup_goals_100_41",
+    "title": "100 total goals",
+    "desc": "Score 100 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 100
+  },
+  {
+    "id": "a_small_world_cup_goals_150_42",
+    "title": "150 total goals",
+    "desc": "Score 150 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 150
+  },
+  {
+    "id": "a_small_world_cup_goals_200_43",
+    "title": "200 total goals",
+    "desc": "Score 200 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 200
+  },
+  {
+    "id": "a_small_world_cup_goals_300_44",
+    "title": "300 total goals",
+    "desc": "Score 300 total goals in A Small World Cup",
+    "icon": "⚽",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "A Small World Cup",
+    "stat": "goals",
+    "target": 300
+  },
+  {
+    "id": "a_small_world_cup_wins_1_45",
+    "title": "Win the World Cup 1 time(s)",
+    "desc": "Win the World Cup 1 time(s)",
+    "icon": "🏆",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
     "target": 1
   },
   {
-    "id": "run3_level_5",
-    "title": "Space Runner",
-    "desc": "Reach level 5 in Run 3.",
-    "icon": "🚀",
-    "reward": 75,
+    "id": "a_small_world_cup_wins_2_46",
+    "title": "Win the World Cup 2 time(s)",
+    "desc": "Win the World Cup 2 time(s)",
+    "icon": "🏆",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 2
+  },
+  {
+    "id": "a_small_world_cup_wins_3_47",
+    "title": "Win the World Cup 3 time(s)",
+    "desc": "Win the World Cup 3 time(s)",
+    "icon": "🏆",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 3
+  },
+  {
+    "id": "a_small_world_cup_wins_5_48",
+    "title": "Win the World Cup 5 time(s)",
+    "desc": "Win the World Cup 5 time(s)",
+    "icon": "🏆",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 5
+  },
+  {
+    "id": "a_small_world_cup_wins_8_49",
+    "title": "Win the World Cup 8 time(s)",
+    "desc": "Win the World Cup 8 time(s)",
+    "icon": "🏆",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 8
+  },
+  {
+    "id": "a_small_world_cup_wins_10_50",
+    "title": "Win the World Cup 10 time(s)",
+    "desc": "Win the World Cup 10 time(s)",
+    "icon": "🏆",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 10
+  },
+  {
+    "id": "a_small_world_cup_wins_15_51",
+    "title": "Win the World Cup 15 time(s)",
+    "desc": "Win the World Cup 15 time(s)",
+    "icon": "🏆",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 15
+  },
+  {
+    "id": "a_small_world_cup_wins_20_52",
+    "title": "Win the World Cup 20 time(s)",
+    "desc": "Win the World Cup 20 time(s)",
+    "icon": "🏆",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 20
+  },
+  {
+    "id": "a_small_world_cup_wins_30_53",
+    "title": "Win the World Cup 30 time(s)",
+    "desc": "Win the World Cup 30 time(s)",
+    "icon": "🏆",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 30
+  },
+  {
+    "id": "a_small_world_cup_wins_50_54",
+    "title": "Win the World Cup 50 time(s)",
+    "desc": "Win the World Cup 50 time(s)",
+    "icon": "🏆",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 50
+  },
+  {
+    "id": "basket_random_best_score_5_55",
+    "title": "5 points",
+    "desc": "Score 5 points in Basket Random",
+    "icon": "🏀",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 5
+  },
+  {
+    "id": "basket_random_best_score_10_56",
+    "title": "10 points",
+    "desc": "Score 10 points in Basket Random",
+    "icon": "🏀",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 10
+  },
+  {
+    "id": "basket_random_best_score_15_57",
+    "title": "15 points",
+    "desc": "Score 15 points in Basket Random",
+    "icon": "🏀",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 15
+  },
+  {
+    "id": "basket_random_best_score_20_58",
+    "title": "20 points",
+    "desc": "Score 20 points in Basket Random",
+    "icon": "🏀",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 20
+  },
+  {
+    "id": "basket_random_best_score_30_59",
+    "title": "30 points",
+    "desc": "Score 30 points in Basket Random",
+    "icon": "🏀",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 30
+  },
+  {
+    "id": "basket_random_best_score_40_60",
+    "title": "40 points",
+    "desc": "Score 40 points in Basket Random",
+    "icon": "🏀",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 40
+  },
+  {
+    "id": "basket_random_best_score_50_61",
+    "title": "50 points",
+    "desc": "Score 50 points in Basket Random",
+    "icon": "🏀",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 50
+  },
+  {
+    "id": "basket_random_best_score_75_62",
+    "title": "75 points",
+    "desc": "Score 75 points in Basket Random",
+    "icon": "🏀",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 75
+  },
+  {
+    "id": "basket_random_best_score_100_63",
+    "title": "100 points",
+    "desc": "Score 100 points in Basket Random",
+    "icon": "🏀",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 100
+  },
+  {
+    "id": "basket_random_best_score_150_64",
+    "title": "150 points",
+    "desc": "Score 150 points in Basket Random",
+    "icon": "🏀",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 150
+  },
+  {
+    "id": "basket_random_wins_1_65",
+    "title": "Win 1 Basket Random match(es)",
+    "desc": "Win 1 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 1
+  },
+  {
+    "id": "basket_random_wins_3_66",
+    "title": "Win 3 Basket Random match(es)",
+    "desc": "Win 3 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 3
+  },
+  {
+    "id": "basket_random_wins_5_67",
+    "title": "Win 5 Basket Random match(es)",
+    "desc": "Win 5 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 5
+  },
+  {
+    "id": "basket_random_wins_10_68",
+    "title": "Win 10 Basket Random match(es)",
+    "desc": "Win 10 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 10
+  },
+  {
+    "id": "basket_random_wins_15_69",
+    "title": "Win 15 Basket Random match(es)",
+    "desc": "Win 15 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 15
+  },
+  {
+    "id": "basket_random_wins_25_70",
+    "title": "Win 25 Basket Random match(es)",
+    "desc": "Win 25 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 25
+  },
+  {
+    "id": "basket_random_wins_40_71",
+    "title": "Win 40 Basket Random match(es)",
+    "desc": "Win 40 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 40
+  },
+  {
+    "id": "basket_random_wins_60_72",
+    "title": "Win 60 Basket Random match(es)",
+    "desc": "Win 60 Basket Random match(es)",
+    "icon": "🥇",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "wins",
+    "target": 60
+  },
+  {
+    "id": "tiny_fishing_fish_caught_10_73",
+    "title": "Catch 10 fish",
+    "desc": "Catch 10 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 10
+  },
+  {
+    "id": "tiny_fishing_fish_caught_25_74",
+    "title": "Catch 25 fish",
+    "desc": "Catch 25 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 25
+  },
+  {
+    "id": "tiny_fishing_fish_caught_50_75",
+    "title": "Catch 50 fish",
+    "desc": "Catch 50 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 50
+  },
+  {
+    "id": "tiny_fishing_fish_caught_75_76",
+    "title": "Catch 75 fish",
+    "desc": "Catch 75 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 75
+  },
+  {
+    "id": "tiny_fishing_fish_caught_100_77",
+    "title": "Catch 100 fish",
+    "desc": "Catch 100 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 100
+  },
+  {
+    "id": "tiny_fishing_fish_caught_150_78",
+    "title": "Catch 150 fish",
+    "desc": "Catch 150 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 150
+  },
+  {
+    "id": "tiny_fishing_fish_caught_200_79",
+    "title": "Catch 200 fish",
+    "desc": "Catch 200 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 200
+  },
+  {
+    "id": "tiny_fishing_fish_caught_300_80",
+    "title": "Catch 300 fish",
+    "desc": "Catch 300 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 300
+  },
+  {
+    "id": "tiny_fishing_fish_caught_500_81",
+    "title": "Catch 500 fish",
+    "desc": "Catch 500 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 500
+  },
+  {
+    "id": "tiny_fishing_fish_caught_750_82",
+    "title": "Catch 750 fish",
+    "desc": "Catch 750 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 750
+  },
+  {
+    "id": "tiny_fishing_fish_caught_1000_83",
+    "title": "Catch 1000 fish",
+    "desc": "Catch 1000 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 1000
+  },
+  {
+    "id": "tiny_fishing_money_earned_100_84",
+    "title": "Earn $100",
+    "desc": "Earn $100 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 100
+  },
+  {
+    "id": "tiny_fishing_money_earned_250_85",
+    "title": "Earn $250",
+    "desc": "Earn $250 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 250
+  },
+  {
+    "id": "tiny_fishing_money_earned_500_86",
+    "title": "Earn $500",
+    "desc": "Earn $500 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 500
+  },
+  {
+    "id": "tiny_fishing_money_earned_1000_87",
+    "title": "Earn $1000",
+    "desc": "Earn $1000 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 1000
+  },
+  {
+    "id": "tiny_fishing_money_earned_2500_88",
+    "title": "Earn $2500",
+    "desc": "Earn $2500 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 2500
+  },
+  {
+    "id": "tiny_fishing_money_earned_5000_89",
+    "title": "Earn $5000",
+    "desc": "Earn $5000 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 5000
+  },
+  {
+    "id": "tiny_fishing_money_earned_10000_90",
+    "title": "Earn $10000",
+    "desc": "Earn $10000 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 10000
+  },
+  {
+    "id": "tiny_fishing_money_earned_25000_91",
+    "title": "Earn $25000",
+    "desc": "Earn $25000 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 25000
+  },
+  {
+    "id": "tiny_fishing_money_earned_50000_92",
+    "title": "Earn $50000",
+    "desc": "Earn $50000 in Tiny Fishing",
+    "icon": "💰",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "money_earned",
+    "target": 50000
+  },
+  {
+    "id": "chess_ai_checks_1_93",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 1 time(s)",
+    "icon": "♟️",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 1
+  },
+  {
+    "id": "chess_ai_checks_3_94",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 3 time(s)",
+    "icon": "♟️",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 3
+  },
+  {
+    "id": "chess_ai_checks_5_95",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 5 time(s)",
+    "icon": "♟️",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 5
+  },
+  {
+    "id": "chess_ai_checks_10_96",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 10 time(s)",
+    "icon": "♟️",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 10
+  },
+  {
+    "id": "chess_ai_checks_15_97",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 15 time(s)",
+    "icon": "♟️",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 15
+  },
+  {
+    "id": "chess_ai_checks_25_98",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 25 time(s)",
+    "icon": "♟️",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 25
+  },
+  {
+    "id": "chess_ai_checks_40_99",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 40 time(s)",
+    "icon": "♟️",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 40
+  },
+  {
+    "id": "chess_ai_checks_60_100",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 60 time(s)",
+    "icon": "♟️",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 60
+  },
+  {
+    "id": "chess_ai_checks_100_101",
+    "title": "Put the bot",
+    "desc": "Put the bot in check 100 time(s)",
+    "icon": "♟️",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checks",
+    "target": 100
+  },
+  {
+    "id": "chess_ai_checkmates_1_102",
+    "title": "Checkmate the bot 1 time(s)",
+    "desc": "Checkmate the bot 1 time(s)",
+    "icon": "♚",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 1
+  },
+  {
+    "id": "chess_ai_checkmates_2_103",
+    "title": "Checkmate the bot 2 time(s)",
+    "desc": "Checkmate the bot 2 time(s)",
+    "icon": "♚",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 2
+  },
+  {
+    "id": "chess_ai_checkmates_3_104",
+    "title": "Checkmate the bot 3 time(s)",
+    "desc": "Checkmate the bot 3 time(s)",
+    "icon": "♚",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 3
+  },
+  {
+    "id": "chess_ai_checkmates_5_105",
+    "title": "Checkmate the bot 5 time(s)",
+    "desc": "Checkmate the bot 5 time(s)",
+    "icon": "♚",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 5
+  },
+  {
+    "id": "chess_ai_checkmates_10_106",
+    "title": "Checkmate the bot 10 time(s)",
+    "desc": "Checkmate the bot 10 time(s)",
+    "icon": "♚",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 10
+  },
+  {
+    "id": "chess_ai_checkmates_15_107",
+    "title": "Checkmate the bot 15 time(s)",
+    "desc": "Checkmate the bot 15 time(s)",
+    "icon": "♚",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 15
+  },
+  {
+    "id": "chess_ai_checkmates_25_108",
+    "title": "Checkmate the bot 25 time(s)",
+    "desc": "Checkmate the bot 25 time(s)",
+    "icon": "♚",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 25
+  },
+  {
+    "id": "chess_ai_checkmates_50_109",
+    "title": "Checkmate the bot 50 time(s)",
+    "desc": "Checkmate the bot 50 time(s)",
+    "icon": "♚",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 50
+  },
+  {
+    "id": "chess_ai_wins_1_110",
+    "title": "Beat the chess bot 1 time(s)",
+    "desc": "Beat the chess bot 1 time(s)",
+    "icon": "♛",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 1
+  },
+  {
+    "id": "chess_ai_wins_2_111",
+    "title": "Beat the chess bot 2 time(s)",
+    "desc": "Beat the chess bot 2 time(s)",
+    "icon": "♛",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 2
+  },
+  {
+    "id": "chess_ai_wins_3_112",
+    "title": "Beat the chess bot 3 time(s)",
+    "desc": "Beat the chess bot 3 time(s)",
+    "icon": "♛",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 3
+  },
+  {
+    "id": "chess_ai_wins_5_113",
+    "title": "Beat the chess bot 5 time(s)",
+    "desc": "Beat the chess bot 5 time(s)",
+    "icon": "♛",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 5
+  },
+  {
+    "id": "chess_ai_wins_10_114",
+    "title": "Beat the chess bot 10 time(s)",
+    "desc": "Beat the chess bot 10 time(s)",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 10
+  },
+  {
+    "id": "chess_ai_wins_15_115",
+    "title": "Beat the chess bot 15 time(s)",
+    "desc": "Beat the chess bot 15 time(s)",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 15
+  },
+  {
+    "id": "chess_ai_wins_25_116",
+    "title": "Beat the chess bot 25 time(s)",
+    "desc": "Beat the chess bot 25 time(s)",
+    "icon": "♛",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 25
+  },
+  {
+    "id": "chess_ai_wins_50_117",
+    "title": "Beat the chess bot 50 time(s)",
+    "desc": "Beat the chess bot 50 time(s)",
+    "icon": "♛",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Chess-AI",
+    "stat": "wins",
+    "target": 50
+  },
+  {
+    "id": "stick_merge_merges_5_118",
+    "title": "Merge weapons 5 time(s)",
+    "desc": "Merge weapons 5 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 5
+  },
+  {
+    "id": "stick_merge_merges_10_119",
+    "title": "Merge weapons 10 time(s)",
+    "desc": "Merge weapons 10 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 10
+  },
+  {
+    "id": "stick_merge_merges_20_120",
+    "title": "Merge weapons 20 time(s)",
+    "desc": "Merge weapons 20 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 20
+  },
+  {
+    "id": "stick_merge_merges_35_121",
+    "title": "Merge weapons 35 time(s)",
+    "desc": "Merge weapons 35 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 35
+  },
+  {
+    "id": "stick_merge_merges_50_122",
+    "title": "Merge weapons 50 time(s)",
+    "desc": "Merge weapons 50 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 50
+  },
+  {
+    "id": "stick_merge_merges_75_123",
+    "title": "Merge weapons 75 time(s)",
+    "desc": "Merge weapons 75 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 75
+  },
+  {
+    "id": "stick_merge_merges_100_124",
+    "title": "Merge weapons 100 time(s)",
+    "desc": "Merge weapons 100 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 100
+  },
+  {
+    "id": "stick_merge_merges_150_125",
+    "title": "Merge weapons 150 time(s)",
+    "desc": "Merge weapons 150 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 150
+  },
+  {
+    "id": "stick_merge_merges_250_126",
+    "title": "Merge weapons 250 time(s)",
+    "desc": "Merge weapons 250 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 250
+  },
+  {
+    "id": "stick_merge_merges_400_127",
+    "title": "Merge weapons 400 time(s)",
+    "desc": "Merge weapons 400 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 400
+  },
+  {
+    "id": "stick_merge_merges_600_128",
+    "title": "Merge weapons 600 time(s)",
+    "desc": "Merge weapons 600 time(s) in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 600
+  },
+  {
+    "id": "stick_merge_best_level_2_129",
+    "title": "Reach weapon level 2",
+    "desc": "Reach weapon level 2 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 2
+  },
+  {
+    "id": "stick_merge_best_level_3_130",
+    "title": "Reach weapon level 3",
+    "desc": "Reach weapon level 3 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 3
+  },
+  {
+    "id": "stick_merge_best_level_4_131",
+    "title": "Reach weapon level 4",
+    "desc": "Reach weapon level 4 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 4
+  },
+  {
+    "id": "stick_merge_best_level_5_132",
+    "title": "Reach weapon level 5",
+    "desc": "Reach weapon level 5 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 5
+  },
+  {
+    "id": "stick_merge_best_level_6_133",
+    "title": "Reach weapon level 6",
+    "desc": "Reach weapon level 6 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 6
+  },
+  {
+    "id": "stick_merge_best_level_7_134",
+    "title": "Reach weapon level 7",
+    "desc": "Reach weapon level 7 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 7
+  },
+  {
+    "id": "stick_merge_best_level_8_135",
+    "title": "Reach weapon level 8",
+    "desc": "Reach weapon level 8 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 8
+  },
+  {
+    "id": "stick_merge_best_level_10_136",
+    "title": "Reach weapon level 10",
+    "desc": "Reach weapon level 10 in Stick Merge",
+    "icon": "🧪",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 10
+  },
+  {
+    "id": "stick_merge_best_level_12_137",
+    "title": "Reach weapon level 12",
+    "desc": "Reach weapon level 12 in Stick Merge",
+    "icon": "🧪",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 12
+  },
+  {
+    "id": "stick_merge_best_level_15_138",
+    "title": "Reach weapon level 15",
+    "desc": "Reach weapon level 15 in Stick Merge",
+    "icon": "🧪",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 15
+  },
+  {
+    "id": "stick_merge_best_level_20_139",
+    "title": "Reach weapon level 20",
+    "desc": "Reach weapon level 20 in Stick Merge",
+    "icon": "🧪",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 20
+  },
+  {
+    "id": "stick_merge_best_level_25_140",
+    "title": "Reach weapon level 25",
+    "desc": "Reach weapon level 25 in Stick Merge",
+    "icon": "🧪",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Stick Merge",
+    "stat": "best_level",
+    "target": 25
+  },
+  {
+    "id": "stick_merge_best_score_100_141",
+    "title": "100",
+    "desc": "Score 100 in Stick Merge",
+    "icon": "💥",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 100
+  },
+  {
+    "id": "stick_merge_best_score_250_142",
+    "title": "250",
+    "desc": "Score 250 in Stick Merge",
+    "icon": "💥",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 250
+  },
+  {
+    "id": "stick_merge_best_score_500_143",
+    "title": "500",
+    "desc": "Score 500 in Stick Merge",
+    "icon": "💥",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 500
+  },
+  {
+    "id": "stick_merge_best_score_1000_144",
+    "title": "1000",
+    "desc": "Score 1000 in Stick Merge",
+    "icon": "💥",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 1000
+  },
+  {
+    "id": "stick_merge_best_score_2000_145",
+    "title": "2000",
+    "desc": "Score 2000 in Stick Merge",
+    "icon": "💥",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 2000
+  },
+  {
+    "id": "stick_merge_best_score_5000_146",
+    "title": "5000",
+    "desc": "Score 5000 in Stick Merge",
+    "icon": "💥",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 5000
+  },
+  {
+    "id": "stick_merge_best_score_10000_147",
+    "title": "10000",
+    "desc": "Score 10000 in Stick Merge",
+    "icon": "💥",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 10000
+  },
+  {
+    "id": "stick_merge_best_score_25000_148",
+    "title": "25000",
+    "desc": "Score 25000 in Stick Merge",
+    "icon": "💥",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "best_score",
+    "target": 25000
+  },
+  {
+    "id": "drive_mad_best_level_3_149",
+    "title": "Reach level 3",
+    "desc": "Reach level 3 in Drive Mad",
+    "icon": "🚗",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 3,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_5_150",
+    "title": "Reach level 5",
+    "desc": "Reach level 5 in Drive Mad",
+    "icon": "🚗",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 5,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_10_151",
+    "title": "Reach level 10",
+    "desc": "Reach level 10 in Drive Mad",
+    "icon": "🚗",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 10,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_15_152",
+    "title": "Reach level 15",
+    "desc": "Reach level 15 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 15,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_20_153",
+    "title": "Reach level 20",
+    "desc": "Reach level 20 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 20,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_25_154",
+    "title": "Reach level 25",
+    "desc": "Reach level 25 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 25,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_30_155",
+    "title": "Reach level 30",
+    "desc": "Reach level 30 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 30,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_40_156",
+    "title": "Reach level 40",
+    "desc": "Reach level 40 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 40,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_50_157",
+    "title": "Reach level 50",
+    "desc": "Reach level 50 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 50,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_75_158",
+    "title": "Reach level 75",
+    "desc": "Reach level 75 in Drive Mad",
+    "icon": "🚗",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 75,
+    "experimental": true
+  },
+  {
+    "id": "drive_mad_best_level_100_159",
+    "title": "Reach level 100",
+    "desc": "Reach level 100 in Drive Mad",
+    "icon": "🚗",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 100,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_3_160",
+    "title": "Reach level 3",
+    "desc": "Reach level 3 in Run 3",
+    "icon": "🌌",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 3,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_5_161",
+    "title": "Reach level 5",
+    "desc": "Reach level 5 in Run 3",
+    "icon": "🌌",
+    "reward": 2,
+    "difficulty": "not_so_hard",
     "game": "Run 3",
     "stat": "best_level",
     "target": 5,
     "experimental": true
   },
   {
-    "id": "bitlife_open",
-    "title": "Life Started",
-    "desc": "Open BitLife.",
-    "icon": "👶",
-    "reward": 10,
-    "game": "BitLife",
-    "stat": "play_count",
-    "target": 1
+    "id": "run_3_best_level_10_162",
+    "title": "Reach level 10",
+    "desc": "Reach level 10 in Run 3",
+    "icon": "🌌",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 10,
+    "experimental": true
   },
   {
-    "id": "minecraft_open",
-    "title": "Block Builder",
-    "desc": "Open Minecraft.",
-    "icon": "⛏️",
-    "reward": 10,
-    "game": "Minecraft",
-    "stat": "play_count",
-    "target": 1
+    "id": "run_3_best_level_15_163",
+    "title": "Reach level 15",
+    "desc": "Reach level 15 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 15,
+    "experimental": true
   },
   {
-    "id": "baseball_open",
-    "title": "Batter Up",
-    "desc": "Open Google Doodle Baseball.",
+    "id": "run_3_best_level_20_164",
+    "title": "Reach level 20",
+    "desc": "Reach level 20 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 20,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_30_165",
+    "title": "Reach level 30",
+    "desc": "Reach level 30 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 30,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_40_166",
+    "title": "Reach level 40",
+    "desc": "Reach level 40 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 40,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_50_167",
+    "title": "Reach level 50",
+    "desc": "Reach level 50 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 50,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_75_168",
+    "title": "Reach level 75",
+    "desc": "Reach level 75 in Run 3",
+    "icon": "🌌",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 75,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_100_169",
+    "title": "Reach level 100",
+    "desc": "Reach level 100 in Run 3",
+    "icon": "🌌",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 100,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_5_170",
+    "title": "5 hits",
+    "desc": "Get 5 hits in Google Doodle Baseball",
     "icon": "⚾",
-    "reward": 10,
-    "game": "Google Doodle Baseball",
-    "stat": "play_count",
-    "target": 1
-  },
-  {
-    "id": "baseball_hit_5",
-    "title": "Five Hits",
-    "desc": "Get 5 hits in Google Doodle Baseball.",
-    "icon": "🏏",
-    "reward": 50,
+    "reward": 2,
+    "difficulty": "not_so_hard",
     "game": "Google Doodle Baseball",
     "stat": "hits",
     "target": 5,
     "experimental": true
   },
   {
-    "id": "escape_open",
-    "title": "Clean Getaway",
-    "desc": "Open Escape Road.",
-    "icon": "🚓",
-    "reward": 10,
-    "game": "Escape Road",
-    "stat": "play_count",
-    "target": 1
+    "id": "google_doodle_baseball_hits_10_171",
+    "title": "10 hits",
+    "desc": "Get 10 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 10,
+    "experimental": true
   },
   {
-    "id": "tiny_legend",
-    "title": "Verified Legend",
-    "desc": "Open 12 different verified games.",
-    "icon": "🌟",
-    "reward": 100,
-    "kind": "verified_count",
+    "id": "google_doodle_baseball_hits_20_172",
+    "title": "20 hits",
+    "desc": "Get 20 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 20,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_35_173",
+    "title": "35 hits",
+    "desc": "Get 35 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 35,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_50_174",
+    "title": "50 hits",
+    "desc": "Get 50 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 50,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_75_175",
+    "title": "75 hits",
+    "desc": "Get 75 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 75,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_100_176",
+    "title": "100 hits",
+    "desc": "Get 100 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 100,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_150_177",
+    "title": "150 hits",
+    "desc": "Get 150 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 150,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_250_178",
+    "title": "250 hits",
+    "desc": "Get 250 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 250,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_10_179",
+    "title": "10",
+    "desc": "Score 10 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 10,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_25_180",
+    "title": "25",
+    "desc": "Score 25 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 25,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_50_181",
+    "title": "50",
+    "desc": "Score 50 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 50,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_75_182",
+    "title": "75",
+    "desc": "Score 75 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 75,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_100_183",
+    "title": "100",
+    "desc": "Score 100 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 100,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_150_184",
+    "title": "150",
+    "desc": "Score 150 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 150,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_200_185",
+    "title": "200",
+    "desc": "Score 200 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 200,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_300_186",
+    "title": "300",
+    "desc": "Score 300 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 300,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_best_score_500_187",
+    "title": "500",
+    "desc": "Score 500 in Google Doodle Baseball",
+    "icon": "🌭",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "best_score",
+    "target": 500,
+    "experimental": true
+  },
+  {
+    "id": "chess_com_wins_1_188",
+    "title": "Win 1 Chess.com game(s)",
+    "desc": "Win 1 Chess.com game(s)",
+    "icon": "♜",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Chess.com",
+    "stat": "wins",
+    "target": 1,
+    "experimental": true
+  },
+  {
+    "id": "chess_com_wins_3_189",
+    "title": "Win 3 Chess.com game(s)",
+    "desc": "Win 3 Chess.com game(s)",
+    "icon": "♜",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess.com",
+    "stat": "wins",
+    "target": 3,
+    "experimental": true
+  },
+  {
+    "id": "chess_com_wins_5_190",
+    "title": "Win 5 Chess.com game(s)",
+    "desc": "Win 5 Chess.com game(s)",
+    "icon": "♜",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Chess.com",
+    "stat": "wins",
+    "target": 5,
+    "experimental": true
+  },
+  {
+    "id": "chess_com_wins_10_191",
+    "title": "Win 10 Chess.com game(s)",
+    "desc": "Win 10 Chess.com game(s)",
+    "icon": "♜",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess.com",
+    "stat": "wins",
+    "target": 10,
+    "experimental": true
+  },
+  {
+    "id": "chess_com_wins_25_192",
+    "title": "Win 25 Chess.com game(s)",
+    "desc": "Win 25 Chess.com game(s)",
+    "icon": "♜",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Chess.com",
+    "stat": "wins",
+    "target": 25,
+    "experimental": true
+  },
+  {
+    "id": "basket_random_best_score_315_193",
+    "title": "Score 315 points in Basket Random",
+    "desc": "Score 315 points in Basket Random",
+    "icon": "🏀",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 315
+  },
+  {
+    "id": "tiny_fishing_fish_caught_525_194",
+    "title": "Catch 525 fish in Tiny Fishing",
+    "desc": "Catch 525 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 525
+  },
+  {
+    "id": "chess_ai_checkmates_11_195",
+    "title": "Checkmate the bot 11 times",
+    "desc": "Checkmate the bot 11 times",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 11
+  },
+  {
+    "id": "stick_merge_merges_410_196",
+    "title": "Merge weapons 410 times in Stick Merge",
+    "desc": "Merge weapons 410 times in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 410
+  },
+  {
+    "id": "drive_mad_best_level_55_197",
+    "title": "Reach level 55 in Drive Mad",
+    "desc": "Reach level 55 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 55,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_55_198",
+    "title": "Reach level 55 in Run 3",
+    "desc": "Reach level 55 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 55,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_210_199",
+    "title": "Get 210 hits in Google Doodle Baseball",
+    "desc": "Get 210 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 210,
+    "experimental": true
+  },
+  {
+    "id": "google_snake_best_score_550_200",
+    "title": "Get 550 points in Google Snake",
+    "desc": "Get 550 points in Google Snake",
+    "icon": "🍎",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 550
+  },
+  {
+    "id": "slope_best_score_1100_201",
+    "title": "Get 1100 points in Slope",
+    "desc": "Get 1100 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 1100,
+    "experimental": true
+  },
+  {
+    "id": "a_small_world_cup_wins_13_202",
+    "title": "Win the World Cup 13 times",
+    "desc": "Win the World Cup 13 times",
+    "icon": "🏆",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 13
+  },
+  {
+    "id": "basket_random_best_score_330_203",
+    "title": "Score 330 points in Basket Random",
+    "desc": "Score 330 points in Basket Random",
+    "icon": "🏀",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 330
+  },
+  {
+    "id": "tiny_fishing_fish_caught_550_204",
+    "title": "Catch 550 fish in Tiny Fishing",
+    "desc": "Catch 550 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 550
+  },
+  {
+    "id": "chess_ai_checkmates_12_205",
+    "title": "Checkmate the bot 12 times",
+    "desc": "Checkmate the bot 12 times",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
     "target": 12
+  },
+  {
+    "id": "stick_merge_merges_430_206",
+    "title": "Merge weapons 430 times in Stick Merge",
+    "desc": "Merge weapons 430 times in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 430
+  },
+  {
+    "id": "drive_mad_best_level_60_207",
+    "title": "Reach level 60 in Drive Mad",
+    "desc": "Reach level 60 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 60,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_60_208",
+    "title": "Reach level 60 in Run 3",
+    "desc": "Reach level 60 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 60,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_220_209",
+    "title": "Get 220 hits in Google Doodle Baseball",
+    "desc": "Get 220 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 220,
+    "experimental": true
+  },
+  {
+    "id": "google_snake_best_score_575_210",
+    "title": "Get 575 points in Google Snake",
+    "desc": "Get 575 points in Google Snake",
+    "icon": "🍎",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 575
+  },
+  {
+    "id": "slope_best_score_1150_211",
+    "title": "Get 1150 points in Slope",
+    "desc": "Get 1150 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 1150,
+    "experimental": true
+  },
+  {
+    "id": "a_small_world_cup_wins_13_212",
+    "title": "Win the World Cup 13 times",
+    "desc": "Win the World Cup 13 times",
+    "icon": "🏆",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 13
+  },
+  {
+    "id": "basket_random_best_score_345_213",
+    "title": "Score 345 points in Basket Random",
+    "desc": "Score 345 points in Basket Random",
+    "icon": "🏀",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 345
+  },
+  {
+    "id": "tiny_fishing_fish_caught_575_214",
+    "title": "Catch 575 fish in Tiny Fishing",
+    "desc": "Catch 575 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 575
+  },
+  {
+    "id": "chess_ai_checkmates_12_215",
+    "title": "Checkmate the bot 12 times",
+    "desc": "Checkmate the bot 12 times",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 12
+  },
+  {
+    "id": "stick_merge_merges_450_216",
+    "title": "Merge weapons 450 times in Stick Merge",
+    "desc": "Merge weapons 450 times in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 450
+  },
+  {
+    "id": "drive_mad_best_level_60_217",
+    "title": "Reach level 60 in Drive Mad",
+    "desc": "Reach level 60 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 60,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_60_218",
+    "title": "Reach level 60 in Run 3",
+    "desc": "Reach level 60 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 60,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_230_219",
+    "title": "Get 230 hits in Google Doodle Baseball",
+    "desc": "Get 230 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 230,
+    "experimental": true
+  },
+  {
+    "id": "google_snake_best_score_600_220",
+    "title": "Get 600 points in Google Snake",
+    "desc": "Get 600 points in Google Snake",
+    "icon": "🍎",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 600
+  },
+  {
+    "id": "slope_best_score_1200_221",
+    "title": "Get 1200 points in Slope",
+    "desc": "Get 1200 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 1200,
+    "experimental": true
+  },
+  {
+    "id": "a_small_world_cup_wins_14_222",
+    "title": "Win the World Cup 14 times",
+    "desc": "Win the World Cup 14 times",
+    "icon": "🏆",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 14
+  },
+  {
+    "id": "basket_random_best_score_360_223",
+    "title": "Score 360 points in Basket Random",
+    "desc": "Score 360 points in Basket Random",
+    "icon": "🏀",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 360
+  },
+  {
+    "id": "tiny_fishing_fish_caught_600_224",
+    "title": "Catch 600 fish in Tiny Fishing",
+    "desc": "Catch 600 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 600
+  },
+  {
+    "id": "chess_ai_checkmates_13_225",
+    "title": "Checkmate the bot 13 times",
+    "desc": "Checkmate the bot 13 times",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 13
+  },
+  {
+    "id": "stick_merge_merges_470_226",
+    "title": "Merge weapons 470 times in Stick Merge",
+    "desc": "Merge weapons 470 times in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 470
+  },
+  {
+    "id": "drive_mad_best_level_65_227",
+    "title": "Reach level 65 in Drive Mad",
+    "desc": "Reach level 65 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 65,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_65_228",
+    "title": "Reach level 65 in Run 3",
+    "desc": "Reach level 65 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 65,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_240_229",
+    "title": "Get 240 hits in Google Doodle Baseball",
+    "desc": "Get 240 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 240,
+    "experimental": true
+  },
+  {
+    "id": "google_snake_best_score_625_230",
+    "title": "Get 625 points in Google Snake",
+    "desc": "Get 625 points in Google Snake",
+    "icon": "🍎",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 625
+  },
+  {
+    "id": "slope_best_score_1250_231",
+    "title": "Get 1250 points in Slope",
+    "desc": "Get 1250 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 1250,
+    "experimental": true
+  },
+  {
+    "id": "a_small_world_cup_wins_14_232",
+    "title": "Win the World Cup 14 times",
+    "desc": "Win the World Cup 14 times",
+    "icon": "🏆",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 14
+  },
+  {
+    "id": "basket_random_best_score_375_233",
+    "title": "Score 375 points in Basket Random",
+    "desc": "Score 375 points in Basket Random",
+    "icon": "🏀",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 375
+  },
+  {
+    "id": "tiny_fishing_fish_caught_625_234",
+    "title": "Catch 625 fish in Tiny Fishing",
+    "desc": "Catch 625 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 625
+  },
+  {
+    "id": "chess_ai_checkmates_13_235",
+    "title": "Checkmate the bot 13 times",
+    "desc": "Checkmate the bot 13 times",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 13
+  },
+  {
+    "id": "stick_merge_merges_490_236",
+    "title": "Merge weapons 490 times in Stick Merge",
+    "desc": "Merge weapons 490 times in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 490
+  },
+  {
+    "id": "drive_mad_best_level_65_237",
+    "title": "Reach level 65 in Drive Mad",
+    "desc": "Reach level 65 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 65,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_65_238",
+    "title": "Reach level 65 in Run 3",
+    "desc": "Reach level 65 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 65,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_250_239",
+    "title": "Get 250 hits in Google Doodle Baseball",
+    "desc": "Get 250 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 250,
+    "experimental": true
+  },
+  {
+    "id": "google_snake_best_score_650_240",
+    "title": "Get 650 points in Google Snake",
+    "desc": "Get 650 points in Google Snake",
+    "icon": "🍎",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Snake",
+    "stat": "best_score",
+    "target": 650
+  },
+  {
+    "id": "slope_best_score_1300_241",
+    "title": "Get 1300 points in Slope",
+    "desc": "Get 1300 points in Slope",
+    "icon": "🟢",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 1300,
+    "experimental": true
+  },
+  {
+    "id": "a_small_world_cup_wins_15_242",
+    "title": "Win the World Cup 15 times",
+    "desc": "Win the World Cup 15 times",
+    "icon": "🏆",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "A Small World Cup",
+    "stat": "wins",
+    "target": 15
+  },
+  {
+    "id": "basket_random_best_score_390_243",
+    "title": "Score 390 points in Basket Random",
+    "desc": "Score 390 points in Basket Random",
+    "icon": "🏀",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Basket Random",
+    "stat": "best_score",
+    "target": 390
+  },
+  {
+    "id": "tiny_fishing_fish_caught_650_244",
+    "title": "Catch 650 fish in Tiny Fishing",
+    "desc": "Catch 650 fish in Tiny Fishing",
+    "icon": "🎣",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Tiny Fishing",
+    "stat": "fish_caught",
+    "target": 650
+  },
+  {
+    "id": "chess_ai_checkmates_14_245",
+    "title": "Checkmate the bot 14 times",
+    "desc": "Checkmate the bot 14 times",
+    "icon": "♛",
+    "reward": 10,
+    "difficulty": "hard",
+    "game": "Chess-AI",
+    "stat": "checkmates",
+    "target": 14
+  },
+  {
+    "id": "stick_merge_merges_510_246",
+    "title": "Merge weapons 510 times in Stick Merge",
+    "desc": "Merge weapons 510 times in Stick Merge",
+    "icon": "🔫",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Stick Merge",
+    "stat": "merges",
+    "target": 510
+  },
+  {
+    "id": "drive_mad_best_level_70_247",
+    "title": "Reach level 70 in Drive Mad",
+    "desc": "Reach level 70 in Drive Mad",
+    "icon": "🚗",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Drive Mad",
+    "stat": "best_level",
+    "target": 70,
+    "experimental": true
+  },
+  {
+    "id": "run_3_best_level_70_248",
+    "title": "Reach level 70 in Run 3",
+    "desc": "Reach level 70 in Run 3",
+    "icon": "🌌",
+    "reward": 5,
+    "difficulty": "medium",
+    "game": "Run 3",
+    "stat": "best_level",
+    "target": 70,
+    "experimental": true
+  },
+  {
+    "id": "google_doodle_baseball_hits_260_249",
+    "title": "Get 260 hits in Google Doodle Baseball",
+    "desc": "Get 260 hits in Google Doodle Baseball",
+    "icon": "⚾",
+    "reward": 20,
+    "difficulty": "crazy",
+    "game": "Google Doodle Baseball",
+    "stat": "hits",
+    "target": 260,
+    "experimental": true
   }
 ];
 
@@ -2754,21 +5163,30 @@ function displayStatus(status) {
 
 function suggestionCard(item) {
   const profile = item.profiles || {};
-  const username = profile.username || (item.user_id === blankSpaceUser?.id ? blankSpaceProfile?.username : "Anonymous");
-  const mine = item.user_id === blankSpaceUser?.id;
-  const shownStatus = displayStatus(item.status);
+  const username = usernameFromProfile(profile);
+  const mine = blankSpaceUser && item.user_id === blankSpaceUser.id;
+  const shownStatus = item.status === "rejected" ? "denied" : item.status;
   const points = Number(item.points_awarded || 0);
   const pointsBadge = points > 0 ? `<span class="suggestion-points">+${points} pts</span>` : "";
   const pointInputId = `awardPoints_${item.id}`;
-  const adminControls = blankSpaceIsAdmin ? `<div class="suggestion-actions">
-    <div class="award-row"><input class="points-input" id="${pointInputId}" type="number" min="0" max="10000" step="1" value="${points || 0}" title="Points to award"><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'approved')">Approve + Award</button></div>
-    <button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'rejected')">Deny</button>
-    <button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button>
-  </div><p class="admin-award-note">Set points before approving. Changing points later adjusts the user's total.</p>` : "";
+  const commentInputId = `adminComment_${item.id}`;
+  const existingComment = item.admin_comment || "";
+  const commentHTML = existingComment ? `<div class="suggestion-comment"><b>Admin comment:</b> ${escapeHTML(existingComment)}</div>` : "";
+  let adminControls = "";
+  if (blankSpaceIsAdmin) {
+    if (item.status === "pending") {
+      adminControls = `<div class="suggestion-actions"><button class="mini-btn primary" onclick="adminSetSuggestion(${item.id}, 'in_works')">Work on it</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'rejected')">Deny</button><button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button></div>`;
+    } else if (item.status === "in_works") {
+      adminControls = `<div class="suggestion-review-card"><textarea class="admin-comment-input" id="${commentInputId}" placeholder="Admin comment shown on this suggestion...">${escapeHTML(existingComment)}</textarea><div class="award-row"><input class="points-input" id="${pointInputId}" type="number" min="0" max="10000" step="1" value="${points || 0}" title="Points to award"><button class="mini-btn primary" onclick="adminSetSuggestion(${item.id}, 'approved')">Award</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'rejected')">Deny</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'pending')">Back to Pending</button><button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button></div><p class="admin-award-note">Add a comment, choose points, then Award or Deny.</p></div>`;
+    } else {
+      adminControls = `<div class="suggestion-actions"><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'in_works')">Work on it</button><button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button></div>`;
+    }
+  }
   return `<article class="suggestion-item">
     <h3>${escapeHTML(item.game_title)}</h3>
-    <div class="suggestion-meta"><span>@${escapeHTML(username)}${equippedIconHTML(profile)}</span>${mine ? "<span>mine</span>" : ""}<span>${formatDate(item.created_at)}</span><span class="suggestion-status ${escapeHTML(shownStatus)}">${escapeHTML(shownStatus)}</span>${pointsBadge}</div>
+    <div class="suggestion-meta"><span>@${escapeHTML(username)}${equippedIconHTML(profile)}</span>${mine ? "<span>mine</span>" : ""}<span>${formatDate(item.created_at)}</span><span class="suggestion-status ${escapeHTML(shownStatus)}">${escapeHTML(shownStatus.replace('_',' '))}</span>${pointsBadge}</div>
     <p>${escapeHTML(item.message)}</p>
+    ${commentHTML}
     ${adminControls}
   </article>`;
 }
@@ -2784,15 +5202,17 @@ async function refreshSuggestions() {
     const filter = document.getElementById("suggestionFilter")?.value || "approved";
     let query = getSupabaseClient()
       .from("suggestions")
-      .select("id, user_id, game_title, message, status, created_at, points_awarded, profiles(username, avatar_url, points, equipped_icon)")
+      .select("id, user_id, game_title, message, status, created_at, points_awarded, admin_comment, profiles(username, avatar_url, points, equipped_icon)")
       .order("created_at", { ascending: false })
       .limit(100);
     if (!blankSpaceIsAdmin) {
       query = query.eq("status", "approved");
     } else if (filter === "approved") {
       query = query.eq("status", "approved");
+    } else if (filter === "in_works") {
+      query = query.eq("status", "in_works");
     } else if (filter === "denied") {
-      query = query.eq("status", "rejected");
+      query = query.in("status", ["denied", "rejected"]);
     } else if (filter === "pending") {
       query = query.eq("status", "pending");
     }
@@ -2819,7 +5239,7 @@ async function refreshMySuggestions() {
     setMessage("mySuggestionsStatus", "Loading your suggestions...");
     const result = await getSupabaseClient()
       .from("suggestions")
-      .select("id, user_id, game_title, message, status, created_at, points_awarded, profiles(username, avatar_url, points, equipped_icon)")
+      .select("id, user_id, game_title, message, status, created_at, points_awarded, admin_comment, profiles(username, avatar_url, points, equipped_icon)")
       .eq("user_id", blankSpaceUser.id)
       .order("created_at", { ascending: false })
       .limit(100);
@@ -2839,7 +5259,8 @@ async function adminSetSuggestion(id, status) {
     const input = document.getElementById(`awardPoints_${id}`);
     points = Math.max(0, Math.min(10000, parseInt(input?.value || "0", 10) || 0));
   }
-  const result = await getSupabaseClient().rpc("admin_set_suggestion_status", { suggestion_id_input: id, new_status: status, award_points: points });
+  const comment = document.getElementById(`adminComment_${id}`)?.value?.trim() || "";
+  const result = await getSupabaseClient().rpc("admin_set_suggestion_status_v83", { suggestion_id_input: id, new_status: status, award_points: points, admin_comment_input: comment });
   if (result.error) alert(result.error.message);
   await loadProfile();
   await refreshSuggestions();
@@ -3215,7 +5636,8 @@ function chatMessageRow(message, friendName = activeChatFriendName) {
   const mine = message.sender_id === blankSpaceUser?.id;
   const sender = message.sender?.username || (mine ? blankSpaceProfile?.username : friendName) || "Friend";
   const date = message.created_at ? new Date(message.created_at).toLocaleString() : "";
-  return `<div class="chat-bubble ${mine ? "mine" : ""}"><div class="chat-meta">${escapeHTML(sender)} • ${escapeHTML(date)}</div><div>${escapeHTML(message.body)}</div></div>`;
+  const img = message.image_url ? `<br><img class="chat-image-preview" src="${escapeHTML(message.image_url)}" alt="chat image">` : "";
+  return `<div class="chat-bubble ${mine ? "mine" : ""}"><div class="chat-meta">${escapeHTML(sender)} • ${escapeHTML(date)}</div><div>${escapeHTML(message.body || "")}${img}</div></div>`;
 }
 
 async function markFriendshipRead(friendshipId) {
@@ -3237,7 +5659,7 @@ async function loadChatMessages() {
   try {
     const result = await getSupabaseClient()
       .from("friend_messages")
-      .select("id, friendship_id, sender_id, body, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url)")
+      .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url)")
       .eq("friendship_id", activeFriendshipId)
       .order("created_at", { ascending: true })
       .limit(200);
@@ -3326,6 +5748,20 @@ async function openFriendChat(friendshipId, friendName) {
   chatPollTimer = setInterval(loadChatMessages, 5000);
 }
 
+
+async function fileToChatDataURL(inputId) {
+  const file = document.getElementById(inputId)?.files?.[0];
+  if (!file) return null;
+  if (!/^image\/(png|jpe?g|webp|gif)$/i.test(file.type)) throw new Error("Only image files are allowed.");
+  if (file.size > 750000) throw new Error("Image is too large. Use an image under 750 KB.");
+  return await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("Could not read image."));
+    reader.readAsDataURL(file);
+  });
+}
+
 async function sendChatMessage() {
   try {
     await loadExistingSession();
@@ -3338,6 +5774,7 @@ async function sendChatMessage() {
     const result = await getSupabaseClient().from("friend_messages").insert({ friendship_id: activeFriendshipId, sender_id: blankSpaceUser.id, body });
     if (result.error) throw result.error;
     if (input) input.value = "";
+    const imgInput = document.getElementById("chatImageInput"); if (imgInput) imgInput.value = "";
     await loadChatMessages();
   } catch (err) {
     setMessage("chatStatus", err.message || "Could not send message.", "error");
@@ -3391,7 +5828,7 @@ async function loadUnreadChats(showToasts = false, freshMessage = null) {
     if (!ids.length) { updateChatBadges(0); return; }
     const result = await getSupabaseClient()
       .from("friend_messages")
-      .select("id, friendship_id, sender_id, body, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username)")
+      .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username)")
       .in("friendship_id", ids)
       .neq("sender_id", blankSpaceUser.id)
       .is("read_at", null)
@@ -3458,7 +5895,7 @@ async function loadQuickChatMessages(friendName = "Friend") {
   if (!box || !quickActiveFriendshipId) return;
   const result = await getSupabaseClient()
     .from("friend_messages")
-    .select("id, friendship_id, sender_id, body, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url)")
+    .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, avatar_url)")
     .eq("friendship_id", quickActiveFriendshipId)
     .order("created_at", { ascending: true })
     .limit(100);
@@ -3475,10 +5912,12 @@ async function sendQuickChatMessage() {
     if (!blankSpaceProfile || !quickActiveFriendshipId) return;
     const input = document.getElementById("gameQuickInput");
     const body = input?.value.trim() || "";
-    if (!body || containsBlockedLanguage(body) || body.length > 500) return;
-    const result = await getSupabaseClient().from("friend_messages").insert({ friendship_id: quickActiveFriendshipId, sender_id: blankSpaceUser.id, body });
+    const image_url = await fileToChatDataURL("gameQuickImageInput");
+    if ((!body && !image_url) || containsBlockedLanguage(body) || body.length > 500) return;
+    const result = await getSupabaseClient().from("friend_messages").insert({ friendship_id: quickActiveFriendshipId, sender_id: blankSpaceUser.id, body: body || "Image", image_url });
     if (result.error) throw result.error;
     if (input) input.value = "";
+    const imgInput = document.getElementById("gameQuickImageInput"); if (imgInput) imgInput.value = "";
     await loadQuickChatMessages();
   } catch (err) {
     console.warn("Quick chat send failed", err);
@@ -3662,7 +6101,7 @@ async function refreshAchievements(showLoading = true) {
 }
 
 function renderAccountIconPicker() {
-  const box = document.getElementById("accountIconPicker");
+  const box = document.getElementById("iconsEquippedPicker") || document.getElementById("accountIconPicker");
   if (!box) return;
   if (!blankSpaceProfile) {
     box.innerHTML = `<div class="empty-state">Sign in first.</div>`;
@@ -3798,6 +6237,10 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .name-equipped-icon{width:22px;height:22px;font-size:13px;margin-left:5px}
 .achievement-shell{max-width:1150px;margin:18px auto;display:grid;grid-template-columns:1fr;gap:16px}.achievement-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}.achievement-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;min-height:146px}.achievement-card.locked{opacity:.48;filter:saturate(.55)}.achievement-icon{width:52px;height:52px;border-radius:18px;background:linear-gradient(145deg,#1f2430,#090a0e);display:grid;place-items:center;border:1px solid #3b3f4c;font-size:28px;box-shadow:0 10px 22px rgba(0,0,0,.35)}.achievement-card h3{margin:0 0 5px;font-size:17px}.achievement-card p{margin:0;color:#b5b5b5;font-size:13px;line-height:1.35}.achievement-meta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}.achievement-tag{border:1px solid #333842;border-radius:999px;padding:3px 7px;background:#151821;color:#fff;font-size:11px;font-weight:900}.achievement-actions{grid-column:1/-1;margin-top:8px;display:flex;gap:8px;align-items:center}.equipped-label{color:#a7f3d0;font-weight:900;font-size:12px}.icon-picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px}.icon-pick{display:flex;align-items:center;gap:8px;border:1px solid #2b2f3a;background:#0b0c10;border-radius:16px;padding:10px;cursor:pointer;color:#fff;text-align:left}.icon-pick:hover{border-color:#fff}.icon-pick.equipped{border-color:#a7f3d0;background:#0f1f1a}.icon-pick span:first-child{font-size:24px;width:32px;height:32px;display:grid;place-items:center;border-radius:999px;background:#151821}.icon-pick small{display:block;color:#aaa;font-weight:700}.admin-submit-hidden{display:none!important}
 
+
+/* v83 suggestions, admin, icons, trades, image chat */
+.suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
+
 </style>
 <script>
 window.addEventListener("keydown", function(e) {
@@ -3846,6 +6289,10 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .profile-equipped-icon,.name-equipped-icon{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:linear-gradient(145deg,#171922,#050505);border:1px solid #3b3f4c;box-shadow:0 6px 16px rgba(0,0,0,.35);font-size:16px;margin-left:6px;vertical-align:middle}
 .name-equipped-icon{width:22px;height:22px;font-size:13px;margin-left:5px}
 .achievement-shell{max-width:1150px;margin:18px auto;display:grid;grid-template-columns:1fr;gap:16px}.achievement-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}.achievement-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;min-height:146px}.achievement-card.locked{opacity:.48;filter:saturate(.55)}.achievement-icon{width:52px;height:52px;border-radius:18px;background:linear-gradient(145deg,#1f2430,#090a0e);display:grid;place-items:center;border:1px solid #3b3f4c;font-size:28px;box-shadow:0 10px 22px rgba(0,0,0,.35)}.achievement-card h3{margin:0 0 5px;font-size:17px}.achievement-card p{margin:0;color:#b5b5b5;font-size:13px;line-height:1.35}.achievement-meta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}.achievement-tag{border:1px solid #333842;border-radius:999px;padding:3px 7px;background:#151821;color:#fff;font-size:11px;font-weight:900}.achievement-actions{grid-column:1/-1;margin-top:8px;display:flex;gap:8px;align-items:center}.equipped-label{color:#a7f3d0;font-weight:900;font-size:12px}.icon-picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px}.icon-pick{display:flex;align-items:center;gap:8px;border:1px solid #2b2f3a;background:#0b0c10;border-radius:16px;padding:10px;cursor:pointer;color:#fff;text-align:left}.icon-pick:hover{border-color:#fff}.icon-pick.equipped{border-color:#a7f3d0;background:#0f1f1a}.icon-pick span:first-child{font-size:24px;width:32px;height:32px;display:grid;place-items:center;border-radius:999px;background:#151821}.icon-pick small{display:block;color:#aaa;font-weight:700}.admin-submit-hidden{display:none!important}
+
+
+/* v83 suggestions, admin, icons, trades, image chat */
+.suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
 
 </style>
 <script>
@@ -3962,7 +6409,11 @@ function showTab(tabId) {
   if (tabId === "account") initAccountPage();
 }
 
-const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:650;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block being embedded inside other websites, so those may still need the Open New Tab button.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
+const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:650;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}
+/* v83 suggestions, admin, icons, trades, image chat */
+.suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
+
+</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block being embedded inside other websites, so those may still need the Open New Tab button.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
 let browserLastURL = "";
 const browserHistory = [];
 let browserHistoryIndex = -1;
@@ -3989,7 +6440,7 @@ function parseBrowserInput(value) {
     return { url, isSearch: false, label: url };
   }
   // Google blocks being embedded. Google IGU is the most iframe-friendly Google search page available for this static browser.
-  const url = "https://www.google.com/search?igu=1&q=" + encodeURIComponent(text);
+  const url = "https://www.bing.com/search?q=" + encodeURIComponent(text);
   return { url, isSearch: true, label: text };
 }
 
@@ -4083,6 +6534,74 @@ function browserReload() {
   if (url) loadBrowserFrame(url, { skipHistory: true });
 }
 
+
+const ICON_PACKS = [
+  {id:"starter", name:"Starter Pack", price:5, rarities:["common","common","uncommon"]},
+  {id:"bronze", name:"Bronze Pack", price:7, rarities:["common","uncommon","uncommon","rare"]},
+  {id:"silver", name:"Silver Pack", price:10, rarities:["uncommon","rare","rare","epic"]},
+  {id:"gold", name:"Gold Pack", price:15, rarities:["rare","rare","epic","legendary"]},
+  {id:"diamond", name:"Diamond Pack", price:25, rarities:["rare","epic","legendary","legendary"]},
+  {id:"galaxy", name:"Galaxy Pack", price:50, rarities:["epic","legendary","mythic"]},
+  {id:"void", name:"Void Pack", price:100, rarities:["legendary","mythic","godly"]}
+];
+const ICON_CATALOG = [
+  ["comet","☄️","Comet","common"],["rocket","🚀","Rocket","common"],["star","⭐","Star","common"],["moon","🌙","Moon","common"],["basketball","🏀","Basketball","common"],["soccer","⚽","Soccer","common"],["snake","🐍","Snake","common"],["fish","🎣","Fishing Rod","common"],["pawn","♟️","Pawn","common"],["apple","🍎","Apple","common"],
+  ["alien","👽","Alien","uncommon"],["fire","🔥","Fire","uncommon"],["bolt","⚡","Bolt","uncommon"],["trophy","🏆","Trophy","uncommon"],["car","🚗","Car","uncommon"],["baseball","⚾","Baseball","uncommon"],["cat","🐈","Long Cat","uncommon"],["duck","🦆","Duck","uncommon"],["sword","🗡️","Sword","uncommon"],["target","🎯","Target","uncommon"],
+  ["crown","👑","Crown","rare"],["dragon","🐉","Dragon","rare"],["gem","💎","Gem","rare"],["ghost","👻","Ghost","rare"],["skull","💀","Skull","rare"],["controller","🎮","Controller","rare"],["wizard","🧙","Wizard","rare"],["ninja","🥷","Ninja","rare"],["king","♚","Chess King","rare"],["queen","♛","Chess Queen","rare"],
+  ["ufo","🛸","UFO","epic"],["saturn","🪐","Saturn","epic"],["blackhole","🕳️","Black Hole","epic"],["phoenix","🐦‍🔥","Phoenix","epic"],["robot","🤖","Robot","epic"],["money","💰","Money Bag","epic"],["medal","🏅","Medal","epic"],["laser","🔫","Blaster","epic"],
+  ["champ","🥇","Champion","legendary"],["galaxy","🌌","Galaxy","legendary"],["diamond","🔷","Blue Diamond","legendary"],["lion","🦁","Lion","legendary"],["eagle","🦅","Eagle","legendary"],["tornado","🌪️","Tornado","legendary"],
+  ["void","🌑","Void","mythic"],["nova","💫","Nova","mythic"],["meteor","🌠","Meteor","mythic"],["neon","🧬","Neon DNA","mythic"],
+  ["godmode","🔱","God Mode","godly"],["infinity","♾️","Infinity","godly"],["blankspace","⬛","Blank Space","godly"]
+].map(([id,icon,name,rarity]) => ({id,icon,name,rarity}));
+function randomIconForRarity(rarity){ const pool = ICON_CATALOG.filter(i => i.rarity === rarity); return pool[Math.floor(Math.random()*pool.length)] || ICON_CATALOG[0]; }
+async function refreshIcons(){
+  await loadExistingSession();
+  const packGrid=document.getElementById("packGrid"), ownedGrid=document.getElementById("ownedIconsGrid"), picker=document.getElementById("iconsEquippedPicker");
+  if (!packGrid || !ownedGrid || !picker) return;
+  packGrid.innerHTML=ICON_PACKS.map(p=>`<div class="pack-card"><h3>${escapeHTML(p.name)}</h3><p><span class="pack-price">${p.price} points</span></p><p class="small-note">Possible: ${p.rarities.map(r=>`<span class="rarity-${r}">${r}</span>`).join(", ")}</p><button class="mini-btn primary" onclick="buyIconPack('${p.id}')">Buy Pack</button></div>`).join("");
+  if(!blankSpaceProfile){setMessage("iconsStatus","Sign in to load icons."); ownedGrid.innerHTML=`<div class="empty-state">Sign in to collect icons.</div>`; picker.innerHTML=""; return;}
+  setMessage("iconsStatus","Loading icons...");
+  const result=await getSupabaseClient().from("user_icons").select("icon_id, icon, name, rarity, acquired_at").eq("user_id", blankSpaceUser.id).order("acquired_at", {ascending:false});
+  if(result.error){setMessage("iconsStatus", result.error.message, "error"); return;}
+  const owned=result.data||[];
+  ownedGrid.innerHTML=owned.length?owned.map(i=>`<div class="icon-card owned-icon"><div class="icon-large">${escapeHTML(i.icon)}</div><h3>${escapeHTML(i.name)}</h3><p class="rarity-${escapeHTML(i.rarity)}">${escapeHTML(i.rarity)}</p><button class="mini-btn" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')">Equip</button></div>`).join(""):`<div class="empty-state">No icons yet. Buy a pack.</div>`;
+  picker.innerHTML=owned.length?owned.map(i=>`<button class="icon-choice ${blankSpaceProfile.equipped_icon===i.icon?'active':''}" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')"><span>${escapeHTML(i.icon)}</span><small>${escapeHTML(i.name)}</small></button>`).join(""):`<div class="empty-state">No icons to equip yet.</div>`;
+  setMessage("iconsStatus", `${owned.length} icon${owned.length===1?"":"s"} owned.`);
+}
+async function buyIconPack(packId){
+  await loadExistingSession(); if(!blankSpaceProfile) return alert("Sign in first.");
+  const pack=ICON_PACKS.find(p=>p.id===packId); if(!pack) return;
+  const rarity=pack.rarities[Math.floor(Math.random()*pack.rarities.length)]; const icon=randomIconForRarity(rarity);
+  const result=await getSupabaseClient().rpc("buy_icon_pack_v83", {p_pack_id:pack.id,p_price:pack.price,p_icon_id:icon.id,p_icon:icon.icon,p_name:icon.name,p_rarity:icon.rarity});
+  if(result.error) return alert(result.error.message);
+  await loadProfile(); await refreshIcons(); alert(`You opened ${pack.name} and got ${icon.icon} ${icon.name}!`);
+}
+async function equipOwnedIcon(iconId){ const r=await getSupabaseClient().rpc("equip_owned_icon_v83", {p_icon_id:iconId}); if(r.error) return alert(r.error.message); await loadProfile(); await refreshIcons(); await refreshLeaderboard(); }
+function switchTradeView(view){document.querySelectorAll('.trade-subtab').forEach(b=>b.classList.toggle('active',b.dataset.tradeView===view));document.querySelectorAll('.trade-subview').forEach(v=>v.classList.remove('active'));document.getElementById('tradeView'+(view==='trade'?'Trade':'Requests'))?.classList.add('active'); if(view==='requests') refreshTradeRequests(); else refreshTrade();}
+async function getOwnedIcons(userId){ const r=await getSupabaseClient().from("user_icons").select("icon_id, icon, name, rarity").eq("user_id", userId); return r.data||[]; }
+async function refreshTrade(){
+  await loadExistingSession(); const box=document.getElementById("tradeFriendsList"); if(!box)return; if(!blankSpaceProfile){box.innerHTML=`<div class="empty-state">Sign in to trade.</div>`;return;}
+  const friends=await getAcceptedFriendRows(); const mine=await getOwnedIcons(blankSpaceUser.id);
+  box.innerHTML = friends.length?"":"<div class='empty-state'>No friends to trade with.</div>";
+  for(const f of friends){ const other=getFriendOther(f); const theirs=await getOwnedIcons(other.id); const id=`trade_${f.id}`; box.insertAdjacentHTML('beforeend',`<div class="trade-card"><h3>@${escapeHTML(usernameFromProfile(other))}</h3><p class="small-note">Choose your icon and the icon you want.</p><select id="${id}_offer">${mine.map(i=>`<option value="${escapeHTML(i.icon_id)}">${escapeHTML(i.icon)} ${escapeHTML(i.name)}</option>`).join("")}</select><select id="${id}_want">${theirs.map(i=>`<option value="${escapeHTML(i.icon_id)}">${escapeHTML(i.icon)} ${escapeHTML(i.name)}</option>`).join("")}</select><button class="mini-btn primary" onclick="sendTradeOffer(${f.id}, '${other.id}', '${id}')">Send Offer</button></div>`); }
+  setMessage("tradeStatus", friends.length?"Choose a friend to trade with.":"No friends yet.");
+}
+async function sendTradeOffer(friendshipId, toUserId, baseId){ const offer=document.getElementById(baseId+'_offer')?.value; const want=document.getElementById(baseId+'_want')?.value; const r=await getSupabaseClient().from('icon_trades').insert({friendship_id:friendshipId, requester_id:blankSpaceUser.id, receiver_id:toUserId, offered_icon_id:offer, requested_icon_id:want}); if(r.error) alert(r.error.message); else {setMessage('tradeStatus','Trade offer sent.','good'); refreshTradeRequests();}}
+async function refreshTradeRequests(){
+  await loadExistingSession(); const box=document.getElementById('tradeRequestsList'); if(!box)return; if(!blankSpaceProfile){box.innerHTML=`<div class="empty-state">Sign in to see trades.</div>`;return;}
+  const r=await getSupabaseClient().from('icon_trades').select('*, requester:profiles!icon_trades_requester_id_fkey(username), receiver:profiles!icon_trades_receiver_id_fkey(username)').or(`requester_id.eq.${blankSpaceUser.id},receiver_id.eq.${blankSpaceUser.id}`).order('created_at',{ascending:false}).limit(80);
+  if(r.error){setMessage('tradeRequestsStatus',r.error.message,'error');return;}
+  const rows=r.data||[]; box.innerHTML=rows.length?rows.map(t=>`<div class="trade-card"><h3>${t.requester_id===blankSpaceUser.id?'Sent to @'+escapeHTML(t.receiver?.username||'friend'):'From @'+escapeHTML(t.requester?.username||'friend')}</h3><p class="small-note">Offer: ${escapeHTML(t.offered_icon_id)} → ${escapeHTML(t.requested_icon_id)}</p><p><span class="suggestion-status ${escapeHTML(t.status)}">${escapeHTML(t.status)}</span></p>${t.receiver_id===blankSpaceUser.id&&t.status==='pending'?`<button class="mini-btn primary" onclick="answerTrade(${t.id}, 'accepted')">Accept</button><button class="mini-btn" onclick="answerTrade(${t.id}, 'rejected')">Deny</button>`:``}${t.requester_id===blankSpaceUser.id&&t.status==='pending'?`<button class="mini-btn" onclick="answerTrade(${t.id}, 'cancelled')">Cancel</button>`:``}</div>`).join(''):`<div class="empty-state">No trade requests.</div>`; setMessage('tradeRequestsStatus', `${rows.length} trade request${rows.length===1?'':'s'}.`);
+}
+async function answerTrade(id,status){ const r=await getSupabaseClient().rpc('answer_icon_trade_v83',{p_trade_id:id,p_status:status}); if(r.error) alert(r.error.message); await refreshTradeRequests(); await refreshIcons(); }
+async function refreshAdminPanel(){ const panel=document.getElementById('accountAdminPanel'); if(panel) panel.classList.toggle('hidden', !blankSpaceIsAdmin); }
+async function adminSearchUsers(){ const q=(document.getElementById('adminUserSearch')?.value||'').trim(); const box=document.getElementById('adminUserResults'); if(!box)return; const r=await getSupabaseClient().from('profiles').select('id,username,points,equipped_icon').ilike('username', `%${q}%`).limit(25); if(r.error){box.innerHTML=escapeHTML(r.error.message);return;} box.innerHTML=(r.data||[]).map(u=>`<div class="admin-user-row"><span>@${escapeHTML(u.username)} ${escapeHTML(u.equipped_icon||'')} • ${u.points||0} pts</span><button class="mini-btn" onclick="navigator.clipboard.writeText('${u.id}')">Copy ID</button></div>`).join('')||'<div class="empty-state">No users found.</div>'; }
+async function adminChangeUsername(){ const r=await getSupabaseClient().rpc('admin_change_username_v83',{p_old_username:document.getElementById('adminTargetUsername').value,p_new_username:document.getElementById('adminNewUsername').value}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Username changed.','good'); }
+async function adminDeleteUser(){ const name=document.getElementById('adminDeleteUsername').value; if(!confirm('Delete account '+name+'?')) return; const r=await getSupabaseClient().rpc('admin_delete_user_by_username_v83',{p_username:name}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Account deleted.','good'); }
+async function adminAdjustPoints(){ const r=await getSupabaseClient().rpc('admin_adjust_points_v83',{p_username:document.getElementById('adminPointsUsername').value,p_points:parseInt(document.getElementById('adminPointsAmount').value||'0',10),p_reason:document.getElementById('adminPointsReason').value}); if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Points updated.','good'); refreshLeaderboard();} }
+async function adminAddBlockedTerm(){ const term=document.getElementById('adminBlockedTerm').value.trim(); if(!term)return; const r=await getSupabaseClient().from('blocked_terms').insert({term}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Blocked term added.','good'); }
+function adminFun(kind){ const out=document.getElementById('adminFunOutput'); const icons=['🚀','🛸','👑','🐉','🌌','💎','⚡']; if(kind==='confetti'){document.body.insertAdjacentHTML('beforeend','<div class="metric-toast">🎉 Admin confetti!</div>'); setTimeout(()=>document.querySelector('.metric-toast')?.remove(),1500);} if(kind==='toast'){showChatToast('Admin test','This is what a notification looks like.');} if(kind==='icon'&&out){out.textContent='Random icon idea: '+icons[Math.floor(Math.random()*icons.length)];}}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("search")?.addEventListener("input", renderGames);
   document.getElementById("genre")?.addEventListener("change", renderGames);
@@ -4127,6 +6646,21 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("refreshLeaderboardBtn")?.addEventListener("click", refreshLeaderboard);
   document.getElementById("refreshAchievementsBtn")?.addEventListener("click", () => refreshAchievements());
   document.getElementById("clearEquippedIconBtn")?.addEventListener("click", clearEquippedIcon);
+
+  document.getElementById("refreshIconsBtn")?.addEventListener("click", refreshIcons);
+  document.getElementById("refreshTradeBtn")?.addEventListener("click", refreshTrade);
+  document.getElementById("refreshTradeRequestsBtn")?.addEventListener("click", refreshTradeRequests);
+  document.querySelectorAll(".trade-subtab").forEach(btn => btn.addEventListener("click", () => switchTradeView(btn.dataset.tradeView)));
+  document.getElementById("adminSearchUsersBtn")?.addEventListener("click", adminSearchUsers);
+  document.getElementById("adminChangeUsernameBtn")?.addEventListener("click", adminChangeUsername);
+  document.getElementById("adminDeleteUserBtn")?.addEventListener("click", adminDeleteUser);
+  document.getElementById("adminAdjustPointsBtn")?.addEventListener("click", adminAdjustPoints);
+  document.getElementById("adminAddBlockedTermBtn")?.addEventListener("click", adminAddBlockedTerm);
+  document.getElementById("adminReloadSchemaBtn")?.addEventListener("click", async () => { await loadProfile(); await refreshAdminPanel(); });
+  document.getElementById("adminConfettiBtn")?.addEventListener("click", () => adminFun('confetti'));
+  document.getElementById("adminToastBtn")?.addEventListener("click", () => adminFun('toast'));
+  document.getElementById("adminRandomIconBtn")?.addEventListener("click", () => adminFun('icon'));
+
   startChatNotifications();
   document.getElementById("sendFriendRequestBtn")?.addEventListener("click", sendFriendRequest);
   document.getElementById("refreshFriendsBtn")?.addEventListener("click", refreshFriends);
