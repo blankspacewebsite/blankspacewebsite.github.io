@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v89 full update: group chats, rank tools, achievement repair, browser iframe fix, and admin moderation tools -->
+<!-- Blank Space v90 full update: verified Slope score bridge, achievement backend hard fix, and accidental Slope fallback rollback -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -348,20 +348,18 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v89</span>
+        <span class="update-version-badge">Blank Space v90</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
-        <li>Added group chats so you can create a chat with multiple accepted friends.</li>
-        <li>Repaired achievements with a safer server-side awarding system so reaching a stat unlocks every matching achievement, not just the first one.</li>
-        <li>Kept the player-side Achievement Tester removed from games.</li>
-        <li>Added Admin Panel rank controls for Admin, Manager, Tester, and Member.</li>
-        <li>Ranks now show next to usernames with different colors.</li>
-        <li>Fixed the Blank Browser iframe bug by clearing the old home srcdoc before opening a page.</li>
-        <li>Added extra Admin moderation tools: mute/unmute chat, ban/unban chat, clear user messages, and reset achievements without changing points.</li>
+        <li>Replaced Slope with a verified self-hosted Slope runner that sends the real score to Blank Space when you play.</li>
+        <li>Fixed Slope achievements so they unlock from actual saved scores again, not from simply opening the game.</li>
+        <li>Added a Supabase hard-fix that removes the accidental Slope play-count fallback and restores score-based Slope achievement rows.</li>
+        <li>Kept group chats, rank badges, Admin Panel rank controls, moderation tools, Browser iframe fixes, and the removed player Achievement Tester button.</li>
+        <li>Strengthened the achievement bridge so same-origin verified games can send safe score/stat messages to Supabase.</li>
       </ul>
-      <div class="update-note">Supabase note: run <b>supabase_v89_update.sql</b> before testing group chats, ranks, moderation, or the repaired achievement backend.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v90_update.sql</b> before testing Slope achievements. Then upload this v90 website code to GitHub.</div>
     </div>
   </section>
 
@@ -6340,8 +6338,8 @@ function handleGameProgressMessage(event) {
   if (!data || typeof data !== "object") return;
   const gameTitle = String(data.gameTitle || data.game || data.blankSpaceGame || currentGame.title || "");
   if (gameTitle && gameTitle !== currentGame.title) return;
-  let metric = cleanAchievementMetric(data.metric || data.stat);
-  let value = data.value;
+  let metric = cleanAchievementMetric(data.metric || data.stat || data.blankSpaceMetric);
+  let value = data.value ?? data.score ?? data.blankSpaceValue;
   if (!metric) {
     const candidates = ["best_score","goals","wins","fish_caught","money_earned","checks","checkmates","merges","best_level","hits"];
     metric = candidates.find(k => data[k] !== undefined) || "";
