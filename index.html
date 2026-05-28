@@ -12,6 +12,7 @@
 <!-- Blank Space v75: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
 <!-- Blank Space v74: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
 <!-- Blank Space v73: added Supabase username accounts and on-site suggestions database -->
+<!-- Blank Space v87 strict patch: manual achievement submissions use exact values, disable all automatic game messages, and prevent mass unlocks -->
 <!-- Blank Space v87: disables unsafe automatic achievement detectors, fixes manual-only unlocks, resets Admin achievement stats, and keeps achievements points-only -->
 <!-- Blank Space v86: fixed achievement thresholds/progress, reset Admin achievements, leaderboard admin visibility, and hideable score submitter -->
 <!-- Blank Space v85: achievement reliability fix, manual score submit fallback, and corrected Supabase achievement SQL -->
@@ -6181,53 +6182,52 @@ async function evaluateAggregateAchievements(game) {
 }
 
 function handleGameProgressMessage(event) {
+  // Strict mode: all automatic/postMessage achievement events are ignored.
+  // The previous detector could read unrelated game numbers and mass-unlock achievements.
+  // Use the Achievement Score Submit panel so only the exact value you type is counted.
   const data = event?.data;
-  if (!data || typeof data !== "object") return;
-  if (data.type !== "blank-space-achievement" && !data.blankSpaceGame) return;
-  const gameTitle = String(data.game || data.blankSpaceGame || currentGame?.title || "").trim();
-  const metric = String(data.metric || "best_score").trim();
-  const value = Number(data.value ?? 1) || 0;
-  const mode = String(data.mode || (metric === "goals" || metric === "wins" || metric === "fish_caught" || metric === "checks" || metric === "checkmates" || metric === "merges" || metric === "hits" ? "add" : "max"));
-  if (!gameTitle || !metric) return;
-  recordGameMetric(gameTitle, metric, value, mode);
+  if (data && typeof data === "object" && (data.type === "blank-space-achievement" || data.blankSpaceGame)) {
+    addAchievementDebug("Ignored automatic game message. Use manual submit for exact achievement progress.");
+  }
+  return;
 }
 window.addEventListener("message", handleGameProgressMessage);
 
 
 function metricOptionsForGame(gameTitle){
   const title = String(gameTitle || "");
-  const base = [{value:"best_score", label:"Best score", mode:"max", placeholder:"score"}];
+  const base = [{value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}];
   if (title === "A Small World Cup") return [
-    {value:"goals", label:"Goals scored", mode:"add", placeholder:"goals this game"},
-    {value:"wins", label:"World Cup wins", mode:"add", placeholder:"wins"},
-    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+    {value:"goals", label:"Total goals", mode:"replace", placeholder:"total goals"},
+    {value:"wins", label:"World Cup wins", mode:"replace", placeholder:"wins"},
+    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
   ];
   if (title === "Basket Random") return [
-    {value:"best_score", label:"Score", mode:"max", placeholder:"score"},
-    {value:"wins", label:"Wins", mode:"add", placeholder:"wins"}
+    {value:"best_score", label:"Score", mode:"replace", placeholder:"score"},
+    {value:"wins", label:"Wins", mode:"replace", placeholder:"wins"}
   ];
   if (title === "Tiny Fishing") return [
-    {value:"fish_caught", label:"Fish caught", mode:"add", placeholder:"fish"},
-    {value:"money_earned", label:"Money / best cash", mode:"max", placeholder:"money"},
-    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+    {value:"fish_caught", label:"Total fish caught", mode:"replace", placeholder:"total fish"},
+    {value:"money_earned", label:"Money / best cash", mode:"replace", placeholder:"money"},
+    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
   ];
   if (title === "Chess-AI") return [
-    {value:"checkmates", label:"Checkmates", mode:"add", placeholder:"checkmates"},
-    {value:"checks", label:"Checks", mode:"add", placeholder:"checks"},
-    {value:"wins", label:"Wins", mode:"add", placeholder:"wins"}
+    {value:"checkmates", label:"Checkmates", mode:"replace", placeholder:"checkmates"},
+    {value:"checks", label:"Checks", mode:"replace", placeholder:"checks"},
+    {value:"wins", label:"Wins", mode:"replace", placeholder:"wins"}
   ];
   if (title === "Stick Merge") return [
-    {value:"merges", label:"Merges", mode:"add", placeholder:"merges"},
-    {value:"best_level", label:"Best level", mode:"max", placeholder:"level"},
-    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+    {value:"merges", label:"Merges", mode:"replace", placeholder:"merges"},
+    {value:"best_level", label:"Best level", mode:"replace", placeholder:"level"},
+    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
   ];
   if (title === "Drive Mad" || title === "Run 3") return [
-    {value:"best_level", label:"Best level reached", mode:"max", placeholder:"level"},
-    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+    {value:"best_level", label:"Best level reached", mode:"replace", placeholder:"level"},
+    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
   ];
   if (title === "Google Doodle Baseball") return [
-    {value:"hits", label:"Hits", mode:"add", placeholder:"hits"},
-    {value:"best_score", label:"Best score", mode:"max", placeholder:"score"}
+    {value:"hits", label:"Hits", mode:"replace", placeholder:"hits"},
+    {value:"best_score", label:"Best score", mode:"replace", placeholder:"score"}
   ];
   return base;
 }
@@ -6264,7 +6264,7 @@ function updateAchievementSubmitPanel(game){
   select.innerHTML = opts.map(o => `<option value="${escapeHTML(o.value)}" data-mode="${escapeHTML(o.mode)}" data-placeholder="${escapeHTML(o.placeholder)}">${escapeHTML(o.label)}</option>`).join("");
   input.value = "";
   input.placeholder = opts[0]?.placeholder || "value";
-  setAchievementSubmitStatus("Enter your real score/win/level after playing. You can hide this tester.");
+  setAchievementSubmitStatus("Enter the exact score/total you want counted. Strict mode prevents mass unlocks.");
   select.onchange = () => {
     const chosen = select.selectedOptions?.[0];
     input.placeholder = chosen?.dataset?.placeholder || "value";
@@ -6277,7 +6277,7 @@ async function submitAchievementMetricFromOverlay(){
   const input = document.getElementById("achievementSubmitValue");
   const metric = select?.value || "best_score";
   const option = select?.selectedOptions?.[0];
-  const mode = option?.dataset?.mode || (metric === "best_score" || metric === "best_level" || metric === "money_earned" ? "max" : "add");
+  const mode = option?.dataset?.mode || "replace";
   const value = Number(input?.value || 0);
   if (!value || value < 0) return setAchievementSubmitStatus("Type a number first.", true);
   setAchievementSubmitStatus("Saving achievement progress...");
