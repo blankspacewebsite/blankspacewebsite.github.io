@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v91 full update: restored real Unity Slope and patched its score bridge; hard-fixes achievements -->
+<!-- Blank Space v93 full update: deep achievement repair, exact A Small World Cup event bridge, chat pins, browser iframe fix, admin user messages, and account/icon cleanup -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -255,6 +255,8 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .chat-shell{max-width:1120px;margin:18px auto;display:grid;grid-template-columns:360px 1fr;gap:16px}.chat-friends-panel,.chat-main-panel{min-height:420px}.chat-friend-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #2b2f3a;border-radius:18px;background:#0b0c10;padding:12px;margin-bottom:10px}.chat-friend-row .friend-profile{min-width:0}.chat-friend-row .friend-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chat-toast-stack{position:fixed;right:18px;bottom:18px;z-index:10050;display:grid;gap:10px;width:min(360px,calc(100vw - 36px))}.chat-toast{border:1px solid #334155;border-radius:18px;background:rgba(11,12,16,.96);box-shadow:0 18px 48px rgba(0,0,0,.55);padding:12px;color:#fff;display:grid;gap:8px;animation:toastIn .18s ease}.chat-toast-title{font-weight:1000}.chat-toast-body{color:#d1d5db;font-size:13px;line-height:1.35;max-height:54px;overflow:hidden}.chat-toast-actions{display:flex;gap:8px;justify-content:flex-end}.chat-toast .mini-btn{padding:7px 10px;margin:0}@keyframes toastIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 .game-chat-fab{position:absolute;right:18px;bottom:18px;z-index:8;width:58px;height:58px;border-radius:999px;border:1px solid #3b4254;background:rgba(17,24,39,.94);color:#fff;font-size:25px;cursor:pointer;box-shadow:0 18px 50px rgba(0,0,0,.55)}.game-chat-fab:hover{filter:brightness(1.08)}.game-chat-badge{position:absolute;right:-4px;top:-5px;min-width:20px;height:20px;border-radius:999px;background:#ef4444;border:2px solid #050505;font-size:11px;font-weight:1000;display:grid;place-items:center;padding:0 5px}.game-chat-badge.hidden{display:none!important}.game-quick-chat{position:absolute;right:18px;bottom:86px;z-index:9;width:min(390px,calc(100vw - 52px));max-height:min(560px,78vh);display:grid;grid-template-rows:auto auto 1fr auto;border:1px solid #323846;border-radius:22px;background:rgba(8,10,16,.96);box-shadow:0 24px 74px rgba(0,0,0,.68);overflow:hidden}.quick-chat-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid #272b35}.quick-chat-title{font-weight:1000}.quick-friends{display:flex;gap:8px;overflow:auto;padding:10px;border-bottom:1px solid #272b35}.quick-friend-btn{border:1px solid #333842;border-radius:999px;background:#151821;color:#fff;padding:8px 10px;font-weight:900;white-space:nowrap;cursor:pointer}.quick-friend-btn.active{background:#fff;color:#000}.quick-messages{min-height:210px;max-height:310px;overflow:auto;padding:10px;display:grid;align-content:start;gap:8px}.quick-compose{display:flex;gap:8px;padding:10px;border-top:1px solid #272b35}.quick-compose input{width:100%;text-align:left;padding:10px 12px}.quick-compose .mini-btn{margin:0}.achievement-card.ready{border-color:#facc15;box-shadow:0 0 0 1px rgba(250,204,21,.22)}.achievement-need{background:#111827;border-color:#475569;color:#e5e7eb}.achievement-note{font-size:12px;color:#fcd34d;line-height:1.4;margin-top:8px}.metric-toast{position:fixed;left:18px;bottom:18px;z-index:10040;border:1px solid #334155;background:rgba(15,23,42,.94);color:#fff;border-radius:999px;padding:9px 12px;font-weight:900;box-shadow:0 14px 42px rgba(0,0,0,.55)}
 @media(max-width:850px){.chat-shell{grid-template-columns:1fr}.chat-friends-panel,.chat-main-panel{min-height:auto}.game-quick-chat{left:12px;right:12px;width:auto}.game-chat-fab{right:14px;bottom:14px}}
+.chat-row-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pin-chat-btn{min-width:42px;font-size:17px;padding:9px 10px}.pin-chat-btn.pinned{background:#facc15!important;color:#111!important;border-color:#facc15!important}.admin-forced-overlay{position:fixed;inset:0;z-index:200000;display:grid;place-items:center;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);padding:18px}.admin-forced-overlay.hidden{display:none!important}.admin-forced-card{max-width:620px;width:min(620px,94vw);border:1px solid #64748b;border-radius:28px;background:linear-gradient(180deg,#111827,#05070b);box-shadow:0 30px 90px rgba(0,0,0,.8);padding:28px;text-align:center}.admin-forced-card.warning{border-color:#facc15}.admin-forced-card.danger{border-color:#ef4444}.admin-forced-label{display:inline-flex;border:1px solid #475569;border-radius:999px;padding:6px 10px;font-weight:1000;text-transform:uppercase;font-size:11px;background:#111827;color:#fff}.admin-forced-card h2{font-size:32px;margin:14px 0 8px;letter-spacing:-.04em}.admin-forced-card p{font-size:18px;line-height:1.45;color:#e5e7eb}.admin-tile textarea{width:100%;text-align:left;margin:6px 0;border-radius:18px;background:#101116;color:#fff;border:1px solid #2b2d35;padding:12px 14px;min-height:94px;resize:vertical;font-family:Arial,Helvetica,sans-serif}
+
 
 
 /* v83 suggestions, admin, icons, trades, image chat */
@@ -348,18 +350,22 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v91</span>
+        <span class="update-version-badge">Blank Space v93</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
-        <li>Restored the real Unity Slope game files instead of the temporary replacement runner.</li>
-        <li>Patched the real Slope Unity WebGL score function so real Slope scores can be sent to Blank Space achievements.</li>
-        <li>Hard-fixed the achievement backend so score/stat milestones can unlock every matching achievement, not just the first one.</li>
-        <li>Cleaned the bad Slope play-count fallback so Slope achievements are score-based again.</li>
-        <li>Kept group chats, rank badges, Admin Panel rank controls, moderation tools, Browser iframe fixes, and the removed player Achievement Tester button.</li>
+        <li>Deep achievement repair: cleaned duplicate achievement cards, rebuilt the achievement catalog, and made Supabase award every valid matching achievement exactly once.</li>
+        <li>Fixed A Small World Cup by removing the broken polling/scoreboard scanner and patching the actual game event that increases your score. Goals are now sent as exact +1 goal events only.</li>
+        <li>Fully reset the Admin account's A Small World Cup achievements, goals, and wins so they can be earned again from clean real-game data.</li>
+        <li>Removed the extra Equipped Icon section from the Icons tab. Icon packs and your icon collection remain.</li>
+        <li>Cleaned the Account header so it shows one equipped icon and the new colored rank badge, without the old second icon slot or the old A admin badge.</li>
+        <li>Added chat pins. Use the pin button to the left of Chat in the Chat tab to keep friends at the top of your chat list.</li>
+        <li>Fixed the Browser iframe black-screen bug by fully clearing srcdoc before loading searches or URLs.</li>
+        <li>Added stronger Admin Panel commands, including non-closeable timed messages to specific users, force sign-out, reset avatar/icon tools, and per-user achievement/game resets.</li>
+        <li>Removed the old Important Admin Tools and Fun Admin Tools list sections.</li>
       </ul>
-      <div class="update-note">Supabase note: run <b>supabase_v91_update.sql</b> first. Then upload this v91 website code to GitHub and test real Slope.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v93_update.sql</b> first. Then upload this v93 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -390,7 +396,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 
   <section id="browser">
     <h1 class="page-title">Blank Browser</h1>
-    <p class="tagline">searches now open inside the iframe again. Sites that allow iframe loading open in the frame too.</p>
+    <p class="tagline">searches now open inside the iframe using a built-in results launcher, and iframe-friendly sites load in the frame.</p>
     <div class="browser-shell">
       <div class="browser-toolbar browser-launcher-toolbar">
         <button class="mini-btn" id="browserBack">Back</button>
@@ -470,13 +476,13 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 
   <section id="achievements">
     <h1 class="page-title">Achievements</h1>
-    <p class="tagline">Earn game badges, collect rewards, and equip one icon next to your name.</p>
+    <p class="tagline">Earn game badges and points from verified game metrics.</p>
     <div class="achievement-shell">
       <div class="panel suggestion-card">
         <div class="achievement-top">
           <div>
             <h2>Your Achievements</h2>
-            <p class="small-note">Sign in, play verified games, and unlock icons. Achievements now focus on game goals, scores, wins, catches, merges, and checkmates. Some compiled games still need experimental detectors, so the card will say when a detector is experimental.</p>
+            <p class="small-note">Sign in, play verified games, and unlock icons. Achievements now focus on game goals, scores, wins, catches, merges, and checkmates. Compiled games now use locked server-side metric rules. A Small World Cup and Slope use game-specific bridges instead of broad page scanners.</p>
           </div>
           <div>
             <button class="mini-btn" id="refreshAchievementsBtn">Refresh</button>
@@ -495,13 +501,8 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Equip unlocked icons, buy icon packs with points, and collect rarer icons.</p>
     <div class="achievement-shell">
       <div class="panel suggestion-card">
-        <div class="suggestions-toolbar"><div><h2>Equipped Icon</h2><p class="small-note">This icon shows next to your username. Points come from achievements and admin awards, not from icons.</p></div><button class="mini-btn" id="refreshIconsBtn">Refresh</button></div>
+        <div class="suggestions-toolbar"><div><h2>Icon Packs</h2><p class="small-note">Cheaper packs mostly give common icons. Expensive packs have better odds for rare, epic, legendary, mythic, and godly icons.</p></div><button class="mini-btn" id="refreshIconsBtn">Refresh</button></div>
         <p id="iconsStatus" class="form-message">Sign in to load icons.</p>
-        <div id="iconsEquippedPicker" class="icon-picker-grid"></div>
-      </div>
-      <div class="panel suggestion-card">
-        <h2>Icon Packs</h2>
-        <p class="small-note">Cheaper packs mostly give common icons. Expensive packs have better odds for rare, epic, legendary, mythic, and godly icons.</p>
         <div id="packGrid" class="pack-grid"></div>
       </div>
       <div class="panel suggestion-card">
@@ -666,9 +667,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
           <div>
             <div class="profile-name-row">
               <h2 id="profileDisplayName">Not signed in</h2>
-              <span class="profile-equipped-icon hidden" id="accountEquippedIcon" title="Equipped achievement icon"></span>
-              <span class="admin-badge hidden" id="accountAdminBadge" title="Admin">A</span>
-              <span class="medal hidden" id="accountMedal" title="Top 3 medal"></span>
+              <span class="profile-equipped-icon hidden" id="accountEquippedIcon" title="Equipped icon"></span>
               <span class="points-pill" id="accountPointsPill">0 points</span>
               <span class="rank-pill hidden" id="accountRankPill"></span>
             </div>
@@ -782,13 +781,12 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
           <div class="admin-tile"><h3>Delete Account</h3><input id="adminDeleteUsername" placeholder="Username to delete"/><button class="mini-btn danger-btn" id="adminDeleteUserBtn">Delete User</button></div>
           <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
           <div class="admin-tile"><h3>Ranks</h3><input id="adminRankUsername" placeholder="Username"/><select id="adminRankSelect"><option value="member">Member</option><option value="tester">Tester</option><option value="manager">Manager</option><option value="admin">Admin</option></select><input id="adminRankReason" placeholder="Reason"/><button class="mini-btn primary" id="adminSetRankBtn">Set Rank</button><p class="small-note">Admin gives Admin Panel access. Manager and Tester show colored badges.</p></div>
+          <div class="admin-tile"><h3>Timed User Message</h3><input id="adminMessageUsername" placeholder="Username"/><textarea id="adminMessageText" placeholder="Message they must see" maxlength="500"></textarea><input id="adminMessageSeconds" type="number" placeholder="Seconds visible" value="20" min="5" max="3600"/><select id="adminMessageStyle"><option value="notice">Notice</option><option value="warning">Warning</option><option value="danger">Danger</option></select><button class="mini-btn primary" id="adminSendUserMessageBtn">Send Message</button><p class="small-note">The user cannot close it. It disappears only when the timer expires.</p></div>
+          <div class="admin-tile"><h3>User Commands</h3><input id="adminCommandUsername" placeholder="Username"/><select id="adminCommandSelect"><option value="force_sign_out">Force Sign Out</option><option value="clear_equipped_icon">Clear Equipped Icon</option><option value="reset_avatar">Reset Avatar</option><option value="reset_aswc_keep_points">Reset A Small World Cup Only</option><option value="reset_all_achievements_keep_points">Reset All Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminCommandValue" placeholder="Optional value"/><input id="adminCommandReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminRunCommandBtn">Run Command</button><p class="small-note">Use commands carefully. Achievement reset commands do not change points.</p></div>
           <div class="admin-tile"><h3>Moderation</h3><input id="adminModUsername" placeholder="Username"/><select id="adminModAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="reset_achievements_keep_points">Reset Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminModReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminModerateBtn">Apply Moderation</button><p class="small-note">Uses safe moderation actions only; points are not changed unless you use the points tool.</p></div>
           <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
           <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
-          <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div>
-          <div class="admin-tile"><h3>Important Admin Tools</h3><ul class="small-note"><li>Change usernames</li><li>Delete accounts</li><li>Give/remove points</li><li>Approve suggestions</li><li>Deny suggestions</li><li>Add comments</li><li>Delete suggestions</li><li>Review pending ideas</li><li>Review in-progress ideas</li><li>Search users</li><li>Check user points</li><li>See equipped icons</li><li>Manage blocked words</li><li>Refresh leaderboard</li><li>Refresh achievements</li><li>Refresh chat</li><li>Refresh trades</li><li>Open game lists</li><li>Open links</li><li>Copy user IDs</li><li>Reload session</li><li>Sign out</li><li>Clear local cache</li><li>Test notification</li><li>Export admin notes</li></ul></div>
-          <div class="admin-tile"><h3>Fun Admin Tools</h3><button class="mini-btn" id="adminConfettiBtn">Confetti Test</button><button class="mini-btn" id="adminToastBtn">Toast Test</button><button class="mini-btn" id="adminRandomIconBtn">Random Icon Idea</button><p id="adminFunOutput" class="form-message"></p><ul class="small-note"><li>Confetti</li><li>Toast</li><li>Random icon</li><li>Motivation line</li><li>Random game pick</li><li>Badge preview</li><li>Leaderboard shoutout</li><li>Theme hint</li><li>Admin quote</li><li>Lucky number</li></ul></div>
-        </div>
+          <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div>        </div>
         <p id="adminPanelStatus" class="form-message"></p>
       </div>
 
@@ -798,8 +796,8 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <p class="small-note">Use this when achievements seem broken. It checks the database connection and lets admins simulate real game metrics to prove the reward system works.</p>
         <div class="admin-grid">
           <div class="admin-tile"><h3>Connection Check</h3><button class="mini-btn" id="adminAchievementCheckBtn">Check Achievement System</button><pre id="adminAchievementDebugOutput" class="debug-output">Not checked yet.</pre></div>
-          <div class="admin-tile"><h3>Metric Test</h3><select id="adminAchievementTestGame"><option>Google Snake</option><option>Slope</option><option>A Small World Cup</option><option>Basket Random</option><option>Tiny Fishing</option><option>Chess-AI</option><option>Stick Merge</option></select><input id="adminAchievementTestMetric" placeholder="metric: best_score, wins, goals, checkmates" value="best_score"/><input id="adminAchievementTestValue" type="number" placeholder="value" value="50"/><select id="adminAchievementTestMode"><option value="max">max</option><option value="add">add</option></select><button class="mini-btn primary" id="adminAchievementMetricBtn">Record Test Metric</button><p class="small-note">This records a real metric for your signed-in admin account and should unlock any matching achievements.</p></div>
-          <div class="admin-tile"><h3>Quick Tests</h3><button class="mini-btn" onclick="adminRecordPresetAchievement('Google Snake','best_score',10,'max')">Google Snake 10</button><button class="mini-btn" onclick="adminRecordPresetAchievement('Slope','best_score',50,'max')">Slope 50</button><button class="mini-btn" onclick="adminRecordPresetAchievement('A Small World Cup','wins',1,'add')">World Cup Win</button><button class="mini-btn" onclick="adminRecordPresetAchievement('Chess-AI','checkmates',1,'add')">Chess Checkmate</button></div>
+          <div class="admin-tile"><h3>Metric Test</h3><select id="adminAchievementTestGame"><option>Google Snake</option><option>Slope</option><option>A Small World Cup</option><option>Basket Random</option><option>Tiny Fishing</option><option>Chess-AI</option><option>Stick Merge</option></select><input id="adminAchievementTestMetric" placeholder="metric: best_score, wins, goals, checkmates" value="best_score"/><input id="adminAchievementTestValue" type="number" placeholder="value" value="50"/><select id="adminAchievementTestMode"><option value="max">max</option><option value="add">add</option><option value="delta_v93">ASWC goal delta</option><option value="add_win_v93">ASWC win</option></select><button class="mini-btn primary" id="adminAchievementMetricBtn">Record Test Metric</button><p class="small-note">This records a real metric for your signed-in admin account and should unlock any matching achievements.</p></div>
+          <div class="admin-tile"><h3>Quick Tests</h3><button class="mini-btn" onclick="adminRecordPresetAchievement('Google Snake','best_score',10,'max')">Google Snake 10</button><button class="mini-btn" onclick="adminRecordPresetAchievement('Slope','best_score',50,'max')">Slope 50</button><button class="mini-btn" onclick="adminRecordPresetAchievement('A Small World Cup','wins',1,'add_win_v93')">World Cup Win</button><button class="mini-btn" onclick="adminRecordPresetAchievement('Chess-AI','checkmates',1,'add')">Chess Checkmate</button></div>
           <div class="admin-tile"><h3>Live Game Detector</h3><p class="small-note">When a self-hosted game loads, Blank Space now tries to watch same-origin game text, localStorage, and game messages. Compiled canvas-only games may still not expose scores.</p><div id="liveAchievementDebug" class="debug-output">Open a game to see detector status.</div></div>
         </div>
       </div>
@@ -834,6 +832,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
   </div>
 </div>
 <div id="chatToastStack" class="chat-toast-stack"></div>
+<div id="adminForcedMessageOverlay" class="admin-forced-overlay hidden"><div class="admin-forced-card"><div class="admin-forced-label">Admin Message</div><h2 id="adminForcedMessageTitle">Blank Space Notice</h2><p id="adminForcedMessageBody"></p><p id="adminForcedMessageTimer" class="small-note"></p></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -4345,17 +4344,6 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "a_small_world_cup_wins_13_212",
-    "title": "Win the World Cup 13 times",
-    "desc": "Win the World Cup 13 times",
-    "icon": "🏆",
-    "reward": 10,
-    "difficulty": "hard",
-    "game": "A Small World Cup",
-    "stat": "wins",
-    "target": 13
-  },
-  {
     "id": "basket_random_best_score_345_213",
     "title": "Score 345 points in Basket Random",
     "desc": "Score 345 points in Basket Random",
@@ -4378,17 +4366,6 @@ const ACHIEVEMENTS = [
     "target": 575
   },
   {
-    "id": "chess_ai_checkmates_12_215",
-    "title": "Checkmate the bot 12 times",
-    "desc": "Checkmate the bot 12 times",
-    "icon": "♛",
-    "reward": 10,
-    "difficulty": "hard",
-    "game": "Chess-AI",
-    "stat": "checkmates",
-    "target": 12
-  },
-  {
     "id": "stick_merge_merges_450_216",
     "title": "Merge weapons 450 times in Stick Merge",
     "desc": "Merge weapons 450 times in Stick Merge",
@@ -4398,30 +4375,6 @@ const ACHIEVEMENTS = [
     "game": "Stick Merge",
     "stat": "merges",
     "target": 450
-  },
-  {
-    "id": "drive_mad_best_level_60_217",
-    "title": "Reach level 60 in Drive Mad",
-    "desc": "Reach level 60 in Drive Mad",
-    "icon": "🚗",
-    "reward": 5,
-    "difficulty": "medium",
-    "game": "Drive Mad",
-    "stat": "best_level",
-    "target": 60,
-    "experimental": true
-  },
-  {
-    "id": "run_3_best_level_60_218",
-    "title": "Reach level 60 in Run 3",
-    "desc": "Reach level 60 in Run 3",
-    "icon": "🌌",
-    "reward": 5,
-    "difficulty": "medium",
-    "game": "Run 3",
-    "stat": "best_level",
-    "target": 60,
-    "experimental": true
   },
   {
     "id": "google_doodle_baseball_hits_230_219",
@@ -4573,17 +4526,6 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "a_small_world_cup_wins_14_232",
-    "title": "Win the World Cup 14 times",
-    "desc": "Win the World Cup 14 times",
-    "icon": "🏆",
-    "reward": 10,
-    "difficulty": "hard",
-    "game": "A Small World Cup",
-    "stat": "wins",
-    "target": 14
-  },
-  {
     "id": "basket_random_best_score_375_233",
     "title": "Score 375 points in Basket Random",
     "desc": "Score 375 points in Basket Random",
@@ -4606,17 +4548,6 @@ const ACHIEVEMENTS = [
     "target": 625
   },
   {
-    "id": "chess_ai_checkmates_13_235",
-    "title": "Checkmate the bot 13 times",
-    "desc": "Checkmate the bot 13 times",
-    "icon": "♛",
-    "reward": 10,
-    "difficulty": "hard",
-    "game": "Chess-AI",
-    "stat": "checkmates",
-    "target": 13
-  },
-  {
     "id": "stick_merge_merges_490_236",
     "title": "Merge weapons 490 times in Stick Merge",
     "desc": "Merge weapons 490 times in Stick Merge",
@@ -4626,42 +4557,6 @@ const ACHIEVEMENTS = [
     "game": "Stick Merge",
     "stat": "merges",
     "target": 490
-  },
-  {
-    "id": "drive_mad_best_level_65_237",
-    "title": "Reach level 65 in Drive Mad",
-    "desc": "Reach level 65 in Drive Mad",
-    "icon": "🚗",
-    "reward": 5,
-    "difficulty": "medium",
-    "game": "Drive Mad",
-    "stat": "best_level",
-    "target": 65,
-    "experimental": true
-  },
-  {
-    "id": "run_3_best_level_65_238",
-    "title": "Reach level 65 in Run 3",
-    "desc": "Reach level 65 in Run 3",
-    "icon": "🌌",
-    "reward": 5,
-    "difficulty": "medium",
-    "game": "Run 3",
-    "stat": "best_level",
-    "target": 65,
-    "experimental": true
-  },
-  {
-    "id": "google_doodle_baseball_hits_250_239",
-    "title": "Get 250 hits in Google Doodle Baseball",
-    "desc": "Get 250 hits in Google Doodle Baseball",
-    "icon": "⚾",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "Google Doodle Baseball",
-    "stat": "hits",
-    "target": 250,
-    "experimental": true
   },
   {
     "id": "google_snake_best_score_650_240",
@@ -4685,17 +4580,6 @@ const ACHIEVEMENTS = [
     "stat": "best_score",
     "target": 800,
     "experimental": true
-  },
-  {
-    "id": "a_small_world_cup_wins_15_242",
-    "title": "Win the World Cup 15 times",
-    "desc": "Win the World Cup 15 times",
-    "icon": "🏆",
-    "reward": 20,
-    "difficulty": "crazy",
-    "game": "A Small World Cup",
-    "stat": "wins",
-    "target": 15
   },
   {
     "id": "basket_random_best_score_390_243",
@@ -4780,7 +4664,7 @@ const ACHIEVEMENTS = [
 ];
 
 function achievementById(id){ return ACHIEVEMENTS.find(a => a.id === id); }
-function equippedIconHTML(profile){ const icon = profile?.equipped_icon; return icon ? `<span class="name-equipped-icon" title="Equipped achievement icon">${escapeHTML(icon)}</span>` : ""; }
+function equippedIconHTML(profile){ const icon = profile?.equipped_icon; return icon ? `<span class="name-equipped-icon" title="Equipped icon">${escapeHTML(icon)}</span>` : ""; }
 function normalizeUserRank(rank){ const r=String(rank||"member").toLowerCase(); return ["admin","manager","tester","member"].includes(r)?r:"member"; }
 function rankLabel(rank){ const r=normalizeUserRank(rank); return r.charAt(0).toUpperCase()+r.slice(1); }
 function rankBadgeHTML(profileOrRank){ const rank=normalizeUserRank(typeof profileOrRank==="string"?profileOrRank:profileOrRank?.rank); return `<span class="rank-badge rank-${rank}" title="${rankLabel(rank)} rank">${rankLabel(rank)}</span>`; }
@@ -4972,11 +4856,24 @@ async function loadProfile() {
   }
   const result = await getSupabaseClient()
     .from("profiles")
-    .select("id, username, created_at, avatar_url, points, username_last_changed_at, login_email, equipped_icon, equipped_achievement_id, rank, is_banned, chat_muted_until")
+    .select("id, username, created_at, avatar_url, points, username_last_changed_at, login_email, equipped_icon, equipped_achievement_id, rank, is_banned, chat_muted_until, force_sign_out_at")
     .eq("id", blankSpaceUser.id)
     .maybeSingle();
   if (result.error) throw result.error;
   blankSpaceProfile = result.data;
+  if (blankSpaceProfile?.force_sign_out_at) {
+    const forcedAt = new Date(blankSpaceProfile.force_sign_out_at).getTime();
+    const seenKey = "blankspace_forced_signout_seen_" + blankSpaceProfile.id;
+    const seenAt = Number(localStorage.getItem(seenKey) || 0);
+    if (forcedAt && forcedAt > seenAt) {
+      localStorage.setItem(seenKey, String(forcedAt));
+      try { await getSupabaseClient().auth.signOut(); } catch(e) {}
+      blankSpaceUser = null; blankSpaceProfile = null; blankSpaceIsAdmin = false;
+      alert("You were signed out by an admin.");
+      renderProfile();
+      return null;
+    }
+  }
   renderProfile();
   return blankSpaceProfile;
 }
@@ -5045,7 +4942,7 @@ function renderProfile() {
     const points = Number(blankSpaceProfile.points || 0);
     setAccountState("Signed in as " + blankSpaceProfile.username, "good");
     if (currentUsername) currentUsername.textContent = blankSpaceProfile.username;
-    if (profileDisplayName) profileDisplayName.innerHTML = nameWithBadges(blankSpaceProfile);
+    if (profileDisplayName) profileDisplayName.textContent = blankSpaceProfile.username || "Account";
     if (profileSubtitle) profileSubtitle.textContent = (blankSpaceProfile.is_banned ? "Chat banned. " : "") + (blankSpaceProfile.chat_muted_until && new Date(blankSpaceProfile.chat_muted_until) > new Date() ? "Chat muted. " : "") + (blankSpaceIsAdmin ? "Admin account. You can still earn achievement points and appear on the leaderboard." : (blankSpaceProfile.login_email ? "Password login is enabled. You can use this account on other devices." : "Browser-only account. Add a password to use this account on other devices."));
     if (pointsPill) {
       pointsPill.textContent = points + " point" + (points === 1 ? "" : "s");
@@ -5803,44 +5700,30 @@ async function loadChatMessages() {
   }
 }
 
+let chatPinnedFriendIds = new Set();
+let chatPinOrder = new Map();
+async function loadChatPins() {
+  chatPinnedFriendIds = new Set(); chatPinOrder = new Map();
+  if (!blankSpaceProfile || !blankSpaceUser) return;
+  try { const r = await getSupabaseClient().from("chat_pins").select("friendship_id, pinned_at").eq("user_id", blankSpaceUser.id).order("pinned_at", { ascending: true });
+    if (r.error) throw r.error; (r.data || []).forEach((pin, idx) => { chatPinnedFriendIds.add(Number(pin.friendship_id)); chatPinOrder.set(Number(pin.friendship_id), idx); });
+  } catch (err) { console.warn("Chat pins unavailable", err); }
+}
+function sortChatRowsWithPins(rows) {
+  return (rows || []).slice().sort((a, b) => { const ap = chatPinnedFriendIds.has(Number(a.id)); const bp = chatPinnedFriendIds.has(Number(b.id)); if (ap && bp) return (chatPinOrder.get(Number(a.id)) || 0) - (chatPinOrder.get(Number(b.id)) || 0); if (ap) return -1; if (bp) return 1; return new Date(b.created_at || 0) - new Date(a.created_at || 0); });
+}
 function renderChatFriends(rows) {
-  const list = document.getElementById("chatFriendsList");
-  if (!list) return;
-  if (!blankSpaceProfile) {
-    list.innerHTML = `<div class="empty-state">Sign in to chat with friends.</div>`;
-    return;
-  }
-  if (!rows.length) {
-    list.innerHTML = `<div class="empty-state">No friends yet. Add friends in the Friends tab first.</div>`;
-    return;
-  }
-  list.innerHTML = rows.map(row => {
-    const other = getFriendOther(row);
-    const name = usernameFromProfile(other);
-    const safeName = escapeHTML(name).replace(/'/g, "&#039;");
-    return `<div class="chat-friend-row"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(name)}${equippedIconHTML(other)}${rankBadgeHTML(other)}</div><div class="friend-meta">${Number(other?.points || 0)} points</div></div></div><button class="mini-btn primary" onclick="openFriendChat(${row.id}, '${safeName}')">Chat</button></div>`;
-  }).join("");
+  const list = document.getElementById("chatFriendsList"); if (!list) return;
+  if (!blankSpaceProfile) { list.innerHTML = `<div class="empty-state">Sign in to chat with friends.</div>`; return; }
+  if (!rows.length) { list.innerHTML = `<div class="empty-state">No friends yet. Add friends in the Friends tab first.</div>`; return; }
+  list.innerHTML = sortChatRowsWithPins(rows).map(row => { const other = getFriendOther(row); const name = usernameFromProfile(other); const safeName = escapeHTML(name).replace(/'/g, "&#039;"); const pinned = chatPinnedFriendIds.has(Number(row.id)); return `<div class="chat-friend-row"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(name)}${equippedIconHTML(other)}${rankBadgeHTML(other)}</div><div class="friend-meta">${Number(other?.points || 0)} points${pinned ? " • pinned" : ""}</div></div></div><div class="chat-row-actions"><button class="mini-btn pin-chat-btn ${pinned ? "pinned" : ""}" title="${pinned ? "Unpin" : "Pin"} chat" onclick="toggleChatPin(${row.id})">📌</button><button class="mini-btn primary" onclick="openFriendChat(${row.id}, '${safeName}')">Chat</button></div></div>`; }).join("");
 }
-
+async function toggleChatPin(friendshipId) {
+  try { await loadExistingSession(); if (!blankSpaceProfile || !blankSpaceUser) return; const id = Number(friendshipId); if (chatPinnedFriendIds.has(id)) { const r = await getSupabaseClient().from("chat_pins").delete().eq("user_id", blankSpaceUser.id).eq("friendship_id", id); if (r.error) throw r.error; } else { const r = await getSupabaseClient().from("chat_pins").insert({ user_id: blankSpaceUser.id, friendship_id: id }); if (r.error) throw r.error; } await refreshChatFriends(); } catch (err) { setMessage("chatFriendsStatus", err.message || "Could not update pin.", "error"); }
+}
 async function refreshChatFriends() {
-  try {
-    const list = document.getElementById("chatFriendsList");
-    if (!list) return;
-    await loadExistingSession();
-    if (!blankSpaceProfile) {
-      setMessage("chatFriendsStatus", "Sign in to load friends.");
-      renderChatFriends([]);
-      return;
-    }
-    setMessage("chatFriendsStatus", "Loading friends...");
-    const rows = await getAcceptedFriendRows();
-    renderChatFriends(rows);
-    setMessage("chatFriendsStatus", rows.length ? "Choose a friend to chat." : "No friends yet.");
-  } catch (err) {
-    setMessage("chatFriendsStatus", err.message || "Could not load chat friends.", "error");
-  }
+  try { const list = document.getElementById("chatFriendsList"); if (!list) return; await loadExistingSession(); if (!blankSpaceProfile) { setMessage("chatFriendsStatus", "Sign in to load friends."); renderChatFriends([]); return; } setMessage("chatFriendsStatus", "Loading friends..."); const rows = await getAcceptedFriendRows(); await loadChatPins(); renderChatFriends(rows); setMessage("chatFriendsStatus", rows.length ? "Choose a friend to chat. Use 📌 to pin favorites." : "No friends yet."); } catch (err) { setMessage("chatFriendsStatus", err.message || "Could not load chat friends.", "error"); }
 }
-
 async function initChatPage() {
   await refreshChatFriends();
   await refreshGroupChats();
@@ -6268,8 +6151,7 @@ async function recordGameProgress(game, openEvent = false, seconds = 0) {
     if (!game || !blankSpaceProfile || !blankSpaceUser) return;
     const result = await getSupabaseClient().rpc("record_game_progress", { p_game_title: game.title, p_open_event: !!openEvent, p_seconds: Math.max(0, seconds || 0) });
     if (result.error) throw result.error;
-    const stat = Array.isArray(result.data) ? result.data[0] : result.data;
-    await evaluateAchievementsForGame(game, stat || {});
+    // v93: progress/open timers never unlock achievements by themselves. Only trusted metric RPCs do.
   } catch (err) {
     console.warn("Game progress not recorded", err);
   }
@@ -6290,10 +6172,9 @@ async function recordGameMetric(gameTitle, metric, value = 1, mode = "max") {
     const result = await getSupabaseClient().rpc("record_game_metric", { p_game_title: gameTitle, p_metric: safeMetric, p_value: numericValue, p_mode: mode || "max" });
     if (result.error) throw result.error;
     const stat = Array.isArray(result.data) ? result.data[0] : result.data;
-    const game = GAMES.find(g => g.title === gameTitle) || { title: gameTitle, verified:false };
     const serverUnlocked = Number(stat?.new_awards || 0);
-    const unlocked = serverUnlocked || await evaluateAchievementsForGame(game, stat || {});
-    addAchievementDebug(`Metric saved. ${unlocked || 0} new achievement(s).`);
+    const unlocked = serverUnlocked;
+    addAchievementDebug(`Metric saved by server. ${unlocked || 0} new achievement(s).`);
     if (unlocked) setAchievementSubmitStatus(`Saved. ${unlocked} new achievement${unlocked === 1 ? "" : "s"} unlocked!`, false);
     else setAchievementSubmitStatus("Saved. No new achievement reached yet.", false);
     return { ok:true, stat, unlocked:unlocked || 0 };
@@ -6308,18 +6189,8 @@ async function recordGameMetric(gameTitle, metric, value = 1, mode = "max") {
 }
 
 async function evaluateAchievementsForGame(game, stat) {
-  await evaluateAggregateAchievements(game);
-  let unlocked = 0;
-  const eligible = ACHIEVEMENTS.filter(a => a.game && a.game === game.title);
-  for (const achievement of eligible) {
-    const value = getStatValue(stat, achievement.stat || "play_count");
-    if (value >= Number(achievement.target || 1)) {
-      const didUnlock = await awardAchievement(achievement);
-      if (didUnlock) unlocked++;
-    }
-  }
-  if (!eligible.length) addAchievementDebug(`No achievement cards match game title: ${game.title}`);
-  return unlocked;
+  // v93: achievements are server-authoritative. The old client fallback could award from stale or bad stats.
+  return 0;
 }
 
 async function evaluateAggregateAchievements(game) {
@@ -6338,6 +6209,11 @@ function handleGameProgressMessage(event) {
   if (!data || typeof data !== "object") return;
   const gameTitle = String(data.gameTitle || data.game || data.blankSpaceGame || currentGame.title || "");
   if (gameTitle && gameTitle !== currentGame.title) return;
+
+  // v93: A Small World Cup only accepts trusted event messages patched into the real game data file.
+  // Old v92 scoreboard polling and generic scanner messages are ignored completely.
+  if (currentGame.title === "A Small World Cup" && !["aswc-data-event-v93", "aswc-global-vars-v93"].includes(data.source)) return;
+
   let metric = cleanAchievementMetric(data.metric || data.stat || data.blankSpaceMetric);
   let value = data.value ?? data.score ?? data.blankSpaceValue;
   if (!metric) {
@@ -6348,8 +6224,23 @@ function handleGameProgressMessage(event) {
   metric = cleanAchievementMetric(metric);
   const safeValue = safeAchievementValue(metric, value);
   if (!metric || safeValue === null) return;
-  addAchievementDebug(`Safe game message accepted: ${currentGame.title} ${metric}=${safeValue}`);
-  recordGameMetric(currentGame.title, metric, safeValue, data.mode || "max");
+
+  let finalMode = data.mode || "max";
+  let finalValue = safeValue;
+  if (currentGame.title === "A Small World Cup") {
+    if (metric === "goals") {
+      finalMode = "delta_v93";
+      finalValue = Math.max(1, Math.min(10, safeValue));
+    } else if (metric === "wins") {
+      finalMode = "add_win_v93";
+      finalValue = 1;
+    } else {
+      return;
+    }
+  }
+
+  addAchievementDebug(`Trusted game message accepted: ${currentGame.title} ${metric}=${finalValue} (${finalMode})`);
+  recordGameMetric(currentGame.title, metric, finalValue, finalMode);
 }
 window.addEventListener("message", handleGameProgressMessage);
 
@@ -6369,21 +6260,8 @@ function extractScoreFromText(text){
   return null;
 }
 function scanSameOriginGameForAchievements(game){
-  try{
-    const frame=document.getElementById("gameFrame");
-    if(!frame?.contentWindow || !game || !blankSpaceProfile) return;
-    let text="";
-    try { text += " " + (frame.contentDocument?.body?.innerText || ""); } catch(e) {}
-    try {
-      const ls = frame.contentWindow.localStorage;
-      for (let i=0; ls && i<Math.min(ls.length,80); i++) { const k=ls.key(i)||""; text += ` ${k} ${ls.getItem(k)}`; }
-    } catch(e) {}
-    const value=extractScoreFromText(text);
-    if(value !== null && value > 0){
-      const metric = pickMetricForGame(game.title);
-      recordGameMetric(game.title, metric, value, "max");
-    }
-  } catch(e) {}
+  // v93: disabled. The old scanner read random HUD/localStorage text and caused false achievement progress.
+  return;
 }
 function setupGameAchievementDetector(game){
   if (gameAchievementDetectorTimer) clearInterval(gameAchievementDetectorTimer);
@@ -6391,8 +6269,7 @@ function setupGameAchievementDetector(game){
   if (!game?.title) return;
   const hasCards = ACHIEVEMENTS.some(a => a.game === game.title);
   if (!hasCards) return addAchievementDebug(`No achievements configured for ${game.title}.`);
-  addAchievementDebug(`Achievement detector active for ${game.title}. Tester button stays removed.`);
-  gameAchievementDetectorTimer = setInterval(() => scanSameOriginGameForAchievements(game), 5000);
+  addAchievementDebug(`v93 trusted achievement mode active for ${game.title}. Generic scanner disabled; only trusted game messages/admin metrics count.`);
 }
 
 
@@ -6824,23 +6701,7 @@ function showTab(tabId) {
   if (tabId === "adminpanel") initAdminPanelPage();
 }
 
-const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:650;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}
-/* v83 suggestions, admin, icons, trades, image chat */
-.suggestion-status.in_works,.status-label-in_works{background:#172554;border-color:#3b82f6}.suggestion-comment{border-left:3px solid #64748b;background:#10131a;border-radius:12px;padding:9px 11px;color:#e5e7eb;margin-top:10px}.admin-comment-input{width:100%;min-height:76px!important;margin-top:8px!important}.suggestion-review-card{border:1px solid #334155;border-radius:16px;padding:10px;margin-top:10px;background:#0f172a}.account-subtabs,.icons-subtabs,.trade-subtabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px auto}.account-subtab,.icons-subtab,.trade-subtab{border:1px solid #343946;background:#11131a;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.account-subtab.active,.icons-subtab.active,.trade-subtab.active{background:#fff;color:#000}.account-subview,.icons-subview,.trade-subview{display:none}.account-subview.active,.icons-subview.active,.trade-subview.active{display:block}.admin-grid,.icons-grid,.pack-grid,.trade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.admin-tile,.pack-card,.icon-card,.trade-card{border:1px solid #2b2f3a;border-radius:20px;background:#0b0c10;padding:14px}.admin-tile h3,.pack-card h3,.icon-card h3,.trade-card h3{margin:0 0 8px}.admin-tile input,.admin-tile select,.admin-tile textarea,.trade-card input,.trade-card select{width:100%;text-align:left;margin:6px 0}.admin-mini-list{display:grid;gap:8px;max-height:380px;overflow:auto}.admin-user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #232936;border-radius:14px;padding:9px;background:#080a0f}.pack-price{display:inline-flex;border:1px solid #475569;background:#111827;border-radius:999px;padding:5px 9px;font-weight:1000}.icon-large{font-size:40px;line-height:1}.owned-icon{border-color:#22c55e}.chat-image-preview{max-width:220px;max-height:180px;border-radius:14px;margin-top:8px;border:1px solid #334155}.chat-compose,.quick-compose{align-items:center}.chat-compose input[type=file],.quick-compose input[type=file]{display:none}.image-btn{min-width:40px}.tab{position:relative}.tab-badge{left:-4px;right:auto;top:-6px}.admin-only-note{color:#facc15;font-size:12px;font-weight:900}.rarity-common{color:#e5e7eb}.rarity-uncommon{color:#86efac}.rarity-rare{color:#93c5fd}.rarity-epic{color:#c4b5fd}.rarity-legendary{color:#fcd34d}.rarity-mythic{color:#fda4af}.rarity-godly{color:#fb923c}.achievement-card.locked{opacity:.72}.achievement-card .achievement-meta{gap:6px}.achievement-tag.reward-easy{background:#052e16;border-color:#16a34a}.achievement-tag.reward-medium{background:#172554;border-color:#3b82f6}.achievement-tag.reward-hard{background:#451a03;border-color:#f59e0b}.achievement-tag.reward-crazy{background:#4c0519;border-color:#f43f5e}
-
-
-
-/* v86 achievement fixes */
-.achievement-progress-wrap{grid-column:1/-1;margin-top:8px;display:grid;gap:5px}
-.achievement-progress-label{font-size:12px;color:#d1d5db;font-weight:900}
-.achievement-progress-track{height:9px;border-radius:999px;background:#111827;border:1px solid #334155;overflow:hidden}
-.achievement-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
-.achievement-card.earned{border-color:#16a34a;box-shadow:0 0 0 1px rgba(34,197,94,.2)}
-.achievement-card .achievement-actions{display:none!important}
-
-
-.debug-output{white-space:pre-wrap;word-break:break-word;border:1px dashed #334155;border-radius:14px;background:#05070b;color:#d1d5db;padding:10px;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45}.achievement-debug-panel{border-color:#facc15}
-</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Searches open in this frame. Some websites choose to block embedding, but the v89 browser clears the old home page before loading so iframe-friendly pages show correctly.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
+const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:800;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Type a search or URL. v93 fixes the black-screen loading bug by clearing the old home page before loading the iframe. Some outside sites still block iframes, but iframe-friendly pages and searches can display here.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
 let browserLastURL = "";
 const browserHistory = [];
 let browserHistoryIndex = -1;
@@ -6875,6 +6736,16 @@ function normalizeBrowserInput(value) {
   return parseBrowserInput(value).url;
 }
 
+function browserSearchSrcdoc(query) {
+  const q = String(query || "").trim();
+  const esc = s => String(s || "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const enc = encodeURIComponent(q);
+  const google = "https://www.google.com/search?igu=1&q=" + enc;
+  const bing = "https://www.bing.com/search?q=" + enc;
+  const duck = "https://duckduckgo.com/html/?q=" + enc;
+  return `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.browser-search-page{height:100%;display:grid;grid-template-rows:auto 1fr}.browser-search-top{padding:12px;border-bottom:1px solid #303542;background:#0d0f14;display:flex;gap:9px;align-items:center;flex-wrap:wrap}.browser-search-link{border:1px solid #343946;border-radius:999px;background:#151821;color:#fff;padding:8px 11px;text-decoration:none;font-weight:900}.browser-search-link.primary{background:#fff;color:#000;border-color:#fff}.browser-search-frame{width:100%;height:100%;border:0;background:#fff}</style></head><body><div class="browser-search-page"><div class="browser-search-top"><b>Search: ${esc(q)}</b><a class="browser-search-link primary" href="${google}" target="results">Google in frame</a><a class="browser-search-link" href="${bing}" target="results">Bing in frame</a><a class="browser-search-link" href="${duck}" target="results">DuckDuckGo in frame</a><a class="browser-search-link" href="${google}" target="_blank" rel="noopener">Open tab</a></div><iframe class="browser-search-frame" name="results" src="${google}" referrerpolicy="no-referrer"></iframe></div></body></html>`;
+}
+
 function pushBrowserHistory(url) {
   if (!url) return;
   if (browserHistory[browserHistoryIndex] === url) return;
@@ -6892,11 +6763,10 @@ function loadBrowserFrame(url, options = {}) {
   const helper = browserHelp();
   if (helper) helper.classList.remove("show");
   clearTimeout(browserBlockedTimer);
-  // v89 fix: srcdoc from the browser home overrides src in some browsers, so remove it first.
+  // v93 fix: srcdoc from the browser home/search page overrides src in some browsers, so remove it completely before loading URLs.
   frame.removeAttribute("srcdoc");
-  frame.srcdoc = "";
   frame.src = "about:blank";
-  setTimeout(() => { frame.src = url; }, 30);
+  setTimeout(() => { frame.removeAttribute("srcdoc"); frame.src = url; }, 60);
   const kind = options.isSearch ? "Search opened in the iframe" : "Opening in iframe";
   setBrowserStatus(kind + ": " + (options.label || url), url);
   browserBlockedTimer = setTimeout(() => {
@@ -6914,7 +6784,18 @@ function openBrowserURL(url) {
 
 function goBrowser() {
   const parsed = parseBrowserInput(browserInput().value);
-  if (parsed.url) loadBrowserFrame(parsed.url, { isSearch: parsed.isSearch, label: parsed.label });
+  if (!parsed.url) return;
+  if (parsed.isSearch) {
+    const frame = browserFrame();
+    if (!frame) return;
+    browserLastURL = parsed.url;
+    pushBrowserHistory(parsed.url);
+    frame.src = "about:blank";
+    setTimeout(() => { frame.srcdoc = browserSearchSrcdoc(parsed.label); }, 30);
+    setBrowserStatus("Search opened in the iframe launcher: " + parsed.label, parsed.url);
+    return;
+  }
+  loadBrowserFrame(parsed.url, { isSearch: false, label: parsed.label });
 }
 
 function loadBrowserHome() {
@@ -6988,15 +6869,15 @@ function randomIconForRarity(rarity){ const pool = ICON_CATALOG.filter(i => i.ra
 async function refreshIcons(){
   await loadExistingSession();
   const packGrid=document.getElementById("packGrid"), ownedGrid=document.getElementById("ownedIconsGrid"), picker=document.getElementById("iconsEquippedPicker");
-  if (!packGrid || !ownedGrid || !picker) return;
+  if (!packGrid || !ownedGrid) return;
   packGrid.innerHTML=ICON_PACKS.map(p=>`<div class="pack-card"><h3>${escapeHTML(p.name)}</h3><p><span class="pack-price">${p.price} points</span></p><p class="small-note">Possible: ${p.rarities.map(r=>`<span class="rarity-${r}">${r}</span>`).join(", ")}</p><button class="mini-btn primary" onclick="buyIconPack('${p.id}')">Buy Pack</button></div>`).join("");
-  if(!blankSpaceProfile){setMessage("iconsStatus","Sign in to load icons."); ownedGrid.innerHTML=`<div class="empty-state">Sign in to collect icons.</div>`; picker.innerHTML=""; return;}
+  if(!blankSpaceProfile){setMessage("iconsStatus","Sign in to load icons."); ownedGrid.innerHTML=`<div class="empty-state">Sign in to collect icons.</div>`; if(picker) picker.innerHTML=""; return;}
   setMessage("iconsStatus","Loading icons...");
   const result=await getSupabaseClient().from("user_icons").select("icon_id, icon, name, rarity, acquired_at").eq("user_id", blankSpaceUser.id).order("acquired_at", {ascending:false});
   if(result.error){setMessage("iconsStatus", result.error.message, "error"); return;}
   const owned=result.data||[];
   ownedGrid.innerHTML=owned.length?owned.map(i=>`<div class="icon-card owned-icon"><div class="icon-large">${escapeHTML(i.icon)}</div><h3>${escapeHTML(i.name)}</h3><p class="rarity-${escapeHTML(i.rarity)}">${escapeHTML(i.rarity)}</p><button class="mini-btn" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')">Equip</button></div>`).join(""):`<div class="empty-state">No icons yet. Buy a pack.</div>`;
-  picker.innerHTML=owned.length?owned.map(i=>`<button class="icon-choice ${blankSpaceProfile.equipped_icon===i.icon?'active':''}" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')"><span>${escapeHTML(i.icon)}</span><small>${escapeHTML(i.name)}</small></button>`).join(""):`<div class="empty-state">No icons to equip yet.</div>`;
+  if(picker) picker.innerHTML=owned.length?owned.map(i=>`<button class="icon-choice ${blankSpaceProfile.equipped_icon===i.icon?'active':''}" onclick="equipOwnedIcon('${escapeHTML(i.icon_id)}')"><span>${escapeHTML(i.icon)}</span><small>${escapeHTML(i.name)}</small></button>`).join(""):`<div class="empty-state">No icons to equip yet.</div>`;
   setMessage("iconsStatus", `${owned.length} pack icon${owned.length===1?"":"s"} owned. Achievements give points only; icons come from packs.`);
 }
 async function buyIconPack(packId){
@@ -7051,6 +6932,20 @@ async function adminLoadActions(){
   box.innerHTML=(r.data||[]).map(a=>`<div class="admin-action-row"><b>${escapeHTML(a.action)}</b> → @${escapeHTML(a.target_username||'unknown')}<br><span>By @${escapeHTML(a.admin?.username||'admin')} • ${escapeHTML(formatDate(a.created_at))}</span>${a.reason?`<br><span>${escapeHTML(a.reason)}</span>`:''}</div>`).join('')||'<div class="empty-state">No admin actions yet.</div>';
 }
 async function adminAddBlockedTerm(){ const term=document.getElementById('adminBlockedTerm').value.trim(); if(!term)return; const r=await getSupabaseClient().from('blocked_terms').insert({term}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Blocked term added.','good'); }
+
+async function adminSendUserMessage(){
+  try{ const username=document.getElementById('adminMessageUsername')?.value.trim()||''; const message=document.getElementById('adminMessageText')?.value.trim()||''; const seconds=parseInt(document.getElementById('adminMessageSeconds')?.value||'20',10); const style=document.getElementById('adminMessageStyle')?.value||'notice'; if(!username||!message) return alert('Type a username and a message.'); const r=await getSupabaseClient().rpc('admin_send_user_message_v93',{p_username:username,p_message:message,p_seconds:seconds,p_style:style}); if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Timed message sent.','good'); adminLoadActions();} }catch(err){alert(err.message||String(err));}
+}
+async function adminRunCommand(){
+  try{ const username=document.getElementById('adminCommandUsername')?.value.trim()||''; const command=document.getElementById('adminCommandSelect')?.value||''; const value=document.getElementById('adminCommandValue')?.value||''; const reason=document.getElementById('adminCommandReason')?.value||''; if(!username||!command) return alert('Type a username and choose a command.'); if(!confirm('Run '+command+' on '+username+'?')) return; const r=await getSupabaseClient().rpc('admin_command_v93',{p_username:username,p_command:command,p_value:value,p_reason:reason}); if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Command applied.','good'); adminLoadActions(); refreshLeaderboard();} }catch(err){alert(err.message||String(err));}
+}
+let adminForcedMessageTimer=null; let adminForcedMessageExpiresAt=null;
+function hideAdminForcedMessage(){ document.getElementById('adminForcedMessageOverlay')?.classList.add('hidden'); adminForcedMessageExpiresAt=null; }
+function renderAdminForcedCountdown(){ const timer=document.getElementById('adminForcedMessageTimer'); if(!timer||!adminForcedMessageExpiresAt)return; const left=Math.max(0,Math.ceil((adminForcedMessageExpiresAt.getTime()-Date.now())/1000)); timer.textContent=left?`This message expires in ${left} second${left===1?'':'s'}.`:'Expired.'; if(!left) hideAdminForcedMessage(); }
+function showAdminForcedMessage(row){ const overlay=document.getElementById('adminForcedMessageOverlay'); const card=overlay?.querySelector('.admin-forced-card'); if(!overlay||!card||!row)return; card.classList.remove('warning','danger'); if(row.style==='warning')card.classList.add('warning'); if(row.style==='danger')card.classList.add('danger'); const body=document.getElementById('adminForcedMessageBody'); if(body)body.textContent=row.message||''; adminForcedMessageExpiresAt=new Date(row.expires_at); overlay.classList.remove('hidden'); renderAdminForcedCountdown(); }
+async function checkAdminForcedMessages(){ try{ if(!blankSpaceUser||!blankSpaceProfile){hideAdminForcedMessage();return;} const r=await getSupabaseClient().from('admin_user_messages').select('id,message,style,expires_at,created_at').eq('target_user_id',blankSpaceUser.id).eq('active',true).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(1); if(r.error)return; const row=(r.data||[])[0]; if(row)showAdminForcedMessage(row); else hideAdminForcedMessage(); }catch(e){} }
+function startAdminForcedMessageWatcher(){ if(adminForcedMessageTimer)clearInterval(adminForcedMessageTimer); adminForcedMessageTimer=setInterval(()=>{checkAdminForcedMessages();renderAdminForcedCountdown();},3000); checkAdminForcedMessages(); }
+
 function adminFun(kind){ const out=document.getElementById('adminFunOutput'); const icons=['🚀','🛸','👑','🐉','🌌','💎','⚡']; if(kind==='confetti'){document.body.insertAdjacentHTML('beforeend','<div class="metric-toast">🎉 Admin confetti!</div>'); setTimeout(()=>document.querySelector('.metric-toast')?.remove(),1500);} if(kind==='toast'){showChatToast('Admin test','This is what a notification looks like.');} if(kind==='icon'&&out){out.textContent='Random icon idea: '+icons[Math.floor(Math.random()*icons.length)];}}
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -7117,15 +7012,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminSetRankBtn")?.addEventListener("click", adminSetRank);
   document.getElementById("adminModerateBtn")?.addEventListener("click", adminModerateUser);
   document.getElementById("adminLoadActionsBtn")?.addEventListener("click", adminLoadActions);
+  document.getElementById("adminSendUserMessageBtn")?.addEventListener("click", adminSendUserMessage);
+  document.getElementById("adminRunCommandBtn")?.addEventListener("click", adminRunCommand);
   document.getElementById("adminAddBlockedTermBtn")?.addEventListener("click", adminAddBlockedTerm);
   document.getElementById("adminReloadSchemaBtn")?.addEventListener("click", async () => { await loadProfile(); await refreshAdminPanel(); });
-  document.getElementById("adminConfettiBtn")?.addEventListener("click", () => adminFun('confetti'));
-  document.getElementById("adminToastBtn")?.addEventListener("click", () => adminFun('toast'));
-  document.getElementById("adminRandomIconBtn")?.addEventListener("click", () => adminFun('icon'));
   document.getElementById("adminAchievementCheckBtn")?.addEventListener("click", checkAchievementSystem);
   document.getElementById("adminAchievementMetricBtn")?.addEventListener("click", adminRecordCustomAchievementMetric);
 
   startChatNotifications();
+  startAdminForcedMessageWatcher();
   document.getElementById("sendFriendRequestBtn")?.addEventListener("click", sendFriendRequest);
   document.getElementById("refreshFriendsBtn")?.addEventListener("click", refreshFriends);
   document.getElementById("usernameInput")?.addEventListener("keydown", e => { if (e.key === "Enter") createUsername(); });
