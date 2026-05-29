@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v110: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v111: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -382,6 +382,26 @@ header{
 #settingsCloseWarningLabel{
   font-weight:800;
 }
+/* v111 unlock code input fix */
+.lock-code-input{
+  display:block;
+  width:180px;
+  margin:0 auto 12px;
+  padding:12px 14px;
+  border-radius:16px;
+  border:1px solid #333842;
+  background:#0b0c10;
+  color:#fff;
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:.14em;
+  outline:none;
+}
+.lock-code-input:focus{
+  border-color:#fff;
+  box-shadow:0 0 0 3px rgba(255,255,255,.12);
+}
 </style>
 </head>
 <body>
@@ -391,6 +411,7 @@ header{
     <h1>Blank Space</h1>
     <p>Enter code to unlock</p>
     <div id="codeDisplay" class="code-display">----</div>
+    <input id="lockCodeInput" class="lock-code-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" aria-label="Enter unlock code" placeholder="Type code" />
     <div class="keypad">
       <button class="key" data-key="1">1</button>
       <button class="key" data-key="2">2</button>
@@ -462,7 +483,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v110</span>
+        <span class="update-version-badge">Blank Space v111</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -483,7 +504,7 @@ header{
         <li><b>Owner Panel:</b> added a tool to rename the Block Protection setting label for everyone.</li>
         <li><b>Chat safety warning:</b> the warning now appears under the Chat title for 10 seconds with no close button whenever the Chat tab loads after a refresh or new tab.</li>
       </ul>
-      <div class="update-note">Run supabase_v110_setting_label.sql first, then upload this v110 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">No Supabase changes needed for v111 if you already ran v110. Upload this v111 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -2243,14 +2264,84 @@ let activeGamesView = "verified";
 
 function updateCodeDisplay() {
   const display = document.getElementById("codeDisplay");
-  if (!display) return;
+  const input = document.getElementById("lockCodeInput");
   const dots = enteredCode.split("").map(() => "•").join("");
-  display.textContent = (dots + "----").slice(0, 4);
+  if (display) display.textContent = (dots + "----").slice(0, 4);
+  if (input && input.value !== enteredCode) input.value = enteredCode;
 }
 
 function unlockSite() {
   const lockScreen = document.getElementById("lockScreen");
   if (lockScreen) lockScreen.classList.add("unlocked");
+  try { sessionStorage.setItem("blankspace_unlocked_v111", "1"); } catch(e) {}
+  window.__blankSpaceLockUnlocked = true;
+}
+
+function checkUnlockCodeNow() {
+  const message = document.getElementById("lockMessage");
+  if (enteredCode.length !== 4) return;
+  if (enteredCode === SITE_UNLOCK_CODE) {
+    if (message) message.textContent = "";
+    unlockSite();
+    enteredCode = "";
+    updateCodeDisplay();
+  } else {
+    if (message) message.textContent = "Wrong code";
+    setTimeout(() => {
+      enteredCode = "";
+      updateCodeDisplay();
+      const input = document.getElementById("lockCodeInput");
+      if (input) input.focus();
+      if (message) message.textContent = "";
+    }, 650);
+  }
+}
+
+function handleCodeInput(value) {
+  const message = document.getElementById("lockMessage");
+  enteredCode = String(value || "").replace(/\D/g, "").slice(0, 4);
+  if (message) message.textContent = "";
+  updateCodeDisplay();
+  checkUnlockCodeNow();
+}
+
+function setupLockScreenInput() {
+  const lockScreen = document.getElementById("lockScreen");
+  const input = document.getElementById("lockCodeInput");
+
+  try {
+    if (sessionStorage.getItem("blankspace_unlocked_v111") === "1") {
+      unlockSite();
+      return;
+    }
+  } catch(e) {}
+
+  if (input && !input.dataset.bsReady) {
+    input.dataset.bsReady = "1";
+    input.addEventListener("input", () => handleCodeInput(input.value));
+    input.addEventListener("keydown", e => {
+      if (e.key === "Backspace") return;
+      if (e.key === "Enter") { checkUnlockCodeNow(); return; }
+      if (e.key === "Escape") { handleKeypad("clear"); return; }
+      if (e.key.length === 1 && !/^[0-9]$/.test(e.key)) e.preventDefault();
+    });
+    setTimeout(() => input.focus(), 50);
+  }
+
+  document.querySelectorAll(".key").forEach(btn => {
+    if (btn.dataset.bsReady) return;
+    btn.dataset.bsReady = "1";
+    const run = e => {
+      e.preventDefault();
+      e.stopPropagation();
+      handleKeypad(btn.dataset.key);
+      const lockInput = document.getElementById("lockCodeInput");
+      if (lockInput) lockInput.focus();
+    };
+    btn.addEventListener("pointerdown", run);
+    btn.addEventListener("touchstart", run, {passive:false});
+    btn.addEventListener("click", run);
+  });
 }
 
 function handleKeypad(value) {
@@ -2270,21 +2361,7 @@ function handleKeypad(value) {
   if (enteredCode.length >= 4) return;
   enteredCode += value;
   updateCodeDisplay();
-  if (enteredCode.length === 4) {
-    if (enteredCode === SITE_UNLOCK_CODE) {
-      if (message) message.textContent = "";
-      unlockSite();
-      enteredCode = "";
-      updateCodeDisplay();
-    } else {
-      if (message) message.textContent = "Wrong code";
-      setTimeout(() => {
-        enteredCode = "";
-        updateCodeDisplay();
-        if (message) message.textContent = "";
-      }, 650);
-    }
-  }
+  checkUnlockCodeNow();
 }
 
 function setGamesView(view) {
@@ -6982,6 +7059,9 @@ window.addEventListener("keydown", function(e) {
   });
 
   window.addEventListener("beforeunload", function(e){
+    const lockScreen = document.getElementById("lockScreen");
+    const locked = lockScreen && !lockScreen.classList.contains("unlocked");
+    if(locked) return;
     if(!getCloseWarningEnabled()) return;
     if(!closeWarningArmed) return;
 
@@ -6995,6 +7075,13 @@ window.addEventListener("keydown", function(e) {
 })();
 
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  if (typeof setupLockScreenInput === "function") setupLockScreenInput();
+});
+</script>
+
 </body>
 </html>`;
 }
@@ -7583,13 +7670,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("newUsernameInput")?.addEventListener("keydown", e => { if (e.key === "Enter") changeUsername(); });
   document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.tab)));
   document.querySelectorAll(".game-tab").forEach(btn => btn.addEventListener("click", () => setGamesView(btn.dataset.gamesView)));
-  document.querySelectorAll(".key").forEach(btn => btn.addEventListener("click", () => handleKeypad(btn.dataset.key)));
+  setupLockScreenInput();
   document.addEventListener("keydown", e => {
     const lockScreen = document.getElementById("lockScreen");
     const locked = lockScreen && !lockScreen.classList.contains("unlocked");
     if (!locked) return;
-    if (/^[0-9]$/.test(e.key)) handleKeypad(e.key);
-    if (e.key === "Backspace") handleKeypad("back");
+    const input = document.getElementById("lockCodeInput");
+    if (input && document.activeElement !== input) input.focus();
+    if (/^[0-9]$/.test(e.key) && document.activeElement !== input) handleKeypad(e.key);
+    if (e.key === "Backspace" && document.activeElement !== input) handleKeypad("back");
     if (e.key === "Escape") handleKeypad("clear");
   });
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeGame(); });
