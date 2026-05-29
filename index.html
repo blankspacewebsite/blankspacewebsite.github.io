@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v99: achievement repair, daily rewards, owner commands/device bans, game source refresh, settings upgrades, achievement search, and chat viewer overlay -->
+<!-- Blank Space v100: fixes Owner chat view wiring, Daily Rewards refresh button, and achievement search UI -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -362,8 +362,11 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <h2>Your 7-Day Streak</h2>
         <p class="small-note">Rewards: Day 1 = 1 point, Day 2 = 2, Day 3 = 3, Day 4 = 4, Day 5 = 5, Day 6 = 8, Day 7 = 10. Miss a day and the next claim resets the streak.</p>
         <div id="dailyRewardGrid" class="daily-reward-grid"></div>
-        <button class="bigbtn" id="claimDailyRewardBtn">Claim Daily Reward</button>
-        <p id="dailyRewardStatus" class="form-message">Sign in to claim daily rewards.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button class="bigbtn" id="claimDailyRewardBtn">Claim Daily Reward</button>
+          <button class="bigbtn secondary" id="refreshDailyRewardBtn" type="button">Refresh Daily Rewards</button>
+        </div>
+        <p id="dailyRewardStatus" class="form-message">Sign in to claim daily rewards, then press Refresh.</p>
       </div>
     </div>
   </section>
@@ -382,7 +385,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v99</span>
+        <span class="update-version-badge">Blank Space v100</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -520,7 +523,8 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
             <button class="mini-btn" id="clearEquippedIconBtn">Clear Equipped Icon</button>
           </div>
         </div>
-        <div class="searchbar achievement-searchbar"><input id="achievementSearch" placeholder="Search achievements by game, name, description, or reward..." autocomplete="off" /></div>
+        <div class="searchbar achievement-searchbar"><input id="achievementSearch" placeholder="Search achievements by game, name, description, or reward..." autocomplete="off" /><button class="mini-btn" id="clearAchievementSearchBtn" type="button">Clear</button></div>
+        <p id="achievementSearchStatus" class="small-note">Type to search achievements instantly.</p>
         <p id="achievementsStatus" class="form-message">Sign in to load achievements.</p>
         <div id="achievementsGrid" class="achievement-grid"></div>
       </div>
@@ -7488,6 +7492,102 @@ const oldAdminSendUserMessageV99=adminSendUserMessage; adminSendUserMessage=asyn
 const oldOpenCurrentGameExternalV99=openCurrentGameExternal; openCurrentGameExternal=function(){ const s=getLocalSettings(); if(s.confirmExternal&&!confirm('Open this source in a new tab?')) return; return oldOpenCurrentGameExternalV99(); };
 const oldSwitchTabV99=switchTab; switchTab=function(tabId){ const s=getLocalSettings(); if(s.rememberLastTab) localStorage.setItem('blankspace_last_tab_v99',tabId); oldSwitchTabV99(tabId); if(tabId==='dailyrewards') refreshDailyReward(); };
 document.addEventListener('DOMContentLoaded',()=>{ document.getElementById('claimDailyRewardBtn')?.addEventListener('click',claimDailyReward); document.getElementById('settingsSaveMoreBtn')?.addEventListener('click',saveMoreSettingsV99); document.getElementById('achievementSearch')?.addEventListener('input',filterAchievementsV99); document.getElementById('adminRunOtherCommandBtn')?.addEventListener('click',adminRunOtherCommandV99); document.getElementById('ownerChatViewClose')?.addEventListener('click',()=>document.getElementById('ownerChatViewOverlay')?.classList.add('hidden')); setTimeout(registerAndCheckDeviceV99,1200); setInterval(registerAndCheckDeviceV99,10000); const s=getLocalSettings(); const last=localStorage.getItem('blankspace_last_tab_v99'); if(s.rememberLastTab&&last&&last!=='account') setTimeout(()=>document.querySelector(`[data-tab="${last}"]`)?.click(),400); });
+
+
+
+/* v100 hotfix: Owner chat view, Daily Rewards refresh, and Achievement search wiring */
+function v100SetMsg(id, text, cls){ const el=document.getElementById(id); if(!el) return; el.textContent=text||''; el.classList.remove('error','good'); if(cls) el.classList.add(cls); }
+function v100AchievementCards(){ return Array.from(document.querySelectorAll('#achievementsGrid .achievement-card')); }
+function filterAchievementsV100(){
+  const input=document.getElementById('achievementSearch');
+  const status=document.getElementById('achievementSearchStatus');
+  const q=(input?.value||'').toLowerCase().trim();
+  const cards=v100AchievementCards();
+  let shown=0;
+  for(const card of cards){
+    const hay=(card.textContent||'').toLowerCase();
+    const ok=!q || hay.includes(q);
+    card.style.display=ok?'':'none';
+    if(ok) shown++;
+  }
+  if(status){
+    if(!cards.length) status.textContent='Achievements are loading. Press Refresh if they do not show.';
+    else status.textContent=q?`Showing ${shown} of ${cards.length} achievements for “${input.value}”.`:`Showing all ${cards.length} achievements.`;
+  }
+}
+const v100OldRefreshAchievements = window.refreshAchievements;
+window.refreshAchievements = async function(showLoading=true){
+  if(typeof v100OldRefreshAchievements === 'function') await v100OldRefreshAchievements(showLoading);
+  setTimeout(filterAchievementsV100, 0);
+};
+async function refreshDailyRewardV100(){
+  const client=getSupabaseClient();
+  try{
+    await loadExistingSession();
+    if(!blankSpaceUser){
+      const sessionResult=await client.auth.getSession();
+      const session=sessionResult.data?.session;
+      if(session){ await loadExistingSession(); }
+    }
+    if(!blankSpaceUser){ renderDailyRewardGrid?.(1); return v100SetMsg('dailyRewardStatus','Still not signed in. Go to Account, sign in, then press Refresh Daily Rewards.','error'); }
+    const r=await client.rpc('refresh_daily_reward_v99');
+    if(r.error) throw r.error;
+    const d=r.data||{};
+    renderDailyRewardGrid?.(d.next_day||1);
+    v100SetMsg('dailyRewardStatus', d.can_claim?`Ready to claim Day ${d.next_day||1}.`:(d.message||`Already claimed today. Next claim: ${d.next_day||1}.`), d.can_claim?'good':'');
+    return d;
+  }catch(e){
+    renderDailyRewardGrid?.(1);
+    v100SetMsg('dailyRewardStatus', e.message||'Could not refresh daily rewards. Run the v100 Supabase fix.','error');
+  }
+}
+async function claimDailyRewardV100(){
+  try{
+    await loadExistingSession();
+    if(!blankSpaceUser) return v100SetMsg('dailyRewardStatus','Sign in on Account, then press Refresh Daily Rewards.','error');
+    const r=await getSupabaseClient().rpc('claim_daily_reward_v99');
+    if(r.error) throw r.error;
+    const d=r.data||{};
+    if(!d.ok) return v100SetMsg('dailyRewardStatus',d.message||'Could not claim reward.','error');
+    v100SetMsg('dailyRewardStatus',`Claimed Day ${d.day} for ${d.points_awarded} point${d.points_awarded===1?'':'s'}!`,'good');
+    await loadProfile(); renderProfile(); await refreshLeaderboard?.(); await refreshDailyRewardV100();
+  }catch(e){ v100SetMsg('dailyRewardStatus',e.message||'Could not claim reward.','error'); }
+}
+async function ownerLoadChatView(){
+  const username=(document.getElementById('ownerChatUsername')?.value||'').trim();
+  const box=document.getElementById('ownerChatViewer');
+  if(!box) return alert('Owner Chat View box is missing. Upload v100 again.');
+  if(!username) { box.innerHTML='<div class="empty-state">Type a username first.</div>'; return; }
+  box.innerHTML='<div class="empty-state">Loading read-only chat view...</div>';
+  try{
+    await loadExistingSession();
+    let r=await getSupabaseClient().rpc('owner_get_user_chat_view_v99',{p_username:username,p_limit:300});
+    if(r.error){
+      const first=r.error.message||String(r.error);
+      r=await getSupabaseClient().rpc('owner_get_user_chat_view_v95',{p_username:username,p_limit:300});
+      if(r.error) throw new Error(first+' / fallback: '+(r.error.message||String(r.error)));
+    }
+    const rows=r.data||[];
+    box.innerHTML=rows.length?rows.map(m=>`<div class="owner-chat-line ${m.is_target_sender?'mine':'theirs'}"><b>${escapeHTML(m.chat_name||m.chat_type||'Chat')}</b><span class="small-note">${escapeHTML(m.created_at?new Date(m.created_at).toLocaleString():'')} • @${escapeHTML(m.sender_username||'unknown')} ${m.is_target_sender?'• target user':''}</span><div>${escapeHTML(m.body||'')}${m.image_url?'<br><img class="chat-image-preview" src="'+escapeHTML(m.image_url)+'">':''}</div></div>`).join(''):'<div class="empty-state">No chat messages found for that user. If you know they have messages, run the v100 Supabase fix and try again.</div>';
+  }catch(e){ box.innerHTML=`<div class="empty-state">${escapeHTML(e.message||'Could not load chat view. Run the v100 Supabase fix.')}</div>`; }
+}
+function wireV100Fixes(){
+  const claim=document.getElementById('claimDailyRewardBtn');
+  const refresh=document.getElementById('refreshDailyRewardBtn');
+  claim?.replaceWith(claim.cloneNode(true));
+  refresh?.replaceWith(refresh.cloneNode(true));
+  document.getElementById('claimDailyRewardBtn')?.addEventListener('click',claimDailyRewardV100);
+  document.getElementById('refreshDailyRewardBtn')?.addEventListener('click',refreshDailyRewardV100);
+  const search=document.getElementById('achievementSearch');
+  if(search){ ['input','keyup','change','search'].forEach(evt=>search.addEventListener(evt,filterAchievementsV100)); }
+  document.getElementById('clearAchievementSearchBtn')?.addEventListener('click',()=>{ if(search) search.value=''; filterAchievementsV100(); search?.focus(); });
+  const chatBtn=document.getElementById('ownerLoadChatViewBtn');
+  chatBtn?.replaceWith(chatBtn.cloneNode(true));
+  document.getElementById('ownerLoadChatViewBtn')?.addEventListener('click',ownerLoadChatView);
+  setTimeout(filterAchievementsV100,500);
+}
+document.addEventListener('DOMContentLoaded',wireV100Fixes);
+setTimeout(wireV100Fixes,800);
 
 </script>
 </body>
