@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v95 full update: fixes real Slope Unity framework loading while preserving v93 achievement repairs and UI/admin changes -->
+<!-- Blank Space v98: achievement hardening, settings, login gates, verified game additions, unread chat badges, suggestion comments, and send-all timed-message fix -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -297,6 +297,10 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .leader-flag-slot{display:grid;place-items:center;min-height:38px}.flag-user-btn{width:34px;height:34px;border-radius:999px;border:1px solid #7f1d1d;background:#2b1111;color:#fecaca;cursor:pointer;font-size:16px;font-weight:1000}.flag-user-btn:hover{background:#450a0a;transform:translateY(-1px)}.flag-user-btn.hidden{visibility:hidden;pointer-events:none}.owner-chat-viewer{max-height:360px;overflow:auto;display:grid;gap:8px;border:1px solid #2b2f3a;border-radius:16px;background:#07080b;padding:10px;margin-top:10px}.owner-chat-line{border:1px solid #2b2f3a;background:#0d0f14;border-radius:14px;padding:9px}.owner-chat-line b{color:#fff}.owner-chat-line .small-note{display:block;margin-top:4px}.chat-safety-note{border:1px solid #facc15;background:#221a06;color:#fef3c7;border-radius:16px;padding:10px;margin:0 0 12px;font-weight:800}.send-all-row{display:flex;align-items:center;gap:8px;justify-content:flex-start;margin:8px 0;color:#e5e7eb;font-weight:900}.send-all-row input{width:auto!important;margin:0!important}.owner-only-note{font-size:12px;color:#fef3c7;line-height:1.35}
 @media(max-width:720px){.leaderboard-item{grid-template-columns:36px 44px 48px 1fr}.leader-points{grid-column:4}.leader-flag-slot{min-height:30px}.flag-user-btn{width:30px;height:30px}}
 
+
+/* v98 settings, login gate, and unread chat badges */
+.settings-shell{max-width:1120px;margin:18px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.settings-card input,.settings-card select{width:100%;text-align:left;margin:8px 0}.settings-check{display:flex;align-items:center;gap:10px;font-weight:900;margin:10px 0;color:#e5e7eb}.settings-check input{width:auto!important}.chat-name-wrap{position:relative;display:inline-flex;align-items:center;gap:4px}.chat-unread-count{position:absolute;right:-22px;top:-13px;min-width:20px;height:20px;border-radius:999px;background:#ef4444;border:2px solid #050505;color:#fff;font-size:11px;font-weight:1000;display:grid;place-items:center;padding:0 5px}.light-mode{background:#f5f7fb;color:#111}.light-mode header,.light-mode .panel,.light-mode .game-tile,.light-mode .suggestion-card,.light-mode .friends-card,.light-mode .admin-tile,.light-mode .chat-messages,.light-mode .friend-item,.light-mode .suggestion-item,.light-mode .leaderboard-item{background:#fff!important;color:#111!important;border-color:#d5dae5!important}.light-mode input,.light-mode textarea,.light-mode select{background:#f9fafb!important;color:#111!important;border-color:#cbd5e1!important}.light-mode .tagline,.light-mode .small-note,.light-mode .friend-meta,.light-mode .profile-meta{color:#475569!important}.reduced-motion *, .reduced-motion *::before, .reduced-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+
 </style>
 </head>
 <body>
@@ -337,6 +341,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <button class="tab" data-tab="leaderboard">Leaderboard</button>
     <button class="tab chat-tab" data-tab="chat"><span id="chatTabBadge" class="tab-badge hidden">0</span>Chat</button>
     <button class="tab" data-tab="friends">Friends</button>
+    <button class="tab" data-tab="settings">Settings</button>
     <button class="tab" data-tab="account">Account</button>
     <button class="tab hidden" id="adminPanelTab" data-tab="adminpanel">Owner Panel</button>
   </nav>
@@ -357,20 +362,21 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v96</span>
+        <span class="update-version-badge">Blank Space v98</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
-        <li><b>Account header display:</b> the Account tab now shows the username first, then the equipped icon, then the rank badge, then points.</li>
-        <li><b>Owner rank:</b> the account named <b>Admin</b> is now the one-of-one <b>Owner</b> rank.</li>
-        <li><b>Flagging system:</b> managers, admins, and the owner can flag users from the leaderboard. A flag gives that user a warning pop-up; 3 warnings creates a one-day suspension.</li>
-        <li><b>Chat safety:</b> chat now shows a first-time notice after this update, automatically warns users for blocked/inappropriate words, and blocks those messages.</li>
-        <li><b>Owner Panel:</b> Admin Panel was renamed to Owner Panel, timed messages can now be sent to everyone, and the owner can view a user's chat history without typing in it.</li>
-        <li><b>A Small World Cup backend guard:</b> Supabase now treats the game's duplicate goal messages as paired signals so 5 real goals no longer saves as 10.</li>
-        <li>Preserved the v94 real Unity Slope startup fix and the real Slope score bridge.</li>
+        <li><b>Achievements:</b> rebuilt the Supabase achievement catalog/functions again with server-authoritative unlocks, exact reward points, Slope score-trigger awarding, Google Snake original-mode guard, and A Small World Cup duplicate-goal protection.</li>
+        <li><b>Achievement testing:</b> added a v98 health check and safer admin metric tests for Slope, Google Snake, A Small World Cup, Tiny Fishing, Chess-AI, Stick Merge, and Basket Random.</li>
+        <li><b>Verified Games:</b> added Cookie Clicker and Blumgi Merge from the uploaded game files, plus wrapper cards for Race Survival, Build a Big Army, Jump Only, and Brawl Stars.</li>
+        <li><b>Chat:</b> friend rows now show a red unread-message count beside the user name so you know exactly who sent new messages.</li>
+        <li><b>Owner Panel:</b> fixed Timed Message / Send to everyone so it does not require a username when sending globally.</li>
+        <li><b>Suggestions:</b> Owner/Admin can now use <b>Add Comment</b> without approving, so denied suggestions can still include a visible comment.</li>
+        <li><b>Login gate:</b> signed-out users are sent to Account before using Games, Browser, Suggestions, Achievements, Icons, Trade, Leaderboard, Chat, Friends, Settings, or Owner Panel.</li>
+        <li><b>Settings:</b> added a Settings tab with dark/light mode, custom tab title, favicon/tab cloak URL, reduced-motion toggle, and reset buttons.</li>
       </ul>
-      <div class="update-note">Supabase note: no new Supabase code is required for v96; upload this v96 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v98_update.sql</b> first, then upload this v98 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -392,7 +398,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
       <input id="search" placeholder="search games..." autocomplete="off" />
       <select id="genre">
         <option value="">all types</option>
-        <option>Action</option><option>Arcade</option><option>Clicker</option><option>Driving</option><option>Minecraft</option><option>Puzzle</option><option>Shooter</option><option>Sports</option><option>Strategy</option>
+        <option>Action</option><option>Arcade</option><option>Clicker</option><option>Driving</option><option>Minecraft</option><option>Puzzle</option><option>Shooter</option><option>Sports</option><option>Strategy</option><option>Merge</option>
       </select>
     </div>
     <div class="count" id="gameCount"></div>
@@ -774,6 +780,40 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     </div>
   </section>
 
+
+  <section id="settings">
+    <h1 class="page-title">Settings</h1>
+    <p class="tagline">Personalize your Blank Space experience on this device.</p>
+    <div class="settings-shell">
+      <div class="panel suggestion-card settings-card">
+        <h2>Theme</h2>
+        <p class="small-note">Switch between the normal dark look and a lighter mode.</p>
+        <select id="settingsTheme"><option value="dark">Dark mode</option><option value="light">Light mode</option></select>
+        <button class="mini-btn primary" id="settingsSaveThemeBtn">Save Theme</button>
+      </div>
+      <div class="panel suggestion-card settings-card">
+        <h2>Tab Cloak</h2>
+        <p class="small-note">Choose what the browser tab says and which icon it uses.</p>
+        <input id="settingsTabTitle" placeholder="Tab title, like Google Classroom" maxlength="80" />
+        <input id="settingsFaviconUrl" placeholder="Icon URL, like https://example.com/favicon.ico" />
+        <button class="mini-btn primary" id="settingsApplyCloakBtn">Apply Tab Cloak</button>
+        <button class="mini-btn" id="settingsResetCloakBtn">Reset Tab Cloak</button>
+      </div>
+      <div class="panel suggestion-card settings-card">
+        <h2>Comfort</h2>
+        <label class="settings-check"><input id="settingsReducedMotion" type="checkbox" /> Reduce motion and extra effects</label>
+        <label class="settings-check"><input id="settingsOpenGamesNewTab" type="checkbox" /> Prefer opening game source in a new tab</label>
+        <button class="mini-btn primary" id="settingsSaveComfortBtn">Save Comfort Settings</button>
+      </div>
+      <div class="panel suggestion-card settings-card">
+        <h2>Reset</h2>
+        <p class="small-note">This only resets settings saved in this browser. It does not delete your account.</p>
+        <button class="mini-btn danger-btn" id="settingsResetAllBtn">Reset Local Settings</button>
+        <p id="settingsStatus" class="form-message"></p>
+      </div>
+    </div>
+  </section>
+
   <section id="adminpanel">
     <h1 class="page-title">Owner Panel</h1>
     <p class="tagline">Owner/Admin tools for ranks, warnings, timed messages, chat review, achievements, accounts, and site safety.</p>
@@ -846,6 +886,61 @@ const SUPABASE_URL = "https://gnjbaefqzmjzuozytrta.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImduamJhZWZxem1qenVvenl0cnRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NzE0ODAsImV4cCI6MjA5NTA0NzQ4MH0.K2IUnbj1Cyv3rWi5yxLgMDyDNOImEvGv3Ugtf_gzNjA";
 
 const GAMES = [
+
+  {
+    "title": "Cookie Clicker",
+    "genre": "Clicker",
+    "source": "games/cookie-clicker/index.html",
+    "image": "games/cookie-clicker/img/perfectCookie.png",
+    "featured": true,
+    "reliable": true,
+    "verified": true
+  },
+  {
+    "title": "Blumgi Merge",
+    "genre": "Puzzle",
+    "source": "games/blumgi-merge/index.html",
+    "image": "games/blumgi-merge/icons/icon-512.png",
+    "featured": true,
+    "reliable": true,
+    "verified": true
+  },
+  {
+    "title": "Race Survival",
+    "genre": "Driving",
+    "source": "games/survival-race/index.html",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230b1020'/%3E%3Cpath d='M85 320c80-155 250-155 330 0' fill='none' stroke='%23ef4444' stroke-width='34' stroke-linecap='round'/%3E%3Ccircle cx='168' cy='330' r='48' fill='%23111827' stroke='%23fff' stroke-width='16'/%3E%3Ccircle cx='332' cy='330' r='48' fill='%23111827' stroke='%23fff' stroke-width='16'/%3E%3Ctext x='250' y='170' text-anchor='middle' font-family='Arial Black,Arial' font-size='62' fill='white'%3ERACE%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": true
+  },
+  {
+    "title": "Build a Big Army!",
+    "genre": "Strategy",
+    "source": "games/build-a-big-army/index.html",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%23111827'/%3E%3Ctext x='250' y='160' text-anchor='middle' font-family='Arial Black,Arial' font-size='46' fill='white'%3EBUILD%3C/text%3E%3Ctext x='250' y='230' text-anchor='middle' font-family='Arial Black,Arial' font-size='40' fill='%23fbbf24'%3EBIG ARMY%3C/text%3E%3Ccircle cx='160' cy='335' r='38' fill='%2393c5fd'/%3E%3Ccircle cx='250' cy='330' r='48' fill='%23f87171'/%3E%3Ccircle cx='340' cy='335' r='38' fill='%2386efac'/%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": true
+  },
+  {
+    "title": "Jump Only",
+    "genre": "Arcade",
+    "source": "games/jump-only/index.html",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230b1020'/%3E%3Cpath d='M90 365h320' stroke='%23fff' stroke-width='20' stroke-linecap='round'/%3E%3Cpath d='M250 335V135m0 0-70 70m70-70 70 70' stroke='%2322c55e' stroke-width='28' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='250' y='440' text-anchor='middle' font-family='Arial Black,Arial' font-size='46' fill='white'%3EJUMP ONLY%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": true
+  },
+  {
+    "title": "Brawl Stars",
+    "genre": "Action",
+    "source": "games/brawl-stars/index.html",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230f172a'/%3E%3Ccircle cx='250' cy='215' r='110' fill='%23facc15'/%3E%3Cpath d='M170 345h160l-80 80z' fill='%23facc15'/%3E%3Ctext x='250' y='230' text-anchor='middle' font-family='Arial Black,Arial' font-size='86' fill='%23111'%3EBS%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": true
+  },
   {
     "title": "Minecraft",
     "genre": "Minecraft",
@@ -5217,17 +5312,9 @@ function suggestionCard(item) {
   const pointInputId = `awardPoints_${item.id}`;
   const commentInputId = `adminComment_${item.id}`;
   const existingComment = item.admin_comment || "";
-  const commentHTML = existingComment ? `<div class="suggestion-comment"><b>Admin comment:</b> ${escapeHTML(existingComment)}</div>` : "";
-  let adminControls = "";
-  if (blankSpaceIsAdmin) {
-    if (item.status === "pending") {
-      adminControls = `<div class="suggestion-actions"><button class="mini-btn primary" onclick="adminSetSuggestion(${item.id}, 'in_works')">Work on it</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'rejected')">Deny</button><button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button></div>`;
-    } else if (item.status === "in_works") {
-      adminControls = `<div class="suggestion-review-card"><textarea class="admin-comment-input" id="${commentInputId}" placeholder="Admin comment shown on this suggestion...">${escapeHTML(existingComment)}</textarea><div class="award-row"><input class="points-input" id="${pointInputId}" type="number" min="0" max="10000" step="1" value="${points || 0}" title="Points to award"><button class="mini-btn primary" onclick="adminSetSuggestion(${item.id}, 'approved')">Award</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'rejected')">Deny</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'pending')">Back to Pending</button><button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button></div><p class="admin-award-note">Add a comment, choose points, then Award or Deny.</p></div>`;
-    } else {
-      adminControls = `<div class="suggestion-actions"><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'in_works')">Work on it</button><button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button></div>`;
-    }
-  }
+  const commentHTML = existingComment ? `<div class="suggestion-comment"><b>Owner/Admin comment:</b> ${escapeHTML(existingComment)}</div>` : "";
+  const reviewBox = `<div class="suggestion-review-card"><textarea class="admin-comment-input" id="${commentInputId}" placeholder="Comment shown on this suggestion, even if you deny it...">${escapeHTML(existingComment)}</textarea><div class="award-row"><input class="points-input" id="${pointInputId}" type="number" min="0" max="10000" step="1" value="${points || 0}" title="Points to award"><button class="mini-btn" onclick="adminAddSuggestionComment(${item.id})">Add Comment</button><button class="mini-btn primary" onclick="adminSetSuggestion(${item.id}, 'approved')">Award</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'rejected')">Deny</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'pending')">Back to Pending</button><button class="mini-btn" onclick="adminSetSuggestion(${item.id}, 'in_works')">Work on it</button><button class="mini-btn" onclick="deleteSuggestion(${item.id})">Delete</button></div><p class="admin-award-note">Use Add Comment to save a comment without approving. Deny also saves the comment.</p></div>`;
+  let adminControls = blankSpaceIsAdmin ? reviewBox : "";
   return `<article class="suggestion-item">
     <h3>${escapeHTML(item.game_title)}</h3>
     <div class="suggestion-meta"><span>@${escapeHTML(username)}${equippedIconHTML(profile)}</span>${mine ? "<span>mine</span>" : ""}<span>${formatDate(item.created_at)}</span><span class="suggestion-status ${escapeHTML(shownStatus)}">${escapeHTML(shownStatus.replace('_',' '))}</span>${pointsBadge}</div>
@@ -5312,6 +5399,16 @@ async function adminSetSuggestion(id, status) {
   await refreshSuggestions();
   await refreshMySuggestions();
   await refreshLeaderboard();
+}
+
+async function adminAddSuggestionComment(id) {
+  if (!blankSpaceIsAdmin) return;
+  const comment = document.getElementById(`adminComment_${id}`)?.value?.trim() || "";
+  if (!comment) return alert("Type a comment first.");
+  const result = await getSupabaseClient().rpc("admin_comment_suggestion_v98", { p_suggestion_id: id, p_comment: comment });
+  if (result.error) alert(result.error.message);
+  await refreshSuggestions();
+  await refreshMySuggestions();
 }
 
 async function setSuggestionStatus(id, status) {
@@ -5742,6 +5839,7 @@ async function loadChatMessages() {
 
 let chatPinnedFriendIds = new Set();
 let chatPinOrder = new Map();
+let chatUnreadByFriendship = new Map();
 async function loadChatPins() {
   chatPinnedFriendIds = new Set(); chatPinOrder = new Map();
   if (!blankSpaceProfile || !blankSpaceUser) return;
@@ -5756,7 +5854,15 @@ function renderChatFriends(rows) {
   const list = document.getElementById("chatFriendsList"); if (!list) return;
   if (!blankSpaceProfile) { list.innerHTML = `<div class="empty-state">Sign in to chat with friends.</div>`; return; }
   if (!rows.length) { list.innerHTML = `<div class="empty-state">No friends yet. Add friends in the Friends tab first.</div>`; return; }
-  list.innerHTML = sortChatRowsWithPins(rows).map(row => { const other = getFriendOther(row); const name = usernameFromProfile(other); const safeName = escapeHTML(name).replace(/'/g, "&#039;"); const pinned = chatPinnedFriendIds.has(Number(row.id)); return `<div class="chat-friend-row"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(name)}${equippedIconHTML(other)}${rankBadgeHTML(other)}</div><div class="friend-meta">${Number(other?.points || 0)} points${pinned ? " • pinned" : ""}</div></div></div><div class="chat-row-actions"><button class="mini-btn pin-chat-btn ${pinned ? "pinned" : ""}" title="${pinned ? "Unpin" : "Pin"} chat" onclick="toggleChatPin(${row.id})">📌</button><button class="mini-btn primary" onclick="openFriendChat(${row.id}, '${safeName}')">Chat</button></div></div>`; }).join("");
+  list.innerHTML = sortChatRowsWithPins(rows).map(row => {
+    const other = getFriendOther(row);
+    const name = usernameFromProfile(other);
+    const safeName = escapeHTML(name).replace(/'/g, "&#039;");
+    const pinned = chatPinnedFriendIds.has(Number(row.id));
+    const unread = Number(chatUnreadByFriendship.get(Number(row.id)) || 0);
+    const unreadBadge = unread > 0 ? `<span class="chat-unread-count" title="${unread} unread message${unread===1?'':'s'}">${unread > 99 ? '99+' : unread}</span>` : '';
+    return `<div class="chat-friend-row"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name"><span class="chat-name-wrap">@${escapeHTML(name)}${unreadBadge}</span>${equippedIconHTML(other)}${rankBadgeHTML(other)}</div><div class="friend-meta">${Number(other?.points || 0)} points${pinned ? " • pinned" : ""}</div></div></div><div class="chat-row-actions"><button class="mini-btn pin-chat-btn ${pinned ? "pinned" : ""}" title="${pinned ? "Unpin" : "Pin"} chat" onclick="toggleChatPin(${row.id})">📌</button><button class="mini-btn primary" onclick="openFriendChat(${row.id}, '${safeName}')">Chat</button></div></div>`;
+  }).join("");
 }
 async function toggleChatPin(friendshipId) {
   try { await loadExistingSession(); if (!blankSpaceProfile || !blankSpaceUser) return; const id = Number(friendshipId); if (chatPinnedFriendIds.has(id)) { const r = await getSupabaseClient().from("chat_pins").delete().eq("user_id", blankSpaceUser.id).eq("friendship_id", id); if (r.error) throw r.error; } else { const r = await getSupabaseClient().from("chat_pins").insert({ user_id: blankSpaceUser.id, friendship_id: id }); if (r.error) throw r.error; } await refreshChatFriends(); } catch (err) { setMessage("chatFriendsStatus", err.message || "Could not update pin.", "error"); }
@@ -5985,10 +6091,10 @@ function showChatToast(message, friendName, friendshipId) {
 async function loadUnreadChats(showToasts = false, freshMessage = null) {
   try {
     await loadExistingSession();
-    if (!blankSpaceProfile) { updateChatBadges(0); return; }
+    if (!blankSpaceProfile) { chatUnreadByFriendship = new Map(); updateChatBadges(0); return; }
     const rows = blankSpaceFriendRowsCache.length ? blankSpaceFriendRowsCache : await getAcceptedFriendRows();
     const ids = rows.map(r => r.id);
-    if (!ids.length) { updateChatBadges(0); return; }
+    if (!ids.length) { chatUnreadByFriendship = new Map(); updateChatBadges(0); renderChatFriends(rows); return; }
     const result = await getSupabaseClient()
       .from("friend_messages")
       .select("id, friendship_id, sender_id, body, image_url, created_at, read_at, sender:profiles!friend_messages_sender_id_fkey(username, rank)")
@@ -5996,10 +6102,14 @@ async function loadUnreadChats(showToasts = false, freshMessage = null) {
       .neq("sender_id", blankSpaceUser.id)
       .is("read_at", null)
       .order("created_at", { ascending: false })
-      .limit(50);
+      .limit(200);
     if (result.error) throw result.error;
     const unread = result.data || [];
+    const nextMap = new Map();
+    unread.forEach(m => nextMap.set(Number(m.friendship_id), (nextMap.get(Number(m.friendship_id)) || 0) + 1));
+    chatUnreadByFriendship = nextMap;
     updateChatBadges(unread.length);
+    if (document.getElementById("chat")?.classList.contains("active-section")) renderChatFriends(rows);
     if (showToasts && unread.length) {
       const newest = freshMessage || unread[0];
       const friendRow = rows.find(r => r.id === newest.friendship_id);
@@ -6010,7 +6120,6 @@ async function loadUnreadChats(showToasts = false, freshMessage = null) {
     console.warn("Unread chat check failed", err);
   }
 }
-
 function startChatNotifications() {
   if (chatNotifyPollTimer) clearInterval(chatNotifyPollTimer);
   chatNotifyPollTimer = setInterval(() => loadUnreadChats(true), 8000);
@@ -6754,19 +6863,27 @@ function fullscreenGame() {
   if (box.requestFullscreen) box.requestFullscreen();
 }
 
+const BLANK_SPACE_PUBLIC_TABS = new Set(["home", "update", "account"]);
+function requireSignInForTab(tabId) {
+  return !BLANK_SPACE_PUBLIC_TABS.has(tabId);
+}
 function showTab(tabId) {
+  if (requireSignInForTab(tabId) && (!blankSpaceUser || !blankSpaceProfile)) {
+    tabId = "account";
+    setTimeout(() => setMessage("profileMessage", "Create an account or sign in before using that tab.", "error"), 40);
+  }
   document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
   document.querySelectorAll("section").forEach(s => s.classList.remove("active-section"));
-  document.getElementById(tabId).classList.add("active-section");
+  document.getElementById(tabId)?.classList.add("active-section");
   if (tabId === "suggestions") initSupabaseSuggestions();
   if (tabId === "achievements") initAchievementsPage();
   if (tabId === "leaderboard") initLeaderboardPage();
   if (tabId === "chat") initChatPage();
   if (tabId === "friends") initFriendsPage();
+  if (tabId === "settings") initSettingsPage();
   if (tabId === "account") initAccountPage();
   if (tabId === "adminpanel") initAdminPanelPage();
 }
-
 const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:800;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Type a search or URL. v93 fixes the black-screen loading bug by clearing the old home page before loading the iframe. Some outside sites still block iframes, but iframe-friendly pages and searches can display here.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
 let browserLastURL = "";
 const browserHistory = [];
@@ -7009,7 +7126,27 @@ async function adminLoadActions(){
 async function adminAddBlockedTerm(){ const term=document.getElementById('adminBlockedTerm').value.trim(); if(!term)return; const r=await getSupabaseClient().from('blocked_terms').insert({term}); if(r.error) alert(r.error.message); else setMessage('adminPanelStatus','Blocked term added.','good'); }
 
 async function adminSendUserMessage(){
-  try{ const username=document.getElementById('adminMessageUsername')?.value.trim()||''; const message=document.getElementById('adminMessageText')?.value.trim()||''; const seconds=parseInt(document.getElementById('adminMessageSeconds')?.value||'20',10); const style=document.getElementById('adminMessageStyle')?.value||'notice'; if(!username||!message) return alert('Type a username and a message.'); const r=await getSupabaseClient().rpc('admin_send_user_message_v93',{p_username:username,p_message:message,p_seconds:seconds,p_style:style}); if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Timed message sent.','good'); adminLoadActions();} }catch(err){alert(err.message||String(err));}
+  try{
+    const sendAll=!!document.getElementById('adminMessageAll')?.checked;
+    const username=document.getElementById('adminMessageUsername')?.value.trim()||'';
+    const message=document.getElementById('adminMessageText')?.value.trim()||'';
+    const seconds=parseInt(document.getElementById('adminMessageSeconds')?.value||'20',10);
+    const style=document.getElementById('adminMessageStyle')?.value||'notice';
+    if(!message) return alert('Type a message.');
+    if(!sendAll && !username) return alert('Type a username or check Send to everyone.');
+    const r=await getSupabaseClient().rpc('admin_send_user_message_v95',{
+      p_username: sendAll ? '' : username,
+      p_message: message,
+      p_seconds: seconds,
+      p_style: style,
+      p_send_all: sendAll
+    });
+    if(r.error) alert(r.error.message);
+    else {
+      setMessage('adminPanelStatus', sendAll ? 'Timed message sent to everyone.' : 'Timed message sent.', 'good');
+      adminLoadActions();
+    }
+  }catch(err){alert(err.message||String(err));}
 }
 async function adminRunCommand(){
   try{ const username=document.getElementById('adminCommandUsername')?.value.trim()||''; const command=document.getElementById('adminCommandSelect')?.value||''; const value=document.getElementById('adminCommandValue')?.value||''; const reason=document.getElementById('adminCommandReason')?.value||''; if(!username||!command) return alert('Type a username and choose a command.'); if(!confirm('Run '+command+' on '+username+'?')) return; const r=await getSupabaseClient().rpc('admin_command_v93',{p_username:username,p_command:command,p_value:value,p_reason:reason}); if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Command applied.','good'); adminLoadActions(); refreshLeaderboard();} }catch(err){alert(err.message||String(err));}
@@ -7088,6 +7225,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminModerateBtn")?.addEventListener("click", adminModerateUser);
   document.getElementById("adminLoadActionsBtn")?.addEventListener("click", adminLoadActions);
   document.getElementById("adminSendUserMessageBtn")?.addEventListener("click", adminSendUserMessage);
+  document.getElementById("adminMessageAll")?.addEventListener("change", () => {
+    const box=document.getElementById("adminMessageAll");
+    const input=document.getElementById("adminMessageUsername");
+    if(!box||!input) return;
+    if(box.checked){ input.value=""; input.disabled=true; input.placeholder="Sending to everyone"; }
+    else { input.disabled=false; input.placeholder="Username, or use Send to everyone"; }
+  });
   document.getElementById("ownerLoadChatViewBtn")?.addEventListener("click", ownerLoadChatView);
   document.getElementById("adminRunCommandBtn")?.addEventListener("click", adminRunCommand);
   document.getElementById("adminAddBlockedTermBtn")?.addEventListener("click", adminAddBlockedTerm);
@@ -7125,6 +7269,32 @@ document.addEventListener("DOMContentLoaded", () => {
   renderLinks();
   loadBrowserHome();
 });
+
+
+/* v98 Settings and final fixes */
+const DEFAULT_BLANK_SPACE_TITLE = "Blank Space";
+function getLocalSettings(){ try{return JSON.parse(localStorage.getItem("blankspace_settings_v98")||"{}");}catch(e){return{};} }
+function saveLocalSettings(s){ localStorage.setItem("blankspace_settings_v98", JSON.stringify(s||{})); }
+function ensureFaviconLink(){ let link=document.querySelector("link[rel='icon']") || document.querySelector("link[rel='shortcut icon']"); if(!link){link=document.createElement("link"); link.rel="icon"; document.head.appendChild(link);} return link; }
+function applyLocalSettings(){ const s=getLocalSettings(); document.body?.classList.toggle("light-mode", s.theme==="light"); document.body?.classList.toggle("reduced-motion", !!s.reducedMotion); document.title=s.tabTitle||DEFAULT_BLANK_SPACE_TITLE; if(s.faviconUrl){ensureFaviconLink().href=s.faviconUrl;} }
+function initSettingsPage(){ applyLocalSettings(); const s=getLocalSettings(); const theme=document.getElementById("settingsTheme"); if(theme) theme.value=s.theme||"dark"; const title=document.getElementById("settingsTabTitle"); if(title) title.value=s.tabTitle||""; const fav=document.getElementById("settingsFaviconUrl"); if(fav) fav.value=s.faviconUrl||""; const rm=document.getElementById("settingsReducedMotion"); if(rm) rm.checked=!!s.reducedMotion; const nt=document.getElementById("settingsOpenGamesNewTab"); if(nt) nt.checked=!!s.openGamesNewTab; }
+function settingsStatus(msg, good=true){ setMessage("settingsStatus", msg, good?"good":"error"); }
+function saveThemeSetting(){ const s=getLocalSettings(); s.theme=document.getElementById("settingsTheme")?.value||"dark"; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Theme saved."); }
+function saveCloakSetting(){ const s=getLocalSettings(); s.tabTitle=(document.getElementById("settingsTabTitle")?.value||"").trim(); s.faviconUrl=(document.getElementById("settingsFaviconUrl")?.value||"").trim(); saveLocalSettings(s); applyLocalSettings(); settingsStatus("Tab cloak saved."); }
+function resetCloakSetting(){ const s=getLocalSettings(); delete s.tabTitle; delete s.faviconUrl; saveLocalSettings(s); document.title=DEFAULT_BLANK_SPACE_TITLE; const link=document.querySelector("link[rel='icon']"); if(link) link.remove(); initSettingsPage(); settingsStatus("Tab cloak reset."); }
+function saveComfortSettings(){ const s=getLocalSettings(); s.reducedMotion=!!document.getElementById("settingsReducedMotion")?.checked; s.openGamesNewTab=!!document.getElementById("settingsOpenGamesNewTab")?.checked; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Comfort settings saved."); }
+function resetAllSettings(){ localStorage.removeItem("blankspace_settings_v98"); applyLocalSettings(); initSettingsPage(); settingsStatus("Local settings reset."); }
+
+document.addEventListener("DOMContentLoaded",()=>{
+  applyLocalSettings();
+  document.getElementById("settingsSaveThemeBtn")?.addEventListener("click", saveThemeSetting);
+  document.getElementById("settingsApplyCloakBtn")?.addEventListener("click", saveCloakSetting);
+  document.getElementById("settingsResetCloakBtn")?.addEventListener("click", resetCloakSetting);
+  document.getElementById("settingsSaveComfortBtn")?.addEventListener("click", saveComfortSettings);
+  document.getElementById("settingsResetAllBtn")?.addEventListener("click", resetAllSettings);
+  document.getElementById("adminMessageAll")?.dispatchEvent(new Event("change"));
+});
+
 </script>
 </body>
 </html>
