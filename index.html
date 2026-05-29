@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v105: slightly enlarges the compact top navigation tabs while keeping them Chromebook-friendly and left-aligned. -->
+<!-- Blank Space v106: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -361,6 +361,23 @@ header{
   .gift-tab{min-width:32px!important;font-size:15px!important;padding:7px!important}
 }
 
+/* v106 tab cloak icon preview */
+#settingsFaviconPreview{
+  margin-top:8px;
+  min-height:22px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+#settingsFaviconPreview img{
+  width:20px;
+  height:20px;
+  border-radius:5px;
+  background:#fff;
+  object-fit:contain;
+  box-shadow:0 0 0 1px rgba(255,255,255,.25);
+}
 </style>
 </head>
 <body>
@@ -441,7 +458,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v105</span>
+        <span class="update-version-badge">Blank Space v106</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -457,9 +474,10 @@ header{
         <li><b>Daily rewards:</b> the refresh and claim buttons now force-check the current Supabase session before saying you are signed out.</li>
         <li><b>Achievement search:</b> added a Search button, Enter-key search, Clear button wiring, and a visible result count.</li>
         <li><b>Navigation:</b> made the top tab bar a bit bigger than v104 while keeping it compact enough for school Chromebooks while keeping the gift tab and all existing tabs.</li>
+        <li><b>Tab Cloak:</b> fixed custom tab icons so website URLs, favicon links, and direct image/icon URLs work correctly.</li>
         <li><b>Chat safety warning:</b> the warning now appears under the Chat title for 10 seconds with no close button whenever the Chat tab loads after a refresh or new tab.</li>
       </ul>
-      <div class="update-note">No Supabase changes needed for v105. Upload this v105 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">No Supabase changes needed for v106. Upload this v106 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -885,9 +903,10 @@ header{
         <h2>Tab Cloak</h2>
         <p class="small-note">Choose what the browser tab says and which icon it uses.</p>
         <input id="settingsTabTitle" placeholder="Tab title, like Google Classroom" maxlength="80" />
-        <input id="settingsFaviconUrl" placeholder="Icon URL, like https://example.com/favicon.ico" />
+        <input id="settingsFaviconUrl" placeholder="Website or icon URL, like classroom.google.com or https://example.com/favicon.ico" />
         <button class="mini-btn primary" id="settingsApplyCloakBtn">Apply Tab Cloak</button>
         <button class="mini-btn" id="settingsResetCloakBtn">Reset Tab Cloak</button>
+        <p class="small-note" id="settingsFaviconPreview">Tip: paste a website link or a direct .png/.ico/.svg image link.</p>
       </div>
       <div class="panel suggestion-card settings-card">
         <h2>Comfort</h2>
@@ -7530,20 +7549,107 @@ document.addEventListener("DOMContentLoaded", () => {
 const DEFAULT_BLANK_SPACE_TITLE = "Blank Space";
 function getLocalSettings(){ try{return JSON.parse(localStorage.getItem("blankspace_settings_v98")||"{}");}catch(e){return{};} }
 function saveLocalSettings(s){ localStorage.setItem("blankspace_settings_v98", JSON.stringify(s||{})); }
-function ensureFaviconLink(){ let link=document.querySelector("link[rel='icon']") || document.querySelector("link[rel='shortcut icon']"); if(!link){link=document.createElement("link"); link.rel="icon"; document.head.appendChild(link);} return link; }
-function applyLocalSettings(){ const s=getLocalSettings(); document.body?.classList.toggle("light-mode", s.theme==="light"); document.body?.classList.toggle("reduced-motion", !!s.reducedMotion); document.title=s.tabTitle||DEFAULT_BLANK_SPACE_TITLE; if(s.faviconUrl){ensureFaviconLink().href=s.faviconUrl;} }
-function initSettingsPage(){ applyLocalSettings(); const s=getLocalSettings(); const theme=document.getElementById("settingsTheme"); if(theme) theme.value=s.theme||"dark"; const title=document.getElementById("settingsTabTitle"); if(title) title.value=s.tabTitle||""; const fav=document.getElementById("settingsFaviconUrl"); if(fav) fav.value=s.faviconUrl||""; const rm=document.getElementById("settingsReducedMotion"); if(rm) rm.checked=!!s.reducedMotion; const nt=document.getElementById("settingsOpenGamesNewTab"); if(nt) nt.checked=!!s.openGamesNewTab; }
+function normalizeCloakIconInput(raw){
+  let input=(raw||"").trim();
+  if(!input) return "";
+  if(/^data:image\//i.test(input)) return input;
+  if(!/^https?:\/\//i.test(input)) input="https://"+input;
+  try{
+    const u=new URL(input);
+    const imageLike=/\.(ico|png|jpg|jpeg|gif|webp|svg)(\?.*)?$/i.test(u.pathname);
+    if(imageLike) return u.href;
+    // If the user pasted a normal website URL, use Google's favicon service.
+    // This fixes links like classroom.google.com, docs.google.com, google.com, etc.
+    return "https://www.google.com/s2/favicons?sz=64&domain_url="+encodeURIComponent(u.origin);
+  }catch(e){
+    return "";
+  }
+}
+function clearBlankSpaceFavicons(){
+  document.querySelectorAll("link[rel~='icon'], link[rel='shortcut icon'], link[rel='apple-touch-icon']").forEach(l=>l.remove());
+}
+function applyBlankSpaceFavicon(raw){
+  const resolved=normalizeCloakIconInput(raw);
+  clearBlankSpaceFavicons();
+  if(!resolved) return "";
+  const cache=String(Date.now());
+  const url=resolved.startsWith("data:image/") ? resolved : (resolved+(resolved.includes("?")?"&":"?")+"bscloak="+cache);
+  const rels=["icon","shortcut icon","apple-touch-icon"];
+  rels.forEach(rel=>{
+    const link=document.createElement("link");
+    link.rel=rel;
+    link.href=url;
+    if(rel==="icon" || rel==="shortcut icon") link.type=resolved.endsWith(".svg") ? "image/svg+xml" : "image/png";
+    document.head.appendChild(link);
+  });
+  return resolved;
+}
+function updateFaviconPreview(raw){
+  const box=document.getElementById("settingsFaviconPreview");
+  if(!box) return;
+  const resolved=normalizeCloakIconInput(raw);
+  if(resolved){
+    const safe=escapeHTML(resolved);
+    box.innerHTML=`<img src="${safe}" alt="Tab icon preview" onerror="this.style.display='none'; this.parentElement.append('Icon preview failed, but the browser may still load it in the tab.');"> <span>Icon source: ${safe}</span>`;
+  }else{
+    box.textContent="Tip: paste a website link or a direct .png/.ico/.svg image link.";
+  }
+}
+function applyLocalSettings(){
+  const s=getLocalSettings();
+  document.body?.classList.toggle("light-mode", s.theme==="light");
+  document.body?.classList.toggle("reduced-motion", !!s.reducedMotion);
+  document.title=s.tabTitle||DEFAULT_BLANK_SPACE_TITLE;
+  if(s.faviconUrl){ applyBlankSpaceFavicon(s.faviconUrl); }
+  updateFaviconPreview(s.faviconUrl||"");
+}
+function initSettingsPage(){
+  applyLocalSettings();
+  const s=getLocalSettings();
+  const theme=document.getElementById("settingsTheme"); if(theme) theme.value=s.theme||"dark";
+  const title=document.getElementById("settingsTabTitle"); if(title) title.value=s.tabTitle||"";
+  const fav=document.getElementById("settingsFaviconUrl"); if(fav) fav.value=s.faviconUrl||"";
+  const rm=document.getElementById("settingsReducedMotion"); if(rm) rm.checked=!!s.reducedMotion;
+  const nt=document.getElementById("settingsOpenGamesNewTab"); if(nt) nt.checked=!!s.openGamesNewTab;
+  updateFaviconPreview(s.faviconUrl||"");
+}
 function settingsStatus(msg, good=true){ setMessage("settingsStatus", msg, good?"good":"error"); }
 function saveThemeSetting(){ const s=getLocalSettings(); s.theme=document.getElementById("settingsTheme")?.value||"dark"; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Theme saved."); }
-function saveCloakSetting(){ const s=getLocalSettings(); s.tabTitle=(document.getElementById("settingsTabTitle")?.value||"").trim(); s.faviconUrl=(document.getElementById("settingsFaviconUrl")?.value||"").trim(); saveLocalSettings(s); applyLocalSettings(); settingsStatus("Tab cloak saved."); }
-function resetCloakSetting(){ const s=getLocalSettings(); delete s.tabTitle; delete s.faviconUrl; saveLocalSettings(s); document.title=DEFAULT_BLANK_SPACE_TITLE; const link=document.querySelector("link[rel='icon']"); if(link) link.remove(); initSettingsPage(); settingsStatus("Tab cloak reset."); }
+function saveCloakSetting(){
+  const s=getLocalSettings();
+  const title=(document.getElementById("settingsTabTitle")?.value||"").trim();
+  const rawIcon=(document.getElementById("settingsFaviconUrl")?.value||"").trim();
+  const resolved=normalizeCloakIconInput(rawIcon);
+  if(rawIcon && !resolved){
+    updateFaviconPreview("");
+    return settingsStatus("That icon link was not valid. Paste a website URL like classroom.google.com or a direct image/icon URL.", false);
+  }
+  s.tabTitle=title;
+  if(rawIcon){ s.faviconUrl=rawIcon; s.faviconResolvedUrl=resolved; }
+  else { delete s.faviconUrl; delete s.faviconResolvedUrl; clearBlankSpaceFavicons(); }
+  saveLocalSettings(s);
+  applyLocalSettings();
+  settingsStatus(rawIcon ? "Tab cloak saved. The icon should update after a refresh if your browser cached the old one." : "Tab title saved.");
+}
+function resetCloakSetting(){
+  const s=getLocalSettings();
+  delete s.tabTitle; delete s.faviconUrl; delete s.faviconResolvedUrl;
+  saveLocalSettings(s);
+  document.title=DEFAULT_BLANK_SPACE_TITLE;
+  clearBlankSpaceFavicons();
+  initSettingsPage();
+  settingsStatus("Tab cloak reset.");
+}
 function saveComfortSettings(){ const s=getLocalSettings(); s.reducedMotion=!!document.getElementById("settingsReducedMotion")?.checked; s.openGamesNewTab=!!document.getElementById("settingsOpenGamesNewTab")?.checked; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Comfort settings saved."); }
-function resetAllSettings(){ localStorage.removeItem("blankspace_settings_v98"); applyLocalSettings(); initSettingsPage(); settingsStatus("Local settings reset."); }
+function resetAllSettings(){ localStorage.removeItem("blankspace_settings_v98"); clearBlankSpaceFavicons(); applyLocalSettings(); initSettingsPage(); settingsStatus("Local settings reset."); }
 
 document.addEventListener("DOMContentLoaded",()=>{
   applyLocalSettings();
   document.getElementById("settingsSaveThemeBtn")?.addEventListener("click", saveThemeSetting);
   document.getElementById("settingsApplyCloakBtn")?.addEventListener("click", saveCloakSetting);
+  document.getElementById("settingsTabTitle")?.addEventListener("keydown", e=>{ if(e.key==="Enter") saveCloakSetting(); });
+  document.getElementById("settingsFaviconUrl")?.addEventListener("keydown", e=>{ if(e.key==="Enter") saveCloakSetting(); });
+  document.getElementById("settingsFaviconUrl")?.addEventListener("input", e=>updateFaviconPreview(e.target.value));
   document.getElementById("settingsResetCloakBtn")?.addEventListener("click", resetCloakSetting);
   document.getElementById("settingsSaveComfortBtn")?.addEventListener("click", saveComfortSettings);
   document.getElementById("settingsResetAllBtn")?.addEventListener("click", resetAllSettings);
