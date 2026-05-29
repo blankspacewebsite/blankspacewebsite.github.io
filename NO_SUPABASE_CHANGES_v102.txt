@@ -1,0 +1,1 @@
+No Supabase changes are needed for Blank Space v102. Upload the website files to GitHub and hard-refresh.
