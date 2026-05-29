@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v112: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v113: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -408,6 +408,94 @@ header{
     <p id="lockMessage" class="lock-message"></p>
   </div>
 </div>
+
+<script>
+/* v113 hard unlock fallback: runs even if another script later has a problem */
+(function(){
+  if (window.__blankSpaceHardUnlockV113) return;
+  window.__blankSpaceHardUnlockV113 = true;
+
+  const CODE = "1213";
+  let typed = "";
+
+  function active(){
+    const lock = document.getElementById("lockScreen");
+    return !!(lock && !lock.classList.contains("unlocked"));
+  }
+
+  function display(){
+    const d = document.getElementById("codeDisplay");
+    if (!d) return;
+    d.textContent = (typed.split("").map(()=> "•").join("") + "----").slice(0,4);
+  }
+
+  function unlock(){
+    const lock = document.getElementById("lockScreen");
+    if (lock) lock.classList.add("unlocked");
+    window.__blankSpaceLockUnlocked = true;
+    typed = "";
+    display();
+  }
+
+  function wrong(){
+    const msg = document.getElementById("lockMessage");
+    if (msg) msg.textContent = "Wrong code";
+    setTimeout(function(){
+      typed = "";
+      display();
+      const msg2 = document.getElementById("lockMessage");
+      if (msg2) msg2.textContent = "";
+    }, 650);
+  }
+
+  function press(k){
+    if (!active()) return;
+    if (k === "clear") { typed = ""; display(); return; }
+    if (k === "back") { typed = typed.slice(0,-1); display(); return; }
+    if (!/^[0-9]$/.test(k)) return;
+    if (typed.length >= 4) return;
+    typed += k;
+    display();
+    if (typed.length === 4) {
+      if (typed === CODE) unlock();
+      else wrong();
+    }
+  }
+
+  document.addEventListener("keydown", function(e){
+    if (!active()) return;
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (/^[0-9]$/.test(e.key)) { e.preventDefault(); press(e.key); }
+    else if (e.key === "Backspace") { e.preventDefault(); press("back"); }
+    else if (e.key === "Escape") { e.preventDefault(); press("clear"); }
+    else if (e.key === "Enter") { e.preventDefault(); if (typed === CODE) unlock(); }
+  }, true);
+
+  function bindKeys(){
+    display();
+    document.querySelectorAll("#lockScreen .key").forEach(function(btn){
+      if (btn.dataset.hardUnlockV113) return;
+      btn.dataset.hardUnlockV113 = "1";
+      const run = function(e){
+        if (!active()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        press(btn.dataset.key || btn.textContent.trim());
+      };
+      btn.addEventListener("click", run, true);
+      btn.addEventListener("pointerup", run, true);
+      btn.addEventListener("touchend", run, {capture:true, passive:false});
+    });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bindKeys);
+  else bindKeys();
+
+  // One more late bind for slow devices.
+  setTimeout(bindKeys, 500);
+})();
+</script>
+
 <header>
   <nav class="topbar">
     <button class="tab gift-tab" data-tab="dailyrewards" title="Daily Rewards">🎁</button>
@@ -462,7 +550,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v112</span>
+        <span class="update-version-badge">Blank Space v113</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -483,7 +571,7 @@ header{
         <li><b>Owner Panel:</b> added a tool to rename the Block Protection setting label for everyone.</li>
         <li><b>Chat safety warning:</b> the warning now appears under the Chat title for 10 seconds with no close button whenever the Chat tab loads after a refresh or new tab.</li>
       </ul>
-      <div class="update-note">No Supabase changes needed for v112 if you already ran v110. Upload this v112 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">No Supabase changes needed for v113 if you already ran v110. Upload this v113 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -7030,58 +7118,6 @@ window.addEventListener("keydown", function(e) {
 <script src="scripts/offlineclient.js"><\/script>
 <script src="scripts/main.f.js"><\/script>
 <script src="scripts/register-sw.js"><\/script>
-<script>
-
-/* v108 accidental tab close / refresh warning with Settings toggle
-   Browsers show their own generic text for this dialog. Custom text is usually ignored for safety. */
-(function(){
-  if(window.__blankSpaceCloseWarningInstalled) return;
-  window.__blankSpaceCloseWarningInstalled = true;
-
-  let closeWarningArmed = false;
-
-  function getCloseWarningEnabled(){
-    try{
-      const s = JSON.parse(localStorage.getItem("blankspace_settings_v98") || "{}");
-      return s.closeWarningEnabled !== false;
-    }catch(e){
-      return true;
-    }
-  }
-
-  function armCloseWarning(){
-    closeWarningArmed = true;
-  }
-
-  // Most browsers only show beforeunload after the user has interacted with the page.
-  ["click","keydown","touchstart","pointerdown"].forEach(evt=>{
-    window.addEventListener(evt, armCloseWarning, {once:true, passive:true});
-  });
-
-  window.addEventListener("beforeunload", function(e){
-    const lockScreen = document.getElementById("lockScreen");
-    const locked = lockScreen && !lockScreen.classList.contains("unlocked");
-    if(locked) return;
-    if(!getCloseWarningEnabled()) return;
-    if(!closeWarningArmed) return;
-
-    // Let safe internal actions bypass the warning if future code sets this flag.
-    if(window.__blankSpaceAllowUnload === true) return;
-
-    e.preventDefault();
-    e.returnValue = "Leave site? Your changes may not be saved.";
-    return "Leave site? Your changes may not be saved.";
-  });
-})();
-
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function(){
-  if (typeof setupLockScreenInput === "function") setupLockScreenInput();
-});
-</script>
-
 </body>
 </html>`;
 }
