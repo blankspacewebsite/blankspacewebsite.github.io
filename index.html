@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v98: achievement hardening, settings, login gates, verified game additions, unread chat badges, suggestion comments, and send-all timed-message fix -->
+<!-- Blank Space v99: achievement repair, daily rewards, owner commands/device bans, game source refresh, settings upgrades, achievement search, and chat viewer overlay -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -301,6 +301,10 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 /* v98 settings, login gate, and unread chat badges */
 .settings-shell{max-width:1120px;margin:18px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.settings-card input,.settings-card select{width:100%;text-align:left;margin:8px 0}.settings-check{display:flex;align-items:center;gap:10px;font-weight:900;margin:10px 0;color:#e5e7eb}.settings-check input{width:auto!important}.chat-name-wrap{position:relative;display:inline-flex;align-items:center;gap:4px}.chat-unread-count{position:absolute;right:-22px;top:-13px;min-width:20px;height:20px;border-radius:999px;background:#ef4444;border:2px solid #050505;color:#fff;font-size:11px;font-weight:1000;display:grid;place-items:center;padding:0 5px}.light-mode{background:#f5f7fb;color:#111}.light-mode header,.light-mode .panel,.light-mode .game-tile,.light-mode .suggestion-card,.light-mode .friends-card,.light-mode .admin-tile,.light-mode .chat-messages,.light-mode .friend-item,.light-mode .suggestion-item,.light-mode .leaderboard-item{background:#fff!important;color:#111!important;border-color:#d5dae5!important}.light-mode input,.light-mode textarea,.light-mode select{background:#f9fafb!important;color:#111!important;border-color:#cbd5e1!important}.light-mode .tagline,.light-mode .small-note,.light-mode .friend-meta,.light-mode .profile-meta{color:#475569!important}.reduced-motion *, .reduced-motion *::before, .reduced-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 
+
+/* v99 additions */
+.gift-tab{font-size:18px;min-width:42px}.daily-reward-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin:14px 0}.daily-reward-day{border:1px solid #334155;border-radius:16px;background:#0b0c10;padding:12px;text-align:center}.daily-reward-day.active{border-color:#facc15;box-shadow:0 0 0 1px rgba(250,204,21,.25)}.daily-reward-day.claimed{border-color:#22c55e;background:#052e16}.achievement-searchbar{margin:12px 0}.owner-chat-view-overlay{position:fixed;inset:0;z-index:10060;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:18px}.owner-chat-view-overlay.hidden{display:none!important}.owner-chat-view-card{width:min(980px,96vw);height:min(760px,92vh);background:#05070b;border:1px solid #334155;border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.8);display:grid;grid-template-rows:auto 1fr;overflow:hidden}.owner-chat-view-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-bottom:1px solid #1f2937}.owner-chat-view-body{overflow:auto;padding:14px;display:grid;gap:10px;align-content:start}.owner-chat-bubble{max-width:78%;border:1px solid #334155;border-radius:18px;padding:10px;background:#111827}.owner-chat-bubble.mine{justify-self:end;background:#102032;border-color:#2563eb}.owner-chat-bubble.theirs{justify-self:start;background:#0b0c10}.owner-chat-bubble small{display:block;color:#94a3b8;margin-bottom:4px}.device-ban-screen{position:fixed;inset:0;z-index:100000;background:#05070b;color:#fff;display:grid;place-items:center;padding:24px;text-align:center}.settings-card label{display:block;margin:8px 0;color:#e5e7eb;font-weight:800}.compact-cards .game-tile,.compact-cards .achievement-card{min-height:auto;padding:9px}.large-text{font-size:18px}.high-contrast{filter:contrast(1.18)}.square-corners *{border-radius:6px!important}.hide-thumbs .game-tile img{display:none}.compact-chat .chat-message,.compact-chat .owner-chat-bubble{padding:6px;font-size:12px}.small-game-controls .game-header .btn,.small-game-controls .game-header .mini-btn{padding:6px 8px;font-size:12px}
+
 </style>
 </head>
 <body>
@@ -329,6 +333,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 </div>
 <header>
   <nav class="topbar">
+    <button class="tab gift-tab" data-tab="dailyrewards" title="Daily Rewards">🎁</button>
     <button class="tab active" data-tab="home">Home</button>
     <button class="tab" data-tab="update">Update</button>
     <button class="tab" data-tab="games">Games</button>
@@ -348,6 +353,21 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 </header>
 
 <main>
+  
+  <section id="dailyrewards">
+    <h1 class="page-title">🎁 Daily Rewards</h1>
+    <p class="tagline">Claim points every day. Keep the streak for 7 days to get the biggest reward.</p>
+    <div class="achievement-shell">
+      <div class="panel suggestion-card daily-panel">
+        <h2>Your 7-Day Streak</h2>
+        <p class="small-note">Rewards: Day 1 = 1 point, Day 2 = 2, Day 3 = 3, Day 4 = 4, Day 5 = 5, Day 6 = 8, Day 7 = 10. Miss a day and the next claim resets the streak.</p>
+        <div id="dailyRewardGrid" class="daily-reward-grid"></div>
+        <button class="bigbtn" id="claimDailyRewardBtn">Claim Daily Reward</button>
+        <p id="dailyRewardStatus" class="form-message">Sign in to claim daily rewards.</p>
+      </div>
+    </div>
+  </section>
+
   <section id="home" class="active-section home-section">
     <div>
       <h1 class="home-title">Blank Space</h1>
@@ -362,21 +382,21 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v98</span>
+        <span class="update-version-badge">Blank Space v99</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
-        <li><b>Achievements:</b> rebuilt the Supabase achievement catalog/functions again with server-authoritative unlocks, exact reward points, Slope score-trigger awarding, Google Snake original-mode guard, and A Small World Cup duplicate-goal protection.</li>
-        <li><b>Achievement testing:</b> added a v98 health check and safer admin metric tests for Slope, Google Snake, A Small World Cup, Tiny Fishing, Chess-AI, Stick Merge, and Basket Random.</li>
-        <li><b>Verified Games:</b> added Cookie Clicker and Blumgi Merge from the uploaded game files, plus wrapper cards for Race Survival, Build a Big Army, Jump Only, and Brawl Stars.</li>
-        <li><b>Chat:</b> friend rows now show a red unread-message count beside the user name so you know exactly who sent new messages.</li>
-        <li><b>Owner Panel:</b> fixed Timed Message / Send to everyone so it does not require a username when sending globally.</li>
-        <li><b>Suggestions:</b> Owner/Admin can now use <b>Add Comment</b> without approving, so denied suggestions can still include a visible comment.</li>
-        <li><b>Login gate:</b> signed-out users are sent to Account before using Games, Browser, Suggestions, Achievements, Icons, Trade, Leaderboard, Chat, Friends, Settings, or Owner Panel.</li>
-        <li><b>Settings:</b> added a Settings tab with dark/light mode, custom tab title, favicon/tab cloak URL, reduced-motion toggle, and reset buttons.</li>
+        <li><b>Achievements:</b> rebuilt the website and Supabase achievement path again, repaired score-based Slope awarding, Google Snake original-mode protection, and A Small World Cup duplicate-goal protection.</li>
+        <li><b>Daily rewards:</b> added a new 🎁 tab with a 7-day consecutive reward streak: 1, 2, 3, 4, 5, 8, then 10 points.</li>
+        <li><b>Owner Panel:</b> combined Moderation and User Commands into <b>Other Commands</b>, added website bans and optional device bans, and removed the A Small World Cup reset command.</li>
+        <li><b>Timed Message:</b> Send to everyone now excludes the sender, so the Owner does not receive their own global timed message.</li>
+        <li><b>Games:</b> moved broken verified wrappers out of Verified Games, refreshed sources, added Level 67, Hole.io, and Stunt Bike Extreme, and added multi-source choices for the new Popular Games.</li>
+        <li><b>Settings:</b> added 10 more local options, including compact cards, larger text, high contrast, rounded corners, hide thumbnails, auto-open last tab, quiet notifications, compact chat, safer external prompts, and smaller game controls.</li>
+        <li><b>Achievement search:</b> added a search box so you can find achievements without scrolling.</li>
+        <li><b>Owner chat view:</b> searching a user opens a read-only chat-view overlay with an X button, matching the user-style chat layout while preventing Owner replies.</li>
       </ul>
-      <div class="update-note">Supabase note: run <b>supabase_v98_update.sql</b> first, then upload this v98 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v99_update.sql</b> first, then upload this v99 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -500,6 +520,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
             <button class="mini-btn" id="clearEquippedIconBtn">Clear Equipped Icon</button>
           </div>
         </div>
+        <div class="searchbar achievement-searchbar"><input id="achievementSearch" placeholder="Search achievements by game, name, description, or reward..." autocomplete="off" /></div>
         <p id="achievementsStatus" class="form-message">Sign in to load achievements.</p>
         <div id="achievementsGrid" class="achievement-grid"></div>
       </div>
@@ -828,8 +849,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
           <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
           <div class="admin-tile"><h3>Ranks</h3><input id="adminRankUsername" placeholder="Username"/><select id="adminRankSelect"><option value="member">Member</option><option value="tester">Tester</option><option value="manager">Manager</option><option value="admin">Admin</option><option value="owner">Owner</option></select><input id="adminRankReason" placeholder="Reason"/><button class="mini-btn primary" id="adminSetRankBtn">Set Rank</button><p class="small-note">Owner is 1-of-1. Admin gives Owner Panel access. Manager can flag users. All ranks show colored badges.</p></div>
           <div class="admin-tile"><h3>Timed Message</h3><input id="adminMessageUsername" placeholder="Username, or use Send to everyone"/><label class="send-all-row"><input id="adminMessageAll" type="checkbox"/> Send to everyone</label><textarea id="adminMessageText" placeholder="Message they must see" maxlength="500"></textarea><input id="adminMessageSeconds" type="number" placeholder="Seconds visible" value="20" min="5" max="3600"/><select id="adminMessageStyle"><option value="notice">Notice</option><option value="warning">Warning</option><option value="danger">Danger</option></select><button class="mini-btn primary" id="adminSendUserMessageBtn">Send Message</button><p class="small-note">The user cannot close it. It disappears only when the timer expires. Owner/Admin can send to one user or everyone.</p></div>
-          <div class="admin-tile"><h3>User Commands</h3><input id="adminCommandUsername" placeholder="Username"/><select id="adminCommandSelect"><option value="force_sign_out">Force Sign Out</option><option value="clear_equipped_icon">Clear Equipped Icon</option><option value="reset_avatar">Reset Avatar</option><option value="reset_aswc_keep_points">Reset A Small World Cup Only</option><option value="reset_all_achievements_keep_points">Reset All Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminCommandValue" placeholder="Optional value"/><input id="adminCommandReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminRunCommandBtn">Run Command</button><p class="small-note">Use commands carefully. Achievement reset commands do not change points.</p></div>
-          <div class="admin-tile"><h3>Moderation</h3><input id="adminModUsername" placeholder="Username"/><select id="adminModAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="reset_achievements_keep_points">Reset Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminModReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminModerateBtn">Apply Moderation</button><p class="small-note">Uses safe moderation actions only; points are not changed unless you use the points tool.</p></div>
+          <div class="admin-tile"><h3>Other Commands</h3><input id="adminOtherUsername" placeholder="Username"/><select id="adminOtherAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="ban_site">Ban From Website</option><option value="unban_site">Unban From Website</option><option value="ban_device">Ban This User's Device</option><option value="unban_device">Unban This User's Last Device</option><option value="force_sign_out">Force Sign Out</option><option value="clear_equipped_icon">Clear Equipped Icon</option><option value="reset_avatar">Reset Avatar</option><option value="reset_all_achievements_keep_points">Reset All Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminOtherValue" placeholder="Optional value, minutes, or device id"/><input id="adminOtherReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminRunOtherCommandBtn">Run Command</button><p class="small-note">Website bans block the account. Device bans use the registered browser device ID and are best-effort for that browser/device.</p></div>
           <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
           <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
           <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div><div class="admin-tile"><h3>Owner Chat View</h3><input id="ownerChatUsername" placeholder="Username to review"/><button class="mini-btn primary" id="ownerLoadChatViewBtn">Load Chat View</button><p class="owner-only-note">Owner view is read-only. It shows what the user has been chatting; the owner cannot type from this viewer.</p><div id="ownerChatViewer" class="owner-chat-viewer"><div class="empty-state">Type a username and load their chat view.</div></div></div>        </div>
@@ -886,15 +906,97 @@ const SUPABASE_URL = "https://gnjbaefqzmjzuozytrta.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImduamJhZWZxem1qenVvenl0cnRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NzE0ODAsImV4cCI6MjA5NTA0NzQ4MH0.K2IUnbj1Cyv3rWi5yxLgMDyDNOImEvGv3Ugtf_gzNjA";
 
 const GAMES = [
-
+  {
+    "title": "Stunt Bike Extreme",
+    "genre": "Driving",
+    "source": "https://poki.com/en/g/stunt-bike-extreme",
+    "sources": [
+      {
+        "label": "Poki",
+        "url": "https://poki.com/en/g/stunt-bike-extreme"
+      },
+      {
+        "label": "Playtropolis",
+        "url": "https://playtropolis.com/Stunt-bike-extreme"
+      },
+      {
+        "label": "Arcadrome",
+        "url": "https://arcadrome.com/en/games/stunt-bike-extreme"
+      }
+    ],
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%23111827%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22220%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2258%22%20fill%3D%22white%22%3ESTUNT%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22300%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2242%22%20fill%3D%22%23facc15%22%3EBIKE%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": false
+  },
+  {
+    "title": "Hole.io",
+    "genre": "Action",
+    "source": "https://www.holeio.com/",
+    "sources": [
+      {
+        "label": "Hole.io",
+        "url": "https://www.holeio.com/"
+      },
+      {
+        "label": "PlayHole",
+        "url": "https://playhole.io/"
+      },
+      {
+        "label": "HoleOnline",
+        "url": "https://holeonline.io/"
+      }
+    ],
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%23020617%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22220%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2258%22%20fill%3D%22white%22%3EHOLE%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22300%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2242%22%20fill%3D%22%23facc15%22%3E.IO%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": false
+  },
+  {
+    "title": "Level 67",
+    "genre": "Puzzle",
+    "source": "https://gplusgames.com/play/level-67",
+    "sources": [
+      {
+        "label": "Poki 67 Game",
+        "url": "https://poki.com/en/g/67-game"
+      },
+      {
+        "label": "WooGames",
+        "url": "https://woogames.io/67-game"
+      },
+      {
+        "label": "67Games Hub",
+        "url": "https://67games.io/list/"
+      }
+    ],
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%231e1b4b%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22220%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2258%22%20fill%3D%22white%22%3ELEVEL%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22300%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2242%22%20fill%3D%22%23facc15%22%3E67%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": false
+  },
   {
     "title": "Cookie Clicker",
     "genre": "Clicker",
-    "source": "games/cookie-clicker/index.html",
+    "source": "https://orteil.dashnet.org/cookieclicker/",
     "image": "games/cookie-clicker/img/perfectCookie.png",
     "featured": true,
     "reliable": true,
-    "verified": true
+    "verified": false,
+    "sources": [
+      {
+        "label": "Official Orteil",
+        "url": "https://orteil.dashnet.org/cookieclicker/"
+      },
+      {
+        "label": "CookieClicker.com",
+        "url": "https://cookieclicker.com/"
+      },
+      {
+        "label": "GitHub Mirror",
+        "url": "https://ozh.github.io/cookieclicker/"
+      }
+    ]
   },
   {
     "title": "Blumgi Merge",
@@ -908,38 +1010,90 @@ const GAMES = [
   {
     "title": "Race Survival",
     "genre": "Driving",
-    "source": "games/survival-race/index.html",
+    "source": "https://gplusgames.com/play/race-survival",
     "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230b1020'/%3E%3Cpath d='M85 320c80-155 250-155 330 0' fill='none' stroke='%23ef4444' stroke-width='34' stroke-linecap='round'/%3E%3Ccircle cx='168' cy='330' r='48' fill='%23111827' stroke='%23fff' stroke-width='16'/%3E%3Ccircle cx='332' cy='330' r='48' fill='%23111827' stroke='%23fff' stroke-width='16'/%3E%3Ctext x='250' y='170' text-anchor='middle' font-family='Arial Black,Arial' font-size='62' fill='white'%3ERACE%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
-    "verified": true
+    "verified": false,
+    "sources": [
+      {
+        "label": "G+ Games",
+        "url": "https://gplusgames.com/play/race-survival"
+      },
+      {
+        "label": "Survival-Race.io",
+        "url": "https://survival-race.io/"
+      },
+      {
+        "label": "SurvivalRace.net",
+        "url": "https://survivalrace.net/"
+      }
+    ]
   },
   {
     "title": "Build a Big Army!",
     "genre": "Strategy",
-    "source": "games/build-a-big-army/index.html",
+    "source": "https://www.miniplay.com/game/build-a-big-army",
     "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%23111827'/%3E%3Ctext x='250' y='160' text-anchor='middle' font-family='Arial Black,Arial' font-size='46' fill='white'%3EBUILD%3C/text%3E%3Ctext x='250' y='230' text-anchor='middle' font-family='Arial Black,Arial' font-size='40' fill='%23fbbf24'%3EBIG ARMY%3C/text%3E%3Ccircle cx='160' cy='335' r='38' fill='%2393c5fd'/%3E%3Ccircle cx='250' cy='330' r='48' fill='%23f87171'/%3E%3Ccircle cx='340' cy='335' r='38' fill='%2386efac'/%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
-    "verified": true
+    "verified": false,
+    "sources": [
+      {
+        "label": "Miniplay",
+        "url": "https://www.miniplay.com/game/build-a-big-army"
+      },
+      {
+        "label": "Lagged",
+        "url": "https://lagged.com/en/g/build-a-big-army"
+      },
+      {
+        "label": "Playhop",
+        "url": "https://playhop.com/app/404236"
+      }
+    ]
   },
   {
     "title": "Jump Only",
     "genre": "Arcade",
-    "source": "games/jump-only/index.html",
+    "source": "https://bulletbros.io/game/jump-only/",
     "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230b1020'/%3E%3Cpath d='M90 365h320' stroke='%23fff' stroke-width='20' stroke-linecap='round'/%3E%3Cpath d='M250 335V135m0 0-70 70m70-70 70 70' stroke='%2322c55e' stroke-width='28' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='250' y='440' text-anchor='middle' font-family='Arial Black,Arial' font-size='46' fill='white'%3EJUMP ONLY%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
-    "verified": true
+    "verified": false,
+    "sources": [
+      {
+        "label": "BulletBros",
+        "url": "https://bulletbros.io/game/jump-only/"
+      },
+      {
+        "label": "Poki",
+        "url": "https://poki.com/en/g/jump-only"
+      }
+    ]
   },
   {
     "title": "Brawl Stars",
     "genre": "Action",
-    "source": "games/brawl-stars/index.html",
+    "source": "https://supercell.com/en/games/brawlstars/",
     "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230f172a'/%3E%3Ccircle cx='250' cy='215' r='110' fill='%23facc15'/%3E%3Cpath d='M170 345h160l-80 80z' fill='%23facc15'/%3E%3Ctext x='250' y='230' text-anchor='middle' font-family='Arial Black,Arial' font-size='86' fill='%23111'%3EBS%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
-    "verified": true
+    "verified": false,
+    "sources": [
+      {
+        "label": "Official Supercell",
+        "url": "https://supercell.com/en/games/brawlstars/"
+      },
+      {
+        "label": "Google Play",
+        "url": "https://play.google.com/store/apps/details?id=com.supercell.brawlstars"
+      },
+      {
+        "label": "App Store",
+        "url": "https://apps.apple.com/us/app/brawl-stars/id1229016807"
+      }
+    ]
   },
   {
     "title": "Minecraft",
@@ -964,9 +1118,18 @@ const GAMES = [
     "genre": "Puzzle",
     "source": "https://bulletbros.io/game/longcat/",
     "sources": [
-      { "label": "BulletBros", "url": "https://bulletbros.io/game/longcat/" },
-      { "label": "Poki", "url": "https://poki.com/en/g/longcat" },
-      { "label": "RiveGames", "url": "https://rivegames.com/game/longcat" }
+      {
+        "label": "BulletBros",
+        "url": "https://bulletbros.io/game/longcat/"
+      },
+      {
+        "label": "Poki",
+        "url": "https://poki.com/en/g/longcat"
+      },
+      {
+        "label": "RiveGames",
+        "url": "https://rivegames.com/game/longcat"
+      }
     ],
     "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/c318eae8480b4ba85da0b1d15a8fe7a2/longcat.png",
     "featured": true,
@@ -978,9 +1141,18 @@ const GAMES = [
     "genre": "Action",
     "source": "https://poki.com/en/g/stick-rush",
     "sources": [
-      { "label": "Poki", "url": "https://poki.com/en/g/stick-rush" },
-      { "label": "Poki Mirror", "url": "https://poki.us.org/stick-rush/" },
-      { "label": "MinigamesVille", "url": "https://minigamesville.com/game/stick-rush/" }
+      {
+        "label": "Poki",
+        "url": "https://poki.com/en/g/stick-rush"
+      },
+      {
+        "label": "Poki Mirror",
+        "url": "https://poki.us.org/stick-rush/"
+      },
+      {
+        "label": "MinigamesVille",
+        "url": "https://minigamesville.com/game/stick-rush/"
+      }
     ],
     "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/3b284c96933c9a0e6c448e56c018a723/stick-rush.png",
     "featured": true,
@@ -7294,6 +7466,28 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("settingsResetAllBtn")?.addEventListener("click", resetAllSettings);
   document.getElementById("adminMessageAll")?.dispatchEvent(new Event("change"));
 });
+
+
+
+/* v99 feature patch */
+const DAILY_REWARD_POINTS_V99=[1,2,3,4,5,8,10];
+function getDeviceIdV99(){ let id=localStorage.getItem('blankspace_device_id_v99'); if(!id){ id='dev_'+Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('blankspace_device_id_v99',id); } return id; }
+async function registerAndCheckDeviceV99(){ try{ if(!window.supabase||!blankSpaceUser) return; const r=await getSupabaseClient().rpc('register_device_v99',{p_device_id:getDeviceIdV99(),p_user_agent:navigator.userAgent||''}); if(r.error) return; if(r.data&&r.data.banned){ document.body.insertAdjacentHTML('beforeend',`<div class="device-ban-screen"><div><h1>Website banned</h1><p>This account or device has been banned from Blank Space.</p><p>${escapeHTML(r.data.reason||'')}</p></div></div>`); } }catch(e){} }
+function renderDailyRewardGrid(day){ const box=document.getElementById('dailyRewardGrid'); if(!box)return; box.innerHTML=DAILY_REWARD_POINTS_V99.map((pts,i)=>`<div class="daily-reward-day ${day===i+1?'active':''}"><b>Day ${i+1}</b><br><span>${pts} point${pts===1?'':'s'}</span></div>`).join(''); }
+async function refreshDailyReward(){ await loadExistingSession(); if(!blankSpaceUser){renderDailyRewardGrid(1);return setMessage('dailyRewardStatus','Sign in to claim daily rewards.','error');} try{ const r=await getSupabaseClient().rpc('get_daily_reward_status_v99'); if(r.error) throw r.error; const d=r.data||{}; renderDailyRewardGrid(d.next_day||1); setMessage('dailyRewardStatus', d.can_claim?`Ready to claim Day ${d.next_day||1}.`:`Already claimed today. Next claim: ${d.next_day||1}.`); }catch(e){setMessage('dailyRewardStatus',e.message||'Could not load daily reward. Run supabase_v99_update.sql.','error'); renderDailyRewardGrid(1);} }
+async function claimDailyReward(){ await loadExistingSession(); if(!blankSpaceUser)return setMessage('dailyRewardStatus','Sign in first.','error'); try{ const r=await getSupabaseClient().rpc('claim_daily_reward_v99'); if(r.error) throw r.error; const d=r.data||{}; setMessage('dailyRewardStatus',`Claimed Day ${d.day} for ${d.points_awarded} point${d.points_awarded===1?'':'s'}!`,'good'); await loadProfile(); renderProfile(); await refreshLeaderboard(); await refreshDailyReward(); }catch(e){setMessage('dailyRewardStatus',e.message||'Could not claim reward.','error');} }
+function applyMoreSettingsV99(){ const s=getLocalSettings(); document.body?.classList.toggle('compact-cards',!!s.compactCards); document.body?.classList.toggle('large-text',!!s.largeText); document.body?.classList.toggle('high-contrast',!!s.highContrast); document.body?.classList.toggle('square-corners',!!s.squareCorners); document.body?.classList.toggle('hide-thumbs',!!s.hideThumbs); document.body?.classList.toggle('compact-chat',!!s.compactChat); document.body?.classList.toggle('small-game-controls',!!s.smallGameControls); }
+const oldApplyLocalSettingsV99=applyLocalSettings; applyLocalSettings=function(){ oldApplyLocalSettingsV99(); applyMoreSettingsV99(); };
+const oldInitSettingsPageV99=initSettingsPage; initSettingsPage=function(){ oldInitSettingsPageV99(); const s=getLocalSettings(); ['CompactCards','LargeText','HighContrast','SquareCorners','HideThumbs','RememberLastTab','QuietNotifications','CompactChat','ConfirmExternal','SmallGameControls'].forEach(k=>{ const el=document.getElementById('settings'+k); if(el) el.checked=!!s[k.charAt(0).toLowerCase()+k.slice(1)]; }); };
+function saveMoreSettingsV99(){ const s=getLocalSettings(); ['CompactCards','LargeText','HighContrast','SquareCorners','HideThumbs','RememberLastTab','QuietNotifications','CompactChat','ConfirmExternal','SmallGameControls'].forEach(k=>{ const el=document.getElementById('settings'+k); s[k.charAt(0).toLowerCase()+k.slice(1)]=!!el?.checked; }); saveLocalSettings(s); applyLocalSettings(); settingsStatus('More settings saved.'); }
+const oldRefreshAchievementsV99=refreshAchievements; refreshAchievements=async function(showLoading=true){ await oldRefreshAchievementsV99(showLoading); filterAchievementsV99(); };
+function filterAchievementsV99(){ const q=(document.getElementById('achievementSearch')?.value||'').toLowerCase().trim(); document.querySelectorAll('#achievementsGrid .achievement-card').forEach(card=>{ const t=card.textContent.toLowerCase(); card.style.display=(!q||t.includes(q))?'':'none'; }); }
+async function adminRunOtherCommandV99(){ try{ const username=document.getElementById('adminOtherUsername')?.value.trim()||''; const action=document.getElementById('adminOtherAction')?.value||''; const value=document.getElementById('adminOtherValue')?.value||''; const reason=document.getElementById('adminOtherReason')?.value||''; if(!username||!action)return alert('Type a username and choose a command.'); if(['ban_site','ban_device','clear_messages','reset_all_achievements_keep_points'].includes(action)&&!confirm('Run '+action+' on '+username+'?'))return; const r=await getSupabaseClient().rpc('admin_other_command_v99',{p_username:username,p_action:action,p_value:value,p_reason:reason,p_device_id:getDeviceIdV99()}); if(r.error) throw r.error; setMessage('adminPanelStatus','Other command applied.','good'); await adminLoadActions?.(); await refreshLeaderboard?.(); }catch(e){alert(e.message||String(e));} }
+async function ownerLoadChatView(){ const username=document.getElementById('ownerChatUsername')?.value||''; const overlay=document.getElementById('ownerChatViewOverlay'); const body=document.getElementById('ownerChatViewBody'); const title=document.getElementById('ownerChatViewTitle'); if(!username.trim()) return alert('Type a username first.'); overlay?.classList.remove('hidden'); if(title) title.textContent='@'+username+' chat view'; if(body) body.innerHTML='<div class="empty-state">Loading read-only chat view...</div>'; try{ const r=await getSupabaseClient().rpc('owner_get_user_chat_view_v99',{p_username:username,p_limit:250}); if(r.error) throw r.error; const rows=r.data||[]; if(body) body.innerHTML=rows.length?rows.map(m=>`<div class="owner-chat-bubble ${m.is_target_sender?'mine':'theirs'}"><small>${escapeHTML(m.chat_name||m.chat_type||'Chat')} • @${escapeHTML(m.sender_username||'unknown')} • ${escapeHTML(m.created_at?new Date(m.created_at).toLocaleString():'')}</small><div>${escapeHTML(m.body||'')}${m.image_url?'<br><img class="chat-image-preview" src="'+escapeHTML(m.image_url)+'">':''}</div></div>`).join(''):'<div class="empty-state">No messages found.</div>'; }catch(e){ if(body) body.innerHTML=`<div class="empty-state">${escapeHTML(e.message||'Could not load chat view.')}</div>`; } }
+const oldAdminSendUserMessageV99=adminSendUserMessage; adminSendUserMessage=async function(){ try{ const sendAll=!!document.getElementById('adminMessageAll')?.checked; const username=document.getElementById('adminMessageUsername')?.value.trim()||''; const message=document.getElementById('adminMessageText')?.value.trim()||''; const seconds=parseInt(document.getElementById('adminMessageSeconds')?.value||'20',10); const style=document.getElementById('adminMessageStyle')?.value||'notice'; if(!message)return alert('Type a message.'); if(!sendAll&&!username)return alert('Type a username or check Send to everyone.'); const r=await getSupabaseClient().rpc('admin_send_user_message_v99',{p_username:sendAll?'':username,p_message:message,p_seconds:seconds,p_style:style,p_send_all:sendAll}); if(r.error) throw r.error; setMessage('adminPanelStatus',sendAll?'Timed message sent to everyone except you.':'Timed message sent.','good'); adminLoadActions?.(); }catch(e){ alert(e.message||String(e)); } };
+const oldOpenCurrentGameExternalV99=openCurrentGameExternal; openCurrentGameExternal=function(){ const s=getLocalSettings(); if(s.confirmExternal&&!confirm('Open this source in a new tab?')) return; return oldOpenCurrentGameExternalV99(); };
+const oldSwitchTabV99=switchTab; switchTab=function(tabId){ const s=getLocalSettings(); if(s.rememberLastTab) localStorage.setItem('blankspace_last_tab_v99',tabId); oldSwitchTabV99(tabId); if(tabId==='dailyrewards') refreshDailyReward(); };
+document.addEventListener('DOMContentLoaded',()=>{ document.getElementById('claimDailyRewardBtn')?.addEventListener('click',claimDailyReward); document.getElementById('settingsSaveMoreBtn')?.addEventListener('click',saveMoreSettingsV99); document.getElementById('achievementSearch')?.addEventListener('input',filterAchievementsV99); document.getElementById('adminRunOtherCommandBtn')?.addEventListener('click',adminRunOtherCommandV99); document.getElementById('ownerChatViewClose')?.addEventListener('click',()=>document.getElementById('ownerChatViewOverlay')?.classList.add('hidden')); setTimeout(registerAndCheckDeviceV99,1200); setInterval(registerAndCheckDeviceV99,10000); const s=getLocalSettings(); const last=localStorage.getItem('blankspace_last_tab_v99'); if(s.rememberLastTab&&last&&last!=='account') setTimeout(()=>document.querySelector(`[data-tab="${last}"]`)?.click(),400); });
 
 </script>
 </body>
