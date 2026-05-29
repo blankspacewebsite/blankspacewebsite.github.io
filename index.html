@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v106: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v110: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -378,6 +378,10 @@ header{
   object-fit:contain;
   box-shadow:0 0 0 1px rgba(255,255,255,.25);
 }
+/* v110 owner-controlled Settings label */
+#settingsCloseWarningLabel{
+  font-weight:800;
+}
 </style>
 </head>
 <body>
@@ -458,7 +462,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v106</span>
+        <span class="update-version-badge">Blank Space v110</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -475,9 +479,11 @@ header{
         <li><b>Achievement search:</b> added a Search button, Enter-key search, Clear button wiring, and a visible result count.</li>
         <li><b>Navigation:</b> made the top tab bar a bit bigger than v104 while keeping it compact enough for school Chromebooks while keeping the gift tab and all existing tabs.</li>
         <li><b>Tab Cloak:</b> fixed custom tab icons so website URLs, favicon links, and direct image/icon URLs work correctly.</li>
+        <li><b>Safety:</b> added a Settings toggle for the accidental close/refresh warning. It is on by default and can be turned off per browser.</li>
+        <li><b>Owner Panel:</b> added a tool to rename the Block Protection setting label for everyone.</li>
         <li><b>Chat safety warning:</b> the warning now appears under the Chat title for 10 seconds with no close button whenever the Chat tab loads after a refresh or new tab.</li>
       </ul>
-      <div class="update-note">No Supabase changes needed for v106. Upload this v106 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">Run supabase_v110_setting_label.sql first, then upload this v110 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -912,6 +918,7 @@ header{
         <h2>Comfort</h2>
         <label class="settings-check"><input id="settingsReducedMotion" type="checkbox" /> Reduce motion and extra effects</label>
         <label class="settings-check"><input id="settingsOpenGamesNewTab" type="checkbox" /> Prefer opening game source in a new tab</label>
+        <label class="settings-check"><input id="settingsCloseWarning" type="checkbox" /> <span id="settingsCloseWarningLabel">Block Protection</span></label>
         <button class="mini-btn primary" id="settingsSaveComfortBtn">Save Comfort Settings</button>
       </div>
       <div class="panel suggestion-card settings-card">
@@ -939,7 +946,7 @@ header{
           <div class="admin-tile"><h3>Timed Message</h3><input id="adminMessageUsername" placeholder="Username, or use Send to everyone"/><label class="send-all-row"><input id="adminMessageAll" type="checkbox"/> Send to everyone</label><textarea id="adminMessageText" placeholder="Message they must see" maxlength="500"></textarea><input id="adminMessageSeconds" type="number" placeholder="Seconds visible" value="20" min="5" max="3600"/><select id="adminMessageStyle"><option value="notice">Notice</option><option value="warning">Warning</option><option value="danger">Danger</option></select><button class="mini-btn primary" id="adminSendUserMessageBtn">Send Message</button><p class="small-note">The user cannot close it. It disappears only when the timer expires. Owner/Admin can send to one user or everyone.</p></div>
           <div class="admin-tile"><h3>Other Commands</h3><input id="adminOtherUsername" placeholder="Username"/><select id="adminOtherAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="ban_site">Ban From Website</option><option value="unban_site">Unban From Website</option><option value="ban_device">Ban This User's Device</option><option value="unban_device">Unban This User's Last Device</option><option value="force_sign_out">Force Sign Out</option><option value="clear_equipped_icon">Clear Equipped Icon</option><option value="reset_avatar">Reset Avatar</option><option value="reset_all_achievements_keep_points">Reset All Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminOtherValue" placeholder="Optional value, minutes, or device id"/><input id="adminOtherReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminRunOtherCommandBtn">Run Command</button><p class="small-note">Website bans block the account. Device bans use the registered browser device ID and are best-effort for that browser/device.</p></div>
           <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
-          <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
+          <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div><div class="admin-tile"><h3>Rename Block Protection</h3><input id="ownerBlockProtectionName" placeholder="New setting name, like Block Protection" maxlength="40"/><button class="mini-btn primary" id="ownerSaveBlockProtectionNameBtn">Save Setting Name</button><button class="mini-btn" id="ownerResetBlockProtectionNameBtn">Reset Name</button><p class="small-note">This changes the Settings toggle name for everyone. It does not change what the toggle does.</p></div>
           <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div><div class="admin-tile"><h3>Owner Chat View</h3><input id="ownerChatUsername" placeholder="Username to review"/><button class="mini-btn primary" id="ownerLoadChatViewBtn">Load Chat View</button><p class="owner-only-note">Owner view is read-only. It shows what the user has been chatting; the owner cannot type from this viewer.</p><div id="ownerChatViewer" class="owner-chat-viewer"><div class="empty-state">Type a username and load their chat view.</div></div></div>        </div>
         <p id="adminPanelStatus" class="form-message"></p>
       </div>
@@ -6549,6 +6556,7 @@ async function initAdminPanelPage(){
   await checkAdmin();
   if(!blankSpaceIsAdmin){ showTab("home"); return; }
   await refreshAdminPanel();
+  await loadBlockProtectionLabel(true);
   setMessage("adminPanelStatus", "Owner tools loaded.", "good");
 }
 
@@ -6945,6 +6953,48 @@ window.addEventListener("keydown", function(e) {
 <script src="scripts/offlineclient.js"><\/script>
 <script src="scripts/main.f.js"><\/script>
 <script src="scripts/register-sw.js"><\/script>
+<script>
+
+/* v108 accidental tab close / refresh warning with Settings toggle
+   Browsers show their own generic text for this dialog. Custom text is usually ignored for safety. */
+(function(){
+  if(window.__blankSpaceCloseWarningInstalled) return;
+  window.__blankSpaceCloseWarningInstalled = true;
+
+  let closeWarningArmed = false;
+
+  function getCloseWarningEnabled(){
+    try{
+      const s = JSON.parse(localStorage.getItem("blankspace_settings_v98") || "{}");
+      return s.closeWarningEnabled !== false;
+    }catch(e){
+      return true;
+    }
+  }
+
+  function armCloseWarning(){
+    closeWarningArmed = true;
+  }
+
+  // Most browsers only show beforeunload after the user has interacted with the page.
+  ["click","keydown","touchstart","pointerdown"].forEach(evt=>{
+    window.addEventListener(evt, armCloseWarning, {once:true, passive:true});
+  });
+
+  window.addEventListener("beforeunload", function(e){
+    if(!getCloseWarningEnabled()) return;
+    if(!closeWarningArmed) return;
+
+    // Let safe internal actions bypass the warning if future code sets this flag.
+    if(window.__blankSpaceAllowUnload === true) return;
+
+    e.preventDefault();
+    e.returnValue = "Leave site? Your changes may not be saved.";
+    return "Leave site? Your changes may not be saved.";
+  });
+})();
+
+</script>
 </body>
 </html>`;
 }
@@ -7510,6 +7560,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminRunCommandBtn")?.addEventListener("click", adminRunCommand);
   document.getElementById("adminAddBlockedTermBtn")?.addEventListener("click", adminAddBlockedTerm);
   document.getElementById("adminReloadSchemaBtn")?.addEventListener("click", async () => { await loadProfile(); await refreshAdminPanel(); });
+  document.getElementById("ownerSaveBlockProtectionNameBtn")?.addEventListener("click", ownerSaveBlockProtectionLabel);
+  document.getElementById("ownerResetBlockProtectionNameBtn")?.addEventListener("click", ownerResetBlockProtectionLabel);
+  document.getElementById("ownerBlockProtectionName")?.addEventListener("keydown", e => { if (e.key === "Enter") ownerSaveBlockProtectionLabel(); });
+  loadBlockProtectionLabel();
   document.getElementById("adminAchievementCheckBtn")?.addEventListener("click", checkAchievementSystem);
   document.getElementById("adminAchievementMetricBtn")?.addEventListener("click", adminRecordCustomAchievementMetric);
 
@@ -7603,6 +7657,85 @@ function applyLocalSettings(){
   if(s.faviconUrl){ applyBlankSpaceFavicon(s.faviconUrl); }
   updateFaviconPreview(s.faviconUrl||"");
 }
+
+const DEFAULT_BLOCK_PROTECTION_LABEL = "Block Protection";
+let blockProtectionLabelLoaded = false;
+
+function cleanBlockProtectionLabel(value){
+  const cleaned = String(value || "").replace(/\s+/g, " ").trim();
+  if (!cleaned) return DEFAULT_BLOCK_PROTECTION_LABEL;
+  return cleaned.slice(0, 40);
+}
+
+function applyBlockProtectionLabel(value){
+  const label = cleanBlockProtectionLabel(value);
+  document.querySelectorAll("#settingsCloseWarningLabel").forEach(el => el.textContent = label);
+  const ownerInput = document.getElementById("ownerBlockProtectionName");
+  if (ownerInput && !ownerInput.matches(":focus")) ownerInput.value = label;
+  return label;
+}
+
+async function loadBlockProtectionLabel(force = false){
+  if (blockProtectionLabelLoaded && !force) return;
+  const local = localStorage.getItem("blankspace_block_protection_label_v110");
+  if (local) applyBlockProtectionLabel(local);
+
+  try{
+    const client = getSupabaseClient();
+    const result = await client.rpc("get_blank_space_setting_v110", { p_key: "block_protection_label" });
+    if (!result.error && result.data){
+      const label = applyBlockProtectionLabel(result.data);
+      localStorage.setItem("blankspace_block_protection_label_v110", label);
+    } else if (!local) {
+      applyBlockProtectionLabel(DEFAULT_BLOCK_PROTECTION_LABEL);
+    }
+  }catch(e){
+    if (!local) applyBlockProtectionLabel(DEFAULT_BLOCK_PROTECTION_LABEL);
+  }
+
+  blockProtectionLabelLoaded = true;
+}
+
+async function ownerSaveBlockProtectionLabel(){
+  try{
+    await loadExistingSession();
+    await checkAdmin();
+    if (!blankSpaceIsAdmin) return alert("Owner/Admin only.");
+    const input = document.getElementById("ownerBlockProtectionName");
+    const label = cleanBlockProtectionLabel(input?.value || "");
+    if (!label) return alert("Type a setting name.");
+    const result = await getSupabaseClient().rpc("set_blank_space_setting_v110", {
+      p_key: "block_protection_label",
+      p_value: label
+    });
+    if (result.error) throw result.error;
+    const saved = applyBlockProtectionLabel(result.data || label);
+    localStorage.setItem("blankspace_block_protection_label_v110", saved);
+    setMessage("adminPanelStatus", `Setting name saved as "${saved}".`, "good");
+  }catch(err){
+    alert((err && err.message) ? err.message : String(err));
+  }
+}
+
+async function ownerResetBlockProtectionLabel(){
+  try{
+    await loadExistingSession();
+    await checkAdmin();
+    if (!blankSpaceIsAdmin) return alert("Owner/Admin only.");
+    const result = await getSupabaseClient().rpc("set_blank_space_setting_v110", {
+      p_key: "block_protection_label",
+      p_value: DEFAULT_BLOCK_PROTECTION_LABEL
+    });
+    if (result.error) throw result.error;
+    const saved = applyBlockProtectionLabel(DEFAULT_BLOCK_PROTECTION_LABEL);
+    localStorage.setItem("blankspace_block_protection_label_v110", saved);
+    setMessage("adminPanelStatus", "Setting name reset to Block Protection.", "good");
+  }catch(err){
+    alert((err && err.message) ? err.message : String(err));
+  }
+}
+
+
 function initSettingsPage(){
   applyLocalSettings();
   const s=getLocalSettings();
@@ -7611,6 +7744,8 @@ function initSettingsPage(){
   const fav=document.getElementById("settingsFaviconUrl"); if(fav) fav.value=s.faviconUrl||"";
   const rm=document.getElementById("settingsReducedMotion"); if(rm) rm.checked=!!s.reducedMotion;
   const nt=document.getElementById("settingsOpenGamesNewTab"); if(nt) nt.checked=!!s.openGamesNewTab;
+  const cw=document.getElementById("settingsCloseWarning"); if(cw) cw.checked=s.closeWarningEnabled!==false;
+  loadBlockProtectionLabel();
   updateFaviconPreview(s.faviconUrl||"");
 }
 function settingsStatus(msg, good=true){ setMessage("settingsStatus", msg, good?"good":"error"); }
@@ -7640,7 +7775,7 @@ function resetCloakSetting(){
   initSettingsPage();
   settingsStatus("Tab cloak reset.");
 }
-function saveComfortSettings(){ const s=getLocalSettings(); s.reducedMotion=!!document.getElementById("settingsReducedMotion")?.checked; s.openGamesNewTab=!!document.getElementById("settingsOpenGamesNewTab")?.checked; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Comfort settings saved."); }
+function saveComfortSettings(){ const s=getLocalSettings(); s.reducedMotion=!!document.getElementById("settingsReducedMotion")?.checked; s.openGamesNewTab=!!document.getElementById("settingsOpenGamesNewTab")?.checked; s.closeWarningEnabled=!!document.getElementById("settingsCloseWarning")?.checked; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Comfort settings saved."); }
 function resetAllSettings(){ localStorage.removeItem("blankspace_settings_v98"); clearBlankSpaceFavicons(); applyLocalSettings(); initSettingsPage(); settingsStatus("Local settings reset."); }
 
 document.addEventListener("DOMContentLoaded",()=>{
