@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v100: fixes Owner chat view wiring, Daily Rewards refresh button, and achievement search UI -->
+<!-- Blank Space v101: fixes Owner chat view full read-only UI, Daily Rewards session refresh, and Achievement Search button/Enter wiring -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -305,6 +305,11 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 /* v99 additions */
 .gift-tab{font-size:18px;min-width:42px}.daily-reward-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin:14px 0}.daily-reward-day{border:1px solid #334155;border-radius:16px;background:#0b0c10;padding:12px;text-align:center}.daily-reward-day.active{border-color:#facc15;box-shadow:0 0 0 1px rgba(250,204,21,.25)}.daily-reward-day.claimed{border-color:#22c55e;background:#052e16}.achievement-searchbar{margin:12px 0}.owner-chat-view-overlay{position:fixed;inset:0;z-index:10060;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:18px}.owner-chat-view-overlay.hidden{display:none!important}.owner-chat-view-card{width:min(980px,96vw);height:min(760px,92vh);background:#05070b;border:1px solid #334155;border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.8);display:grid;grid-template-rows:auto 1fr;overflow:hidden}.owner-chat-view-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-bottom:1px solid #1f2937}.owner-chat-view-body{overflow:auto;padding:14px;display:grid;gap:10px;align-content:start}.owner-chat-bubble{max-width:78%;border:1px solid #334155;border-radius:18px;padding:10px;background:#111827}.owner-chat-bubble.mine{justify-self:end;background:#102032;border-color:#2563eb}.owner-chat-bubble.theirs{justify-self:start;background:#0b0c10}.owner-chat-bubble small{display:block;color:#94a3b8;margin-bottom:4px}.device-ban-screen{position:fixed;inset:0;z-index:100000;background:#05070b;color:#fff;display:grid;place-items:center;padding:24px;text-align:center}.settings-card label{display:block;margin:8px 0;color:#e5e7eb;font-weight:800}.compact-cards .game-tile,.compact-cards .achievement-card{min-height:auto;padding:9px}.large-text{font-size:18px}.high-contrast{filter:contrast(1.18)}.square-corners *{border-radius:6px!important}.hide-thumbs .game-tile img{display:none}.compact-chat .chat-message,.compact-chat .owner-chat-bubble{padding:6px;font-size:12px}.small-game-controls .game-header .btn,.small-game-controls .game-header .mini-btn{padding:6px 8px;font-size:12px}
 
+
+
+/* v101 owner read-only chat, daily rewards, and achievement search polish */
+.owner-chat-fullscreen{position:fixed;inset:0;z-index:100800;background:rgba(0,0,0,.88);display:flex;flex-direction:column;padding:18px;overflow:auto}.owner-chat-fullscreen.hidden{display:none!important}.owner-chat-fullscreen .owner-chat-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1180px;width:100%;margin:0 auto 12px}.owner-chat-fullscreen .owner-chat-topbar h2{margin:0;color:#fff;font-size:28px}.owner-chat-fullscreen .owner-chat-shell{max-width:1180px;width:100%;margin:0 auto;display:grid;grid-template-columns:minmax(250px,360px) 1fr;gap:14px;min-height:min(720px,82vh)}.owner-chat-fullscreen .panel{background:#05070b;border:1px solid #2b2f3a}.owner-chat-fullscreen .owner-readonly-banner{border:1px solid #facc15;background:#221a06;color:#fef3c7;border-radius:14px;padding:10px;font-weight:900;margin-bottom:10px}.owner-chat-fullscreen .chat-main-panel{display:grid;grid-template-rows:auto 1fr auto}.owner-chat-fullscreen .chat-messages{min-height:420px;max-height:none}.owner-chat-fullscreen .chat-compose input{pointer-events:none;opacity:.7}.owner-chat-fullscreen .chat-compose button,.owner-chat-fullscreen .image-btn{pointer-events:none;opacity:.45}.owner-view-conversation.active{border-color:#facc15;background:#16130a}.achievement-searchbar{display:flex;gap:8px;flex-wrap:wrap}.achievement-searchbar input{flex:1;min-width:220px}.daily-session-debug{font-size:12px;color:#94a3b8;margin-top:6px}@media(max-width:850px){.owner-chat-fullscreen .owner-chat-shell{grid-template-columns:1fr}.owner-chat-fullscreen{padding:10px}.owner-chat-fullscreen .chat-messages{min-height:300px}}
+
 </style>
 </head>
 <body>
@@ -385,7 +390,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v100</span>
+        <span class="update-version-badge">Blank Space v101</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -397,9 +402,11 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <li><b>Games:</b> moved broken verified wrappers out of Verified Games, refreshed sources, added Level 67, Hole.io, and Stunt Bike Extreme, and added multi-source choices for the new Popular Games.</li>
         <li><b>Settings:</b> added 10 more local options, including compact cards, larger text, high contrast, rounded corners, hide thumbnails, auto-open last tab, quiet notifications, compact chat, safer external prompts, and smaller game controls.</li>
         <li><b>Achievement search:</b> added a search box so you can find achievements without scrolling.</li>
-        <li><b>Owner chat view:</b> searching a user opens a read-only chat-view overlay with an X button, matching the user-style chat layout while preventing Owner replies.</li>
+        <li><b>Owner chat view:</b> searching a username now opens a full read-only Chat-style view with a left conversation list, message bubbles, and an X close button. The Owner cannot type or send from it.</li>
+        <li><b>Daily rewards:</b> the refresh and claim buttons now force-check the current Supabase session before saying you are signed out.</li>
+        <li><b>Achievement search:</b> added a Search button, Enter-key search, Clear button wiring, and a visible result count.</li>
       </ul>
-      <div class="update-note">Supabase note: run <b>supabase_v99_update.sql</b> first, then upload this v99 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v101_chat_daily_search_fix.sql</b> first, then upload this v101 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -523,7 +530,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
             <button class="mini-btn" id="clearEquippedIconBtn">Clear Equipped Icon</button>
           </div>
         </div>
-        <div class="searchbar achievement-searchbar"><input id="achievementSearch" placeholder="Search achievements by game, name, description, or reward..." autocomplete="off" /><button class="mini-btn" id="clearAchievementSearchBtn" type="button">Clear</button></div>
+        <div class="searchbar achievement-searchbar"><input id="achievementSearch" placeholder="Search achievements by game, name, description, or reward..." autocomplete="off" /><button class="mini-btn primary" id="achievementSearchBtn" type="button">Search</button><button class="mini-btn" id="clearAchievementSearchBtn" type="button">Clear</button></div>
         <p id="achievementSearchStatus" class="small-note">Type to search achievements instantly.</p>
         <p id="achievementsStatus" class="form-message">Sign in to load achievements.</p>
         <div id="achievementsGrid" class="achievement-grid"></div>
@@ -7490,7 +7497,7 @@ async function adminRunOtherCommandV99(){ try{ const username=document.getElemen
 async function ownerLoadChatView(){ const username=document.getElementById('ownerChatUsername')?.value||''; const overlay=document.getElementById('ownerChatViewOverlay'); const body=document.getElementById('ownerChatViewBody'); const title=document.getElementById('ownerChatViewTitle'); if(!username.trim()) return alert('Type a username first.'); overlay?.classList.remove('hidden'); if(title) title.textContent='@'+username+' chat view'; if(body) body.innerHTML='<div class="empty-state">Loading read-only chat view...</div>'; try{ const r=await getSupabaseClient().rpc('owner_get_user_chat_view_v99',{p_username:username,p_limit:250}); if(r.error) throw r.error; const rows=r.data||[]; if(body) body.innerHTML=rows.length?rows.map(m=>`<div class="owner-chat-bubble ${m.is_target_sender?'mine':'theirs'}"><small>${escapeHTML(m.chat_name||m.chat_type||'Chat')} • @${escapeHTML(m.sender_username||'unknown')} • ${escapeHTML(m.created_at?new Date(m.created_at).toLocaleString():'')}</small><div>${escapeHTML(m.body||'')}${m.image_url?'<br><img class="chat-image-preview" src="'+escapeHTML(m.image_url)+'">':''}</div></div>`).join(''):'<div class="empty-state">No messages found.</div>'; }catch(e){ if(body) body.innerHTML=`<div class="empty-state">${escapeHTML(e.message||'Could not load chat view.')}</div>`; } }
 const oldAdminSendUserMessageV99=adminSendUserMessage; adminSendUserMessage=async function(){ try{ const sendAll=!!document.getElementById('adminMessageAll')?.checked; const username=document.getElementById('adminMessageUsername')?.value.trim()||''; const message=document.getElementById('adminMessageText')?.value.trim()||''; const seconds=parseInt(document.getElementById('adminMessageSeconds')?.value||'20',10); const style=document.getElementById('adminMessageStyle')?.value||'notice'; if(!message)return alert('Type a message.'); if(!sendAll&&!username)return alert('Type a username or check Send to everyone.'); const r=await getSupabaseClient().rpc('admin_send_user_message_v99',{p_username:sendAll?'':username,p_message:message,p_seconds:seconds,p_style:style,p_send_all:sendAll}); if(r.error) throw r.error; setMessage('adminPanelStatus',sendAll?'Timed message sent to everyone except you.':'Timed message sent.','good'); adminLoadActions?.(); }catch(e){ alert(e.message||String(e)); } };
 const oldOpenCurrentGameExternalV99=openCurrentGameExternal; openCurrentGameExternal=function(){ const s=getLocalSettings(); if(s.confirmExternal&&!confirm('Open this source in a new tab?')) return; return oldOpenCurrentGameExternalV99(); };
-const oldSwitchTabV99=switchTab; switchTab=function(tabId){ const s=getLocalSettings(); if(s.rememberLastTab) localStorage.setItem('blankspace_last_tab_v99',tabId); oldSwitchTabV99(tabId); if(tabId==='dailyrewards') refreshDailyReward(); };
+const oldShowTabV99=showTab; showTab=function(tabId){ const s=getLocalSettings(); if(s.rememberLastTab) localStorage.setItem('blankspace_last_tab_v99',tabId); oldShowTabV99(tabId); if(tabId==='dailyrewards') { if(typeof refreshDailyRewardV101==='function') refreshDailyRewardV101(); else if(typeof refreshDailyRewardV100==='function') refreshDailyRewardV100(); else if(typeof refreshDailyReward==='function') refreshDailyReward(); } };
 document.addEventListener('DOMContentLoaded',()=>{ document.getElementById('claimDailyRewardBtn')?.addEventListener('click',claimDailyReward); document.getElementById('settingsSaveMoreBtn')?.addEventListener('click',saveMoreSettingsV99); document.getElementById('achievementSearch')?.addEventListener('input',filterAchievementsV99); document.getElementById('adminRunOtherCommandBtn')?.addEventListener('click',adminRunOtherCommandV99); document.getElementById('ownerChatViewClose')?.addEventListener('click',()=>document.getElementById('ownerChatViewOverlay')?.classList.add('hidden')); setTimeout(registerAndCheckDeviceV99,1200); setInterval(registerAndCheckDeviceV99,10000); const s=getLocalSettings(); const last=localStorage.getItem('blankspace_last_tab_v99'); if(s.rememberLastTab&&last&&last!=='account') setTimeout(()=>document.querySelector(`[data-tab="${last}"]`)?.click(),400); });
 
 
@@ -7588,6 +7595,198 @@ function wireV100Fixes(){
 }
 document.addEventListener('DOMContentLoaded',wireV100Fixes);
 setTimeout(wireV100Fixes,800);
+
+
+
+/* v101: real Owner Chat View UI, Daily Rewards session refresh, and Search button/Enter wiring */
+function v101SetMsg(id, text, cls){ const el=document.getElementById(id); if(!el) return; el.textContent=text||''; el.classList.remove('error','good'); if(cls) el.classList.add(cls); }
+async function v101RefreshAuthSession(){
+  const client=getSupabaseClient();
+  try{
+    const sessionRes=await client.auth.getSession();
+    const session=sessionRes.data?.session;
+    if(session?.user){ blankSpaceUser=session.user; }
+    const userRes=await client.auth.getUser();
+    if(userRes.data?.user){ blankSpaceUser=userRes.data.user; }
+    if(blankSpaceUser){ await loadProfile(); await checkAdmin?.(); renderProfile?.(); return blankSpaceUser; }
+    await loadExistingSession?.();
+    return blankSpaceUser;
+  }catch(e){
+    try{ await loadExistingSession?.(); }catch(_){}
+    return blankSpaceUser;
+  }
+}
+async function refreshDailyRewardV101(){
+  try{
+    await v101RefreshAuthSession();
+    if(!blankSpaceUser){ renderDailyRewardGrid?.(1); return v101SetMsg('dailyRewardStatus','Still not signed in. Go to Account, sign in, then press Refresh Daily Rewards.','error'); }
+    const r=await getSupabaseClient().rpc('refresh_daily_reward_v99');
+    if(r.error) throw r.error;
+    const d=r.data||{};
+    renderDailyRewardGrid?.(d.next_day||1);
+    const extra=d.streak_day!==undefined?` Current streak: ${d.streak_day}.`:'';
+    v101SetMsg('dailyRewardStatus', d.can_claim?`Ready to claim Day ${d.next_day||1}.${extra}`:(d.message||`Already claimed today. Next claim: ${d.next_day||1}.`), d.can_claim?'good':'');
+    return d;
+  }catch(e){
+    renderDailyRewardGrid?.(1);
+    v101SetMsg('dailyRewardStatus', e.message||'Could not refresh Daily Rewards. Run supabase_v101_chat_daily_search_fix.sql.','error');
+  }
+}
+async function claimDailyRewardV101(){
+  try{
+    await v101RefreshAuthSession();
+    if(!blankSpaceUser) return v101SetMsg('dailyRewardStatus','Sign in on Account, then press Refresh Daily Rewards.','error');
+    const r=await getSupabaseClient().rpc('claim_daily_reward_v99');
+    if(r.error) throw r.error;
+    const d=r.data||{};
+    if(!d.ok) return v101SetMsg('dailyRewardStatus',d.message||'Could not claim reward.','error');
+    v101SetMsg('dailyRewardStatus',`Claimed Day ${d.day} for ${d.points_awarded} point${d.points_awarded===1?'':'s'}!`,'good');
+    await loadProfile?.(); renderProfile?.(); await refreshLeaderboard?.(); await refreshDailyRewardV101();
+  }catch(e){ v101SetMsg('dailyRewardStatus',e.message||'Could not claim reward.','error'); }
+}
+function filterAchievementsV101(){
+  const input=document.getElementById('achievementSearch');
+  const status=document.getElementById('achievementSearchStatus');
+  const q=(input?.value||'').toLowerCase().trim();
+  const cards=Array.from(document.querySelectorAll('#achievementsGrid .achievement-card'));
+  let shown=0;
+  for(const card of cards){
+    const hay=(card.textContent||'').toLowerCase();
+    const ok=!q||hay.includes(q);
+    card.style.display=ok?'':'none';
+    if(ok) shown++;
+  }
+  if(status){
+    if(!cards.length) status.textContent='No achievement cards are loaded yet. Press Refresh.';
+    else status.textContent=q?`Showing ${shown} of ${cards.length} achievements for “${input.value}”.`:`Showing all ${cards.length} achievements.`;
+  }
+}
+async function runAchievementSearchV101(){
+  if(!document.querySelectorAll('#achievementsGrid .achievement-card').length){
+    try{ await refreshAchievements?.(); }catch(e){}
+  }
+  filterAchievementsV101();
+}
+function ensureOwnerChatFullscreenV101(){
+  let wrap=document.getElementById('ownerChatFullscreenV101');
+  if(wrap) return wrap;
+  wrap=document.createElement('div');
+  wrap.id='ownerChatFullscreenV101';
+  wrap.className='owner-chat-fullscreen hidden';
+  wrap.innerHTML=`
+    <div class="owner-chat-topbar">
+      <div><h2 id="ownerChatFullTitle">Read-only Chat View</h2><p class="small-note" id="ownerChatFullSubtitle">Owner can view, but cannot type or send.</p></div>
+      <button class="mini-btn" id="ownerChatFullClose">✕ Close</button>
+    </div>
+    <div class="owner-chat-shell">
+      <div class="panel chat-friends-panel">
+        <div class="suggestions-toolbar"><div><h2>Chats</h2><p class="small-note">Click a conversation to preview exactly what the user would see.</p></div></div>
+        <div id="ownerChatConversationList" class="friend-list"></div>
+      </div>
+      <div class="panel chat-main-panel" id="ownerChatReadOnlyPanel">
+        <div class="chat-header"><div><h2 id="ownerChatReadOnlyTitle">Choose a chat</h2><p class="small-note" id="ownerChatReadOnlySubtitle">Read-only Owner view.</p></div><div class="chat-header-actions"><button class="mini-btn" id="ownerChatFullClose2">Close View</button></div></div>
+        <div id="ownerChatReadOnlyMessages" class="chat-messages"><div class="empty-state">Choose a conversation.</div></div>
+        <div class="chat-compose"><label class="mini-btn image-btn">📷</label><input placeholder="Owner read-only view — you cannot type here." disabled/><button class="mini-btn primary" disabled>Send</button></div>
+      </div>
+    </div>`;
+  document.body.appendChild(wrap);
+  const close=()=>wrap.classList.add('hidden');
+  wrap.querySelector('#ownerChatFullClose')?.addEventListener('click',close);
+  wrap.querySelector('#ownerChatFullClose2')?.addEventListener('click',close);
+  wrap.addEventListener('click',e=>{ if(e.target===wrap) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') wrap.classList.add('hidden'); });
+  return wrap;
+}
+function ownerChatAvatarV101(name){ const letter=String(name||'?').replace(/^@/,'').charAt(0).toUpperCase()||'?'; return `<div class="avatar-placeholder">${escapeHTML(letter)}</div>`; }
+window.selectOwnerChatConversationV101=function(i){
+  const threads=window.ownerChatV101Threads||[];
+  const thread=threads[i];
+  if(!thread) return;
+  document.querySelectorAll('.owner-view-conversation').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+  const title=document.getElementById('ownerChatReadOnlyTitle');
+  const subtitle=document.getElementById('ownerChatReadOnlySubtitle');
+  const box=document.getElementById('ownerChatReadOnlyMessages');
+  if(title) title.textContent=thread.name||'Chat';
+  if(subtitle) subtitle.textContent=`${thread.type==='group'?'Group chat':'Friend chat'} • read-only Owner view`;
+  const ordered=thread.messages.slice().sort((a,b)=>new Date(a.created_at||0)-new Date(b.created_at||0));
+  if(box){
+    box.innerHTML=ordered.length?ordered.map(m=>{
+      const mine=!!m.is_target_sender;
+      const sender=m.sender_username||'Unknown';
+      const date=m.created_at?new Date(m.created_at).toLocaleString():'';
+      const img=m.image_url?`<br><img class="chat-image-preview" src="${escapeHTML(m.image_url)}" alt="chat image">`:'';
+      return `<div class="chat-bubble ${mine?'mine':''}"><div class="chat-meta">${escapeHTML(sender)} • ${escapeHTML(date)}</div><div>${escapeHTML(m.body||'')}${img}</div></div>`;
+    }).join(''):'<div class="empty-state">No messages in this conversation.</div>';
+    box.scrollTop=box.scrollHeight;
+  }
+};
+async function ownerLoadChatViewV101(){
+  const username=(document.getElementById('ownerChatUsername')?.value||'').trim().replace(/^@/,'');
+  const smallBox=document.getElementById('ownerChatViewer');
+  if(!username){ if(smallBox) smallBox.innerHTML='<div class="empty-state">Type a username first.</div>'; return; }
+  if(smallBox) smallBox.innerHTML='<div class="empty-state">Opening full read-only chat view...</div>';
+  const overlay=ensureOwnerChatFullscreenV101();
+  overlay.classList.remove('hidden');
+  document.getElementById('ownerChatFullTitle').textContent=`@${username} — read-only chat view`;
+  document.getElementById('ownerChatFullSubtitle').textContent='This is styled like the Chat tab. Owner cannot type, upload, send, pin, or modify anything here.';
+  document.getElementById('ownerChatConversationList').innerHTML='<div class="empty-state">Loading chats...</div>';
+  document.getElementById('ownerChatReadOnlyMessages').innerHTML='<div class="empty-state">Loading messages...</div>';
+  try{
+    await v101RefreshAuthSession();
+    let r=await getSupabaseClient().rpc('owner_get_user_chat_view_v99',{p_username:username,p_limit:500});
+    if(r.error){ r=await getSupabaseClient().rpc('owner_get_user_chat_view_v95',{p_username:username,p_limit:500}); }
+    if(r.error) throw r.error;
+    const rows=r.data||[];
+    const map=new Map();
+    for(const m of rows){
+      const key=(m.chat_type||'chat')+'::'+(m.chat_name||'Chat');
+      if(!map.has(key)) map.set(key,{key,type:m.chat_type||'chat',name:m.chat_name||'Chat',messages:[],last:m.created_at||''});
+      const t=map.get(key); t.messages.push(m); if(new Date(m.created_at||0)>new Date(t.last||0)) t.last=m.created_at;
+    }
+    const threads=Array.from(map.values()).sort((a,b)=>new Date(b.last||0)-new Date(a.last||0));
+    window.ownerChatV101Threads=threads;
+    const list=document.getElementById('ownerChatConversationList');
+    if(!threads.length){
+      list.innerHTML='<div class="empty-state">No chat messages found for this user.</div>';
+      document.getElementById('ownerChatReadOnlyTitle').textContent='No chats found';
+      document.getElementById('ownerChatReadOnlyMessages').innerHTML='<div class="empty-state">No friend or group messages were found. Run the v101 Supabase fix if you know this user has messages.</div>';
+      if(smallBox) smallBox.innerHTML='<div class="empty-state">No chat messages found.</div>';
+      return;
+    }
+    list.innerHTML=threads.map((t,i)=>{
+      const last=t.messages.slice().sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0))[0]||{};
+      const display=t.name||'Chat';
+      return `<div class="chat-friend-row owner-view-conversation ${i===0?'active':''}" onclick="selectOwnerChatConversationV101(${i})"><div class="friend-profile"><div class="friend-avatar">${ownerChatAvatarV101(display)}</div><div><div class="friend-name">${escapeHTML(display)}</div><div class="friend-meta">${escapeHTML(t.type||'chat')} • ${escapeHTML(last.body?String(last.body).slice(0,42):'No text')}</div></div></div><button class="mini-btn" type="button">View</button></div>`;
+    }).join('');
+    if(smallBox) smallBox.innerHTML=`<div class="empty-state">Opened read-only Chat-style view for @${escapeHTML(username)}. Use the X/Close button to leave.</div>`;
+    selectOwnerChatConversationV101(0);
+  }catch(e){
+    const msg=escapeHTML(e.message||'Could not load chat view. Run supabase_v101_chat_daily_search_fix.sql.');
+    document.getElementById('ownerChatConversationList').innerHTML=`<div class="empty-state">${msg}</div>`;
+    document.getElementById('ownerChatReadOnlyMessages').innerHTML=`<div class="empty-state">${msg}</div>`;
+    if(smallBox) smallBox.innerHTML=`<div class="empty-state">${msg}</div>`;
+  }
+}
+function wireV101Fixes(){
+  const claim=document.getElementById('claimDailyRewardBtn');
+  const refresh=document.getElementById('refreshDailyRewardBtn');
+  if(claim){ const c=claim.cloneNode(true); claim.replaceWith(c); c.addEventListener('click',claimDailyRewardV101); }
+  if(refresh){ const r=refresh.cloneNode(true); refresh.replaceWith(r); r.addEventListener('click',refreshDailyRewardV101); }
+  const search=document.getElementById('achievementSearch');
+  const searchBtn=document.getElementById('achievementSearchBtn');
+  const clear=document.getElementById('clearAchievementSearchBtn');
+  if(search){ ['input','change','search'].forEach(evt=>search.addEventListener(evt,filterAchievementsV101)); search.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); runAchievementSearchV101(); }}); }
+  searchBtn?.addEventListener('click',runAchievementSearchV101);
+  clear?.addEventListener('click',()=>{ if(search) search.value=''; filterAchievementsV101(); search?.focus(); });
+  const chatBtn=document.getElementById('ownerLoadChatViewBtn');
+  if(chatBtn){ const b=chatBtn.cloneNode(true); chatBtn.replaceWith(b); b.addEventListener('click',ownerLoadChatViewV101); }
+  const ownerInput=document.getElementById('ownerChatUsername');
+  ownerInput?.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); ownerLoadChatViewV101(); }});
+  setTimeout(filterAchievementsV101,300);
+  if(document.getElementById('dailyrewards')?.classList.contains('active-section')) refreshDailyRewardV101();
+}
+document.addEventListener('DOMContentLoaded',wireV101Fixes);
+setTimeout(wireV101Fixes,900);
 
 </script>
 </body>
