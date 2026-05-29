@@ -120,7 +120,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .avatar-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .avatar-placeholder{font-size:58px;font-weight:900;color:#fff;line-height:1}
 .profile-name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.profile-name-row h2{font-size:34px!important;margin:0!important;letter-spacing:-.05em}.points-pill,.rank-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #343946;border-radius:999px;background:#151821;padding:7px 11px;font-weight:900;color:#fff}.admin-badge{display:inline-grid;place-items:center;width:36px;height:30px;border-radius:12px;background:linear-gradient(180deg,#171717,#050505);border:1px solid #3f3f46;color:#f8fafc;font-weight:1000;letter-spacing:.02em;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 22px rgba(0,0,0,.35)}.admin-badge.hidden{display:none!important}
+.account-name-row-v96 .profile-equipped-icon{margin-left:0}.account-name-row-v96 .rank-badge{margin-left:0;font-size:12px;padding:5px 12px}.account-name-row-v96 .points-pill{margin-left:4px}.profile-name-row h2{font-size:34px!important;margin:0!important;letter-spacing:-.05em}.points-pill,.rank-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #343946;border-radius:999px;background:#151821;padding:7px 11px;font-weight:900;color:#fff}.admin-badge{display:inline-grid;place-items:center;width:36px;height:30px;border-radius:12px;background:linear-gradient(180deg,#171717,#050505);border:1px solid #3f3f46;color:#f8fafc;font-weight:1000;letter-spacing:.02em;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 22px rgba(0,0,0,.35)}.admin-badge.hidden{display:none!important}
 .medal{font-size:22px;line-height:1}.profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.profile-actions input[type=file]{display:none}.profile-meta{color:#c7c7c7;margin:8px 0 0;line-height:1.45}.username-change-box{border-top:1px solid #2b2f3a;margin-top:16px;padding-top:14px}.username-change-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.username-change-row input{width:min(390px,100%);text-align:left}.account-tools-bottom{grid-column:1/-1;margin-top:4px}.account-tools-bottom .account-row{justify-content:space-between}.leaderboard-shell{max-width:980px;margin:18px auto;display:grid;gap:12px}.leaderboard-item{display:grid;grid-template-columns:62px 58px 1fr auto;gap:12px;align-items:center;border:1px solid #2b2f3a;border-radius:22px;background:#0b0c10;padding:13px 15px}.leader-rank{font-weight:900;font-size:20px;color:#fff;text-align:center}.leader-avatar{width:54px;height:54px;border-radius:17px;overflow:hidden;background:#151821;border:1px solid #343946;display:grid;place-items:center;font-weight:900}.leader-avatar img{width:100%;height:100%;object-fit:cover}.leader-name{font-weight:900;font-size:18px}.leader-points{font-weight:900;color:#fff}.points-input{width:110px!important;text-align:center!important;padding:9px 11px!important;margin:0!important}.award-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.suggestion-points{border:1px solid #334155;border-radius:999px;padding:3px 8px;background:#111827;color:#fff;font-weight:900;font-size:10px;text-transform:uppercase}.bottom-tools-title{margin:0 0 10px!important;font-size:20px!important}.admin-award-note{font-size:12px;color:#a8a8a8;margin:8px 0 0!important}.auth-layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:12px}.auth-card{border:1px solid #2b2f3a;background:#0b0c10;border-radius:22px;padding:14px}.auth-card h2{margin-top:0!important}.password-hint{font-size:12px;color:#a8a8a8;line-height:1.45;margin:8px 0 0}.auth-card input,.password-field{width:100%;text-align:left;margin:8px 0 0}.profile-security-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.profile-security-row input{width:min(320px,100%);text-align:left}.signout-btn{border-color:#3b1d1d!important;background:#181111!important}
 @media(max-width:720px){.auth-layout{grid-template-columns:1fr}.profile-hero{grid-template-columns:1fr;text-align:center}.avatar-wrap{margin:0 auto}.profile-name-row,.profile-actions,.username-change-row{justify-content:center}.leaderboard-item{grid-template-columns:44px 48px 1fr;}.leader-points{grid-column:3}.leader-avatar{width:46px;height:46px;border-radius:15px}}
 
@@ -357,11 +357,12 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v95</span>
+        <span class="update-version-badge">Blank Space v96</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
+        <li><b>Account header display:</b> the Account tab now shows the username first, then the equipped icon, then the rank badge, then points.</li>
         <li><b>Owner rank:</b> the account named <b>Admin</b> is now the one-of-one <b>Owner</b> rank.</li>
         <li><b>Flagging system:</b> managers, admins, and the owner can flag users from the leaderboard. A flag gives that user a warning pop-up; 3 warnings creates a one-day suspension.</li>
         <li><b>Chat safety:</b> chat now shows a first-time notice after this update, automatically warns users for blocked/inappropriate words, and blocks those messages.</li>
@@ -369,7 +370,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <li><b>A Small World Cup backend guard:</b> Supabase now treats the game's duplicate goal messages as paired signals so 5 real goals no longer saves as 10.</li>
         <li>Preserved the v94 real Unity Slope startup fix and the real Slope score bridge.</li>
       </ul>
-      <div class="update-note">Supabase note: run <b>supabase_v95_update.sql</b> first, then upload this v95 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">Supabase note: no new Supabase code is required for v96; upload this v96 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -669,8 +670,10 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
         <div class="profile-hero" id="profileHero">
           <div class="avatar-wrap" id="avatarPreviewWrap"><div class="avatar-placeholder" id="avatarPlaceholder">?</div><img id="accountAvatarPreview" alt="Profile picture" class="hidden"></div>
           <div>
-            <div class="profile-name-row">
+            <div class="profile-name-row account-name-row-v96">
               <h2 id="profileDisplayName">Not signed in</h2>
+              <span class="profile-equipped-icon hidden" id="accountHeaderEquippedIcon" title="Equipped icon"></span>
+              <span class="rank-badge hidden" id="accountHeaderRankBadge" title="Rank"></span>
               <span class="points-pill" id="accountPointsPill">0 points</span>
               <span class="rank-pill hidden" id="accountRankPill"></span>
             </div>
@@ -4944,6 +4947,8 @@ function renderProfile() {
   const profileActions = document.getElementById("profileActions");
   const pointsPill = document.getElementById("accountPointsPill");
   const rankPill = document.getElementById("accountRankPill");
+  const accountHeaderEquippedIcon = document.getElementById("accountHeaderEquippedIcon");
+  const accountHeaderRankBadge = document.getElementById("accountHeaderRankBadge");
   const medal = document.getElementById("accountMedal");
   const passwordUpgradeBox = document.getElementById("passwordUpgradeBox");
   if (accountUserId) accountUserId.textContent = blankSpaceUser?.id ? "User ID: " + blankSpaceUser.id : "User ID: not signed in";
@@ -4956,6 +4961,18 @@ function renderProfile() {
     if (pointsPill) {
       pointsPill.textContent = points + " point" + (points === 1 ? "" : "s");
       pointsPill.classList.remove("hidden");
+    }
+    if (accountHeaderEquippedIcon) {
+      const icon = blankSpaceProfile.equipped_icon;
+      accountHeaderEquippedIcon.textContent = icon || "";
+      accountHeaderEquippedIcon.classList.toggle("hidden", !icon);
+    }
+    if (accountHeaderRankBadge) {
+      const userRank = normalizeUserRank(blankSpaceProfile.rank || "member");
+      accountHeaderRankBadge.className = `rank-badge rank-${userRank}`;
+      accountHeaderRankBadge.textContent = rankLabel(userRank);
+      accountHeaderRankBadge.title = `${rankLabel(userRank)} rank`;
+      accountHeaderRankBadge.classList.toggle("hidden", userRank === "member");
     }
     const avatar = safeAvatarURL(blankSpaceProfile.avatar_url);
     if (accountAvatarPreview && avatarPlaceholder) {
@@ -4983,8 +5000,8 @@ function renderProfile() {
     if (pointsPill) { pointsPill.textContent = "0 points"; pointsPill.classList.remove("hidden"); }
     medal?.classList.add("hidden");
     rankPill?.classList.add("hidden");
-    adminBadge?.classList.add("hidden");
-    equippedIcon?.classList.add("hidden");
+    accountHeaderEquippedIcon?.classList.add("hidden");
+    accountHeaderRankBadge?.classList.add("hidden");
     usernameForm?.classList.remove("hidden");
     profileBox?.classList.add("hidden");
     profileActions?.classList.add("hidden");
@@ -4996,8 +5013,8 @@ function renderProfile() {
     if (pointsPill) { pointsPill.textContent = "0 points"; pointsPill.classList.remove("hidden"); }
     medal?.classList.add("hidden");
     rankPill?.classList.add("hidden");
-    adminBadge?.classList.add("hidden");
-    equippedIcon?.classList.add("hidden");
+    accountHeaderEquippedIcon?.classList.add("hidden");
+    accountHeaderRankBadge?.classList.add("hidden");
     if (accountAvatarPreview && avatarPlaceholder) {
       accountAvatarPreview.removeAttribute("src");
       accountAvatarPreview.classList.add("hidden");
