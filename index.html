@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v93 full update: deep achievement repair, exact A Small World Cup event bridge, chat pins, browser iframe fix, admin user messages, and account/icon cleanup -->
+<!-- Blank Space v95 full update: fixes real Slope Unity framework loading while preserving v93 achievement repairs and UI/admin changes -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -290,6 +290,13 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .rank-admin{border-color:#f87171;background:#450a0a;color:#fecaca}.rank-manager{border-color:#60a5fa;background:#172554;color:#bfdbfe}.rank-tester{border-color:#c084fc;background:#3b0764;color:#f3e8ff}.rank-member{border-color:#64748b;background:#111827;color:#cbd5e1}
 .group-chat-box{border-top:1px solid #2b2f3a;margin-top:16px;padding-top:14px}.group-chat-box input{width:100%;text-align:left;margin:6px 0}.group-chat-create{display:grid;gap:8px}.group-chat-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #2b2f3a;border-radius:18px;background:#0b0c10;padding:12px;margin-bottom:10px}.group-chat-meta{font-size:12px;color:#a8a8a8}.chat-header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.chat-header-actions input{width:210px;text-align:left}.group-control.hidden{display:none!important}.admin-action-log{max-height:260px;overflow:auto;display:grid;gap:8px}.admin-action-row{border:1px solid #2b2f3a;border-radius:14px;background:#07080b;padding:9px;color:#d1d5db;font-size:12px;line-height:1.35}.browser-frame-help.show{display:flex}.blocked-page{display:grid;place-items:center;height:100%;padding:28px;text-align:center;color:#fff}
 @media(max-width:720px){.source-select{order:-1;flex-basis:100%;max-width:none;width:100%}.playerBtns{width:100%}}
+
+/* v95 owner rank, warning flags, and owner chat viewer */
+.rank-owner{border-color:#facc15;background:linear-gradient(180deg,#713f12,#111827);color:#fef3c7;box-shadow:0 0 0 1px rgba(250,204,21,.22)}
+.leaderboard-item{grid-template-columns:42px 62px 58px 1fr auto}
+.leader-flag-slot{display:grid;place-items:center;min-height:38px}.flag-user-btn{width:34px;height:34px;border-radius:999px;border:1px solid #7f1d1d;background:#2b1111;color:#fecaca;cursor:pointer;font-size:16px;font-weight:1000}.flag-user-btn:hover{background:#450a0a;transform:translateY(-1px)}.flag-user-btn.hidden{visibility:hidden;pointer-events:none}.owner-chat-viewer{max-height:360px;overflow:auto;display:grid;gap:8px;border:1px solid #2b2f3a;border-radius:16px;background:#07080b;padding:10px;margin-top:10px}.owner-chat-line{border:1px solid #2b2f3a;background:#0d0f14;border-radius:14px;padding:9px}.owner-chat-line b{color:#fff}.owner-chat-line .small-note{display:block;margin-top:4px}.chat-safety-note{border:1px solid #facc15;background:#221a06;color:#fef3c7;border-radius:16px;padding:10px;margin:0 0 12px;font-weight:800}.send-all-row{display:flex;align-items:center;gap:8px;justify-content:flex-start;margin:8px 0;color:#e5e7eb;font-weight:900}.send-all-row input{width:auto!important;margin:0!important}.owner-only-note{font-size:12px;color:#fef3c7;line-height:1.35}
+@media(max-width:720px){.leaderboard-item{grid-template-columns:36px 44px 48px 1fr}.leader-points{grid-column:4}.leader-flag-slot{min-height:30px}.flag-user-btn{width:30px;height:30px}}
+
 </style>
 </head>
 <body>
@@ -331,7 +338,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <button class="tab chat-tab" data-tab="chat"><span id="chatTabBadge" class="tab-badge hidden">0</span>Chat</button>
     <button class="tab" data-tab="friends">Friends</button>
     <button class="tab" data-tab="account">Account</button>
-    <button class="tab hidden" id="adminPanelTab" data-tab="adminpanel">Admin Panel</button>
+    <button class="tab hidden" id="adminPanelTab" data-tab="adminpanel">Owner Panel</button>
   </nav>
 </header>
 
@@ -350,22 +357,19 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v93</span>
+        <span class="update-version-badge">Blank Space v95</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
       <ul class="update-list">
-        <li>Deep achievement repair: cleaned duplicate achievement cards, rebuilt the achievement catalog, and made Supabase award every valid matching achievement exactly once.</li>
-        <li>Fixed A Small World Cup by removing the broken polling/scoreboard scanner and patching the actual game event that increases your score. Goals are now sent as exact +1 goal events only.</li>
-        <li>Fully reset the Admin account's A Small World Cup achievements, goals, and wins so they can be earned again from clean real-game data.</li>
-        <li>Removed the extra Equipped Icon section from the Icons tab. Icon packs and your icon collection remain.</li>
-        <li>Cleaned the Account header so it shows one equipped icon and the new colored rank badge, without the old second icon slot or the old A admin badge.</li>
-        <li>Added chat pins. Use the pin button to the left of Chat in the Chat tab to keep friends at the top of your chat list.</li>
-        <li>Fixed the Browser iframe black-screen bug by fully clearing srcdoc before loading searches or URLs.</li>
-        <li>Added stronger Admin Panel commands, including non-closeable timed messages to specific users, force sign-out, reset avatar/icon tools, and per-user achievement/game resets.</li>
-        <li>Removed the old Important Admin Tools and Fun Admin Tools list sections.</li>
+        <li><b>Owner rank:</b> the account named <b>Admin</b> is now the one-of-one <b>Owner</b> rank.</li>
+        <li><b>Flagging system:</b> managers, admins, and the owner can flag users from the leaderboard. A flag gives that user a warning pop-up; 3 warnings creates a one-day suspension.</li>
+        <li><b>Chat safety:</b> chat now shows a first-time notice after this update, automatically warns users for blocked/inappropriate words, and blocks those messages.</li>
+        <li><b>Owner Panel:</b> Admin Panel was renamed to Owner Panel, timed messages can now be sent to everyone, and the owner can view a user's chat history without typing in it.</li>
+        <li><b>A Small World Cup backend guard:</b> Supabase now treats the game's duplicate goal messages as paired signals so 5 real goals no longer saves as 10.</li>
+        <li>Preserved the v94 real Unity Slope startup fix and the real Slope score bridge.</li>
       </ul>
-      <div class="update-note">Supabase note: run <b>supabase_v93_update.sql</b> first. Then upload this v93 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">Supabase note: run <b>supabase_v95_update.sql</b> first, then upload this v95 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -667,7 +671,6 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
           <div>
             <div class="profile-name-row">
               <h2 id="profileDisplayName">Not signed in</h2>
-              <span class="profile-equipped-icon hidden" id="accountEquippedIcon" title="Equipped icon"></span>
               <span class="points-pill" id="accountPointsPill">0 points</span>
               <span class="rank-pill hidden" id="accountRankPill"></span>
             </div>
@@ -735,7 +738,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
       </div>
 
 
-      <div class="panel suggestion-card account-tools-bottom hidden" id="accountAdminMovedNote"><h2 class="bottom-tools-title">Admin Panel</h2><p class="admin-only-note">Admin tools have moved to the main Admin Panel tab.</p></div>
+      <div class="panel suggestion-card account-tools-bottom hidden" id="accountAdminMovedNote"><h2 class="bottom-tools-title">Owner Panel</h2><p class="admin-only-note">Owner tools have moved to the main Owner Panel tab.</p></div>
 
       <div class="panel suggestion-card my-suggestions-card">
         <div class="suggestions-toolbar">
@@ -769,24 +772,24 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
   </section>
 
   <section id="adminpanel">
-    <h1 class="page-title">Admin Panel</h1>
-    <p class="tagline">Admin-only tools for accounts, points, suggestions, achievements, chat, icons, trades, and site checks.</p>
+    <h1 class="page-title">Owner Panel</h1>
+    <p class="tagline">Owner/Admin tools for ranks, warnings, timed messages, chat review, achievements, accounts, and site safety.</p>
     <div class="achievement-shell">
       <div class="panel suggestion-card account-tools-bottom hidden" id="accountAdminPanel">
-        <h2 class="bottom-tools-title">Admin Panel</h2>
-        <p class="admin-only-note">Admin only. These tools help manage accounts, points, suggestions, chats, trades, icons, and site safety.</p>
+        <h2 class="bottom-tools-title">Owner Panel</h2>
+        <p class="admin-only-note">Owner/Admin only. Managers can flag from the leaderboard; owner tools live here.</p>
         <div class="admin-grid">
           <div class="admin-tile"><h3>User Lookup</h3><input id="adminUserSearch" placeholder="Search username..." maxlength="20"/><button class="mini-btn" id="adminSearchUsersBtn">Search</button><div id="adminUserResults" class="admin-mini-list"></div></div>
           <div class="admin-tile"><h3>Change Username</h3><input id="adminTargetUsername" placeholder="Current username"/><input id="adminNewUsername" placeholder="New username"/><button class="mini-btn" id="adminChangeUsernameBtn">Change Username</button></div>
           <div class="admin-tile"><h3>Delete Account</h3><input id="adminDeleteUsername" placeholder="Username to delete"/><button class="mini-btn danger-btn" id="adminDeleteUserBtn">Delete User</button></div>
           <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
-          <div class="admin-tile"><h3>Ranks</h3><input id="adminRankUsername" placeholder="Username"/><select id="adminRankSelect"><option value="member">Member</option><option value="tester">Tester</option><option value="manager">Manager</option><option value="admin">Admin</option></select><input id="adminRankReason" placeholder="Reason"/><button class="mini-btn primary" id="adminSetRankBtn">Set Rank</button><p class="small-note">Admin gives Admin Panel access. Manager and Tester show colored badges.</p></div>
-          <div class="admin-tile"><h3>Timed User Message</h3><input id="adminMessageUsername" placeholder="Username"/><textarea id="adminMessageText" placeholder="Message they must see" maxlength="500"></textarea><input id="adminMessageSeconds" type="number" placeholder="Seconds visible" value="20" min="5" max="3600"/><select id="adminMessageStyle"><option value="notice">Notice</option><option value="warning">Warning</option><option value="danger">Danger</option></select><button class="mini-btn primary" id="adminSendUserMessageBtn">Send Message</button><p class="small-note">The user cannot close it. It disappears only when the timer expires.</p></div>
+          <div class="admin-tile"><h3>Ranks</h3><input id="adminRankUsername" placeholder="Username"/><select id="adminRankSelect"><option value="member">Member</option><option value="tester">Tester</option><option value="manager">Manager</option><option value="admin">Admin</option><option value="owner">Owner</option></select><input id="adminRankReason" placeholder="Reason"/><button class="mini-btn primary" id="adminSetRankBtn">Set Rank</button><p class="small-note">Owner is 1-of-1. Admin gives Owner Panel access. Manager can flag users. All ranks show colored badges.</p></div>
+          <div class="admin-tile"><h3>Timed Message</h3><input id="adminMessageUsername" placeholder="Username, or use Send to everyone"/><label class="send-all-row"><input id="adminMessageAll" type="checkbox"/> Send to everyone</label><textarea id="adminMessageText" placeholder="Message they must see" maxlength="500"></textarea><input id="adminMessageSeconds" type="number" placeholder="Seconds visible" value="20" min="5" max="3600"/><select id="adminMessageStyle"><option value="notice">Notice</option><option value="warning">Warning</option><option value="danger">Danger</option></select><button class="mini-btn primary" id="adminSendUserMessageBtn">Send Message</button><p class="small-note">The user cannot close it. It disappears only when the timer expires. Owner/Admin can send to one user or everyone.</p></div>
           <div class="admin-tile"><h3>User Commands</h3><input id="adminCommandUsername" placeholder="Username"/><select id="adminCommandSelect"><option value="force_sign_out">Force Sign Out</option><option value="clear_equipped_icon">Clear Equipped Icon</option><option value="reset_avatar">Reset Avatar</option><option value="reset_aswc_keep_points">Reset A Small World Cup Only</option><option value="reset_all_achievements_keep_points">Reset All Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminCommandValue" placeholder="Optional value"/><input id="adminCommandReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminRunCommandBtn">Run Command</button><p class="small-note">Use commands carefully. Achievement reset commands do not change points.</p></div>
           <div class="admin-tile"><h3>Moderation</h3><input id="adminModUsername" placeholder="Username"/><select id="adminModAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="reset_achievements_keep_points">Reset Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminModReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminModerateBtn">Apply Moderation</button><p class="small-note">Uses safe moderation actions only; points are not changed unless you use the points tool.</p></div>
           <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
           <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div>
-          <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div>        </div>
+          <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div><div class="admin-tile"><h3>Owner Chat View</h3><input id="ownerChatUsername" placeholder="Username to review"/><button class="mini-btn primary" id="ownerLoadChatViewBtn">Load Chat View</button><p class="owner-only-note">Owner view is read-only. It shows what the user has been chatting; the owner cannot type from this viewer.</p><div id="ownerChatViewer" class="owner-chat-viewer"><div class="empty-state">Type a username and load their chat view.</div></div></div>        </div>
         <p id="adminPanelStatus" class="form-message"></p>
       </div>
 
@@ -832,7 +835,7 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
   </div>
 </div>
 <div id="chatToastStack" class="chat-toast-stack"></div>
-<div id="adminForcedMessageOverlay" class="admin-forced-overlay hidden"><div class="admin-forced-card"><div class="admin-forced-label">Admin Message</div><h2 id="adminForcedMessageTitle">Blank Space Notice</h2><p id="adminForcedMessageBody"></p><p id="adminForcedMessageTimer" class="small-note"></p></div></div>
+<div id="adminForcedMessageOverlay" class="admin-forced-overlay hidden"><div class="admin-forced-card"><div class="admin-forced-label" id="adminForcedMessageLabel">Blank Space Message</div><h2 id="adminForcedMessageTitle">Blank Space Notice</h2><p id="adminForcedMessageBody"></p><p id="adminForcedMessageTimer" class="small-note"></p></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1936,6 +1939,7 @@ let friendsStarted = false;
 let blankSpaceUser = null;
 let blankSpaceProfile = null;
 let blankSpaceIsAdmin = false;
+let blankSpaceCanModerate = false;
 
 let accountRankCache = null;
 let achievementStarted = false;
@@ -4665,10 +4669,14 @@ const ACHIEVEMENTS = [
 
 function achievementById(id){ return ACHIEVEMENTS.find(a => a.id === id); }
 function equippedIconHTML(profile){ const icon = profile?.equipped_icon; return icon ? `<span class="name-equipped-icon" title="Equipped icon">${escapeHTML(icon)}</span>` : ""; }
-function normalizeUserRank(rank){ const r=String(rank||"member").toLowerCase(); return ["admin","manager","tester","member"].includes(r)?r:"member"; }
+function normalizeUserRank(rank){ const r=String(rank||"member").toLowerCase(); return ["owner","admin","manager","tester","member"].includes(r)?r:"member"; }
 function rankLabel(rank){ const r=normalizeUserRank(rank); return r.charAt(0).toUpperCase()+r.slice(1); }
 function rankBadgeHTML(profileOrRank){ const rank=normalizeUserRank(typeof profileOrRank==="string"?profileOrRank:profileOrRank?.rank); return `<span class="rank-badge rank-${rank}" title="${rankLabel(rank)} rank">${rankLabel(rank)}</span>`; }
 function nameWithBadges(profile, fallback="Unknown"){ return `${escapeHTML(usernameFromProfile(profile, fallback))}${equippedIconHTML(profile)}${rankBadgeHTML(profile?.rank||"member")}`; }
+function isManagerOrAboveRank(rank){ return ["owner","admin","manager"].includes(normalizeUserRank(rank)); }
+function isOwnerRank(rank){ return normalizeUserRank(rank) === "owner"; }
+function canFlagUsers(){ return !!blankSpaceProfile && (blankSpaceCanModerate || isManagerOrAboveRank(blankSpaceProfile.rank)); }
+
 
 
 const LOCAL_BLOCKED_TERMS = [
@@ -4856,7 +4864,7 @@ async function loadProfile() {
   }
   const result = await getSupabaseClient()
     .from("profiles")
-    .select("id, username, created_at, avatar_url, points, username_last_changed_at, login_email, equipped_icon, equipped_achievement_id, rank, is_banned, chat_muted_until, force_sign_out_at")
+    .select("id, username, created_at, avatar_url, points, username_last_changed_at, login_email, equipped_icon, equipped_achievement_id, rank, is_banned, chat_muted_until, suspended_until, force_sign_out_at")
     .eq("id", blankSpaceUser.id)
     .maybeSingle();
   if (result.error) throw result.error;
@@ -4880,6 +4888,7 @@ async function loadProfile() {
 
 async function checkAdmin() {
   blankSpaceIsAdmin = false;
+  blankSpaceCanModerate = false;
   if (!blankSpaceUser) {
     document.getElementById("adminPanel")?.classList.add("hidden");
     document.getElementById("accountAdminMovedNote")?.classList.add("hidden");
@@ -4893,7 +4902,9 @@ async function checkAdmin() {
     .eq("user_id", blankSpaceUser.id)
     .maybeSingle();
   if (!result.error && result.data) blankSpaceIsAdmin = true;
-  if (blankSpaceProfile && normalizeUserRank(blankSpaceProfile.rank) === "admin") blankSpaceIsAdmin = true;
+  const myRank = normalizeUserRank(blankSpaceProfile?.rank);
+  if (myRank === "owner" || myRank === "admin") blankSpaceIsAdmin = true;
+  blankSpaceCanModerate = isManagerOrAboveRank(myRank) || blankSpaceIsAdmin;
   document.getElementById("adminPanel")?.classList.toggle("hidden", !blankSpaceIsAdmin);
   document.getElementById("accountAdminMovedNote")?.classList.toggle("hidden", !blankSpaceIsAdmin);
   document.getElementById("adminPanelTab")?.classList.toggle("hidden", !blankSpaceIsAdmin);
@@ -4934,8 +4945,6 @@ function renderProfile() {
   const pointsPill = document.getElementById("accountPointsPill");
   const rankPill = document.getElementById("accountRankPill");
   const medal = document.getElementById("accountMedal");
-  const adminBadge = document.getElementById("accountAdminBadge");
-  const equippedIcon = document.getElementById("accountEquippedIcon");
   const passwordUpgradeBox = document.getElementById("passwordUpgradeBox");
   if (accountUserId) accountUserId.textContent = blankSpaceUser?.id ? "User ID: " + blankSpaceUser.id : "User ID: not signed in";
   if (blankSpaceProfile) {
@@ -4943,13 +4952,11 @@ function renderProfile() {
     setAccountState("Signed in as " + blankSpaceProfile.username, "good");
     if (currentUsername) currentUsername.textContent = blankSpaceProfile.username;
     if (profileDisplayName) profileDisplayName.textContent = blankSpaceProfile.username || "Account";
-    if (profileSubtitle) profileSubtitle.textContent = (blankSpaceProfile.is_banned ? "Chat banned. " : "") + (blankSpaceProfile.chat_muted_until && new Date(blankSpaceProfile.chat_muted_until) > new Date() ? "Chat muted. " : "") + (blankSpaceIsAdmin ? "Admin account. You can still earn achievement points and appear on the leaderboard." : (blankSpaceProfile.login_email ? "Password login is enabled. You can use this account on other devices." : "Browser-only account. Add a password to use this account on other devices."));
+    if (profileSubtitle) profileSubtitle.textContent = (blankSpaceProfile.suspended_until && new Date(blankSpaceProfile.suspended_until) > new Date() ? "Suspended. " : "") + (blankSpaceProfile.is_banned ? "Chat banned. " : "") + (blankSpaceProfile.chat_muted_until && new Date(blankSpaceProfile.chat_muted_until) > new Date() ? "Chat muted. " : "") + (blankSpaceIsAdmin ? "Owner/Admin account. You can still earn achievement points and appear on the leaderboard." : (blankSpaceProfile.login_email ? "Password login is enabled. You can use this account on other devices." : "Browser-only account. Add a password to use this account on other devices."));
     if (pointsPill) {
       pointsPill.textContent = points + " point" + (points === 1 ? "" : "s");
       pointsPill.classList.remove("hidden");
     }
-    adminBadge?.classList.toggle("hidden", !blankSpaceIsAdmin);
-    if (equippedIcon) { equippedIcon.textContent = blankSpaceProfile.equipped_icon || ""; equippedIcon.classList.toggle("hidden", !blankSpaceProfile.equipped_icon); }
     const avatar = safeAvatarURL(blankSpaceProfile.avatar_url);
     if (accountAvatarPreview && avatarPlaceholder) {
       if (avatar) {
@@ -5382,12 +5389,28 @@ function leaderboardRow(profile, index) {
   const rank = index + 1;
   const medal = medalForRank(rank);
   const points = Number(profile.points || 0);
+  const canFlag = canFlagUsers() && profile.id !== blankSpaceUser?.id;
+  const safeUsername = escapeHTML(profile.username || "").replace(/'/g, "&#039;");
   return `<div class="leaderboard-item">
+    <div class="leader-flag-slot">${canFlag ? `<button class="flag-user-btn" title="Give @${safeUsername} a warning" onclick="flagUserFromLeaderboard('${safeUsername}')">🚩</button>` : `<button class="flag-user-btn hidden" aria-hidden="true">🚩</button>`}</div>
     <div class="leader-rank">#${rank}</div>
     <div class="leader-avatar">${leaderboardAvatar(profile)}</div>
     <div><div class="leader-name">${escapeHTML(profile.username)}${equippedIconHTML(profile)}${rankBadgeHTML(profile)} ${medal ? `<span class="medal">${medal}</span>` : ""}</div><div class="friend-meta">${rank === 1 ? "1st place" : rank === 2 ? "2nd place" : rank === 3 ? "3rd place" : rank + "th place"}</div></div>
     <div class="leader-points">${points} point${points === 1 ? "" : "s"}</div>
   </div>`;
+}
+
+async function flagUserFromLeaderboard(username){
+  try{
+    if(!canFlagUsers()) return alert("Managers and above only.");
+    const reason = prompt(`Reason for warning @${username}?`, "Flagged from leaderboard");
+    if(reason === null) return;
+    const r = await getSupabaseClient().rpc("admin_flag_user_v95", { p_username: username, p_reason: reason || "Flagged from leaderboard" });
+    if(r.error) throw r.error;
+    const data = r.data || {};
+    alert(`Warning ${data.warning_count || ""} sent to @${data.username || username}.` + (data.suspended ? " They are suspended for 1 day." : ""));
+    await adminLoadActions?.();
+  }catch(err){ alert(err.message || "Could not flag user."); }
 }
 
 async function refreshLeaderboard() {
@@ -5724,7 +5747,33 @@ async function toggleChatPin(friendshipId) {
 async function refreshChatFriends() {
   try { const list = document.getElementById("chatFriendsList"); if (!list) return; await loadExistingSession(); if (!blankSpaceProfile) { setMessage("chatFriendsStatus", "Sign in to load friends."); renderChatFriends([]); return; } setMessage("chatFriendsStatus", "Loading friends..."); const rows = await getAcceptedFriendRows(); await loadChatPins(); renderChatFriends(rows); setMessage("chatFriendsStatus", rows.length ? "Choose a friend to chat. Use 📌 to pin favorites." : "No friends yet."); } catch (err) { setMessage("chatFriendsStatus", err.message || "Could not load chat friends.", "error"); }
 }
+
+function showChatSafetyNoticeOnce(){
+  try{
+    if(!blankSpaceProfile) return;
+    const key = "blankspace_chat_safety_v95_" + blankSpaceProfile.id;
+    if(localStorage.getItem(key)) return;
+    localStorage.setItem(key, "1");
+    showAdminForcedMessage({
+      title:"Chat Safety Warning",
+      label:"Chat Notice",
+      message:"The owner can review chats for safety. If you chat anything bad or inappropriate, you get a warning. 3 warnings is a one day suspension.",
+      style:"warning",
+      expires_at:new Date(Date.now()+12000).toISOString()
+    });
+  }catch(e){}
+}
+async function issueSelfChatWarning(reason){
+  try{
+    if(!blankSpaceProfile) return;
+    const r=await getSupabaseClient().rpc("record_chat_warning_v95", { p_reason: reason || "Blocked language in chat" });
+    if(r.error) throw r.error;
+    await checkAdminForcedMessages();
+  }catch(err){ console.warn("Could not record chat warning", err); }
+}
+
 async function initChatPage() {
+  showChatSafetyNoticeOnce();
   await refreshChatFriends();
   await refreshGroupChats();
   await loadUnreadChats(false);
@@ -5782,7 +5831,7 @@ async function sendChatMessage() {
     const image_url = await fileToChatDataURL("chatImageInput");
     if (!body && !image_url) return;
     if (body.length > 500) return setMessage("chatStatus", "Messages must be 500 characters or fewer.", "error");
-    if (containsBlockedLanguage(body)) return setMessage("chatStatus", "That message contains blocked language.", "error");
+    if (containsBlockedLanguage(body)) { await issueSelfChatWarning("Blocked language in chat"); return setMessage("chatStatus", "That message contains blocked language. Warning issued.", "error"); }
     let result;
     if (activeGroupChatId) {
       result = await getSupabaseClient().rpc("send_group_chat_message", { p_group_id: activeGroupChatId, p_body: body || "Image", p_image_url: image_url });
@@ -6083,7 +6132,7 @@ async function checkAchievementSystem(){
   } catch(err){ setAchievementDebug(err.message || String(err)); }
 }
 async function adminRecordPresetAchievement(game, metric, value, mode){
-  if(!blankSpaceIsAdmin) return alert("Admin only.");
+  if(!blankSpaceIsAdmin) return alert("Owner/Admin only.");
   addAchievementDebug(`Admin test: ${game} ${metric} ${value} (${mode})`);
   await recordGameMetric(game, metric, value, mode);
   await checkAchievementSystem();
@@ -6100,7 +6149,7 @@ async function initAdminPanelPage(){
   await checkAdmin();
   if(!blankSpaceIsAdmin){ showTab("home"); return; }
   await refreshAdminPanel();
-  setMessage("adminPanelStatus", "Admin tools loaded.", "good");
+  setMessage("adminPanelStatus", "Owner tools loaded.", "good");
 }
 
 async function awardAchievement(achievement) {
@@ -6212,7 +6261,7 @@ function handleGameProgressMessage(event) {
 
   // v93: A Small World Cup only accepts trusted event messages patched into the real game data file.
   // Old v92 scoreboard polling and generic scanner messages are ignored completely.
-  if (currentGame.title === "A Small World Cup" && !["aswc-data-event-v93", "aswc-global-vars-v93"].includes(data.source)) return;
+  if (currentGame.title === "A Small World Cup" && data.source !== "aswc-data-event-v93") return;
 
   let metric = cleanAchievementMetric(data.metric || data.stat || data.blankSpaceMetric);
   let value = data.value ?? data.score ?? data.blankSpaceValue;
@@ -6786,13 +6835,7 @@ function goBrowser() {
   const parsed = parseBrowserInput(browserInput().value);
   if (!parsed.url) return;
   if (parsed.isSearch) {
-    const frame = browserFrame();
-    if (!frame) return;
-    browserLastURL = parsed.url;
-    pushBrowserHistory(parsed.url);
-    frame.src = "about:blank";
-    setTimeout(() => { frame.srcdoc = browserSearchSrcdoc(parsed.label); }, 30);
-    setBrowserStatus("Search opened in the iframe launcher: " + parsed.label, parsed.url);
+    loadBrowserFrame(parsed.url, { isSearch: true, label: parsed.label });
     return;
   }
   loadBrowserFrame(parsed.url, { isSearch: false, label: parsed.label });
@@ -6925,6 +6968,21 @@ async function adminModerateUser(){
   const r=await getSupabaseClient().rpc('admin_moderate_user_v89',{p_username:username,p_action:action,p_reason:reason});
   if(r.error) alert(r.error.message); else {setMessage('adminPanelStatus','Moderation action applied.','good'); adminLoadActions(); refreshLeaderboard();}
 }
+
+async function ownerLoadChatView(){
+  const box=document.getElementById('ownerChatViewer');
+  const username=document.getElementById('ownerChatUsername')?.value||'';
+  if(!box) return;
+  if(!username.trim()) return box.innerHTML='<div class="empty-state">Type a username first.</div>';
+  box.innerHTML='<div class="empty-state">Loading chat view...</div>';
+  try{
+    const r=await getSupabaseClient().rpc('owner_get_user_chat_view_v95',{p_username:username,p_limit:200});
+    if(r.error) throw r.error;
+    const rows=r.data||[];
+    box.innerHTML=rows.length?rows.map(m=>`<div class="owner-chat-line"><b>${escapeHTML(m.chat_name||m.chat_type||'Chat')}</b><span class="small-note">${escapeHTML(m.created_at?new Date(m.created_at).toLocaleString():'')} • @${escapeHTML(m.sender_username||'unknown')}</span><div>${escapeHTML(m.body||'')}${m.image_url?' 📷':''}</div></div>`).join(''):'<div class="empty-state">No chat messages found for that user.</div>';
+  }catch(err){ box.innerHTML=`<div class="empty-state">${escapeHTML(err.message||'Could not load chat view.')}</div>`; }
+}
+
 async function adminLoadActions(){
   const box=document.getElementById('adminActionLog'); if(!box) return;
   const r=await getSupabaseClient().from('admin_actions_log').select('action,target_username,reason,created_at,admin:profiles!admin_actions_log_admin_id_fkey(username)').order('created_at',{ascending:false}).limit(30);
@@ -6942,8 +7000,8 @@ async function adminRunCommand(){
 let adminForcedMessageTimer=null; let adminForcedMessageExpiresAt=null;
 function hideAdminForcedMessage(){ document.getElementById('adminForcedMessageOverlay')?.classList.add('hidden'); adminForcedMessageExpiresAt=null; }
 function renderAdminForcedCountdown(){ const timer=document.getElementById('adminForcedMessageTimer'); if(!timer||!adminForcedMessageExpiresAt)return; const left=Math.max(0,Math.ceil((adminForcedMessageExpiresAt.getTime()-Date.now())/1000)); timer.textContent=left?`This message expires in ${left} second${left===1?'':'s'}.`:'Expired.'; if(!left) hideAdminForcedMessage(); }
-function showAdminForcedMessage(row){ const overlay=document.getElementById('adminForcedMessageOverlay'); const card=overlay?.querySelector('.admin-forced-card'); if(!overlay||!card||!row)return; card.classList.remove('warning','danger'); if(row.style==='warning')card.classList.add('warning'); if(row.style==='danger')card.classList.add('danger'); const body=document.getElementById('adminForcedMessageBody'); if(body)body.textContent=row.message||''; adminForcedMessageExpiresAt=new Date(row.expires_at); overlay.classList.remove('hidden'); renderAdminForcedCountdown(); }
-async function checkAdminForcedMessages(){ try{ if(!blankSpaceUser||!blankSpaceProfile){hideAdminForcedMessage();return;} const r=await getSupabaseClient().from('admin_user_messages').select('id,message,style,expires_at,created_at').eq('target_user_id',blankSpaceUser.id).eq('active',true).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(1); if(r.error)return; const row=(r.data||[])[0]; if(row)showAdminForcedMessage(row); else hideAdminForcedMessage(); }catch(e){} }
+function showAdminForcedMessage(row){ const overlay=document.getElementById('adminForcedMessageOverlay'); const card=overlay?.querySelector('.admin-forced-card'); if(!overlay||!card||!row)return; card.classList.remove('warning','danger'); if(row.style==='warning')card.classList.add('warning'); if(row.style==='danger')card.classList.add('danger'); const body=document.getElementById('adminForcedMessageBody'); const title=document.getElementById('adminForcedMessageTitle'); const label=document.getElementById('adminForcedMessageLabel'); if(title)title.textContent=row.title||'Blank Space Notice'; if(label)label.textContent=row.label||'Blank Space Message'; if(body)body.textContent=row.message||''; adminForcedMessageExpiresAt=new Date(row.expires_at); overlay.classList.remove('hidden'); renderAdminForcedCountdown(); }
+async function checkAdminForcedMessages(){ try{ if(!blankSpaceUser||!blankSpaceProfile){hideAdminForcedMessage();return;} const r=await getSupabaseClient().from('admin_user_messages').select('id,title,message,style,expires_at,created_at').eq('target_user_id',blankSpaceUser.id).eq('active',true).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(1); if(r.error)return; const row=(r.data||[])[0]; if(row)showAdminForcedMessage(row); else hideAdminForcedMessage(); }catch(e){} }
 function startAdminForcedMessageWatcher(){ if(adminForcedMessageTimer)clearInterval(adminForcedMessageTimer); adminForcedMessageTimer=setInterval(()=>{checkAdminForcedMessages();renderAdminForcedCountdown();},3000); checkAdminForcedMessages(); }
 
 function adminFun(kind){ const out=document.getElementById('adminFunOutput'); const icons=['🚀','🛸','👑','🐉','🌌','💎','⚡']; if(kind==='confetti'){document.body.insertAdjacentHTML('beforeend','<div class="metric-toast">🎉 Admin confetti!</div>'); setTimeout(()=>document.querySelector('.metric-toast')?.remove(),1500);} if(kind==='toast'){showChatToast('Admin test','This is what a notification looks like.');} if(kind==='icon'&&out){out.textContent='Random icon idea: '+icons[Math.floor(Math.random()*icons.length)];}}
@@ -7013,6 +7071,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("adminModerateBtn")?.addEventListener("click", adminModerateUser);
   document.getElementById("adminLoadActionsBtn")?.addEventListener("click", adminLoadActions);
   document.getElementById("adminSendUserMessageBtn")?.addEventListener("click", adminSendUserMessage);
+  document.getElementById("ownerLoadChatViewBtn")?.addEventListener("click", ownerLoadChatView);
   document.getElementById("adminRunCommandBtn")?.addEventListener("click", adminRunCommand);
   document.getElementById("adminAddBlockedTermBtn")?.addEventListener("click", adminAddBlockedTerm);
   document.getElementById("adminReloadSchemaBtn")?.addEventListener("click", async () => { await loadProfile(); await refreshAdminPanel(); });

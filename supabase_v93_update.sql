@@ -838,7 +838,7 @@ begin
   on conflict (user_id, game_title) do nothing;
 
   -- A Small World Cup v93 rule:
-  -- The website now sends trusted global-variable messages from the real game only.
+  -- The website now sends only the patched in-game score event from the real game.
   -- Old scoreboard/scanner/admin-test add/max messages are ignored for ASWC goals/wins so bad counters cannot keep climbing.
   if v_game_title = 'A Small World Cup' and v_metric = 'goals' then
     if v_mode = 'delta_v93' then

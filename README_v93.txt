@@ -7,7 +7,7 @@ Install order:
 
 Main fixes:
 - Deep achievement repair with a cleaned 240-achievement catalog.
-- A Small World Cup now uses an exact event bridge inside the real game data instead of a broken polling scanner.
+- A Small World Cup now uses only the exact score-increase event inside the real game data; the broken scanner and global-variable polling are disabled.
 - Admin account's A Small World Cup achievements/goals/wins are fully reset by the SQL without changing Admin's points.
 - Icons tab top duplicate Equipped Icon section removed.
 - Account header cleaned to one equipped icon plus the new rank badge.
