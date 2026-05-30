@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v113: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v114: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -315,9 +315,9 @@ iframe{width:100%;height:100%;border:0;background:#000;flex:1}
 .owner-chat-fullscreen{position:fixed;inset:0;z-index:100800;background:rgba(0,0,0,.88);display:flex;flex-direction:column;padding:18px;overflow:auto}.owner-chat-fullscreen.hidden{display:none!important}.owner-chat-fullscreen .owner-chat-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1180px;width:100%;margin:0 auto 12px}.owner-chat-fullscreen .owner-chat-topbar h2{margin:0;color:#fff;font-size:28px}.owner-chat-fullscreen .owner-chat-shell{max-width:1180px;width:100%;margin:0 auto;display:grid;grid-template-columns:minmax(250px,360px) 1fr;gap:14px;min-height:min(720px,82vh)}.owner-chat-fullscreen .panel{background:#05070b;border:1px solid #2b2f3a}.owner-chat-fullscreen .owner-readonly-banner{border:1px solid #facc15;background:#221a06;color:#fef3c7;border-radius:14px;padding:10px;font-weight:900;margin-bottom:10px}.owner-chat-fullscreen .chat-main-panel{display:grid;grid-template-rows:auto 1fr auto}.owner-chat-fullscreen .chat-messages{min-height:420px;max-height:none}.owner-chat-fullscreen .chat-compose input{pointer-events:none;opacity:.7}.owner-chat-fullscreen .chat-compose button,.owner-chat-fullscreen .image-btn{pointer-events:none;opacity:.45}.owner-view-conversation.active{border-color:#facc15;background:#16130a}.achievement-searchbar{display:flex;gap:8px;flex-wrap:wrap}.achievement-searchbar input{flex:1;min-width:220px}.daily-session-debug{font-size:12px;color:#94a3b8;margin-top:6px}@media(max-width:850px){.owner-chat-fullscreen .owner-chat-shell{grid-template-columns:1fr}.owner-chat-fullscreen{padding:10px}.owner-chat-fullscreen .chat-messages{min-height:300px}}
 
 
-/* v105 balanced Chromebook tab bar fix */
+/* v114 near-perfect Chromebook tab bar sizing */
 header{
-  padding:9px 13px!important;
+  padding:10px 14px!important;
 }
 .topbar{
   justify-content:flex-start!important;
@@ -339,26 +339,26 @@ header{
 .tab{
   flex:0 0 auto!important;
   white-space:nowrap!important;
-  font-size:13px!important;
-  padding:8px 10px!important;
+  font-size:13.5px!important;
+  padding:8.5px 10.5px!important;
   line-height:1!important;
-  min-height:32px!important;
-  letter-spacing:-.005em;
+  min-height:33px!important;
+  letter-spacing:-.01em;
 }
 .gift-tab{
-  min-width:36px!important;
-  font-size:17px!important;
-  padding:7px 9px!important;
+  min-width:37px!important;
+  font-size:17.5px!important;
+  padding:7.5px 9px!important;
 }
 .tab-badge{
-  transform:scale(.9);
+  transform:scale(.92);
   transform-origin:center;
 }
 @media(max-width:900px){
   header{padding:8px 9px!important}
   .topbar{gap:5px!important}
-  .tab{font-size:12px!important;padding:7px 8px!important;min-height:30px!important}
-  .gift-tab{min-width:32px!important;font-size:15px!important;padding:7px!important}
+  .tab{font-size:12.5px!important;padding:7.5px 8.5px!important;min-height:31px!important}
+  .gift-tab{min-width:33px!important;font-size:15.5px!important;padding:7px!important}
 }
 
 /* v106 tab cloak icon preview */
@@ -381,6 +381,133 @@ header{
 /* v110 owner-controlled Settings label */
 #settingsCloseWarningLabel{
   font-weight:800;
+}
+/* v114 expanded Settings controls */
+.settings-wide-card{
+  grid-column:span 2;
+}
+.settings-check-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:2px 14px;
+  margin:8px 0 12px;
+}
+#settingsCloseWarningSectionTitle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+#settingsCloseWarningSectionTitle::before{
+  content:"🛡️";
+}
+
+/* v114 extra local preference classes */
+.setting-large-text{font-size:16.5px}
+.setting-compact-layout .panel,
+.setting-compact-layout .suggestion-card,
+.setting-compact-layout .admin-tile,
+.setting-compact-layout .friends-card{
+  padding:12px!important;
+  margin-top:8px!important;
+}
+.setting-high-contrast .panel,
+.setting-high-contrast .suggestion-card,
+.setting-high-contrast .game-tile,
+.setting-high-contrast .achievement-card,
+.setting-high-contrast .friend-item,
+.setting-high-contrast .leaderboard-item,
+.setting-high-contrast .chat-messages{
+  border-color:rgba(255,255,255,.55)!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14)!important;
+}
+.setting-sticky-tabs header{
+  position:sticky!important;
+  top:0!important;
+  z-index:9000!important;
+  backdrop-filter:blur(16px);
+}
+.setting-bigger-buttons button,
+.setting-bigger-buttons .mini-btn,
+.setting-bigger-buttons input,
+.setting-bigger-buttons select{
+  min-height:42px!important;
+  font-size:15px!important;
+}
+.setting-dim-effects .orb,
+.setting-dim-effects .glow,
+.setting-dim-effects .background-glow{
+  opacity:.18!important;
+  filter:blur(22px)!important;
+}
+.setting-performance-mode *,
+.setting-performance-mode *::before,
+.setting-performance-mode *::after{
+  animation-duration:.01ms!important;
+  animation-iteration-count:1!important;
+  transition-duration:.01ms!important;
+  scroll-behavior:auto!important;
+}
+.setting-performance-mode .game-tile:hover,
+.setting-performance-mode .game-tile:hover img{
+  transform:none!important;
+  filter:none!important;
+}
+.setting-focus-mode .small-note,
+.setting-focus-mode .tagline,
+.setting-focus-mode .label,
+.setting-focus-mode .playhint{
+  opacity:.72!important;
+}
+.setting-compact-game-cards .games-grid{
+  grid-template-columns:repeat(auto-fill,minmax(128px,1fr))!important;
+  gap:9px!important;
+}
+.setting-compact-game-cards .game-tile{
+  border-radius:16px!important;
+}
+.setting-always-show-game-names .game-title{
+  opacity:1!important;
+  transform:translateY(0)!important;
+}
+.setting-no-game-hover-zoom .game-tile:hover,
+.setting-no-game-hover-zoom .game-tile:hover img{
+  transform:none!important;
+}
+.setting-compact-achievements .achievement-card{
+  min-height:104px!important;
+  padding:10px!important;
+  gap:9px!important;
+}
+.setting-compact-achievements .achievement-icon{
+  width:42px!important;
+  height:42px!important;
+  font-size:22px!important;
+  border-radius:14px!important;
+}
+.setting-highlight-rewards .achievement-tag.reward-easy,
+.setting-highlight-rewards .achievement-tag.reward-medium,
+.setting-highlight-rewards .achievement-tag.reward-hard,
+.setting-highlight-rewards .achievement-tag.reward-crazy{
+  outline:2px solid rgba(250,204,21,.55)!important;
+  box-shadow:0 0 18px rgba(250,204,21,.18)!important;
+}
+.setting-compact-chat .chat-messages{
+  gap:5px!important;
+  padding:8px!important;
+}
+.setting-compact-chat .chat-bubble{
+  padding:7px 9px!important;
+  border-radius:14px!important;
+}
+.setting-large-chat-text .chat-bubble{
+  font-size:16px!important;
+}
+.setting-large-chat-text .chat-bubble .chat-meta{
+  font-size:12px!important;
+}
+@media(max-width:760px){
+  .settings-wide-card{grid-column:span 1}
+  .settings-check-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -550,7 +677,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v113</span>
+        <span class="update-version-badge">Blank Space v114</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -571,7 +698,7 @@ header{
         <li><b>Owner Panel:</b> added a tool to rename the Block Protection setting label for everyone.</li>
         <li><b>Chat safety warning:</b> the warning now appears under the Chat title for 10 seconds with no close button whenever the Chat tab loads after a refresh or new tab.</li>
       </ul>
-      <div class="update-note">No Supabase changes needed for v113 if you already ran v110. Upload this v113 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">No Supabase changes needed for v114 if you already ran v110. Upload this v114 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -1006,8 +1133,42 @@ header{
         <h2>Comfort</h2>
         <label class="settings-check"><input id="settingsReducedMotion" type="checkbox" /> Reduce motion and extra effects</label>
         <label class="settings-check"><input id="settingsOpenGamesNewTab" type="checkbox" /> Prefer opening game source in a new tab</label>
-        <label class="settings-check"><input id="settingsCloseWarning" type="checkbox" /> <span id="settingsCloseWarningLabel">Block Protection</span></label>
         <button class="mini-btn primary" id="settingsSaveComfortBtn">Save Comfort Settings</button>
+      </div>
+      <div class="panel suggestion-card settings-card">
+        <h2 id="settingsCloseWarningSectionTitle">Block Protection</h2>
+        <p class="small-note">Controls the Chrome close, refresh, or leave-site warning. This is saved only on this browser.</p>
+        <label class="settings-check"><input id="settingsCloseWarning" type="checkbox" /> <span id="settingsCloseWarningLabel">Block Protection</span></label>
+        <button class="mini-btn primary" id="settingsSaveProtectionBtn">Save Block Protection</button>
+      </div>
+      <div class="panel suggestion-card settings-card settings-wide-card">
+        <h2>Display Preferences</h2>
+        <p class="small-note">Extra settings saved on this browser. These only change how the site looks and feels for the person using it.</p>
+        <div class="settings-check-grid">
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="largeText" type="checkbox" /> Larger text</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="compactLayout" type="checkbox" /> Compact layout</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="highContrast" type="checkbox" /> High contrast borders</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="stickyTabs" type="checkbox" /> Keep tabs sticky while scrolling</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="biggerButtons" type="checkbox" /> Bigger buttons</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="dimEffects" type="checkbox" /> Dim background glow effects</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="performanceMode" type="checkbox" /> Chromebook performance mode</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="focusMode" type="checkbox" /> Focus mode for less clutter</label>
+        </div>
+        <button class="mini-btn primary" id="settingsSaveExtraBtn">Save Display Preferences</button>
+      </div>
+      <div class="panel suggestion-card settings-card settings-wide-card">
+        <h2>Games, Chat, and Achievements</h2>
+        <p class="small-note">Useful settings for browsing games, chats, and achievement lists.</p>
+        <div class="settings-check-grid">
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="compactGameCards" type="checkbox" /> Smaller game cards</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="alwaysShowGameNames" type="checkbox" /> Always show game names</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="noGameHoverZoom" type="checkbox" /> Turn off game hover zoom</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="compactAchievements" type="checkbox" /> Compact achievement cards</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="highlightRewards" type="checkbox" /> Highlight achievement rewards</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="compactChat" type="checkbox" /> Compact chat messages</label>
+          <label class="settings-check"><input class="settings-extra-toggle" data-setting="largeChatText" type="checkbox" /> Larger chat text</label>
+        </div>
+        <button class="mini-btn primary" id="settingsSaveGameChatBtn">Save Game / Chat Preferences</button>
       </div>
       <div class="panel suggestion-card settings-card">
         <h2>Reset</h2>
@@ -7768,6 +7929,7 @@ function applyLocalSettings(){
   const s=getLocalSettings();
   document.body?.classList.toggle("light-mode", s.theme==="light");
   document.body?.classList.toggle("reduced-motion", !!s.reducedMotion);
+  applyExtraSettingsClasses(s);
   document.title=s.tabTitle||DEFAULT_BLANK_SPACE_TITLE;
   if(s.faviconUrl){ applyBlankSpaceFavicon(s.faviconUrl); }
   updateFaviconPreview(s.faviconUrl||"");
@@ -7785,6 +7947,7 @@ function cleanBlockProtectionLabel(value){
 function applyBlockProtectionLabel(value){
   const label = cleanBlockProtectionLabel(value);
   document.querySelectorAll("#settingsCloseWarningLabel").forEach(el => el.textContent = label);
+  document.querySelectorAll("#settingsCloseWarningSectionTitle").forEach(el => el.textContent = label);
   const ownerInput = document.getElementById("ownerBlockProtectionName");
   if (ownerInput && !ownerInput.matches(":focus")) ownerInput.value = label;
   return label;
@@ -7851,6 +8014,61 @@ async function ownerResetBlockProtectionLabel(){
 }
 
 
+
+const EXTRA_SETTING_CLASSES_V114 = {
+  largeText: "setting-large-text",
+  compactLayout: "setting-compact-layout",
+  highContrast: "setting-high-contrast",
+  stickyTabs: "setting-sticky-tabs",
+  biggerButtons: "setting-bigger-buttons",
+  dimEffects: "setting-dim-effects",
+  performanceMode: "setting-performance-mode",
+  focusMode: "setting-focus-mode",
+  compactGameCards: "setting-compact-game-cards",
+  alwaysShowGameNames: "setting-always-show-game-names",
+  noGameHoverZoom: "setting-no-game-hover-zoom",
+  compactAchievements: "setting-compact-achievements",
+  highlightRewards: "setting-highlight-rewards",
+  compactChat: "setting-compact-chat",
+  largeChatText: "setting-large-chat-text"
+};
+
+function applyExtraSettingsClasses(s){
+  const extra = (s && s.extraSettings) || {};
+  Object.entries(EXTRA_SETTING_CLASSES_V114).forEach(([key, className]) => {
+    document.body?.classList.toggle(className, !!extra[key]);
+  });
+}
+
+function initExtraSettingsControls(){
+  const s = getLocalSettings();
+  const extra = s.extraSettings || {};
+  document.querySelectorAll(".settings-extra-toggle").forEach(input => {
+    input.checked = !!extra[input.dataset.setting];
+  });
+}
+
+function saveExtraSettings(){
+  const s = getLocalSettings();
+  const extra = s.extraSettings || {};
+  document.querySelectorAll(".settings-extra-toggle").forEach(input => {
+    extra[input.dataset.setting] = !!input.checked;
+  });
+  s.extraSettings = extra;
+  saveLocalSettings(s);
+  applyLocalSettings();
+  settingsStatus("Extra settings saved.");
+}
+
+function saveProtectionSettings(){
+  const s = getLocalSettings();
+  s.closeWarningEnabled = !!document.getElementById("settingsCloseWarning")?.checked;
+  saveLocalSettings(s);
+  applyLocalSettings();
+  settingsStatus("Block Protection saved.");
+}
+
+
 function initSettingsPage(){
   applyLocalSettings();
   const s=getLocalSettings();
@@ -7860,6 +8078,7 @@ function initSettingsPage(){
   const rm=document.getElementById("settingsReducedMotion"); if(rm) rm.checked=!!s.reducedMotion;
   const nt=document.getElementById("settingsOpenGamesNewTab"); if(nt) nt.checked=!!s.openGamesNewTab;
   const cw=document.getElementById("settingsCloseWarning"); if(cw) cw.checked=s.closeWarningEnabled!==false;
+  initExtraSettingsControls();
   loadBlockProtectionLabel();
   updateFaviconPreview(s.faviconUrl||"");
 }
@@ -7890,7 +8109,7 @@ function resetCloakSetting(){
   initSettingsPage();
   settingsStatus("Tab cloak reset.");
 }
-function saveComfortSettings(){ const s=getLocalSettings(); s.reducedMotion=!!document.getElementById("settingsReducedMotion")?.checked; s.openGamesNewTab=!!document.getElementById("settingsOpenGamesNewTab")?.checked; s.closeWarningEnabled=!!document.getElementById("settingsCloseWarning")?.checked; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Comfort settings saved."); }
+function saveComfortSettings(){ const s=getLocalSettings(); s.reducedMotion=!!document.getElementById("settingsReducedMotion")?.checked; s.openGamesNewTab=!!document.getElementById("settingsOpenGamesNewTab")?.checked; saveLocalSettings(s); applyLocalSettings(); settingsStatus("Comfort settings saved."); }
 function resetAllSettings(){ localStorage.removeItem("blankspace_settings_v98"); clearBlankSpaceFavicons(); applyLocalSettings(); initSettingsPage(); settingsStatus("Local settings reset."); }
 
 document.addEventListener("DOMContentLoaded",()=>{
@@ -7902,6 +8121,9 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("settingsFaviconUrl")?.addEventListener("input", e=>updateFaviconPreview(e.target.value));
   document.getElementById("settingsResetCloakBtn")?.addEventListener("click", resetCloakSetting);
   document.getElementById("settingsSaveComfortBtn")?.addEventListener("click", saveComfortSettings);
+  document.getElementById("settingsSaveProtectionBtn")?.addEventListener("click", saveProtectionSettings);
+  document.getElementById("settingsSaveExtraBtn")?.addEventListener("click", saveExtraSettings);
+  document.getElementById("settingsSaveGameChatBtn")?.addEventListener("click", saveExtraSettings);
   document.getElementById("settingsResetAllBtn")?.addEventListener("click", resetAllSettings);
   document.getElementById("adminMessageAll")?.dispatchEvent(new Event("change"));
 });
