@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v116: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v117: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -574,6 +574,42 @@ header{
   .profile-security-row{grid-template-columns:1fr}
 }
 
+
+/* v117 repair: banner collection + password area + achievement status polish */
+#passwordChangeBox{
+  display:block!important;
+}
+.banner-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:12px;
+}
+.banner-card{
+  border:1px solid rgba(148,163,184,.25);
+  background:rgba(8,10,16,.72);
+  border-radius:18px;
+  padding:12px;
+}
+.banner-preview{
+  min-height:84px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-weight:1000;
+  text-align:center;
+  padding:10px;
+  text-shadow:0 2px 8px rgba(0,0,0,.85), 0 0 1px rgba(0,0,0,1);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.20);
+}
+.banner-card .mini-btn{
+  margin-top:8px;
+}
+#achievementsStatus.good{
+  color:#86efac;
+}
+
 </style>
 </head>
 <body>
@@ -742,7 +778,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v116</span>
+        <span class="update-version-badge">Blank Space v117</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -770,6 +806,7 @@ header{
         <li><b>Games:</b> refreshed requested Popular Games sources, added 17-0, favorites, current-player icons, and source dropdown defaults.</li>
         <li><b>Account:</b> added password change below username change for password-enabled accounts.</li>
         <li><b>Achievements:</b> rebuilt the v115 catalog/functions again and made Slope score goals easier.</li>
+        <li><b>v117 Repair:</b> fixed banner collection loading, made Change Password show correctly in Account, and strengthened achievement recording/backfill including Slope.</li>
       </ul>
       <div class="update-note">Run supabase_v115_update.sql first, then upload this v115 website code to GitHub and hard-refresh the site.</div>
     </div>
@@ -1145,7 +1182,7 @@ header{
             </div>
           </div>
           
-          <div class="username-change-box hidden" id="passwordChangeBox">
+          <div class="username-change-box" id="passwordChangeBox">
             <h2>Change Password</h2>
             <p class="small-note">Change the password for this account. You must be signed in.</p>
             <div class="profile-security-row">
@@ -8717,7 +8754,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v116 repair layer */
+/* Blank Space v117 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -8907,6 +8944,365 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   heartbeatPresenceV116();
   setInterval(heartbeatPresenceV116,30000);
+})();
+</script>
+
+
+<script>
+/* Blank Space v117 repair: banners, password, and achievements */
+(function(){
+  if(window.__blankSpaceV117RepairInstalled) return;
+  window.__blankSpaceV117RepairInstalled = true;
+
+  const BANNER_LOCAL_KEY_PREFIX = "blankspace_owned_banners_v117_";
+
+  function bs117Client(){ return getSupabaseClient(); }
+  function bs117UserId(){ return window.blankSpaceUser?.id || ""; }
+  function bs117SetMsg(id,msg,type){
+    try{ if(typeof setMessage==="function") setMessage(id,msg,type||""); }catch(e){}
+  }
+  function bs117Escape(x){
+    try{ return typeof escapeHTML==="function" ? escapeHTML(x) : String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
+    catch(e){ return String(x??""); }
+  }
+  function bs117NormalizeBanner(row){
+    if(!row) return null;
+    return {
+      banner_id: row.banner_id || row.id || "banner_" + Math.random().toString(36).slice(2),
+      name: row.name || row.banner_name || "Banner",
+      rarity: row.rarity || "common",
+      gradient: row.gradient || row.banner_gradient || "linear-gradient(135deg,#111827,#22c55e)"
+    };
+  }
+  function bs117LoadLocalBanners(){
+    try{
+      const uid=bs117UserId();
+      if(!uid) return [];
+      return JSON.parse(localStorage.getItem(BANNER_LOCAL_KEY_PREFIX+uid)||"[]").map(bs117NormalizeBanner).filter(Boolean);
+    }catch(e){ return []; }
+  }
+  function bs117SaveLocalBanner(banner){
+    try{
+      const uid=bs117UserId();
+      if(!uid) return;
+      const next=bs117LoadLocalBanners();
+      const b=bs117NormalizeBanner(banner);
+      if(!b) return;
+      const i=next.findIndex(x=>x.banner_id===b.banner_id);
+      if(i>=0) next[i]=Object.assign(next[i],b);
+      else next.unshift(b);
+      localStorage.setItem(BANNER_LOCAL_KEY_PREFIX+uid, JSON.stringify(next.slice(0,80)));
+    }catch(e){}
+  }
+  function bs117MergeBanners(serverRows){
+    const map=new Map();
+    [...(serverRows||[]), ...bs117LoadLocalBanners()].map(bs117NormalizeBanner).filter(Boolean).forEach(b=>map.set(b.banner_id,b));
+    return Array.from(map.values());
+  }
+  function bs117RenderBanners(rows){
+    const owned=document.getElementById("ownedBannersGrid");
+    if(!owned) return;
+    if(!rows.length){
+      owned.innerHTML='<div class="empty-state">No banners yet. Buy a pack.</div>';
+      return;
+    }
+    owned.innerHTML=rows.map(b=>{
+      const banner=bs117NormalizeBanner(b);
+      return `<div class="banner-card">
+        <div class="banner-preview" style="background:${bs117Escape(banner.gradient)}"><span>${bs117Escape(banner.name)}</span></div>
+        <p class="rarity-${bs117Escape(banner.rarity)}">${bs117Escape(banner.rarity)}</p>
+        <button class="mini-btn" data-banner-equip="${bs117Escape(banner.banner_id)}">Equip</button>
+      </div>`;
+    }).join("");
+    owned.querySelectorAll("[data-banner-equip]").forEach(btn=>{
+      btn.addEventListener("click",()=>equipBannerV117(btn.dataset.bannerEquip));
+    });
+  }
+
+  async function refreshBannersV117(){
+    try{
+      if(typeof loadExistingSession==="function") await loadExistingSession();
+      const packs=document.getElementById("bannerPackGrid");
+      const owned=document.getElementById("ownedBannersGrid");
+      if(!packs||!owned) return;
+
+      if(typeof ICON_PACKS!=="undefined"){
+        packs.innerHTML=ICON_PACKS.map(p=>`<div class="pack-card"><h3>${bs117Escape(p.name)}</h3><p><span class="pack-price">${p.price} points</span></p><p class="small-note">Possible: ${p.rarities.map(r=>`<span class="rarity-${r}">${r}</span>`).join(", ")}</p><button class="mini-btn primary" data-banner-pack="${bs117Escape(p.id)}">Buy Banner Pack</button></div>`).join("");
+        packs.querySelectorAll("[data-banner-pack]").forEach(btn=>btn.addEventListener("click",()=>buyBannerPackV117(btn.dataset.bannerPack)));
+      }
+
+      if(!window.blankSpaceProfile || !window.blankSpaceUser){
+        bs117SetMsg("bannersStatus","Sign in to load banners.");
+        owned.innerHTML='<div class="empty-state">Sign in to collect banners.</div>';
+        return;
+      }
+
+      let rows=[];
+      const rpc=await bs117Client().rpc("get_my_banners_v117");
+      if(!rpc.error && Array.isArray(rpc.data)){
+        rows=rpc.data;
+      }else{
+        const direct=await bs117Client().from("user_banners").select("*").eq("user_id",blankSpaceUser.id).order("acquired_at",{ascending:false});
+        if(!direct.error) rows=direct.data||[];
+        else console.warn("Banner load error", rpc.error || direct.error);
+      }
+
+      const merged=bs117MergeBanners(rows);
+      bs117RenderBanners(merged);
+      bs117SetMsg("bannersStatus",`${merged.length} banner${merged.length===1?"":"s"} owned.`,"good");
+    }catch(e){
+      console.warn(e);
+      bs117SetMsg("bannersStatus",(e&&e.message)||"Could not load banners.","error");
+      bs117RenderBanners(bs117LoadLocalBanners());
+    }
+  }
+
+  async function buyBannerPackV117(packId){
+    try{
+      if(typeof loadExistingSession==="function") await loadExistingSession();
+      if(!window.blankSpaceProfile) return alert("Sign in first.");
+      const pack=(typeof ICON_PACKS!=="undefined" ? ICON_PACKS : []).find(p=>p.id===packId);
+      if(!pack) return alert("Pack not found.");
+      const rarity=pack.rarities[Math.floor(Math.random()*pack.rarities.length)];
+      const banner=(typeof randomBannerForRarity==="function") ? randomBannerForRarity(rarity) : {id:"banner_"+rarity,name:rarity+" Banner",rarity,gradient:"linear-gradient(135deg,#111827,#22c55e)"};
+      const payload={p_pack_id:pack.id,p_price:pack.price,p_banner_id:banner.id,p_name:banner.name,p_rarity:banner.rarity,p_gradient:banner.gradient};
+      let r=await bs117Client().rpc("buy_banner_pack_v117",payload);
+      if(r.error) r=await bs117Client().rpc("buy_banner_pack_v115",payload);
+      if(r.error) throw r.error;
+      bs117SaveLocalBanner({banner_id:banner.id,name:banner.name,rarity:banner.rarity,gradient:banner.gradient});
+      if(typeof loadProfile==="function") await loadProfile();
+      await refreshBannersV117();
+      if(typeof refreshLeaderboard==="function") await refreshLeaderboard();
+      alert(`You opened ${pack.name} and got the ${banner.name} banner!`);
+    }catch(e){
+      alert((e&&e.message)||"Could not buy banner pack.");
+    }
+  }
+
+  async function equipBannerV117(id){
+    try{
+      if(!id) return;
+      let r=await bs117Client().rpc("equip_banner_v117",{p_banner_id:id});
+      if(r.error) r=await bs117Client().rpc("equip_banner_v115",{p_banner_id:id});
+      if(r.error) throw r.error;
+      if(typeof loadProfile==="function") await loadProfile();
+      await refreshBannersV117();
+      if(typeof refreshLeaderboard==="function") await refreshLeaderboard();
+      bs117SetMsg("bannersStatus","Banner equipped.","good");
+    }catch(e){
+      alert((e&&e.message)||"Could not equip banner.");
+    }
+  }
+
+  window.refreshBanners=refreshBannersV117;
+  window.refreshBannersV117=refreshBannersV117;
+  window.buyBannerPackV115=buyBannerPackV117;
+  window.buyBannerPackV117=buyBannerPackV117;
+  window.equipBannerV115=equipBannerV117;
+  window.equipBannerV117=equipBannerV117;
+
+  function showShopViewV117(view){
+    view=view==="banners"?"banners":"icons";
+    document.querySelectorAll(".buy-subtab").forEach(b=>b.classList.toggle("active",b.dataset.buyView===view));
+    document.querySelectorAll(".buy-view").forEach(v=>{
+      const active=(view==="banners"&&v.id==="buyViewBanners")||(view==="icons"&&v.id==="buyViewIcons");
+      v.classList.toggle("active-buy-view",active);
+      v.style.display=active?"grid":"none";
+    });
+    if(view==="banners") setTimeout(refreshBannersV117,40);
+    else if(typeof refreshIcons==="function") setTimeout(refreshIcons,40);
+  }
+  window.switchBuyView=showShopViewV117;
+  window.setShopViewV116=showShopViewV117;
+
+  function syncPasswordBoxV117(){
+    const box=document.getElementById("passwordChangeBox");
+    if(box) box.classList.toggle("hidden",!window.blankSpaceProfile);
+    const trueBadge=document.getElementById("accountTrueMemberBadge");
+    if(trueBadge) trueBadge.classList.toggle("hidden",!(window.blankSpaceProfile&&blankSpaceProfile.true_member));
+  }
+  async function changePasswordV117(){
+    try{
+      if(typeof loadExistingSession==="function") await loadExistingSession();
+      if(!window.blankSpaceUser || !window.blankSpaceProfile) return bs117SetMsg("profileMessage","Sign in first.","error");
+      const p=document.getElementById("newPasswordInput")?.value||"";
+      const c=document.getElementById("newPasswordConfirmInput")?.value||"";
+      const err=typeof validatePassword==="function" ? validatePassword(p) : (p.length<6 ? "Password must be at least 6 characters." : "");
+      if(err) return bs117SetMsg("profileMessage",err,"error");
+      if(p!==c) return bs117SetMsg("profileMessage","Passwords do not match.","error");
+      const r=await bs117Client().auth.updateUser({password:p});
+      if(r.error) throw r.error;
+      const a=document.getElementById("newPasswordInput"), b=document.getElementById("newPasswordConfirmInput");
+      if(a) a.value=""; if(b) b.value="";
+      bs117SetMsg("profileMessage","Password changed.","good");
+    }catch(e){
+      bs117SetMsg("profileMessage",(e&&e.message)||"Could not change password. If this is an old browser-only account, use Add Password Login first.","error");
+    }
+  }
+  window.changeAccountPasswordV115=changePasswordV117;
+  window.changePasswordV116=changePasswordV117;
+  window.changePasswordV117=changePasswordV117;
+
+  async function recordGameProgressV117(game, openEvent=false, seconds=0){
+    try{
+      if(!game || !window.blankSpaceProfile || !window.blankSpaceUser) return;
+      const result=await bs117Client().rpc("record_game_progress",{p_game_title:game.title,p_open_event:!!openEvent,p_seconds:Math.max(0,seconds||0)});
+      if(result.error) throw result.error;
+      const data=Array.isArray(result.data)?result.data[0]:result.data;
+      if(data && Number(data.new_awards||0)>0){
+        bs117SetMsg("achievementsStatus",`Unlocked ${data.new_awards} achievement${Number(data.new_awards)===1?"":"s"}!`,"good");
+        if(typeof refreshAchievements==="function") refreshAchievements(false);
+        if(typeof loadProfile==="function") loadProfile();
+      }
+    }catch(e){ console.warn("v117 game progress failed",e); }
+  }
+  window.recordGameProgress=recordGameProgressV117;
+
+  async function recordGameMetricV117(gameTitle, metric, value=1, mode="max"){
+    try{
+      if(typeof loadExistingSession==="function") await loadExistingSession();
+      if(!window.blankSpaceProfile || !window.blankSpaceUser) return {ok:false,error:"not signed in"};
+      const safeMetric=String(metric||"").replace(/[^a-z0-9_]/gi,"").toLowerCase();
+      const numericValue=Math.max(0,Number(value||0));
+      const result=await bs117Client().rpc("record_game_metric",{p_game_title:gameTitle,p_metric:safeMetric,p_value:numericValue,p_mode:mode||"max"});
+      if(result.error) throw result.error;
+      const stat=Array.isArray(result.data)?result.data[0]:result.data;
+      const unlocked=Number(stat?.new_awards||0);
+      if(typeof addAchievementDebug==="function") addAchievementDebug(`v117 metric saved: ${gameTitle} ${safeMetric}=${numericValue}. ${unlocked} new.`);
+      if(unlocked){
+        bs117SetMsg("achievementsStatus",`Saved. ${unlocked} new achievement${unlocked===1?"":"s"} unlocked!`,"good");
+        if(typeof refreshAchievements==="function") await refreshAchievements(false);
+        if(typeof loadProfile==="function") await loadProfile();
+      }
+      return {ok:true,stat,unlocked};
+    }catch(e){
+      const msg=(e&&e.message)||String(e);
+      if(typeof addAchievementDebug==="function") addAchievementDebug(`v117 metric error: ${msg}`);
+      bs117SetMsg("achievementsStatus",msg,"error");
+      return {ok:false,error:msg};
+    }
+  }
+  window.recordGameMetric=recordGameMetricV117;
+
+  function extractMetricFromV117Text(text, gameTitle){
+    const t=String(text||"").slice(0,16000);
+    const lower=t.toLowerCase();
+    const pairs=[
+      ["best_score",/(?:best\s*)?score\D{0,14}(\d{1,7})/i],
+      ["goals",/goals?\D{0,14}(\d{1,5})/i],
+      ["wins",/wins?\D{0,14}(\d{1,5})/i],
+      ["hits",/hits?\D{0,14}(\d{1,6})/i],
+      ["best_level",/level\D{0,14}(\d{1,5})/i],
+      ["money_earned",/(?:money|cash|coins?)\D{0,14}(\d{1,8})/i],
+      ["fish_caught",/fish\D{0,14}(\d{1,6})/i],
+      ["merges",/merges?\D{0,14}(\d{1,6})/i],
+      ["checks",/checks?\D{0,14}(\d{1,5})/i],
+      ["checkmates",/checkmates?\D{0,14}(\d{1,5})/i]
+    ];
+    for(const [metric,rx] of pairs){
+      const m=t.match(rx);
+      if(m) return {metric,value:Number(m[1]),mode:"max"};
+    }
+    return null;
+  }
+
+  function scanCurrentGameForAchievementsV117(){
+    try{
+      const game=window.currentGame;
+      const frame=document.getElementById("gameFrame");
+      if(!game || !frame || !frame.contentWindow || !window.blankSpaceProfile) return;
+      if(game.title==="A Small World Cup") return;
+      let best=null;
+
+      if(game.title==="Slope"){
+        try{
+          const ls=frame.contentWindow.localStorage;
+          const vals=[
+            Number(ls.getItem("blank_space_slope_best_score")||0),
+            Number(ls.getItem("blank_space_slope_last_score")||0)
+          ].filter(n=>Number.isFinite(n)&&n>0);
+          if(vals.length) best={metric:"best_score",value:Math.max(...vals),mode:"max"};
+        }catch(e){}
+      }
+
+      if(!best){
+        let text="";
+        try{text += " " + (frame.contentDocument?.body?.innerText||"");}catch(e){}
+        try{text += " " + JSON.stringify(frame.contentWindow.localStorage||{});}catch(e){}
+        best=extractMetricFromV117Text(text,game.title);
+      }
+
+      if(best && best.value>0) recordGameMetricV117(game.title,best.metric,best.value,best.mode);
+    }catch(e){}
+  }
+
+  if(typeof setupGameAchievementDetector==="function"){
+    window.setupGameAchievementDetector=function(game){
+      if(window.gameAchievementDetectorTimer) clearInterval(window.gameAchievementDetectorTimer);
+      window.gameAchievementDetectorTimer=null;
+      if(!game?.title) return;
+      if(typeof addAchievementDebug==="function") addAchievementDebug(`v117 achievement detection active for ${game.title}.`);
+      window.gameAchievementDetectorTimer=setInterval(scanCurrentGameForAchievementsV117,4000);
+      setTimeout(scanCurrentGameForAchievementsV117,1800);
+    };
+  }
+
+  window.addEventListener("message",function(event){
+    try{
+      const frame=document.getElementById("gameFrame");
+      if(!frame || !window.currentGame || event?.source!==frame.contentWindow) return;
+      const d=event.data;
+      if(!d || typeof d!=="object") return;
+      const gameTitle=String(d.gameTitle||d.game||d.blankSpaceGame||currentGame.title||"");
+      if(gameTitle && gameTitle!==currentGame.title) return;
+      let metric=String(d.metric||d.stat||d.blankSpaceMetric||"").replace(/[^a-z0-9_]/gi,"").toLowerCase();
+      let value=d.value ?? d.score ?? d.blankSpaceValue;
+      if(!metric){
+        for(const k of ["best_score","score","goals","wins","fish_caught","money_earned","checks","checkmates","merges","best_level","hits"]){
+          if(d[k]!==undefined){metric=k==="score"?"best_score":k; value=d[k]; break;}
+        }
+      }
+      const n=Number(value);
+      if(!metric || !Number.isFinite(n) || n<0) return;
+      let mode=d.mode||"max";
+      if(currentGame.title==="A Small World Cup" && metric==="goals") mode="delta_v93";
+      if(currentGame.title==="A Small World Cup" && metric==="wins") mode="add_win_v93";
+      recordGameMetricV117(currentGame.title,metric,n,mode);
+    }catch(e){}
+  },true);
+
+  function wireV117(){
+    syncPasswordBoxV117();
+    document.querySelectorAll(".tab[data-tab='icons']").forEach(b=>{b.textContent="Shop";});
+    document.querySelectorAll(".buy-subtab").forEach(btn=>{
+      if(btn.dataset.v117Wired) return;
+      btn.dataset.v117Wired="1";
+      btn.addEventListener("click",e=>{e.preventDefault();showShopViewV117(btn.dataset.buyView);});
+    });
+    const cp=document.getElementById("changePasswordBtn");
+    if(cp && !cp.dataset.v117Wired){cp.dataset.v117Wired="1";cp.addEventListener("click",changePasswordV117);}
+    const rb=document.getElementById("refreshBannersBtn");
+    if(rb && !rb.dataset.v117Wired){rb.dataset.v117Wired="1";rb.addEventListener("click",refreshBannersV117);}
+  }
+
+  if(typeof renderProfile==="function" && !renderProfile.__v117){
+    const old=renderProfile;
+    window.renderProfile=function(){const out=old.apply(this,arguments);syncPasswordBoxV117();return out;};
+    window.renderProfile.__v117=true;
+  }
+  if(typeof showTab==="function" && !showTab.__v117){
+    const old=showTab;
+    window.showTab=function(tabId){
+      const out=old.apply(this,arguments);
+      if(tabId==="icons") setTimeout(()=>showShopViewV117(document.querySelector(".buy-subtab.active")?.dataset.buyView||"icons"),50);
+      if(tabId==="account") setTimeout(syncPasswordBoxV117,50);
+      return out;
+    };
+    window.showTab.__v117=true;
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wireV117);
+  else wireV117();
 })();
 </script>
 
