@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v114: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v115: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -509,6 +509,11 @@ header{
   .settings-wide-card{grid-column:span 1}
   .settings-check-grid{grid-template-columns:1fr}
 }
+
+/* v115 true member, buy/banner, online, favorites, chat layout */
+.true-member-badge{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:999px;background:#22c55e;clip-path:polygon(50% 0%,60% 10%,74% 6%,82% 18%,96% 24%,92% 38%,100% 50%,92% 62%,96% 76%,82% 82%,74% 94%,60% 90%,50% 100%,40% 90%,26% 94%,18% 82%,4% 76%,8% 62%,0% 50%,8% 38%,4% 24%,18% 18%,26% 6%,40% 10%);position:relative;vertical-align:middle;box-shadow:0 0 0 2px rgba(255,255,255,.08),0 0 14px rgba(34,197,94,.35)}
+.true-member-badge::after{content:"";width:12px;height:7px;border-left:3px solid #fff;border-bottom:3px solid #fff;transform:rotate(-45deg);margin-top:-2px}.true-member-badge.hidden{display:none!important}.leader-name .true-member-badge,.friend-name .true-member-badge{width:20px;height:20px;margin-left:5px}.leader-name .true-member-badge::after,.friend-name .true-member-badge::after{width:10px;height:6px;border-width:2px}.online-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:1000;text-transform:uppercase;border:1px solid rgba(255,255,255,.12);white-space:nowrap}.online-pill.online{background:rgba(34,197,94,.12);color:#86efac;border-color:rgba(34,197,94,.45)}.online-pill.offline{background:rgba(239,68,68,.12);color:#fca5a5;border-color:rgba(239,68,68,.45)}.leader-points{display:flex;align-items:center;gap:8px}.friend-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.buy-subtabs{max-width:1100px;margin:18px auto 0;display:flex;gap:8px;justify-content:center}.buy-subtab{border:1px solid #333842;background:#161820;color:#fff;border-radius:999px;padding:10px 16px;cursor:pointer;font-weight:900}.buy-subtab.active{background:#fff;color:#000;border-color:#fff}.buy-view{display:none;grid-column:1/-1}.buy-view.active-buy-view{display:grid;gap:14px;grid-template-columns:1fr}.banner-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}.banner-card{border:1px solid #2b2f3a;border-radius:18px;padding:12px;background:#0b0c10}.banner-preview{height:86px;border-radius:16px;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;text-align:center;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.9);font-weight:1000;margin-bottom:10px;position:relative;overflow:hidden}.banner-preview::after,.leaderboard-item.bannered::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.52),rgba(0,0,0,.18),rgba(0,0,0,.52));pointer-events:none}.leaderboard-item.bannered{position:relative;overflow:hidden;background:var(--banner-bg)!important}.leaderboard-item.bannered>*{position:relative;z-index:2}.leaderboard-item.bannered .leader-name,.leaderboard-item.bannered .leader-points,.leaderboard-item.bannered .friend-meta{text-shadow:0 2px 7px rgba(0,0,0,.9)}.friend-lookup-actions{display:flex;gap:10px;flex-wrap:wrap}.chat-shell{align-items:start}.chat-friends-panel{max-height:560px;overflow-y:auto}.group-chat-open-stack{grid-column:2;display:grid;gap:14px}.group-side-panel{border:1px solid #2b2f3a;background:#0b0c10;border-radius:22px;padding:14px}.group-side-panel .chat-messages{height:260px}.game-tile{position:relative}.game-favorite-star{position:absolute;right:10px;top:10px;z-index:5;width:34px;height:34px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.55);color:#fff;font-size:18px;font-weight:1000;display:none;place-items:center;cursor:pointer}.game-tile:hover .game-favorite-star{display:grid}.game-favorite-star.active{display:grid;color:#facc15;background:rgba(0,0,0,.78);border-color:#facc15}.game-active-icons{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:3px;align-items:center;z-index:4;min-height:24px}.game-active-icon{width:24px;height:24px;border-radius:999px;background:#111827;border:2px solid rgba(255,255,255,.75);display:grid;place-items:center;font-size:13px;font-weight:1000;box-shadow:0 4px 10px rgba(0,0,0,.4)}.game-active-more{font-size:11px;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.2);padding:4px 6px;border-radius:999px;font-weight:900}.settings-card h2.friend-request-title::before{content:"👥 ";}.account-name-row-v96 .true-member-badge{margin-left:0}.change-password-note{margin-top:8px}.compact-player-controls #playerBox .playerTop{padding:8px 10px}.compact-player-controls #playerBox .btn{padding:8px 10px}.setting-compact-game-controls #playerBox .playerTop{padding:8px 10px}.setting-compact-game-controls #playerBox .btn{padding:8px 10px}
+
 </style>
 </head>
 <body>
@@ -633,7 +638,7 @@ header{
     <button class="tab" data-tab="links">Links</button>
     <button class="tab" data-tab="suggestions">Suggestions</button>
     <button class="tab" data-tab="achievements">Achievements</button>
-    <button class="tab" data-tab="icons">Icons</button>
+    <button class="tab" data-tab="icons">Buy</button>
     <button class="tab" data-tab="trade">Trade</button>
     <button class="tab" data-tab="leaderboard">Leaderboard</button>
     <button class="tab chat-tab" data-tab="chat"><span id="chatTabBadge" class="tab-badge hidden">0</span>Chat</button>
@@ -677,7 +682,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v114</span>
+        <span class="update-version-badge">Blank Space v115</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -697,8 +702,16 @@ header{
         <li><b>Safety:</b> added a Settings toggle for the accidental close/refresh warning. It is on by default and can be turned off per browser.</li>
         <li><b>Owner Panel:</b> added a tool to rename the Block Protection setting label for everyone.</li>
         <li><b>Chat safety warning:</b> the warning now appears under the Chat title for 10 seconds with no close button whenever the Chat tab loads after a refresh or new tab.</li>
+        <li><b>True Member:</b> Owner Panel can mark users as True Members with a green verified check next to their rank.</li>
+        <li><b>Buy:</b> renamed Icons to Buy and added Icons/Banners sub-tabs with banner packs for leaderboard card backgrounds.</li>
+        <li><b>Online status:</b> leaderboard and Friends now show Online/Offline pills based on recent activity.</li>
+        <li><b>Friend Requests:</b> Settings now lets users turn friend requests on/off, and Friends → Look Up adds Block controls.</li>
+        <li><b>Chat:</b> friend list height is capped beside the chat panel and group chats can open in a separate panel under single chats.</li>
+        <li><b>Games:</b> refreshed requested Popular Games sources, added 17-0, favorites, current-player icons, and source dropdown defaults.</li>
+        <li><b>Account:</b> added password change below username change for password-enabled accounts.</li>
+        <li><b>Achievements:</b> rebuilt the v115 catalog/functions again and made Slope score goals easier.</li>
       </ul>
-      <div class="update-note">No Supabase changes needed for v114 if you already ran v110. Upload this v114 website code to GitHub and hard-refresh the site.</div>
+      <div class="update-note">Run supabase_v115_update.sql first, then upload this v115 website code to GitHub and hard-refresh the site.</div>
     </div>
   </section>
 
@@ -832,17 +845,34 @@ header{
 
 
   <section id="icons">
-    <h1 class="page-title">Icons</h1>
-    <p class="tagline">Equip unlocked icons, buy icon packs with points, and collect rarer icons.</p>
+    <h1 class="page-title">Buy</h1>
+    <p class="tagline">Buy icons and banners with points. Icons show next to names. Banners customize leaderboard cards.</p>
+    <div class="buy-subtabs">
+      <button class="buy-subtab active" data-buy-view="icons">Icons</button>
+      <button class="buy-subtab" data-buy-view="banners">Banners</button>
+    </div>
     <div class="achievement-shell">
-      <div class="panel suggestion-card">
-        <div class="suggestions-toolbar"><div><h2>Icon Packs</h2><p class="small-note">Cheaper packs mostly give common icons. Expensive packs have better odds for rare, epic, legendary, mythic, and godly icons.</p></div><button class="mini-btn" id="refreshIconsBtn">Refresh</button></div>
-        <p id="iconsStatus" class="form-message">Sign in to load icons.</p>
-        <div id="packGrid" class="pack-grid"></div>
+      <div id="buyViewIcons" class="buy-view active-buy-view">
+        <div class="panel suggestion-card">
+          <div class="suggestions-toolbar"><div><h2>Icon Packs</h2><p class="small-note">Cheaper packs mostly give common icons. Expensive packs have better odds for rare, epic, legendary, mythic, and godly icons.</p></div><button class="mini-btn" id="refreshIconsBtn">Refresh</button></div>
+          <p id="iconsStatus" class="form-message">Sign in to load icons.</p>
+          <div id="packGrid" class="pack-grid"></div>
+        </div>
+        <div class="panel suggestion-card">
+          <h2>Your Icon Collection</h2>
+          <div id="ownedIconsGrid" class="icons-grid"></div>
+        </div>
       </div>
-      <div class="panel suggestion-card">
-        <h2>Your Icon Collection</h2>
-        <div id="ownedIconsGrid" class="icons-grid"></div>
+      <div id="buyViewBanners" class="buy-view">
+        <div class="panel suggestion-card">
+          <div class="suggestions-toolbar"><div><h2>Banner Packs</h2><p class="small-note">Banners change the long leaderboard rectangle behind your info. Text stays readable on every banner.</p></div><button class="mini-btn" id="refreshBannersBtn">Refresh</button></div>
+          <p id="bannersStatus" class="form-message">Sign in to load banners.</p>
+          <div id="bannerPackGrid" class="pack-grid"></div>
+        </div>
+        <div class="panel suggestion-card">
+          <h2>Your Banner Collection</h2>
+          <div id="ownedBannersGrid" class="banner-grid"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -938,6 +968,7 @@ header{
         </div>
         <p id="chatStatus" class="form-message"></p>
       </div>
+      <div id="groupChatOpenStack" class="group-chat-open-stack"></div>
     </div>
   </section>
 
@@ -945,7 +976,7 @@ header{
     <h1 class="page-title">Friends</h1>
     <p class="tagline">Add people, manage requests, and view friend profiles.</p>
     <div class="friend-subtabs">
-      <button class="friend-subtab active" data-friend-view="add">Add</button>
+      <button class="friend-subtab active" data-friend-view="add">Look Up</button>
       <button class="friend-subtab" data-friend-view="your">Your Friends</button>
       <button class="friend-subtab" data-friend-view="requests">Requests</button>
       <button class="friend-subtab" data-friend-view="sent">Sent</button>
@@ -958,10 +989,10 @@ header{
 
       <div class="friend-view active-friend-view" id="friendViewAdd">
         <div class="panel friends-card" id="addFriendCard">
-          <h2>Add Friend</h2>
-          <p class="small-note">Enter another person's exact username.</p>
+          <h2>Look Up</h2>
+          <p class="small-note">Search a username, then add or block them.</p>
           <input id="friendUsernameInput" placeholder="Friend username" maxlength="20" autocomplete="off" />
-          <button class="bigbtn" id="sendFriendRequestBtn">Send Friend Request</button>
+          <div class="friend-lookup-actions"><button class="bigbtn" id="sendFriendRequestBtn">Add Friend</button><button class="bigbtn danger-btn" id="blockUserBtn">Block</button><button class="bigbtn ghost" id="unblockUserBtn">Unblock</button></div>
           <p id="friendMessage" class="form-message"></p>
         </div>
       </div>
@@ -1008,7 +1039,7 @@ header{
             <div class="profile-name-row account-name-row-v96">
               <h2 id="profileDisplayName">Not signed in</h2>
               <span class="profile-equipped-icon hidden" id="accountHeaderEquippedIcon" title="Equipped icon"></span>
-              <span class="rank-badge hidden" id="accountHeaderRankBadge" title="Rank"></span>
+              <span class="rank-badge hidden" id="accountHeaderRankBadge" title="Rank"></span><span class="true-member-badge hidden" id="accountTrueMemberBadge" title="True Member" aria-label="True Member"></span>
               <span class="points-pill" id="accountPointsPill">0 points</span>
               <span class="rank-pill hidden" id="accountRankPill"></span>
             </div>
@@ -1053,6 +1084,17 @@ header{
               <button class="mini-btn" id="changeUsernameBtn">Change Username</button>
             </div>
           </div>
+          
+          <div class="username-change-box hidden" id="passwordChangeBox">
+            <h2>Change Password</h2>
+            <p class="small-note">Change the password for this account. You must be signed in.</p>
+            <div class="profile-security-row">
+              <input id="newPasswordInput" class="password-field" type="password" placeholder="New password: at least 6 characters" maxlength="72" autocomplete="new-password" />
+              <input id="newPasswordConfirmInput" class="password-field" type="password" placeholder="Confirm new password" maxlength="72" autocomplete="new-password" />
+              <button class="mini-btn" id="changePasswordBtn">Change Password</button>
+            </div>
+          </div>
+
           <div class="username-change-box hidden" id="passwordUpgradeBox">
             <h2>Add Password Login</h2>
             <p class="small-note">This upgrades an older browser-only account so you can sign in on other devices with this username and password.</p>
@@ -1141,6 +1183,13 @@ header{
         <label class="settings-check"><input id="settingsCloseWarning" type="checkbox" /> <span id="settingsCloseWarningLabel">Block Protection</span></label>
         <button class="mini-btn primary" id="settingsSaveProtectionBtn">Save Block Protection</button>
       </div>
+
+      <div class="panel suggestion-card settings-card">
+        <h2>Friend Request</h2>
+        <p class="small-note">Choose whether people can send you friend requests.</p>
+        <label class="settings-check"><input id="settingsFriendRequests" type="checkbox" /> Friend requests on</label>
+        <button class="mini-btn primary" id="settingsSaveFriendRequestsBtn">Save Friend Request Setting</button>
+      </div>
       <div class="panel suggestion-card settings-card settings-wide-card">
         <h2>Display Preferences</h2>
         <p class="small-note">Extra settings saved on this browser. These only change how the site looks and feels for the person using it.</p>
@@ -1191,7 +1240,7 @@ header{
           <div class="admin-tile"><h3>Change Username</h3><input id="adminTargetUsername" placeholder="Current username"/><input id="adminNewUsername" placeholder="New username"/><button class="mini-btn" id="adminChangeUsernameBtn">Change Username</button></div>
           <div class="admin-tile"><h3>Delete Account</h3><input id="adminDeleteUsername" placeholder="Username to delete"/><button class="mini-btn danger-btn" id="adminDeleteUserBtn">Delete User</button></div>
           <div class="admin-tile"><h3>Give / Remove Points</h3><input id="adminPointsUsername" placeholder="Username"/><input id="adminPointsAmount" type="number" placeholder="Amount, use negative to remove"/><input id="adminPointsReason" placeholder="Reason"/><button class="mini-btn" id="adminAdjustPointsBtn">Apply Points</button></div>
-          <div class="admin-tile"><h3>Ranks</h3><input id="adminRankUsername" placeholder="Username"/><select id="adminRankSelect"><option value="member">Member</option><option value="tester">Tester</option><option value="manager">Manager</option><option value="admin">Admin</option><option value="owner">Owner</option></select><input id="adminRankReason" placeholder="Reason"/><button class="mini-btn primary" id="adminSetRankBtn">Set Rank</button><p class="small-note">Owner is 1-of-1. Admin gives Owner Panel access. Manager can flag users. All ranks show colored badges.</p></div>
+          <div class="admin-tile"><h3>Ranks</h3><input id="adminRankUsername" placeholder="Username"/><select id="adminRankSelect"><option value="member">Member</option><option value="tester">Tester</option><option value="manager">Manager</option><option value="admin">Admin</option><option value="owner">Owner</option></select><input id="adminRankReason" placeholder="Reason"/><button class="mini-btn primary" id="adminSetRankBtn">Set Rank</button><p class="small-note">Owner is 1-of-1. Admin gives Owner Panel access. Manager can flag users. All ranks show colored badges.</p></div><div class="admin-tile"><h3>True Member</h3><input id="adminTrueMemberUsername" placeholder="Username"/><button class="mini-btn primary" id="adminMakeTrueMemberBtn">Make a True Member</button><button class="mini-btn" id="adminRemoveTrueMemberBtn">Remove True Member</button><p class="small-note">True Members get a green verified check next to their rank on the leaderboard and Account tab.</p></div>
           <div class="admin-tile"><h3>Timed Message</h3><input id="adminMessageUsername" placeholder="Username, or use Send to everyone"/><label class="send-all-row"><input id="adminMessageAll" type="checkbox"/> Send to everyone</label><textarea id="adminMessageText" placeholder="Message they must see" maxlength="500"></textarea><input id="adminMessageSeconds" type="number" placeholder="Seconds visible" value="20" min="5" max="3600"/><select id="adminMessageStyle"><option value="notice">Notice</option><option value="warning">Warning</option><option value="danger">Danger</option></select><button class="mini-btn primary" id="adminSendUserMessageBtn">Send Message</button><p class="small-note">The user cannot close it. It disappears only when the timer expires. Owner/Admin can send to one user or everyone.</p></div>
           <div class="admin-tile"><h3>Other Commands</h3><input id="adminOtherUsername" placeholder="Username"/><select id="adminOtherAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="ban_site">Ban From Website</option><option value="unban_site">Unban From Website</option><option value="ban_device">Ban This User's Device</option><option value="unban_device">Unban This User's Last Device</option><option value="force_sign_out">Force Sign Out</option><option value="clear_equipped_icon">Clear Equipped Icon</option><option value="reset_avatar">Reset Avatar</option><option value="reset_all_achievements_keep_points">Reset All Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminOtherValue" placeholder="Optional value, minutes, or device id"/><input id="adminOtherReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminRunOtherCommandBtn">Run Command</button><p class="small-note">Website bans block the account. Device bans use the registered browser device ID and are best-effort for that browser/device.</p></div>
           <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
@@ -1251,10 +1300,33 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const GAMES = [
   {
+    "title": "17-0",
+    "genre": "Sports",
+    "source": "https://www.firstdown.studio/build-a-17-0-team",
+    "sources": [
+      {
+        "label": "First Down Studio",
+        "url": "https://www.firstdown.studio/build-a-17-0-team"
+      },
+      {
+        "label": "BuzzBattle",
+        "url": "https://itsbuzzing.com/buzzbattle/nfl/build"
+      }
+    ],
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%23052e16%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%2322c55e%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3E17-0%20Team%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%2322c55e%22%3E%3C/text%3E%3C/svg%3E",
+    "featured": true,
+    "reliable": true,
+    "verified": false
+  },
+  {
     "title": "Stunt Bike Extreme",
     "genre": "Driving",
-    "source": "https://poki.com/en/g/stunt-bike-extreme",
+    "source": "https://arcadrome.com/en/games/stunt-bike-extreme",
     "sources": [
+      {
+        "label": "Arcadrome",
+        "url": "https://arcadrome.com/en/games/stunt-bike-extreme"
+      },
       {
         "label": "Poki",
         "url": "https://poki.com/en/g/stunt-bike-extreme"
@@ -1262,13 +1334,9 @@ const GAMES = [
       {
         "label": "Playtropolis",
         "url": "https://playtropolis.com/Stunt-bike-extreme"
-      },
-      {
-        "label": "Arcadrome",
-        "url": "https://arcadrome.com/en/games/stunt-bike-extreme"
       }
     ],
-    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%23111827%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22220%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2258%22%20fill%3D%22white%22%3ESTUNT%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22300%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2242%22%20fill%3D%22%23facc15%22%3EBIKE%3C/text%3E%3C/svg%3E",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22Driving%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%23f97316%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3EStunt%20Bike%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%23f97316%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
     "verified": false
@@ -1322,23 +1390,27 @@ const GAMES = [
   {
     "title": "Cookie Clicker",
     "genre": "Clicker",
-    "source": "https://orteil.dashnet.org/cookieclicker/",
-    "image": "games/cookie-clicker/img/perfectCookie.png",
+    "source": "https://tops.games/game/cookie-clicker",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%2378350f%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%23f59e0b%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3ECookie%20Click%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%23f59e0b%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
     "verified": false,
     "sources": [
       {
-        "label": "Official Orteil",
-        "url": "https://orteil.dashnet.org/cookieclicker/"
+        "label": "Tops Games",
+        "url": "https://tops.games/game/cookie-clicker"
       },
       {
-        "label": "CookieClicker.com",
-        "url": "https://cookieclicker.com/"
+        "label": "Fizzerz",
+        "url": "https://fizzerz.com/play/cookie-clicker"
       },
       {
-        "label": "GitHub Mirror",
-        "url": "https://ozh.github.io/cookieclicker/"
+        "label": "CookieGame",
+        "url": "https://cookiegame.org/index.html"
+      },
+      {
+        "label": "Orteil Mirror",
+        "url": "https://cookieclickerorteil.github.io/"
       }
     ]
   },
@@ -1352,90 +1424,56 @@ const GAMES = [
     "verified": true
   },
   {
-    "title": "Race Survival",
-    "genre": "Driving",
-    "source": "https://gplusgames.com/play/race-survival",
-    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230b1020'/%3E%3Cpath d='M85 320c80-155 250-155 330 0' fill='none' stroke='%23ef4444' stroke-width='34' stroke-linecap='round'/%3E%3Ccircle cx='168' cy='330' r='48' fill='%23111827' stroke='%23fff' stroke-width='16'/%3E%3Ccircle cx='332' cy='330' r='48' fill='%23111827' stroke='%23fff' stroke-width='16'/%3E%3Ctext x='250' y='170' text-anchor='middle' font-family='Arial Black,Arial' font-size='62' fill='white'%3ERACE%3C/text%3E%3C/svg%3E",
-    "featured": true,
-    "reliable": true,
-    "verified": false,
-    "sources": [
-      {
-        "label": "G+ Games",
-        "url": "https://gplusgames.com/play/race-survival"
-      },
-      {
-        "label": "Survival-Race.io",
-        "url": "https://survival-race.io/"
-      },
-      {
-        "label": "SurvivalRace.net",
-        "url": "https://survivalrace.net/"
-      }
-    ]
-  },
-  {
     "title": "Build a Big Army!",
     "genre": "Strategy",
-    "source": "https://www.miniplay.com/game/build-a-big-army",
-    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%23111827'/%3E%3Ctext x='250' y='160' text-anchor='middle' font-family='Arial Black,Arial' font-size='46' fill='white'%3EBUILD%3C/text%3E%3Ctext x='250' y='230' text-anchor='middle' font-family='Arial Black,Arial' font-size='40' fill='%23fbbf24'%3EBIG ARMY%3C/text%3E%3Ccircle cx='160' cy='335' r='38' fill='%2393c5fd'/%3E%3Ccircle cx='250' cy='330' r='48' fill='%23f87171'/%3E%3Ccircle cx='340' cy='335' r='38' fill='%2386efac'/%3E%3C/svg%3E",
+    "source": "https://lagged.com/en/g/build-a-big-army",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%230f172a%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%2384cc16%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3EBuild%20Army%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%2384cc16%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
     "verified": false,
     "sources": [
-      {
-        "label": "Miniplay",
-        "url": "https://www.miniplay.com/game/build-a-big-army"
-      },
       {
         "label": "Lagged",
         "url": "https://lagged.com/en/g/build-a-big-army"
       },
       {
+        "label": "Miniplay",
+        "url": "https://www.miniplay.com/game/build-a-big-army"
+      },
+      {
         "label": "Playhop",
         "url": "https://playhop.com/app/404236"
+      },
+      {
+        "label": "Playgama",
+        "url": "https://playgama.com/game/build-a-big-army-9dc3-1"
       }
     ]
   },
   {
     "title": "Jump Only",
     "genre": "Arcade",
-    "source": "https://bulletbros.io/game/jump-only/",
-    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230b1020'/%3E%3Cpath d='M90 365h320' stroke='%23fff' stroke-width='20' stroke-linecap='round'/%3E%3Cpath d='M250 335V135m0 0-70 70m70-70 70 70' stroke='%2322c55e' stroke-width='28' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='250' y='440' text-anchor='middle' font-family='Arial Black,Arial' font-size='46' fill='white'%3EJUMP ONLY%3C/text%3E%3C/svg%3E",
+    "source": "https://brainide.com/game/jump-only/",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%23172554%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%2360a5fa%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3EJump%20Only%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%2360a5fa%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
     "verified": false,
     "sources": [
       {
-        "label": "BulletBros",
-        "url": "https://bulletbros.io/game/jump-only/"
+        "label": "Brainide",
+        "url": "https://brainide.com/game/jump-only/"
+      },
+      {
+        "label": "BrowserGamers",
+        "url": "https://browsergamers.gg/game/jump-only"
+      },
+      {
+        "label": "Fizzerz",
+        "url": "https://fizzerz.com/play/jump-only"
       },
       {
         "label": "Poki",
         "url": "https://poki.com/en/g/jump-only"
-      }
-    ]
-  },
-  {
-    "title": "Brawl Stars",
-    "genre": "Action",
-    "source": "https://supercell.com/en/games/brawlstars/",
-    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' rx='60' fill='%230f172a'/%3E%3Ccircle cx='250' cy='215' r='110' fill='%23facc15'/%3E%3Cpath d='M170 345h160l-80 80z' fill='%23facc15'/%3E%3Ctext x='250' y='230' text-anchor='middle' font-family='Arial Black,Arial' font-size='86' fill='%23111'%3EBS%3C/text%3E%3C/svg%3E",
-    "featured": true,
-    "reliable": true,
-    "verified": false,
-    "sources": [
-      {
-        "label": "Official Supercell",
-        "url": "https://supercell.com/en/games/brawlstars/"
-      },
-      {
-        "label": "Google Play",
-        "url": "https://play.google.com/store/apps/details?id=com.supercell.brawlstars"
-      },
-      {
-        "label": "App Store",
-        "url": "https://apps.apple.com/us/app/brawl-stars/id1229016807"
       }
     ]
   },
@@ -1451,31 +1489,53 @@ const GAMES = [
   {
     "title": "Chess.com",
     "genre": "Strategy",
-    "source": "https://www.chess.com/play/computer",
-    "image": "https://www.chess.com/bundles/web/images/offline-play/standardboard.1d6f9426.png",
+    "source": "https://www.chess.com/play",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%23111827%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%23e5e7eb%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3EChess.com%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%23e5e7eb%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
-    "verified": false
+    "verified": false,
+    "sources": [
+      {
+        "label": "Chess.com Play",
+        "url": "https://www.chess.com/play"
+      },
+      {
+        "label": "Lichess",
+        "url": "https://lichess.org/"
+      },
+      {
+        "label": "Math Is Fun",
+        "url": "https://www.mathsisfun.com/games/chess.html"
+      },
+      {
+        "label": "Hooda Math",
+        "url": "https://www.hoodamath.com/games/chess.html"
+      }
+    ]
   },
   {
     "title": "LongCat",
     "genre": "Puzzle",
-    "source": "https://bulletbros.io/game/longcat/",
+    "source": "https://rivegames.com/game/longcat",
     "sources": [
       {
-        "label": "BulletBros",
-        "url": "https://bulletbros.io/game/longcat/"
+        "label": "Rive Games",
+        "url": "https://rivegames.com/game/longcat"
       },
       {
         "label": "Poki",
         "url": "https://poki.com/en/g/longcat"
       },
       {
-        "label": "RiveGames",
-        "url": "https://rivegames.com/game/longcat"
+        "label": "Playtropolis",
+        "url": "https://playtropolis.com/Longcat"
+      },
+      {
+        "label": "RocketGames",
+        "url": "https://www.rocketgames.io/game/longcat"
       }
     ],
-    "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/c318eae8480b4ba85da0b1d15a8fe7a2/longcat.png",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%231f2937%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%23fbbf24%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3ELong%20Cat%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%23fbbf24%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
     "verified": false
@@ -1483,22 +1543,26 @@ const GAMES = [
   {
     "title": "Stick Rush",
     "genre": "Action",
-    "source": "https://poki.com/en/g/stick-rush",
+    "source": "https://poki.us.org/stick-rush/",
     "sources": [
+      {
+        "label": "Poki Mirror",
+        "url": "https://poki.us.org/stick-rush/"
+      },
       {
         "label": "Poki",
         "url": "https://poki.com/en/g/stick-rush"
       },
       {
-        "label": "Poki Mirror",
-        "url": "https://poki.us.org/stick-rush/"
+        "label": "GameComets",
+        "url": "https://gamecomets.com/game/stick-rush/"
       },
       {
         "label": "MinigamesVille",
         "url": "https://minigamesville.com/game/stick-rush/"
       }
     ],
-    "image": "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/3b284c96933c9a0e6c448e56c018a723/stick-rush.png",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%231e1b4b%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%23ef4444%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3EStick%20Rush%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%23ef4444%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
     "verified": false
@@ -2240,10 +2304,28 @@ const GAMES = [
     "genre": "Sports",
     "source": "https://www.google.com/logos/2019/july4th19/r6/july4th19.html",
     "external": "https://www.google.com/logos/2019/july4th19/r6/july4th19.html",
-    "image": "https://www.google.com/logos/doodles/2019/fourth-of-july-2019-6104206344658944.2-law.gif",
+    "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20500%22%3E%3Crect%20width%3D%22500%22%20height%3D%22500%22%20rx%3D%2260%22%20fill%3D%22%23991b1b%22/%3E%3Ccircle%20cx%3D%22390%22%20cy%3D%22105%22%20r%3D%2252%22%20fill%3D%22%23fbbf24%22%20opacity%3D%22.85%22/%3E%3Ctext%20x%3D%22250%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2252%22%20fill%3D%22white%22%3EDoodle%20Baseb%3C/text%3E%3Ctext%20x%3D%22250%22%20y%3D%22305%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%20Black%2CArial%22%20font-size%3D%2238%22%20fill%3D%22%23fbbf24%22%3E%3C/text%3E%3C/svg%3E",
     "featured": true,
     "reliable": true,
-    "verified": false
+    "verified": false,
+    "sources": [
+      {
+        "label": "Google Official",
+        "url": "https://www.google.com/logos/2019/july4th19/r6/july4th19.html"
+      },
+      {
+        "label": "GamesDoodle",
+        "url": "https://gamesdoodle.org/doodle-baseball/"
+      },
+      {
+        "label": "Doodle Baseball GitHub",
+        "url": "https://doodle-baseball.github.io/"
+      },
+      {
+        "label": "LolyGames Mirror",
+        "url": "https://lolygames.github.io/googledoodle-source/"
+      }
+    ]
   },
   {
     "title": "Big Shot Boxing",
@@ -2839,6 +2921,18 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_25_18",
+    "title": "Get 5 points in Slope",
+    "desc": "Get 5 points in one Slope round",
+    "icon": "🟢",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 5,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_50_19",
     "title": "Get 10 points in Slope",
     "desc": "Get 10 points in one Slope round",
     "icon": "🟢",
@@ -2850,7 +2944,19 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_50_19",
+    "id": "slope_best_score_75_20",
+    "title": "Get 15 points in Slope",
+    "desc": "Get 15 points in one Slope round",
+    "icon": "🟢",
+    "reward": 2,
+    "difficulty": "not_so_hard",
+    "game": "Slope",
+    "stat": "best_score",
+    "target": 15,
+    "experimental": true
+  },
+  {
+    "id": "slope_best_score_100_21",
     "title": "Get 20 points in Slope",
     "desc": "Get 20 points in one Slope round",
     "icon": "🟢",
@@ -2862,7 +2968,7 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_75_20",
+    "id": "slope_best_score_125_22",
     "title": "Get 30 points in Slope",
     "desc": "Get 30 points in one Slope round",
     "icon": "🟢",
@@ -2874,7 +2980,7 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_100_21",
+    "id": "slope_best_score_150_23",
     "title": "Get 40 points in Slope",
     "desc": "Get 40 points in one Slope round",
     "icon": "🟢",
@@ -2886,31 +2992,31 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_125_22",
+    "id": "slope_best_score_200_24",
     "title": "Get 50 points in Slope",
     "desc": "Get 50 points in one Slope round",
     "icon": "🟢",
-    "reward": 2,
-    "difficulty": "not_so_hard",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
     "target": 50,
     "experimental": true
   },
   {
-    "id": "slope_best_score_150_23",
+    "id": "slope_best_score_250_25",
     "title": "Get 60 points in Slope",
     "desc": "Get 60 points in one Slope round",
     "icon": "🟢",
-    "reward": 2,
-    "difficulty": "not_so_hard",
+    "reward": 5,
+    "difficulty": "medium",
     "game": "Slope",
     "stat": "best_score",
     "target": 60,
     "experimental": true
   },
   {
-    "id": "slope_best_score_200_24",
+    "id": "slope_best_score_300_26",
     "title": "Get 75 points in Slope",
     "desc": "Get 75 points in one Slope round",
     "icon": "🟢",
@@ -2922,7 +3028,7 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_250_25",
+    "id": "slope_best_score_400_27",
     "title": "Get 90 points in Slope",
     "desc": "Get 90 points in one Slope round",
     "icon": "🟢",
@@ -2934,7 +3040,7 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_300_26",
+    "id": "slope_best_score_500_28",
     "title": "Get 110 points in Slope",
     "desc": "Get 110 points in one Slope round",
     "icon": "🟢",
@@ -2946,31 +3052,31 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_400_27",
+    "id": "slope_best_score_650_29",
     "title": "Get 130 points in Slope",
     "desc": "Get 130 points in one Slope round",
     "icon": "🟢",
-    "reward": 5,
-    "difficulty": "medium",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
     "target": 130,
     "experimental": true
   },
   {
-    "id": "slope_best_score_500_28",
+    "id": "slope_best_score_800_30",
     "title": "Get 150 points in Slope",
     "desc": "Get 150 points in one Slope round",
     "icon": "🟢",
-    "reward": 5,
-    "difficulty": "medium",
+    "reward": 10,
+    "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
     "target": 150,
     "experimental": true
   },
   {
-    "id": "slope_best_score_650_29",
+    "id": "slope_best_score_1000_31",
     "title": "Get 175 points in Slope",
     "desc": "Get 175 points in one Slope round",
     "icon": "🟢",
@@ -2982,7 +3088,7 @@ const ACHIEVEMENTS = [
     "experimental": true
   },
   {
-    "id": "slope_best_score_800_30",
+    "id": "slope_best_score_1250_32",
     "title": "Get 200 points in Slope",
     "desc": "Get 200 points in one Slope round",
     "icon": "🟢",
@@ -2991,30 +3097,6 @@ const ACHIEVEMENTS = [
     "game": "Slope",
     "stat": "best_score",
     "target": 200,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_1000_31",
-    "title": "Get 250 points in Slope",
-    "desc": "Get 250 points in one Slope round",
-    "icon": "🟢",
-    "reward": 10,
-    "difficulty": "hard",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 250,
-    "experimental": true
-  },
-  {
-    "id": "slope_best_score_1250_32",
-    "title": "Get 300 points in Slope",
-    "desc": "Get 300 points in one Slope round",
-    "icon": "🟢",
-    "reward": 10,
-    "difficulty": "hard",
-    "game": "Slope",
-    "stat": "best_score",
-    "target": 300,
     "experimental": true
   },
   {
@@ -4914,14 +4996,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1100_201",
-    "title": "Get 350 points in Slope",
-    "desc": "Get 350 points in one Slope round",
+    "title": "Get 250 points in Slope",
+    "desc": "Get 250 points in one Slope round",
     "icon": "🟢",
     "reward": 10,
     "difficulty": "hard",
     "game": "Slope",
     "stat": "best_score",
-    "target": 350,
+    "target": 250,
     "experimental": true
   },
   {
@@ -5028,14 +5110,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1150_211",
-    "title": "Get 400 points in Slope",
-    "desc": "Get 400 points in one Slope round",
+    "title": "Get 250 points in Slope",
+    "desc": "Get 250 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 400,
+    "target": 250,
     "experimental": true
   },
   {
@@ -5096,14 +5178,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1200_221",
-    "title": "Get 500 points in Slope",
-    "desc": "Get 500 points in one Slope round",
+    "title": "Get 250 points in Slope",
+    "desc": "Get 250 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 500,
+    "target": 250,
     "experimental": true
   },
   {
@@ -5210,14 +5292,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1250_231",
-    "title": "Get 650 points in Slope",
-    "desc": "Get 650 points in one Slope round",
+    "title": "Get 250 points in Slope",
+    "desc": "Get 250 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 650,
+    "target": 250,
     "experimental": true
   },
   {
@@ -5266,14 +5348,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_1300_241",
-    "title": "Get 800 points in Slope",
-    "desc": "Get 800 points in one Slope round",
+    "title": "Get 250 points in Slope",
+    "desc": "Get 250 points in one Slope round",
     "icon": "🟢",
     "reward": 20,
     "difficulty": "crazy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 800,
+    "target": 250,
     "experimental": true
   },
   {
@@ -8482,6 +8564,88 @@ setTimeout(wireV101Fixes,900);
 document.addEventListener("DOMContentLoaded", function(){
   if (typeof setupLockScreenInput === "function") setupLockScreenInput();
 });
+</script>
+
+
+<script>
+/* v115 feature patch */
+const TRUE_MEMBER_SVG = '<span class="true-member-badge" title="True Member" aria-label="True Member"></span>';
+const BANNER_CATALOG_V115 = [
+  {id:'forest', name:'Forest', rarity:'common', gradient:'linear-gradient(135deg,#14532d,#22c55e)'},
+  {id:'ocean', name:'Ocean', rarity:'common', gradient:'linear-gradient(135deg,#0f172a,#0284c7)'},
+  {id:'sunset', name:'Sunset', rarity:'uncommon', gradient:'linear-gradient(135deg,#7c2d12,#fb923c,#facc15)'},
+  {id:'neon', name:'Neon', rarity:'uncommon', gradient:'linear-gradient(135deg,#312e81,#db2777,#22d3ee)'},
+  {id:'gold', name:'Gold Rush', rarity:'rare', gradient:'linear-gradient(135deg,#713f12,#fbbf24,#fde68a)'},
+  {id:'ruby', name:'Ruby', rarity:'rare', gradient:'linear-gradient(135deg,#450a0a,#dc2626,#fca5a5)'},
+  {id:'galaxy', name:'Galaxy', rarity:'epic', gradient:'linear-gradient(135deg,#020617,#4c1d95,#0ea5e9)'},
+  {id:'void', name:'Void', rarity:'legendary', gradient:'linear-gradient(135deg,#000,#111827,#581c87)'},
+  {id:'owner', name:'Owner Glow', rarity:'mythic', gradient:'linear-gradient(135deg,#052e16,#16a34a,#fde047)'},
+  {id:'blank', name:'Blank Space', rarity:'godly', gradient:'linear-gradient(135deg,#020617,#111827,#0f172a,#000)'}
+];
+function trueMemberBadgeHTML(profile){return profile?.true_member ? TRUE_MEMBER_SVG : '';}
+function isOnlineProfile(profile){ if(!profile?.last_seen_at) return false; return (Date.now()-new Date(profile.last_seen_at).getTime()) < 2*60*1000; }
+function onlineStatusHTML(profile){ const online=isOnlineProfile(profile); return `<span class="online-pill ${online?'online':'offline'}">${online?'Online':'Offline'}</span>`; }
+nameWithBadges = function(profile, fallback='Unknown'){return `${escapeHTML(usernameFromProfile(profile,fallback))}${equippedIconHTML(profile)}${rankBadgeHTML(profile?.rank||'member')}${trueMemberBadgeHTML(profile)}`;};
+function bannerStyle(profile){return profile?.equipped_banner_gradient ? ` style="--banner-bg:${escapeHTML(profile.equipped_banner_gradient)}"` : '';}
+function bannerClass(profile){return profile?.equipped_banner_gradient ? ' bannered' : '';}
+
+// presence heartbeat
+defineBlankSpaceDeviceId();
+function defineBlankSpaceDeviceId(){try{let id=localStorage.getItem('blankspace_device_id_v115'); if(!id){id=(crypto.randomUUID?crypto.randomUUID():('dev-'+Date.now()+'-'+Math.random().toString(16).slice(2))); localStorage.setItem('blankspace_device_id_v115',id);} window.blankSpaceDeviceId=id;}catch(e){window.blankSpaceDeviceId='device-local';}}
+async function heartbeatPresenceV115(){try{if(!blankSpaceUser)return;await getSupabaseClient().from('profiles').update({last_seen_at:new Date().toISOString(),active_device_id:window.blankSpaceDeviceId}).eq('id',blankSpaceUser.id);}catch(e){}}
+setInterval(heartbeatPresenceV115,45000);
+setTimeout(heartbeatPresenceV115,2500);
+
+// Leaderboard override with online/banner/true member
+leaderboardRow = function(profile,index){const rank=index+1, medal=medalForRank(rank), points=Number(profile.points||0), canFlag=canFlagUsers()&&profile.id!==blankSpaceUser?.id, safeUsername=escapeHTML(profile.username||'').replace(/'/g,'&#039;');return `<div class="leaderboard-item${bannerClass(profile)}"${bannerStyle(profile)}><div class="leader-flag-slot">${canFlag?`<button class="flag-user-btn" title="Give @${safeUsername} a warning" onclick="flagUserFromLeaderboard('${safeUsername}')">🚩</button>`:`<button class="flag-user-btn hidden" aria-hidden="true">🚩</button>`}</div><div class="leader-rank">#${rank}</div><div class="leader-avatar">${leaderboardAvatar(profile)}</div><div><div class="leader-name">${escapeHTML(profile.username)}${equippedIconHTML(profile)}${rankBadgeHTML(profile)}${trueMemberBadgeHTML(profile)} ${medal?`<span class="medal">${medal}</span>`:''}</div><div class="friend-meta">${rank===1?'1st place':rank===2?'2nd place':rank===3?'3rd place':rank+'th place'}</div></div><div class="leader-points">${onlineStatusHTML(profile)}<span>${points} point${points===1?'':'s'}</span></div></div>`;};
+refreshLeaderboard = async function(){const listEl=document.getElementById('leaderboardList');try{const r=await getSupabaseClient().from('profiles').select('id,username,avatar_url,points,equipped_icon,rank,true_member,last_seen_at,equipped_banner_id,equipped_banner_name,equipped_banner_gradient').order('points',{ascending:false}).order('username',{ascending:true}).limit(100);if(r.error)throw r.error;const rows=r.data||[]; if(listEl)listEl.innerHTML=rows.length?rows.map(leaderboardRow).join(''):`<div class="empty-state">No accounts yet.</div>`;accountRankCache=rows;renderAccountRank();setMessage('leaderboardStatus',rows.length?`${rows.length} account${rows.length===1?'':'s'} loaded.`:'No accounts yet.');}catch(e){setMessage('leaderboardStatus',e.message||'Could not load leaderboard.','error');}};
+
+// Account true member and password change
+const oldSetAccountStateV115=setAccountState;
+setAccountState=function(text,type){oldSetAccountStateV115(text,type); const b=document.getElementById('accountTrueMemberBadge'); if(b&&blankSpaceProfile){b.classList.toggle('hidden',!blankSpaceProfile.true_member);} };
+const oldRefreshProfileUIV115=refreshProfileUI; refreshProfileUI=function(){oldRefreshProfileUIV115(); const b=document.getElementById('accountTrueMemberBadge'); if(b&&blankSpaceProfile){b.classList.toggle('hidden',!blankSpaceProfile.true_member);} document.getElementById('passwordChangeBox')?.classList.toggle('hidden',!blankSpaceProfile?.login_email);};
+async function changeAccountPasswordV115(){try{if(!blankSpaceUser||!blankSpaceProfile)return setMessage('profileMessage','Sign in first.','error');const p=document.getElementById('newPasswordInput')?.value||'';const c=document.getElementById('newPasswordConfirmInput')?.value||'';const er=validatePassword(p);if(er)return setMessage('profileMessage',er,'error');if(p!==c)return setMessage('profileMessage','Passwords do not match.','error');const r=await getSupabaseClient().auth.updateUser({password:p});if(r.error)throw r.error;document.getElementById('newPasswordInput').value='';document.getElementById('newPasswordConfirmInput').value='';setMessage('profileMessage','Password changed.','good');}catch(e){setMessage('profileMessage',e.message||'Could not change password.','error');}}
+
+// Buy tab / banners
+function switchBuyView(view){document.querySelectorAll('.buy-subtab').forEach(b=>b.classList.toggle('active',b.dataset.buyView===view));document.querySelectorAll('.buy-view').forEach(v=>v.classList.remove('active-buy-view'));document.getElementById('buyView'+(view==='banners'?'Banners':'Icons'))?.classList.add('active-buy-view'); if(view==='banners')refreshBanners(); else refreshIcons();}
+function randomBannerForRarity(r){const pool=BANNER_CATALOG_V115.filter(b=>b.rarity===r);return pool[Math.floor(Math.random()*pool.length)]||BANNER_CATALOG_V115[0];}
+async function refreshBanners(){await loadExistingSession();const packs=document.getElementById('bannerPackGrid'),owned=document.getElementById('ownedBannersGrid');if(!packs||!owned)return;packs.innerHTML=ICON_PACKS.map(p=>`<div class="pack-card"><h3>${escapeHTML(p.name)}</h3><p><span class="pack-price">${p.price} points</span></p><p class="small-note">Possible: ${p.rarities.map(r=>`<span class="rarity-${r}">${r}</span>`).join(', ')}</p><button class="mini-btn primary" onclick="buyBannerPackV115('${p.id}')">Buy Banner Pack</button></div>`).join('');if(!blankSpaceProfile){setMessage('bannersStatus','Sign in to load banners.');owned.innerHTML='<div class="empty-state">Sign in to collect banners.</div>';return;}const r=await getSupabaseClient().from('user_banners').select('*').eq('user_id',blankSpaceUser.id).order('acquired_at',{ascending:false});if(r.error){setMessage('bannersStatus',r.error.message,'error');return;}const rows=r.data||[];owned.innerHTML=rows.length?rows.map(b=>`<div class="banner-card"><div class="banner-preview" style="background:${escapeHTML(b.gradient)}"><span>${escapeHTML(b.name)}</span></div><p class="rarity-${escapeHTML(b.rarity||'common')}">${escapeHTML(b.rarity||'common')}</p><button class="mini-btn" onclick="equipBannerV115('${escapeHTML(b.banner_id)}')">Equip</button></div>`).join(''):'<div class="empty-state">No banners yet. Buy a pack.</div>';setMessage('bannersStatus',`${rows.length} banner${rows.length===1?'':'s'} owned.`);}
+async function buyBannerPackV115(packId){await loadExistingSession();if(!blankSpaceProfile)return alert('Sign in first.');const pack=ICON_PACKS.find(p=>p.id===packId);if(!pack)return;const rarity=pack.rarities[Math.floor(Math.random()*pack.rarities.length)];const banner=randomBannerForRarity(rarity);const r=await getSupabaseClient().rpc('buy_banner_pack_v115',{p_pack_id:pack.id,p_price:pack.price,p_banner_id:banner.id,p_name:banner.name,p_rarity:banner.rarity,p_gradient:banner.gradient});if(r.error)return alert(r.error.message);await loadProfile();await refreshBanners();await refreshLeaderboard();alert(`You opened ${pack.name} and got the ${banner.name} banner!`);}
+async function equipBannerV115(id){const r=await getSupabaseClient().rpc('equip_banner_v115',{p_banner_id:id});if(r.error)return alert(r.error.message);await loadProfile();await refreshBanners();await refreshLeaderboard();}
+
+// Friends request settings and blocks
+async function saveFriendRequestSettingV115(){try{await loadExistingSession();if(!blankSpaceProfile)return settingsStatus('Sign in first.',false);const enabled=!!document.getElementById('settingsFriendRequests')?.checked;const r=await getSupabaseClient().rpc('set_friend_requests_enabled_v115',{p_enabled:enabled});if(r.error)throw r.error;blankSpaceProfile.friend_requests_enabled=enabled;settingsStatus('Friend request setting saved.','good');}catch(e){settingsStatus(e.message||'Could not save friend request setting.',false);}}
+const oldInitSettingsPageV115=initSettingsPage;initSettingsPage=function(){oldInitSettingsPageV115();document.getElementById('settingsFriendRequests')&&(document.getElementById('settingsFriendRequests').checked=blankSpaceProfile?.friend_requests_enabled!==false);};
+sendFriendRequest=async function(){try{setMessage('friendMessage','');await loadExistingSession();if(!blankSpaceProfile)return setMessage('friendMessage','Create an account or sign in before adding friends.','error');const username=document.getElementById('friendUsernameInput')?.value.trim()||'';const validation=validateUsername(username);if(validation)return setMessage('friendMessage',validation,'error');const r=await getSupabaseClient().rpc('send_friend_request_v115',{p_username:username});if(r.error)throw r.error;document.getElementById('friendUsernameInput').value='';setMessage('friendMessage','Friend request sent.','good');switchFriendView('sent');}catch(e){setMessage('friendMessage',e.message||'Could not send friend request.','error');}};
+async function blockLookupUserV115(){try{await loadExistingSession();const username=document.getElementById('friendUsernameInput')?.value.trim()||'';if(!username)return setMessage('friendMessage','Type a username.','error');const r=await getSupabaseClient().rpc('block_user_by_username_v115',{p_username:username});if(r.error)throw r.error;setMessage('friendMessage','User blocked. They cannot send you friend requests, and you cannot send them requests until you unblock.','good');refreshFriends();}catch(e){setMessage('friendMessage',e.message||'Could not block user.','error');}}
+async function unblockLookupUserV115(){try{await loadExistingSession();const username=document.getElementById('friendUsernameInput')?.value.trim()||'';if(!username)return setMessage('friendMessage','Type a username.','error');const r=await getSupabaseClient().rpc('unblock_user_by_username_v115',{p_username:username});if(r.error)throw r.error;setMessage('friendMessage','User unblocked.','good');refreshFriends();}catch(e){setMessage('friendMessage',e.message||'Could not unblock user.','error');}}
+friendItem=function(row,type){const isRequester=row.requester_id===blankSpaceUser?.id;const other=isRequester?row.receiver:row.requester;const otherName=usernameFromProfile(other);let actions='';if(type==='incoming'){actions=`<button class="mini-btn" onclick="respondFriendRequest(${row.id}, 'accepted')">Accept</button><button class="mini-btn" onclick="respondFriendRequest(${row.id}, 'declined')">Deny</button>`;}else if(type==='sent'){actions=`<button class="mini-btn" onclick="deleteFriendRow(${row.id})">Cancel</button>`;}else if(type==='friend'){actions=`${onlineStatusHTML(other)}<button class="mini-btn" onclick="deleteFriendRow(${row.id})">Remove</button>`;}const points=Number(other?.points||0);return `<div class="friend-item"><div class="friend-profile"><div class="friend-avatar">${friendAvatar(other)}</div><div><div class="friend-name">@${escapeHTML(otherName)}${equippedIconHTML(other)}${rankBadgeHTML(other)}${trueMemberBadgeHTML(other)}</div><div class="friend-meta">${type==='friend'?`${points} point${points===1?'':'s'}`:escapeHTML(displayStatus(row.status))}</div></div></div><div class="friend-actions">${actions}</div></div>`;};
+refreshFriends=async function(){const friendsList=document.getElementById('friendsList'),incomingList=document.getElementById('incomingRequestsList'),sentList=document.getElementById('sentRequestsList');try{if(!friendsList&&!incomingList&&!sentList)return;await loadExistingSession();const locked=!blankSpaceProfile;document.getElementById('friendsLockedCard')?.classList.toggle('hidden',!locked);document.getElementById('addFriendCard')?.classList.toggle('submit-locked',locked);if(locked){setEmptyList('friendsList','Sign in to see friends.');setEmptyList('incomingRequestsList','Sign in to see requests.');setEmptyList('sentRequestsList','Sign in to see sent requests.');closeFriendChat();return;}const result=await getSupabaseClient().from('friends').select('id, requester_id, receiver_id, status, created_at, requester:profiles!friends_requester_id_fkey(id, username, avatar_url, points, equipped_icon, rank, true_member, last_seen_at), receiver:profiles!friends_receiver_id_fkey(id, username, avatar_url, points, equipped_icon, rank, true_member, last_seen_at)').or(`requester_id.eq.${blankSpaceUser.id},receiver_id.eq.${blankSpaceUser.id}`).order('created_at',{ascending:false});if(result.error)throw result.error;const rows=result.data||[];const accepted=rows.filter(r=>r.status==='accepted');const incoming=rows.filter(r=>r.status==='pending'&&r.receiver_id===blankSpaceUser.id);const sent=rows.filter(r=>r.status==='pending'&&r.requester_id===blankSpaceUser.id);friendsList.innerHTML=accepted.length?accepted.map(r=>friendItem(r,'friend')).join(''):`<div class="empty-state">No friends yet.</div>`;incomingList.innerHTML=incoming.length?incoming.map(r=>friendItem(r,'incoming')).join(''):`<div class="empty-state">No friend requests.</div>`;sentList.innerHTML=sent.length?sent.map(r=>friendItem(r,'sent')).join(''):`<div class="empty-state">No sent requests.</div>`;}catch(err){setMessage('friendMessage',err.message||'Could not load friends.','error');}};
+
+// Separate group panels under single chats
+async function openGroupChat(groupId,groupName){await loadExistingSession();if(!blankSpaceProfile)return;const stack=document.getElementById('groupChatOpenStack');if(!stack)return;let panel=document.getElementById('groupPanel_'+groupId);if(!panel){panel=document.createElement('div');panel.id='groupPanel_'+groupId;panel.className='group-side-panel';panel.innerHTML=`<div class="chat-header"><div><h2>${escapeHTML(groupName||'Group')}</h2><p class="small-note">Group chat open below single chats.</p></div><button class="mini-btn" onclick="document.getElementById('groupPanel_${groupId}')?.remove()">Close Group</button></div><div id="groupMessages_${groupId}" class="chat-messages"></div><div class="chat-compose"><input id="groupInput_${groupId}" placeholder="Message this group..." maxlength="500"/><button class="mini-btn primary" onclick="sendGroupSideMessageV115(${groupId})">Send</button></div>`;stack.appendChild(panel);}await loadGroupSideMessagesV115(groupId);}
+async function loadGroupSideMessagesV115(groupId){const box=document.getElementById('groupMessages_'+groupId);if(!box)return;const r=await getSupabaseClient().rpc('get_group_chat_messages',{p_group_id:groupId,p_limit:100});if(r.error){box.innerHTML=`<div class="empty-state">${escapeHTML(r.error.message)}</div>`;return;}const rows=(r.data||[]).slice().reverse();box.innerHTML=rows.length?rows.map(groupMessageRow).join(''):'<div class="empty-state">No group messages yet.</div>';box.scrollTop=box.scrollHeight;}
+async function sendGroupSideMessageV115(groupId){try{const input=document.getElementById('groupInput_'+groupId);const body=input?.value.trim()||'';if(!body)return;const r=await getSupabaseClient().rpc('send_group_chat_message',{p_group_id:groupId,p_body:body,p_image_url:null});if(r.error)throw r.error;input.value='';await loadGroupSideMessagesV115(groupId);}catch(e){alert(e.message||'Could not send group message.');}}
+
+// Favorites and current player icons
+function favoriteGameTitlesV115(){try{return JSON.parse(localStorage.getItem('blankspace_favorite_games_v115')||'[]');}catch(e){return[];}}
+function saveFavoriteGameTitlesV115(arr){localStorage.setItem('blankspace_favorite_games_v115',JSON.stringify([...new Set(arr)]));}
+function isGameFavoriteV115(title){return favoriteGameTitlesV115().includes(title);}
+function toggleFavoriteGameV115(title,e){if(e){e.preventDefault();e.stopPropagation();}let fav=favoriteGameTitlesV115();if(fav.includes(title))fav=fav.filter(t=>t!==title);else fav.push(title);saveFavoriteGameTitlesV115(fav);renderGames();}
+let favoriteGamesOnlyV115=false;let gameActivePlayersCacheV115={};
+const oldGameCardV115=gameCard;gameCard=function(game){let html=oldGameCardV115(game);const fav=isGameFavoriteV115(game.title);const players=(gameActivePlayersCacheV115[game.title]||[]).slice(0,5);const icons=players.map(p=>`<span class="game-active-icon" title="${escapeHTML(p.username||'player')}">${escapeHTML(p.equipped_icon||String(p.username||'?').charAt(0).toUpperCase())}</span>`).join('')+(players.length>=5?'<span class="game-active-more">+</span>':'');const extra=`<button class="game-favorite-star ${fav?'active':''}" onclick="toggleFavoriteGameV115('${escapeHTML(game.title).replace(/'/g,'&#039;')}',event)">${fav?'★':'☆'}</button><div class="game-active-icons">${icons}</div>`;return html.replace('</button>',extra+'</button>');};
+const oldRenderGamesV115=renderGames;renderGames=function(){const all=GAMES.slice();const search=(document.getElementById('search')?.value||'').trim().toLowerCase();const genre=document.getElementById('genre')?.value||'';let list=all.filter(g=>{if(activeGamesView==='verified'&&!g.verified)return false;if(activeGamesView==='reliable'&&(!g.reliable||g.verified))return false;if(activeGamesView==='regular'&&(g.verified||g.reliable))return false;if(favoriteGamesOnlyV115&&!isGameFavoriteV115(g.title))return false;if(genre&&g.genre!==genre)return false;if(search&&!`${g.title} ${g.genre}`.toLowerCase().includes(search))return false;return true;});const grid=document.getElementById('allGames');if(grid)grid.innerHTML=list.map(gameCard).join('')||'<div class="empty-state">No games found.</div>';const c=document.getElementById('gameCount');if(c)c.textContent=`${list.length} game${list.length===1?'':'s'} shown${favoriteGamesOnlyV115?' • favorites':''}.`;};
+async function loadGameActivePlayersV115(){try{const r=await getSupabaseClient().from('game_presence').select('game_title, profiles(username,equipped_icon)').gt('last_seen_at',new Date(Date.now()-3*60*1000).toISOString()).limit(500);if(r.error)return;const map={};(r.data||[]).forEach(row=>{(map[row.game_title] ||= []).push(row.profiles||{});});gameActivePlayersCacheV115=map;renderGames();}catch(e){}}
+async function heartbeatGamePresenceV115(){try{if(!blankSpaceUser||!currentGame)return;await getSupabaseClient().from('game_presence').upsert({user_id:blankSpaceUser.id,game_title:currentGame.title,last_seen_at:new Date().toISOString()},{onConflict:'user_id,game_title'});}catch(e){}}
+const oldPlayGameV115=playGame;playGame=function(title,sourceOverride){oldPlayGameV115(title,sourceOverride);setTimeout(heartbeatGamePresenceV115,1200);};setInterval(heartbeatGamePresenceV115,60000);setInterval(loadGameActivePlayersV115,60000);setTimeout(loadGameActivePlayersV115,3000);
+
+// Admin True Member and fixed timed message
+async function adminSetTrueMemberV115(value){try{const username=document.getElementById('adminTrueMemberUsername')?.value.trim()||'';if(!username)return alert('Type a username.');const r=await getSupabaseClient().rpc('admin_set_true_member_v115',{p_username:username,p_true_member:value});if(r.error)throw r.error;setMessage('adminPanelStatus',value?'True Member added.':'True Member removed.','good');refreshLeaderboard();adminSearchUsers?.();}catch(e){alert(e.message||'Could not update True Member.');}}
+adminSendUserMessage=async function(){try{const sendAll=!!document.getElementById('adminMessageAll')?.checked;const username=document.getElementById('adminMessageUsername')?.value.trim()||'';const message=document.getElementById('adminMessageText')?.value.trim()||'';const seconds=parseInt(document.getElementById('adminMessageSeconds')?.value||'20',10);const style=document.getElementById('adminMessageStyle')?.value||'notice';if(!message)return alert('Type a message.');if(!sendAll&&!username)return alert('Type a username or check Send to everyone.');const r=await getSupabaseClient().rpc('admin_send_user_message_v115',{p_username:sendAll?'':username,p_message:message,p_seconds:seconds,p_style:style,p_send_all:sendAll});if(r.error)throw r.error;setMessage('adminPanelStatus',sendAll?'Timed message sent to everyone except you.':'Timed message sent.','good');adminLoadActions?.();}catch(e){alert(e.message||String(e));}};
+
+// Hook buttons after DOM ready
+function wireV115(){document.querySelectorAll('.buy-subtab').forEach(b=>b.addEventListener('click',()=>switchBuyView(b.dataset.buyView)));document.getElementById('refreshBannersBtn')?.addEventListener('click',refreshBanners);document.getElementById('settingsSaveFriendRequestsBtn')?.addEventListener('click',saveFriendRequestSettingV115);document.getElementById('blockUserBtn')?.addEventListener('click',blockLookupUserV115);document.getElementById('unblockUserBtn')?.addEventListener('click',unblockLookupUserV115);document.getElementById('changePasswordBtn')?.addEventListener('click',changeAccountPasswordV115);document.getElementById('adminMakeTrueMemberBtn')?.addEventListener('click',()=>adminSetTrueMemberV115(true));document.getElementById('adminRemoveTrueMemberBtn')?.addEventListener('click',()=>adminSetTrueMemberV115(false));const favBtn=document.getElementById('gamesRandomBtn');if(favBtn){favBtn.textContent='Favorite Games';favBtn.onclick=(e)=>{e.preventDefault();favoriteGamesOnlyV115=!favoriteGamesOnlyV115;favBtn.classList.toggle('primary',favoriteGamesOnlyV115);renderGames();};}const oldShowTab=showTab;showTab=function(tabId){oldShowTab(tabId);if(tabId==='icons'){refreshIcons();refreshBanners();}if(tabId==='settings')initSettingsPage();};}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wireV115);else wireV115();
 </script>
 
 </body>
