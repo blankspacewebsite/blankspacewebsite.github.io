@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v121: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v122: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -611,59 +611,6 @@ header{
 }
 
 
-/* v121 achievement repair UI */
-.achievement-sync-bar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:10px 12px;
-  border-top:1px solid rgba(148,163,184,.18);
-  border-bottom:1px solid rgba(148,163,184,.18);
-  background:rgba(8,11,18,.88);
-}
-.achievement-sync-bar.hidden{display:none!important}
-.achievement-sync-left{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  min-width:180px;
-}
-.achievement-sync-left b{
-  font-size:13px;
-}
-#achievementSyncHint,#achievementSyncStatus{
-  color:#aab2c2;
-  font-size:12px;
-  font-weight:800;
-}
-#achievementSyncStatus.good{color:#86efac}
-#achievementSyncStatus.error{color:#fca5a5}
-.achievement-sync-controls{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-.achievement-sync-controls select,
-.achievement-sync-controls input{
-  min-height:34px;
-  border-radius:12px;
-  border:1px solid rgba(148,163,184,.25);
-  background:#0b0f19;
-  color:#fff;
-  padding:7px 10px;
-  font-weight:900;
-}
-#achievementSyncValue{
-  width:110px;
-}
-@media(max-width:820px){
-  .achievement-sync-bar{align-items:flex-start;flex-direction:column}
-  .achievement-sync-controls{justify-content:flex-start}
-}
-
 </style>
 </head>
 <body>
@@ -832,7 +779,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v121</span>
+        <span class="update-version-badge">Blank Space v122</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -863,6 +810,7 @@ header{
         <li><b>v117 Repair:</b> fixed banner collection loading, made Change Password show correctly in Account, and strengthened achievement recording/backfill including Slope.</li>
         <li><b>v120 Slope Repair:</b> fixed the real Slope Unity score bridge so Slope scores are sent to Supabase and unlock all matching Slope achievements.</li>
         <li><b>v121 Achievement Repair:</b> rebuilt every achievement backend path, synced all 240 website achievements to Supabase, restored generic metric recording for every game, and added live detectors plus an in-game Achievement Sync fallback.</li>
+        <li><b>v122 Achievement Repair:</b> removed the manual Achievement Sync bar so users cannot type in fake progress. Achievements now use automatic detection only.</li>
       </ul>
       <div class="update-note">Run supabase_v115_update.sql first, then upload this v115 website code to GitHub and hard-refresh the site.</div>
     </div>
@@ -1430,25 +1378,7 @@ header{
         <button class="btn" id="closeBtn">Close</button>
       </div>
     </div>
-
-    <div id="achievementSyncBar" class="achievement-sync-bar hidden">
-      <div class="achievement-sync-left">
-        <b>Achievement Sync</b>
-        <span id="achievementSyncHint">Auto-detecting game progress...</span>
-      </div>
-      <div class="achievement-sync-controls">
-        <select id="achievementSyncMetric" aria-label="Achievement metric"></select>
-        <input id="achievementSyncValue" type="number" min="0" step="1" placeholder="Value" aria-label="Progress value" />
-        <select id="achievementSyncMode" aria-label="Save mode">
-          <option value="max">Best / Total</option>
-          <option value="add">Add</option>
-          <option value="replace">Replace</option>
-        </select>
-        <button class="mini-btn primary" id="achievementSyncSaveBtn">Save Progress</button>
-      </div>
-      <span id="achievementSyncStatus"></span>
-    </div>
-    <div class="frameWrap">
+<div class="frameWrap">
       <div class="loading" id="loadingMsg">Loading...</div>
       <iframe id="gameFrame" allow="fullscreen *; gamepad *; autoplay *; clipboard-read *; clipboard-write *; accelerometer *; gyroscope *; pointer-lock *" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
       <button id="gameChatFab" class="game-chat-fab hidden" title="Quick chat">💬<span id="gameChatBadge" class="game-chat-badge hidden">0</span></button>
@@ -8830,7 +8760,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v121 repair layer */
+/* Blank Space v122 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9025,7 +8955,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v121 repair: banners, password, and achievements */
+/* Blank Space v122 repair: banners, password, and achievements */
 (function(){
   if(window.__blankSpaceV117RepairInstalled) return;
   window.__blankSpaceV117RepairInstalled = true;
@@ -9384,7 +9314,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v121: banner sign-in/session repair */
+/* Blank Space v122: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9612,7 +9542,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v121: final banner Buy/Equip sign-in fix */
+/* Blank Space v122: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9883,7 +9813,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v121: hard Slope score recorder */
+/* Blank Space v122: hard Slope score recorder */
 (function(){
   if(window.__blankSpaceV120SlopeFix) return;
   window.__blankSpaceV120SlopeFix = true;
@@ -10017,7 +9947,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v121: universal achievement repair */
+/* Blank Space v122: universal achievement repair */
 (function(){
   if(window.__blankSpaceV121AllAchievementFix) return;
   window.__blankSpaceV121AllAchievementFix = true;
@@ -10375,6 +10305,92 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", v121Wire);
   else v121Wire();
+})();
+</script>
+
+
+<script>
+/* Blank Space v122: automatic-only achievement tracking */
+(function(){
+  if(window.__blankSpaceV122AutoOnlyAchievements) return;
+  window.__blankSpaceV122AutoOnlyAchievements = true;
+
+  function removeManualAchievementSync(){
+    document.querySelectorAll("#achievementSyncBar").forEach(el => el.remove());
+  }
+
+  function status(msg, type){
+    try{
+      if(typeof addAchievementDebug === "function" && msg) addAchievementDebug(msg);
+      if(type && typeof setMessage === "function") setMessage("achievementsStatus", msg, type);
+    }catch(e){}
+  }
+
+  async function ensureSession(){
+    try{
+      if(typeof loadExistingSession === "function") await loadExistingSession();
+      return !!(typeof blankSpaceUser !== "undefined" && blankSpaceUser && typeof blankSpaceProfile !== "undefined" && blankSpaceProfile);
+    }catch(e){ return false; }
+  }
+
+  async function autoRecordMetric(gameTitle, metric, value, mode){
+    try{
+      gameTitle = String(gameTitle || (window.currentGame && window.currentGame.title) || "").trim();
+      metric = String(metric || "").replace(/[^a-z0-9_]/gi,"").toLowerCase();
+      const n = Math.max(0, Math.floor(Number(value)||0));
+      if(!gameTitle || !metric || !n) return {ok:false};
+
+      const signedIn = await ensureSession();
+      if(!signedIn){
+        status("Achievement progress found, but you are not signed in.", "error");
+        return {ok:false};
+      }
+
+      let result = await getSupabaseClient().rpc("record_game_metric", {
+        p_game_title: gameTitle,
+        p_metric: metric === "score" ? "best_score" : metric,
+        p_value: n,
+        p_mode: mode || "max"
+      });
+      if(result.error) throw result.error;
+
+      const data = Array.isArray(result.data) ? result.data[0] : result.data;
+      const unlocked = Number(data && data.new_awards || 0);
+      if(unlocked){
+        status(`${gameTitle}: ${unlocked} new achievement${unlocked===1?"":"s"} unlocked automatically.`, "good");
+        if(typeof refreshAchievements === "function") await refreshAchievements(false);
+        if(typeof refreshLeaderboard === "function") await refreshLeaderboard();
+        if(typeof loadProfile === "function") await loadProfile();
+      }
+      return {ok:true, stat:data, unlocked};
+    }catch(e){
+      status("Automatic achievement save error: " + ((e && e.message) || String(e)), "error");
+      return {ok:false, error:(e && e.message) || String(e)};
+    }
+  }
+
+  // Override the old manual-exposed function name with an automatic-only recorder.
+  // There is no visible input/button anymore.
+  window.recordGameMetric = autoRecordMetric;
+
+  // Disable old manual save buttons if a cached browser somehow still has them.
+  window.v121ManualSave = function(){
+    removeManualAchievementSync();
+    status("Manual achievement entry was removed. Achievements track automatically only.", "error");
+    return false;
+  };
+
+  // If v121 tries to show/populate the removed bar, remove it again.
+  const observer = new MutationObserver(removeManualAchievementSync);
+  if(document.documentElement) observer.observe(document.documentElement, {childList:true, subtree:true});
+
+  if(document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", removeManualAchievementSync);
+  } else {
+    removeManualAchievementSync();
+  }
+
+  status("v122 automatic-only achievement tracking loaded.", "");
 })();
 </script>
 
