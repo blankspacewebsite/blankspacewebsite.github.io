@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v117: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v118: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -778,7 +778,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v117</span>
+        <span class="update-version-badge">Blank Space v118</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -8754,7 +8754,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v117 repair layer */
+/* Blank Space v118 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -8949,7 +8949,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v117 repair: banners, password, and achievements */
+/* Blank Space v118 repair: banners, password, and achievements */
 (function(){
   if(window.__blankSpaceV117RepairInstalled) return;
   window.__blankSpaceV117RepairInstalled = true;
@@ -9303,6 +9303,234 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wireV117);
   else wireV117();
+})();
+</script>
+
+
+<script>
+/* Blank Space v118: banner sign-in/session repair */
+(function(){
+  if(window.__blankSpaceV118BannerSessionFix) return;
+  window.__blankSpaceV118BannerSessionFix = true;
+
+  const LOCAL_PREFIX = "blankspace_owned_banners_v118_";
+
+  function client(){ return getSupabaseClient(); }
+  function esc(x){
+    try{ return typeof escapeHTML==="function" ? escapeHTML(x) : String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
+    catch(e){ return String(x??""); }
+  }
+  function msg(id,text,type){
+    try{ if(typeof setMessage==="function") setMessage(id,text,type||""); }catch(e){}
+  }
+
+  async function ensureSignedInForBanners(){
+    try{
+      if(typeof loadExistingSession === "function") await loadExistingSession();
+      if(typeof loadProfile === "function" && typeof blankSpaceUser !== "undefined" && blankSpaceUser && !blankSpaceProfile) await loadProfile();
+
+      if(typeof blankSpaceUser !== "undefined" && blankSpaceUser && typeof blankSpaceProfile !== "undefined" && blankSpaceProfile){
+        return true;
+      }
+
+      const sessionResult = await client().auth.getSession();
+      const user = sessionResult?.data?.session?.user;
+      if(!user) return false;
+
+      // The original site uses top-level let variables, so assign them directly when possible.
+      try{ blankSpaceUser = user; }catch(e){ window.blankSpaceUser = user; }
+
+      if(typeof loadProfile === "function") await loadProfile();
+
+      return !!((typeof blankSpaceUser !== "undefined" && blankSpaceUser) || window.blankSpaceUser);
+    }catch(e){
+      console.warn("v118 banner session check failed", e);
+      return false;
+    }
+  }
+
+  function currentUserId(){
+    try{ if(typeof blankSpaceUser !== "undefined" && blankSpaceUser?.id) return blankSpaceUser.id; }catch(e){}
+    return window.blankSpaceUser?.id || "";
+  }
+
+  function normalizeBanner(row){
+    if(!row) return null;
+    return {
+      banner_id: row.banner_id || row.id || "banner_" + Math.random().toString(36).slice(2),
+      name: row.name || row.banner_name || "Banner",
+      rarity: row.rarity || "common",
+      gradient: row.gradient || row.banner_gradient || "linear-gradient(135deg,#111827,#22c55e)"
+    };
+  }
+
+  function localBanners(){
+    try{
+      const uid=currentUserId();
+      if(!uid) return [];
+      return JSON.parse(localStorage.getItem(LOCAL_PREFIX+uid)||"[]").map(normalizeBanner).filter(Boolean);
+    }catch(e){ return []; }
+  }
+
+  function saveLocalBanner(banner){
+    try{
+      const uid=currentUserId();
+      if(!uid) return;
+      const b=normalizeBanner(banner);
+      if(!b) return;
+      const rows=localBanners();
+      const i=rows.findIndex(x=>x.banner_id===b.banner_id);
+      if(i>=0) rows[i]=Object.assign(rows[i],b);
+      else rows.unshift(b);
+      localStorage.setItem(LOCAL_PREFIX+uid, JSON.stringify(rows.slice(0,100)));
+    }catch(e){}
+  }
+
+  function renderBannerRows(rows){
+    const owned=document.getElementById("ownedBannersGrid");
+    if(!owned) return;
+    const map=new Map();
+    [...(rows||[]), ...localBanners()].map(normalizeBanner).filter(Boolean).forEach(b=>map.set(b.banner_id,b));
+    const banners=[...map.values()];
+    if(!banners.length){
+      owned.innerHTML='<div class="empty-state">No banners yet. Buy a pack.</div>';
+      return;
+    }
+    owned.innerHTML=banners.map(b=>`<div class="banner-card">
+      <div class="banner-preview" style="background:${esc(b.gradient)}"><span>${esc(b.name)}</span></div>
+      <p><span class="rarity-${esc(b.rarity)}">${esc(b.rarity)}</span></p>
+      <button class="mini-btn" data-v118-equip-banner="${esc(b.banner_id)}">Equip</button>
+    </div>`).join("");
+    owned.querySelectorAll("[data-v118-equip-banner]").forEach(btn=>{
+      btn.addEventListener("click",()=>equipBannerV118(btn.dataset.v118EquipBanner));
+    });
+  }
+
+  async function refreshBannersV118(){
+    const packs=document.getElementById("bannerPackGrid");
+    const owned=document.getElementById("ownedBannersGrid");
+    if(!packs || !owned) return;
+
+    if(typeof ICON_PACKS !== "undefined"){
+      packs.innerHTML=ICON_PACKS.map(p=>`<div class="pack-card"><h3>${esc(p.name)}</h3><p><span class="pack-price">${p.price} points</span></p><p class="small-note">Possible: ${p.rarities.map(r=>`<span class="rarity-${esc(r)}">${esc(r)}</span>`).join(", ")}</p><button class="mini-btn primary" data-v118-banner-pack="${esc(p.id)}">Buy Banner Pack</button></div>`).join("");
+      packs.querySelectorAll("[data-v118-banner-pack]").forEach(btn=>{
+        btn.addEventListener("click",()=>buyBannerPackV118(btn.dataset.v118BannerPack));
+      });
+    }
+
+    const signedIn=await ensureSignedInForBanners();
+    if(!signedIn){
+      msg("bannersStatus","Sign in on the Account tab, then come back to Shop → Banners and press Refresh.","error");
+      owned.innerHTML='<div class="empty-state">Sign in to collect banners.</div>';
+      return;
+    }
+
+    let rows=[];
+    try{
+      const rpc=await client().rpc("get_my_banners_v118");
+      if(!rpc.error && Array.isArray(rpc.data)) rows=rpc.data;
+      else {
+        const rpc117=await client().rpc("get_my_banners_v117");
+        if(!rpc117.error && Array.isArray(rpc117.data)) rows=rpc117.data;
+        else throw (rpc.error || rpc117.error || new Error("Could not load banners."));
+      }
+    }catch(e){
+      console.warn("v118 banner RPC fallback", e);
+      try{
+        const direct=await client().from("user_banners").select("*").eq("user_id",currentUserId()).order("acquired_at",{ascending:false});
+        if(!direct.error) rows=direct.data||[];
+      }catch(_){}
+    }
+
+    renderBannerRows(rows);
+    const total=new Map([...(rows||[]), ...localBanners()].map(b=>[normalizeBanner(b)?.banner_id, normalizeBanner(b)]).filter(x=>x[0])).size;
+    msg("bannersStatus",`${total} banner${total===1?"":"s"} owned.`,"good");
+  }
+
+  async function buyBannerPackV118(packId){
+    try{
+      const signedIn=await ensureSignedInForBanners();
+      if(!signedIn) return alert("Sign in first.");
+      const pack=(typeof ICON_PACKS!=="undefined" ? ICON_PACKS : []).find(p=>p.id===packId);
+      if(!pack) return alert("Pack not found.");
+      const rarity=pack.rarities[Math.floor(Math.random()*pack.rarities.length)];
+      const banner=(typeof randomBannerForRarity==="function") ? randomBannerForRarity(rarity) : {id:"banner_"+rarity,name:rarity+" Banner",rarity,gradient:"linear-gradient(135deg,#111827,#22c55e)"};
+      const args={p_pack_id:pack.id,p_price:pack.price,p_banner_id:banner.id,p_name:banner.name,p_rarity:banner.rarity,p_gradient:banner.gradient};
+      let r=await client().rpc("buy_banner_pack_v118",args);
+      if(r.error) r=await client().rpc("buy_banner_pack_v117",args);
+      if(r.error) throw r.error;
+      saveLocalBanner({banner_id:banner.id,name:banner.name,rarity:banner.rarity,gradient:banner.gradient});
+      if(typeof loadProfile==="function") await loadProfile();
+      await refreshBannersV118();
+      alert(`You opened ${pack.name} and got the ${banner.name} banner!`);
+    }catch(e){
+      alert((e&&e.message)||"Could not buy banner pack.");
+    }
+  }
+
+  async function equipBannerV118(id){
+    try{
+      const signedIn=await ensureSignedInForBanners();
+      if(!signedIn) return alert("Sign in first.");
+      let r=await client().rpc("equip_banner_v118",{p_banner_id:id});
+      if(r.error) r=await client().rpc("equip_banner_v117",{p_banner_id:id});
+      if(r.error) throw r.error;
+      if(typeof loadProfile==="function") await loadProfile();
+      await refreshBannersV118();
+      msg("bannersStatus","Banner equipped.","good");
+    }catch(e){
+      alert((e&&e.message)||"Could not equip banner.");
+    }
+  }
+
+  function showShopViewV118(view){
+    view=view==="banners"?"banners":"icons";
+    document.querySelectorAll(".buy-subtab").forEach(btn=>btn.classList.toggle("active",btn.dataset.buyView===view));
+    document.querySelectorAll(".buy-view").forEach(box=>{
+      const active=(view==="icons"&&box.id==="buyViewIcons")||(view==="banners"&&box.id==="buyViewBanners");
+      box.classList.toggle("active-buy-view",active);
+      box.style.display=active?"grid":"none";
+    });
+    if(view==="banners") setTimeout(refreshBannersV118,80);
+    else if(typeof refreshIcons==="function") setTimeout(refreshIcons,80);
+  }
+
+  window.refreshBanners=refreshBannersV118;
+  window.refreshBannersV117=refreshBannersV118;
+  window.refreshBannersV118=refreshBannersV118;
+  window.buyBannerPackV117=buyBannerPackV118;
+  window.buyBannerPackV118=buyBannerPackV118;
+  window.equipBannerV117=equipBannerV118;
+  window.equipBannerV118=equipBannerV118;
+  window.switchBuyView=showShopViewV118;
+  window.setShopViewV116=showShopViewV118;
+
+  function wire(){
+    document.querySelectorAll(".buy-subtab").forEach(btn=>{
+      if(btn.dataset.v118Wired) return;
+      btn.dataset.v118Wired="1";
+      btn.addEventListener("click",e=>{ e.preventDefault(); showShopViewV118(btn.dataset.buyView); });
+    });
+    const rb=document.getElementById("refreshBannersBtn");
+    if(rb && !rb.dataset.v118Wired){
+      rb.dataset.v118Wired="1";
+      rb.addEventListener("click",refreshBannersV118);
+    }
+    if(document.querySelector(".buy-subtab.active")?.dataset.buyView==="banners") refreshBannersV118();
+  }
+
+  if(typeof showTab==="function" && !showTab.__v118Banners){
+    const old=showTab;
+    window.showTab=function(tabId){
+      const out=old.apply(this,arguments);
+      if(tabId==="icons") setTimeout(()=>showShopViewV118(document.querySelector(".buy-subtab.active")?.dataset.buyView||"icons"),100);
+      return out;
+    };
+    window.showTab.__v118Banners=true;
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wire);
+  else wire();
 })();
 </script>
 
