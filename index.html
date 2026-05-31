@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v122: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v123: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -779,7 +779,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v122</span>
+        <span class="update-version-badge">Blank Space v123</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -811,6 +811,7 @@ header{
         <li><b>v120 Slope Repair:</b> fixed the real Slope Unity score bridge so Slope scores are sent to Supabase and unlock all matching Slope achievements.</li>
         <li><b>v121 Achievement Repair:</b> rebuilt every achievement backend path, synced all 240 website achievements to Supabase, restored generic metric recording for every game, and added live detectors plus an in-game Achievement Sync fallback.</li>
         <li><b>v122 Achievement Repair:</b> removed the manual Achievement Sync bar so users cannot type in fake progress. Achievements now use automatic detection only.</li>
+        <li><b>v123 Slope Repair:</b> fixed Slope undercounting by saving the higher value between the game-reported score and the active run timer.</li>
       </ul>
       <div class="update-note">Run supabase_v115_update.sql first, then upload this v115 website code to GitHub and hard-refresh the site.</div>
     </div>
@@ -8760,7 +8761,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v122 repair layer */
+/* Blank Space v123 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -8955,7 +8956,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v122 repair: banners, password, and achievements */
+/* Blank Space v123 repair: banners, password, and achievements */
 (function(){
   if(window.__blankSpaceV117RepairInstalled) return;
   window.__blankSpaceV117RepairInstalled = true;
@@ -9314,7 +9315,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v122: banner sign-in/session repair */
+/* Blank Space v123: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9542,7 +9543,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v122: final banner Buy/Equip sign-in fix */
+/* Blank Space v123: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9813,7 +9814,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v122: hard Slope score recorder */
+/* Blank Space v123: hard Slope score recorder */
 (function(){
   if(window.__blankSpaceV120SlopeFix) return;
   window.__blankSpaceV120SlopeFix = true;
@@ -9947,7 +9948,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v122: universal achievement repair */
+/* Blank Space v123: universal achievement repair */
 (function(){
   if(window.__blankSpaceV121AllAchievementFix) return;
   window.__blankSpaceV121AllAchievementFix = true;
@@ -10310,7 +10311,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v122: automatic-only achievement tracking */
+/* Blank Space v123: automatic-only achievement tracking */
 (function(){
   if(window.__blankSpaceV122AutoOnlyAchievements) return;
   window.__blankSpaceV122AutoOnlyAchievements = true;
@@ -10391,6 +10392,243 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   status("v122 automatic-only achievement tracking loaded.", "");
+})();
+</script>
+
+
+<script>
+/* Blank Space v123: Slope undercount correction, automatic only */
+(function(){
+  if(window.__blankSpaceV123SlopeUndercountFix) return;
+  window.__blankSpaceV123SlopeUndercountFix = true;
+
+  let slopeActive = false;
+  let slopeRunStartedAt = 0;
+  let slopeLastActivityAt = 0;
+  let slopeLastAutoSent = 0;
+  let slopeTimer = null;
+
+  function isSlopeOpen(){
+    const g = window.currentGame;
+    return !!(g && String(g.title || "").toLowerCase() === "slope");
+  }
+
+  function frame(){
+    return document.getElementById("gameFrame");
+  }
+
+  function debug(msg,type){
+    try{
+      if(typeof addAchievementDebug === "function") addAchievementDebug(msg);
+      if(type && typeof setMessage === "function") setMessage("achievementsStatus", msg, type);
+    }catch(e){}
+  }
+
+  async function signedIn(){
+    try{
+      if(typeof loadExistingSession === "function") await loadExistingSession();
+      return !!(typeof blankSpaceUser !== "undefined" && blankSpaceUser && typeof blankSpaceProfile !== "undefined" && blankSpaceProfile);
+    }catch(e){ return false; }
+  }
+
+  function startSlopeRun(){
+    if(!isSlopeOpen()) return;
+    const now = Date.now();
+    slopeLastActivityAt = now;
+    if(!slopeActive){
+      slopeActive = true;
+      slopeRunStartedAt = now;
+      slopeLastAutoSent = 0;
+      debug("Slope automatic timer started.");
+    }
+    startTimer();
+  }
+
+  function stopSoon(){
+    const stamp = Date.now();
+    setTimeout(function(){
+      if(Date.now() - slopeLastActivityAt >= 1400 && stamp >= slopeLastActivityAt){
+        slopeActive = false;
+        slopeRunStartedAt = 0;
+      }
+    }, 1600);
+  }
+
+  function estimatedSlopeScore(){
+    if(!slopeActive || !slopeRunStartedAt) return 0;
+    return Math.max(0, Math.floor((Date.now() - slopeRunStartedAt) / 1000));
+  }
+
+  async function saveSlopeScore(score, source){
+    try{
+      const n = Math.max(0, Math.floor(Number(score) || 0));
+      if(!n || n > 1000000) return;
+      if(n <= slopeLastAutoSent) return;
+      slopeLastAutoSent = n;
+
+      if(!(await signedIn())){
+        debug("Slope score found, but you are not signed in.", "error");
+        return;
+      }
+
+      let r = await getSupabaseClient().rpc("record_slope_score", {p_score:n});
+      if(r.error) r = await getSupabaseClient().rpc("report_slope_score", {p_score:n});
+      if(r.error) r = await getSupabaseClient().rpc("submit_slope_score", {p_score:n});
+      if(r.error) r = await getSupabaseClient().rpc("record_game_metric", {p_game_title:"Slope", p_metric:"best_score", p_value:n, p_mode:"max"});
+      if(r.error) throw r.error;
+
+      const data = Array.isArray(r.data) ? r.data[0] : r.data;
+      const unlocked = Number(data && data.new_awards || 0);
+      debug(`Slope score saved automatically: ${n} (${source}). ${unlocked} new achievement${unlocked===1?"":"s"}.`, unlocked ? "good" : "");
+      if(unlocked){
+        if(typeof refreshAchievements === "function") await refreshAchievements(false);
+        if(typeof refreshLeaderboard === "function") await refreshLeaderboard();
+        if(typeof loadProfile === "function") await loadProfile();
+      }
+    }catch(e){
+      slopeLastAutoSent = Math.min(slopeLastAutoSent, Math.max(0, Math.floor(Number(score)||0)) - 1);
+      debug("Slope automatic save error: " + ((e && e.message) || String(e)), "error");
+    }
+  }
+
+  function timerTick(){
+    if(!isSlopeOpen()) return;
+    if(slopeActive){
+      const est = estimatedSlopeScore();
+      if(est > 0) saveSlopeScore(est, "active-run timer");
+    }
+    readSlopeLocalStorage();
+  }
+
+  function startTimer(){
+    if(slopeTimer) return;
+    slopeTimer = setInterval(timerTick, 1500);
+  }
+
+  function resetForNewSlopeOpen(){
+    slopeActive = false;
+    slopeRunStartedAt = 0;
+    slopeLastActivityAt = 0;
+    slopeLastAutoSent = 0;
+    if(slopeTimer) clearInterval(slopeTimer);
+    slopeTimer = null;
+    startTimer();
+    setTimeout(bindFrameActivity, 800);
+    setTimeout(bindFrameActivity, 1600);
+    setTimeout(bindFrameActivity, 3000);
+  }
+
+  function readSlopeLocalStorage(){
+    try{
+      if(!isSlopeOpen()) return;
+      const f = frame();
+      if(!f || !f.contentWindow) return;
+      const ls = f.contentWindow.localStorage;
+      const vals = [
+        Number(ls.getItem("blank_space_slope_best_score") || 0),
+        Number(ls.getItem("blank_space_slope_last_score") || 0),
+        Number(ls.getItem("slope_best_score") || 0),
+        Number(ls.getItem("slope_last_score") || 0)
+      ].filter(v => Number.isFinite(v) && v > 0 && v <= 1000000);
+      if(vals.length) saveSlopeScore(Math.max.apply(null, vals), "localStorage");
+    }catch(e){}
+  }
+
+  function correctedScore(gameReported, source){
+    const n = Math.max(0, Math.floor(Number(gameReported)||0));
+    const est = estimatedSlopeScore();
+
+    // This is the main fix:
+    // if the Unity/Y8 bridge sends an undercount like 15 while the actual run lasted 33 seconds,
+    // save 33 instead of 15.
+    const corrected = Math.max(n, est);
+
+    if(corrected > n){
+      debug(`Slope undercount corrected: game sent ${n}, timer saw ${corrected}.`);
+    }
+
+    return corrected;
+  }
+
+  window.addEventListener("message", function(event){
+    try{
+      const f = frame();
+      if(!isSlopeOpen() || !f) return;
+      if(event && event.source && event.source !== f.contentWindow) return;
+      const d = event.data;
+      if(!d || typeof d !== "object") return;
+      const game = String(d.gameTitle || d.game || d.blankSpaceGame || "");
+      if(game && game !== "Slope") return;
+
+      const raw = d.value ?? d.score ?? d.best_score ?? d.blankSpaceValue;
+      const n = Number(raw);
+      if(!Number.isFinite(n) || n <= 0) return;
+
+      const finalScore = correctedScore(n, d.source || "postMessage");
+      saveSlopeScore(finalScore, finalScore > n ? "timer-corrected postMessage" : (d.source || "postMessage"));
+      stopSoon();
+    }catch(e){}
+  }, true);
+
+  function bindFrameActivity(){
+    try{
+      if(!isSlopeOpen()) return;
+      const f = frame();
+      if(!f) return;
+      const doc = f.contentDocument;
+      const win = f.contentWindow;
+      const targets = [doc, win, doc && doc.body, doc && doc.querySelector("canvas")].filter(Boolean);
+      targets.forEach(t => {
+        if(t.__blankSpaceV123SlopeActivity) return;
+        t.__blankSpaceV123SlopeActivity = true;
+        ["keydown","keyup","pointerdown","mousedown","touchstart","click"].forEach(evt => {
+          t.addEventListener(evt, startSlopeRun, {capture:true, passive:true});
+        });
+      });
+    }catch(e){}
+  }
+
+  document.addEventListener("keydown", function(e){
+    if(!isSlopeOpen()) return;
+    if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","a","d","w","s","A","D","W","S"," "].includes(e.key)){
+      startSlopeRun();
+    }
+  }, true);
+
+  document.addEventListener("pointerdown", function(e){
+    if(!isSlopeOpen()) return;
+    const f = frame();
+    if(f && (e.target === f || f.contains(e.target))) startSlopeRun();
+  }, true);
+
+  if(typeof playGame === "function" && !playGame.__v123SlopeUndercount){
+    const oldPlay = playGame;
+    window.playGame = function(encodedTitle, preferredSource){
+      const title = decodeURIComponent(encodedTitle || "");
+      const out = oldPlay.apply(this, arguments);
+      if(title === "Slope"){
+        resetForNewSlopeOpen();
+        debug("v123 Slope automatic tracking loaded.");
+      }
+      return out;
+    };
+    window.playGame.__v123SlopeUndercount = true;
+  }
+
+  if(typeof closeGame === "function" && !closeGame.__v123SlopeUndercount){
+    const oldClose = closeGame;
+    window.closeGame = function(){
+      if(slopeTimer) clearInterval(slopeTimer);
+      slopeTimer = null;
+      slopeActive = false;
+      return oldClose.apply(this, arguments);
+    };
+    window.closeGame.__v123SlopeUndercount = true;
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    if(isSlopeOpen()) resetForNewSlopeOpen();
+  });
 })();
 </script>
 
