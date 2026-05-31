@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v118: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v119: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -778,7 +778,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v118</span>
+        <span class="update-version-badge">Blank Space v119</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -8754,7 +8754,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v118 repair layer */
+/* Blank Space v119 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -8949,7 +8949,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v118 repair: banners, password, and achievements */
+/* Blank Space v119 repair: banners, password, and achievements */
 (function(){
   if(window.__blankSpaceV117RepairInstalled) return;
   window.__blankSpaceV117RepairInstalled = true;
@@ -9308,7 +9308,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v118: banner sign-in/session repair */
+/* Blank Space v119: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9527,6 +9527,277 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       return out;
     };
     window.showTab.__v118Banners=true;
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wire);
+  else wire();
+})();
+</script>
+
+
+<script>
+/* Blank Space v119: final banner Buy/Equip sign-in fix */
+(function(){
+  if(window.__blankSpaceV119BannerBuyFix) return;
+  window.__blankSpaceV119BannerBuyFix = true;
+
+  const LOCAL_PREFIX = "blankspace_owned_banners_v119_";
+
+  function client(){ return getSupabaseClient(); }
+  function esc(x){
+    try{ return typeof escapeHTML==="function" ? escapeHTML(x) : String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
+    catch(e){ return String(x??""); }
+  }
+  function setBannerMsg(text,type){
+    try{ if(typeof setMessage==="function") setMessage("bannersStatus",text,type||""); }catch(e){}
+  }
+
+  async function ensureBannerSessionV119(){
+    // Do not rely on window.blankSpaceUser because the main site uses top-level let variables.
+    try{
+      const sessionResult = await client().auth.getSession();
+      const user = sessionResult?.data?.session?.user || null;
+
+      if(user){
+        try{ blankSpaceUser = user; }catch(e){ window.blankSpaceUser = user; }
+        if(typeof loadProfile === "function") await loadProfile();
+        if(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) return true;
+        if(window.blankSpaceProfile) return true;
+      }
+
+      if(typeof loadExistingSession === "function"){
+        const loaded = await loadExistingSession();
+        if(loaded && typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) return true;
+      }
+
+      return !!(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile);
+    }catch(e){
+      console.warn("v119 banner session failed",e);
+      return !!(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile);
+    }
+  }
+
+  function userIdV119(){
+    try{ if(typeof blankSpaceUser !== "undefined" && blankSpaceUser?.id) return blankSpaceUser.id; }catch(e){}
+    return window.blankSpaceUser?.id || "";
+  }
+
+  function normalizeBanner(row){
+    if(!row) return null;
+    return {
+      banner_id: row.banner_id || row.id || "banner_" + Math.random().toString(36).slice(2),
+      name: row.name || row.banner_name || "Banner",
+      rarity: row.rarity || "common",
+      gradient: row.gradient || row.banner_gradient || "linear-gradient(135deg,#111827,#22c55e)"
+    };
+  }
+
+  function localRows(){
+    try{
+      const uid=userIdV119();
+      if(!uid) return [];
+      const old1=JSON.parse(localStorage.getItem("blankspace_owned_banners_v118_"+uid)||"[]");
+      const old2=JSON.parse(localStorage.getItem("blankspace_owned_banners_v117_"+uid)||"[]");
+      const now=JSON.parse(localStorage.getItem(LOCAL_PREFIX+uid)||"[]");
+      return [...now,...old1,...old2].map(normalizeBanner).filter(Boolean);
+    }catch(e){ return []; }
+  }
+
+  function saveLocal(banner){
+    try{
+      const uid=userIdV119();
+      if(!uid) return;
+      const b=normalizeBanner(banner);
+      if(!b) return;
+      const rows=localRows();
+      const map=new Map(rows.map(x=>[x.banner_id,x]));
+      map.set(b.banner_id,b);
+      localStorage.setItem(LOCAL_PREFIX+uid, JSON.stringify([...map.values()].slice(0,100)));
+    }catch(e){}
+  }
+
+  function renderRows(rows){
+    const owned=document.getElementById("ownedBannersGrid");
+    if(!owned) return;
+    const map=new Map();
+    [...(rows||[]),...localRows()].map(normalizeBanner).filter(Boolean).forEach(b=>map.set(b.banner_id,b));
+    const list=[...map.values()];
+    if(!list.length){
+      owned.innerHTML='<div class="empty-state">No banners yet. Buy a pack.</div>';
+      return;
+    }
+    owned.innerHTML=list.map(b=>`<div class="banner-card">
+      <div class="banner-preview" style="background:${esc(b.gradient)}"><span>${esc(b.name)}</span></div>
+      <p><span class="rarity-${esc(b.rarity)}">${esc(b.rarity)}</span></p>
+      <button class="mini-btn" data-v119-equip-banner="${esc(b.banner_id)}">Equip</button>
+    </div>`).join("");
+    owned.querySelectorAll("[data-v119-equip-banner]").forEach(btn=>{
+      btn.addEventListener("click",function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        equipBannerV119(btn.dataset.v119EquipBanner);
+      });
+    });
+  }
+
+  function renderPackButtons(){
+    const packs=document.getElementById("bannerPackGrid");
+    if(!packs || typeof ICON_PACKS === "undefined") return;
+    packs.innerHTML=ICON_PACKS.map(p=>`<div class="pack-card">
+      <h3>${esc(p.name)}</h3>
+      <p><span class="pack-price">${p.price} points</span></p>
+      <p class="small-note">Possible: ${p.rarities.map(r=>`<span class="rarity-${esc(r)}">${esc(r)}</span>`).join(", ")}</p>
+      <button class="mini-btn primary" data-v119-banner-pack="${esc(p.id)}">Buy Banner Pack</button>
+    </div>`).join("");
+    packs.querySelectorAll("[data-v119-banner-pack]").forEach(btn=>{
+      btn.addEventListener("click",function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        buyBannerPackV119(btn.dataset.v119BannerPack);
+      },true);
+    });
+  }
+
+  async function refreshBannersV119(){
+    renderPackButtons();
+    const owned=document.getElementById("ownedBannersGrid");
+    if(!owned) return;
+
+    const signedIn=await ensureBannerSessionV119();
+    if(!signedIn){
+      setBannerMsg("Sign in on Account, then press Refresh here.","error");
+      owned.innerHTML='<div class="empty-state">Sign in to collect banners.</div>';
+      return;
+    }
+
+    let rows=[];
+    try{
+      let r=await client().rpc("get_my_banners_v118");
+      if(r.error) r=await client().rpc("get_my_banners_v117");
+      if(r.error) throw r.error;
+      rows=Array.isArray(r.data)?r.data:[];
+    }catch(e){
+      console.warn("v119 banner load fallback",e);
+      try{
+        const direct=await client().from("user_banners").select("*").eq("user_id",userIdV119()).order("acquired_at",{ascending:false});
+        if(!direct.error) rows=direct.data||[];
+      }catch(_){}
+    }
+
+    renderRows(rows);
+    const count=new Map([...(rows||[]),...localRows()].map(x=>normalizeBanner(x)).filter(Boolean).map(x=>[x.banner_id,x])).size;
+    setBannerMsg(`${count} banner${count===1?"":"s"} owned.`,"good");
+  }
+
+  async function buyBannerPackV119(packId){
+    try{
+      const signedIn=await ensureBannerSessionV119();
+      if(!signedIn){
+        alert("Your page needs a fresh login session. Go to Account, sign out, sign back in, then return to Shop > Banners.");
+        return;
+      }
+      const packs=(typeof ICON_PACKS !== "undefined") ? ICON_PACKS : [];
+      const pack=packs.find(p=>p.id===packId);
+      if(!pack) return alert("Pack not found.");
+      const rarity=pack.rarities[Math.floor(Math.random()*pack.rarities.length)];
+      const banner=(typeof randomBannerForRarity==="function") ? randomBannerForRarity(rarity) : {id:"banner_"+rarity,name:rarity+" Banner",rarity,gradient:"linear-gradient(135deg,#111827,#22c55e)"};
+      const args={p_pack_id:pack.id,p_price:pack.price,p_banner_id:banner.id,p_name:banner.name,p_rarity:banner.rarity,p_gradient:banner.gradient};
+
+      let r=await client().rpc("buy_banner_pack_v118",args);
+      if(r.error) r=await client().rpc("buy_banner_pack_v117",args);
+      if(r.error) r=await client().rpc("buy_banner_pack_v115",args);
+      if(r.error) throw r.error;
+
+      saveLocal({banner_id:banner.id,name:banner.name,rarity:banner.rarity,gradient:banner.gradient});
+      if(typeof loadProfile==="function") await loadProfile();
+      await refreshBannersV119();
+      if(typeof refreshLeaderboard==="function") await refreshLeaderboard();
+      alert(`You opened ${pack.name} and got the ${banner.name} banner!`);
+    }catch(e){
+      alert((e&&e.message)||"Could not buy banner pack.");
+    }
+  }
+
+  async function equipBannerV119(id){
+    try{
+      const signedIn=await ensureBannerSessionV119();
+      if(!signedIn){
+        alert("Your page needs a fresh login session. Go to Account, sign out, sign back in, then return to Shop > Banners.");
+        return;
+      }
+      let r=await client().rpc("equip_banner_v118",{p_banner_id:id});
+      if(r.error) r=await client().rpc("equip_banner_v117",{p_banner_id:id});
+      if(r.error) r=await client().rpc("equip_banner_v115",{p_banner_id:id});
+      if(r.error) throw r.error;
+      if(typeof loadProfile==="function") await loadProfile();
+      await refreshBannersV119();
+      if(typeof refreshLeaderboard==="function") await refreshLeaderboard();
+      setBannerMsg("Banner equipped.","good");
+    }catch(e){
+      alert((e&&e.message)||"Could not equip banner.");
+    }
+  }
+
+  function switchBannersV119(view){
+    view=view==="banners"?"banners":"icons";
+    document.querySelectorAll(".buy-subtab").forEach(btn=>btn.classList.toggle("active",btn.dataset.buyView===view));
+    document.querySelectorAll(".buy-view").forEach(box=>{
+      const active=(view==="icons"&&box.id==="buyViewIcons")||(view==="banners"&&box.id==="buyViewBanners");
+      box.classList.toggle("active-buy-view",active);
+      box.style.display=active?"grid":"none";
+    });
+    if(view==="banners") setTimeout(refreshBannersV119,50);
+    else if(typeof refreshIcons==="function") setTimeout(refreshIcons,50);
+  }
+
+  // Important: override every old name because original buttons used inline onclick="buyBannerPackV115(...)"
+  window.refreshBanners=refreshBannersV119;
+  window.refreshBannersV117=refreshBannersV119;
+  window.refreshBannersV118=refreshBannersV119;
+  window.refreshBannersV119=refreshBannersV119;
+  window.buyBannerPackV115=buyBannerPackV119;
+  window.buyBannerPackV117=buyBannerPackV119;
+  window.buyBannerPackV118=buyBannerPackV119;
+  window.buyBannerPackV119=buyBannerPackV119;
+  window.equipBannerV115=equipBannerV119;
+  window.equipBannerV117=equipBannerV119;
+  window.equipBannerV118=equipBannerV119;
+  window.equipBannerV119=equipBannerV119;
+  window.switchBuyView=switchBannersV119;
+  window.setShopViewV116=switchBannersV119;
+  window.showShopViewV118=switchBannersV119;
+
+  function wire(){
+    document.querySelectorAll(".buy-subtab").forEach(btn=>{
+      if(btn.dataset.v119Wired) return;
+      btn.dataset.v119Wired="1";
+      btn.addEventListener("click",function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        switchBannersV119(btn.dataset.buyView);
+      },true);
+    });
+    const refresh=document.getElementById("refreshBannersBtn");
+    if(refresh && !refresh.dataset.v119Wired){
+      refresh.dataset.v119Wired="1";
+      refresh.addEventListener("click",function(e){
+        e.preventDefault();
+        refreshBannersV119();
+      },true);
+    }
+    if(document.querySelector(".buy-subtab.active")?.dataset.buyView==="banners"){
+      refreshBannersV119();
+    }
+  }
+
+  if(typeof showTab==="function" && !showTab.__v119Banners){
+    const old=showTab;
+    window.showTab=function(tabId){
+      const out=old.apply(this,arguments);
+      if(tabId==="icons") setTimeout(()=>switchBannersV119(document.querySelector(".buy-subtab.active")?.dataset.buyView||"icons"),80);
+      return out;
+    };
+    window.showTab.__v119Banners=true;
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wire);
