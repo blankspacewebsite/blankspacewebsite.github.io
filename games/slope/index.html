@@ -81,6 +81,22 @@
   setTimeout(postReady, 1200);
 })();
 </script>
+
+<script>
+// Blank Space v120 Slope bridge status.
+(function(){
+  function ping(){
+    try{
+      if(window.parent && window.parent !== window){
+        window.parent.postMessage({blankSpaceGame:'Slope', gameTitle:'Slope', metric:'best_score', value:0, mode:'max', source:'slope-v120-bridge-ready'}, '*');
+      }
+    }catch(e){}
+  }
+  window.addEventListener('DOMContentLoaded', ping);
+  setTimeout(ping, 1500);
+})();
+</script>
+
 </head>
   <body>
     <div class="webgl-content">

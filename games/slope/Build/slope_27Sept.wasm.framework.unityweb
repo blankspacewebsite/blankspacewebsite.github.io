@@ -8107,30 +8107,48 @@ function copyTempDouble(ptr) {
 
   function _GameCenter_ReportScore() {
     try {
-      var rawScore = Number(arguments && arguments.length ? arguments[0] : 0);
-      if (isFinite(rawScore)) {
-        var score = Math.max(0, Math.floor(rawScore));
-        if (score > 0 && score <= 1000000) {
-          try {
-            var oldBest = Number(localStorage.getItem('blank_space_slope_best_score') || 0) || 0;
-            if (score > oldBest) localStorage.setItem('blank_space_slope_best_score', String(score));
-            localStorage.setItem('blank_space_slope_last_score', String(score));
-          } catch (storageError) {}
-          try {
-            if (window.parent && window.parent !== window) {
-              window.parent.postMessage({
-                blankSpaceGame: 'Slope',
-                gameTitle: 'Slope',
-                metric: 'best_score',
-                stat: 'best_score',
-                value: score,
-                score: score,
-                mode: 'max',
-                source: 'real-unity-slope-gamecenter-report-score'
-              }, '*');
-            }
-          } catch (postError) {}
-        }
+      var candidates = [];
+      function addCandidate(v) {
+        try {
+          if (typeof v === 'bigint') v = Number(v);
+          var n = Number(v);
+          if (!isFinite(n)) return;
+          n = Math.floor(Math.abs(n));
+          if (n > 0 && n <= 1000000) candidates.push(n);
+        } catch(e) {}
+      }
+
+      for (var i = 0; i < arguments.length; i++) addCandidate(arguments[i]);
+      if (arguments.length >= 2) { try { addCandidate(arguments[0]); } catch(e) {} try { addCandidate(arguments[1]); } catch(e) {} }
+      if (arguments.length >= 3) { try { addCandidate(arguments[1]); } catch(e) {} try { addCandidate(arguments[2]); } catch(e) {} }
+
+      var score = 0;
+      for (var j = 0; j < candidates.length; j++) if (candidates[j] > score) score = candidates[j];
+
+      if (score > 0 && score <= 1000000) {
+        try {
+          var oldBest = Number(localStorage.getItem('blank_space_slope_best_score') || 0) || 0;
+          var best = Math.max(oldBest, score);
+          localStorage.setItem('blank_space_slope_best_score', String(best));
+          localStorage.setItem('blank_space_slope_last_score', String(score));
+          localStorage.setItem('slope_best_score', String(best));
+          localStorage.setItem('slope_last_score', String(score));
+        } catch (storageError) {}
+
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({
+              blankSpaceGame: 'Slope',
+              gameTitle: 'Slope',
+              metric: 'best_score',
+              stat: 'best_score',
+              value: score,
+              score: score,
+              mode: 'max',
+              source: 'real-unity-slope-gamecenter-report-score-v120'
+            }, '*');
+          }
+        } catch (postError) {}
       }
     } catch (e) {}
     return 0;
