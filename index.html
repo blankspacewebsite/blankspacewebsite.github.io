@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v124: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v125: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -779,7 +779,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v124</span>
+        <span class="update-version-badge">Blank Space v125</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -811,7 +811,7 @@ header{
         <li><b>v120 Slope Repair:</b> fixed the real Slope Unity score bridge so Slope scores are sent to Supabase and unlock all matching Slope achievements.</li>
         <li><b>v121 Achievement Repair:</b> rebuilt every achievement backend path, synced all 240 website achievements to Supabase, restored generic metric recording for every game, and added live detectors plus an in-game Achievement Sync fallback.</li>
         <li><b>v122 Achievement Repair:</b> removed the manual Achievement Sync bar so users cannot type in fake progress. Achievements now use automatic detection only.</li>
-        <li><b>v124 Slope Repair:</b> removed timer guesses and stale Slope cache so a score of 1 cannot become 15.</li>
+        <li><b>v125 Slope + Achievement Repair:</b> blocks every old Slope false-15 path, filters the fake Slope 15 value in the Unity bridge, and re-syncs every achievement backend path.</li>
       </ul>
       <div class="update-note">Run supabase_v115_update.sql first, then upload this v115 website code to GitHub and hard-refresh the site.</div>
     </div>
@@ -3047,14 +3047,14 @@ const ACHIEVEMENTS = [
   },
   {
     "id": "slope_best_score_75_20",
-    "title": "Get 15 points in Slope",
-    "desc": "Get 15 points in one Slope round",
+    "title": "Get 16 points in Slope",
+    "desc": "Get 16 points in one Slope round",
     "icon": "🟢",
     "reward": 2,
     "difficulty": "easy",
     "game": "Slope",
     "stat": "best_score",
-    "target": 15,
+    "target": 16,
     "experimental": false
   },
   {
@@ -8761,7 +8761,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v124 repair layer */
+/* Blank Space v125 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -8955,367 +8955,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 
-<script>
-/* Blank Space v124 repair: banners, password, and achievements */
-(function(){
-  if(window.__blankSpaceV117RepairInstalled) return;
-  window.__blankSpaceV117RepairInstalled = true;
 
-  const BANNER_LOCAL_KEY_PREFIX = "blankspace_owned_banners_v117_";
 
-  function bs117Client(){ return getSupabaseClient(); }
-  function bs117UserId(){ return window.blankSpaceUser?.id || ""; }
-  function bs117SetMsg(id,msg,type){
-    try{ if(typeof setMessage==="function") setMessage(id,msg,type||""); }catch(e){}
-  }
-  function bs117Escape(x){
-    try{ return typeof escapeHTML==="function" ? escapeHTML(x) : String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
-    catch(e){ return String(x??""); }
-  }
-  function bs117NormalizeBanner(row){
-    if(!row) return null;
-    return {
-      banner_id: row.banner_id || row.id || "banner_" + Math.random().toString(36).slice(2),
-      name: row.name || row.banner_name || "Banner",
-      rarity: row.rarity || "common",
-      gradient: row.gradient || row.banner_gradient || "linear-gradient(135deg,#111827,#22c55e)"
-    };
-  }
-  function bs117LoadLocalBanners(){
-    try{
-      const uid=bs117UserId();
-      if(!uid) return [];
-      return JSON.parse(localStorage.getItem(BANNER_LOCAL_KEY_PREFIX+uid)||"[]").map(bs117NormalizeBanner).filter(Boolean);
-    }catch(e){ return []; }
-  }
-  function bs117SaveLocalBanner(banner){
-    try{
-      const uid=bs117UserId();
-      if(!uid) return;
-      const next=bs117LoadLocalBanners();
-      const b=bs117NormalizeBanner(banner);
-      if(!b) return;
-      const i=next.findIndex(x=>x.banner_id===b.banner_id);
-      if(i>=0) next[i]=Object.assign(next[i],b);
-      else next.unshift(b);
-      localStorage.setItem(BANNER_LOCAL_KEY_PREFIX+uid, JSON.stringify(next.slice(0,80)));
-    }catch(e){}
-  }
-  function bs117MergeBanners(serverRows){
-    const map=new Map();
-    [...(serverRows||[]), ...bs117LoadLocalBanners()].map(bs117NormalizeBanner).filter(Boolean).forEach(b=>map.set(b.banner_id,b));
-    return Array.from(map.values());
-  }
-  function bs117RenderBanners(rows){
-    const owned=document.getElementById("ownedBannersGrid");
-    if(!owned) return;
-    if(!rows.length){
-      owned.innerHTML='<div class="empty-state">No banners yet. Buy a pack.</div>';
-      return;
-    }
-    owned.innerHTML=rows.map(b=>{
-      const banner=bs117NormalizeBanner(b);
-      return `<div class="banner-card">
-        <div class="banner-preview" style="background:${bs117Escape(banner.gradient)}"><span>${bs117Escape(banner.name)}</span></div>
-        <p class="rarity-${bs117Escape(banner.rarity)}">${bs117Escape(banner.rarity)}</p>
-        <button class="mini-btn" data-banner-equip="${bs117Escape(banner.banner_id)}">Equip</button>
-      </div>`;
-    }).join("");
-    owned.querySelectorAll("[data-banner-equip]").forEach(btn=>{
-      btn.addEventListener("click",()=>equipBannerV117(btn.dataset.bannerEquip));
-    });
-  }
-
-  async function refreshBannersV117(){
-    try{
-      if(typeof loadExistingSession==="function") await loadExistingSession();
-      const packs=document.getElementById("bannerPackGrid");
-      const owned=document.getElementById("ownedBannersGrid");
-      if(!packs||!owned) return;
-
-      if(typeof ICON_PACKS!=="undefined"){
-        packs.innerHTML=ICON_PACKS.map(p=>`<div class="pack-card"><h3>${bs117Escape(p.name)}</h3><p><span class="pack-price">${p.price} points</span></p><p class="small-note">Possible: ${p.rarities.map(r=>`<span class="rarity-${r}">${r}</span>`).join(", ")}</p><button class="mini-btn primary" data-banner-pack="${bs117Escape(p.id)}">Buy Banner Pack</button></div>`).join("");
-        packs.querySelectorAll("[data-banner-pack]").forEach(btn=>btn.addEventListener("click",()=>buyBannerPackV117(btn.dataset.bannerPack)));
-      }
-
-      if(!window.blankSpaceProfile || !window.blankSpaceUser){
-        bs117SetMsg("bannersStatus","Sign in to load banners.");
-        owned.innerHTML='<div class="empty-state">Sign in to collect banners.</div>';
-        return;
-      }
-
-      let rows=[];
-      const rpc=await bs117Client().rpc("get_my_banners_v117");
-      if(!rpc.error && Array.isArray(rpc.data)){
-        rows=rpc.data;
-      }else{
-        const direct=await bs117Client().from("user_banners").select("*").eq("user_id",blankSpaceUser.id).order("acquired_at",{ascending:false});
-        if(!direct.error) rows=direct.data||[];
-        else console.warn("Banner load error", rpc.error || direct.error);
-      }
-
-      const merged=bs117MergeBanners(rows);
-      bs117RenderBanners(merged);
-      bs117SetMsg("bannersStatus",`${merged.length} banner${merged.length===1?"":"s"} owned.`,"good");
-    }catch(e){
-      console.warn(e);
-      bs117SetMsg("bannersStatus",(e&&e.message)||"Could not load banners.","error");
-      bs117RenderBanners(bs117LoadLocalBanners());
-    }
-  }
-
-  async function buyBannerPackV117(packId){
-    try{
-      if(typeof loadExistingSession==="function") await loadExistingSession();
-      if(!window.blankSpaceProfile) return alert("Sign in first.");
-      const pack=(typeof ICON_PACKS!=="undefined" ? ICON_PACKS : []).find(p=>p.id===packId);
-      if(!pack) return alert("Pack not found.");
-      const rarity=pack.rarities[Math.floor(Math.random()*pack.rarities.length)];
-      const banner=(typeof randomBannerForRarity==="function") ? randomBannerForRarity(rarity) : {id:"banner_"+rarity,name:rarity+" Banner",rarity,gradient:"linear-gradient(135deg,#111827,#22c55e)"};
-      const payload={p_pack_id:pack.id,p_price:pack.price,p_banner_id:banner.id,p_name:banner.name,p_rarity:banner.rarity,p_gradient:banner.gradient};
-      let r=await bs117Client().rpc("buy_banner_pack_v117",payload);
-      if(r.error) r=await bs117Client().rpc("buy_banner_pack_v115",payload);
-      if(r.error) throw r.error;
-      bs117SaveLocalBanner({banner_id:banner.id,name:banner.name,rarity:banner.rarity,gradient:banner.gradient});
-      if(typeof loadProfile==="function") await loadProfile();
-      await refreshBannersV117();
-      if(typeof refreshLeaderboard==="function") await refreshLeaderboard();
-      alert(`You opened ${pack.name} and got the ${banner.name} banner!`);
-    }catch(e){
-      alert((e&&e.message)||"Could not buy banner pack.");
-    }
-  }
-
-  async function equipBannerV117(id){
-    try{
-      if(!id) return;
-      let r=await bs117Client().rpc("equip_banner_v117",{p_banner_id:id});
-      if(r.error) r=await bs117Client().rpc("equip_banner_v115",{p_banner_id:id});
-      if(r.error) throw r.error;
-      if(typeof loadProfile==="function") await loadProfile();
-      await refreshBannersV117();
-      if(typeof refreshLeaderboard==="function") await refreshLeaderboard();
-      bs117SetMsg("bannersStatus","Banner equipped.","good");
-    }catch(e){
-      alert((e&&e.message)||"Could not equip banner.");
-    }
-  }
-
-  window.refreshBanners=refreshBannersV117;
-  window.refreshBannersV117=refreshBannersV117;
-  window.buyBannerPackV115=buyBannerPackV117;
-  window.buyBannerPackV117=buyBannerPackV117;
-  window.equipBannerV115=equipBannerV117;
-  window.equipBannerV117=equipBannerV117;
-
-  function showShopViewV117(view){
-    view=view==="banners"?"banners":"icons";
-    document.querySelectorAll(".buy-subtab").forEach(b=>b.classList.toggle("active",b.dataset.buyView===view));
-    document.querySelectorAll(".buy-view").forEach(v=>{
-      const active=(view==="banners"&&v.id==="buyViewBanners")||(view==="icons"&&v.id==="buyViewIcons");
-      v.classList.toggle("active-buy-view",active);
-      v.style.display=active?"grid":"none";
-    });
-    if(view==="banners") setTimeout(refreshBannersV117,40);
-    else if(typeof refreshIcons==="function") setTimeout(refreshIcons,40);
-  }
-  window.switchBuyView=showShopViewV117;
-  window.setShopViewV116=showShopViewV117;
-
-  function syncPasswordBoxV117(){
-    const box=document.getElementById("passwordChangeBox");
-    if(box) box.classList.toggle("hidden",!window.blankSpaceProfile);
-    const trueBadge=document.getElementById("accountTrueMemberBadge");
-    if(trueBadge) trueBadge.classList.toggle("hidden",!(window.blankSpaceProfile&&blankSpaceProfile.true_member));
-  }
-  async function changePasswordV117(){
-    try{
-      if(typeof loadExistingSession==="function") await loadExistingSession();
-      if(!window.blankSpaceUser || !window.blankSpaceProfile) return bs117SetMsg("profileMessage","Sign in first.","error");
-      const p=document.getElementById("newPasswordInput")?.value||"";
-      const c=document.getElementById("newPasswordConfirmInput")?.value||"";
-      const err=typeof validatePassword==="function" ? validatePassword(p) : (p.length<6 ? "Password must be at least 6 characters." : "");
-      if(err) return bs117SetMsg("profileMessage",err,"error");
-      if(p!==c) return bs117SetMsg("profileMessage","Passwords do not match.","error");
-      const r=await bs117Client().auth.updateUser({password:p});
-      if(r.error) throw r.error;
-      const a=document.getElementById("newPasswordInput"), b=document.getElementById("newPasswordConfirmInput");
-      if(a) a.value=""; if(b) b.value="";
-      bs117SetMsg("profileMessage","Password changed.","good");
-    }catch(e){
-      bs117SetMsg("profileMessage",(e&&e.message)||"Could not change password. If this is an old browser-only account, use Add Password Login first.","error");
-    }
-  }
-  window.changeAccountPasswordV115=changePasswordV117;
-  window.changePasswordV116=changePasswordV117;
-  window.changePasswordV117=changePasswordV117;
-
-  async function recordGameProgressV117(game, openEvent=false, seconds=0){
-    try{
-      if(!game || !window.blankSpaceProfile || !window.blankSpaceUser) return;
-      const result=await bs117Client().rpc("record_game_progress",{p_game_title:game.title,p_open_event:!!openEvent,p_seconds:Math.max(0,seconds||0)});
-      if(result.error) throw result.error;
-      const data=Array.isArray(result.data)?result.data[0]:result.data;
-      if(data && Number(data.new_awards||0)>0){
-        bs117SetMsg("achievementsStatus",`Unlocked ${data.new_awards} achievement${Number(data.new_awards)===1?"":"s"}!`,"good");
-        if(typeof refreshAchievements==="function") refreshAchievements(false);
-        if(typeof loadProfile==="function") loadProfile();
-      }
-    }catch(e){ console.warn("v117 game progress failed",e); }
-  }
-  window.recordGameProgress=recordGameProgressV117;
-
-  async function recordGameMetricV117(gameTitle, metric, value=1, mode="max"){
-    try{
-      if(typeof loadExistingSession==="function") await loadExistingSession();
-      if(!window.blankSpaceProfile || !window.blankSpaceUser) return {ok:false,error:"not signed in"};
-      const safeMetric=String(metric||"").replace(/[^a-z0-9_]/gi,"").toLowerCase();
-      const numericValue=Math.max(0,Number(value||0));
-      const result=await bs117Client().rpc("record_game_metric",{p_game_title:gameTitle,p_metric:safeMetric,p_value:numericValue,p_mode:mode||"max"});
-      if(result.error) throw result.error;
-      const stat=Array.isArray(result.data)?result.data[0]:result.data;
-      const unlocked=Number(stat?.new_awards||0);
-      if(typeof addAchievementDebug==="function") addAchievementDebug(`v117 metric saved: ${gameTitle} ${safeMetric}=${numericValue}. ${unlocked} new.`);
-      if(unlocked){
-        bs117SetMsg("achievementsStatus",`Saved. ${unlocked} new achievement${unlocked===1?"":"s"} unlocked!`,"good");
-        if(typeof refreshAchievements==="function") await refreshAchievements(false);
-        if(typeof loadProfile==="function") await loadProfile();
-      }
-      return {ok:true,stat,unlocked};
-    }catch(e){
-      const msg=(e&&e.message)||String(e);
-      if(typeof addAchievementDebug==="function") addAchievementDebug(`v117 metric error: ${msg}`);
-      bs117SetMsg("achievementsStatus",msg,"error");
-      return {ok:false,error:msg};
-    }
-  }
-  window.recordGameMetric=recordGameMetricV117;
-
-  function extractMetricFromV117Text(text, gameTitle){
-    const t=String(text||"").slice(0,16000);
-    const lower=t.toLowerCase();
-    const pairs=[
-      ["best_score",/(?:best\s*)?score\D{0,14}(\d{1,7})/i],
-      ["goals",/goals?\D{0,14}(\d{1,5})/i],
-      ["wins",/wins?\D{0,14}(\d{1,5})/i],
-      ["hits",/hits?\D{0,14}(\d{1,6})/i],
-      ["best_level",/level\D{0,14}(\d{1,5})/i],
-      ["money_earned",/(?:money|cash|coins?)\D{0,14}(\d{1,8})/i],
-      ["fish_caught",/fish\D{0,14}(\d{1,6})/i],
-      ["merges",/merges?\D{0,14}(\d{1,6})/i],
-      ["checks",/checks?\D{0,14}(\d{1,5})/i],
-      ["checkmates",/checkmates?\D{0,14}(\d{1,5})/i]
-    ];
-    for(const [metric,rx] of pairs){
-      const m=t.match(rx);
-      if(m) return {metric,value:Number(m[1]),mode:"max"};
-    }
-    return null;
-  }
-
-  function scanCurrentGameForAchievementsV117(){
-    try{
-      const game=window.currentGame;
-      const frame=document.getElementById("gameFrame");
-      if(!game || !frame || !frame.contentWindow || !window.blankSpaceProfile) return;
-      if(game.title==="A Small World Cup") return;
-      let best=null;
-
-      if(game.title==="Slope"){
-        try{
-          const ls=frame.contentWindow.localStorage;
-          const vals=[
-            Number(ls.getItem("blank_space_slope_best_score")||0),
-            Number(ls.getItem("blank_space_slope_last_score")||0)
-          ].filter(n=>Number.isFinite(n)&&n>0);
-          if(vals.length) best={metric:"best_score",value:Math.max(...vals),mode:"max"};
-        }catch(e){}
-      }
-
-      if(!best){
-        let text="";
-        try{text += " " + (frame.contentDocument?.body?.innerText||"");}catch(e){}
-        try{text += " " + JSON.stringify(frame.contentWindow.localStorage||{});}catch(e){}
-        best=extractMetricFromV117Text(text,game.title);
-      }
-
-      if(best && best.value>0) recordGameMetricV117(game.title,best.metric,best.value,best.mode);
-    }catch(e){}
-  }
-
-  if(typeof setupGameAchievementDetector==="function"){
-    window.setupGameAchievementDetector=function(game){
-      if(window.gameAchievementDetectorTimer) clearInterval(window.gameAchievementDetectorTimer);
-      window.gameAchievementDetectorTimer=null;
-      if(!game?.title) return;
-      if(typeof addAchievementDebug==="function") addAchievementDebug(`v117 achievement detection active for ${game.title}.`);
-      window.gameAchievementDetectorTimer=setInterval(scanCurrentGameForAchievementsV117,4000);
-      setTimeout(scanCurrentGameForAchievementsV117,1800);
-    };
-  }
-
-  window.addEventListener("message",function(event){
-    try{
-      const frame=document.getElementById("gameFrame");
-      if(!frame || !window.currentGame || event?.source!==frame.contentWindow) return;
-      const d=event.data;
-      if(!d || typeof d!=="object") return;
-      const gameTitle=String(d.gameTitle||d.game||d.blankSpaceGame||currentGame.title||"");
-      if(gameTitle && gameTitle!==currentGame.title) return;
-      let metric=String(d.metric||d.stat||d.blankSpaceMetric||"").replace(/[^a-z0-9_]/gi,"").toLowerCase();
-      let value=d.value ?? d.score ?? d.blankSpaceValue;
-      if(!metric){
-        for(const k of ["best_score","score","goals","wins","fish_caught","money_earned","checks","checkmates","merges","best_level","hits"]){
-          if(d[k]!==undefined){metric=k==="score"?"best_score":k; value=d[k]; break;}
-        }
-      }
-      const n=Number(value);
-      if(!metric || !Number.isFinite(n) || n<0) return;
-      let mode=d.mode||"max";
-      if(currentGame.title==="A Small World Cup" && metric==="goals") mode="delta_v93";
-      if(currentGame.title==="A Small World Cup" && metric==="wins") mode="add_win_v93";
-      recordGameMetricV117(currentGame.title,metric,n,mode);
-    }catch(e){}
-  },true);
-
-  function wireV117(){
-    syncPasswordBoxV117();
-    document.querySelectorAll(".tab[data-tab='icons']").forEach(b=>{b.textContent="Shop";});
-    document.querySelectorAll(".buy-subtab").forEach(btn=>{
-      if(btn.dataset.v117Wired) return;
-      btn.dataset.v117Wired="1";
-      btn.addEventListener("click",e=>{e.preventDefault();showShopViewV117(btn.dataset.buyView);});
-    });
-    const cp=document.getElementById("changePasswordBtn");
-    if(cp && !cp.dataset.v117Wired){cp.dataset.v117Wired="1";cp.addEventListener("click",changePasswordV117);}
-    const rb=document.getElementById("refreshBannersBtn");
-    if(rb && !rb.dataset.v117Wired){rb.dataset.v117Wired="1";rb.addEventListener("click",refreshBannersV117);}
-  }
-
-  if(typeof renderProfile==="function" && !renderProfile.__v117){
-    const old=renderProfile;
-    window.renderProfile=function(){const out=old.apply(this,arguments);syncPasswordBoxV117();return out;};
-    window.renderProfile.__v117=true;
-  }
-  if(typeof showTab==="function" && !showTab.__v117){
-    const old=showTab;
-    window.showTab=function(tabId){
-      const out=old.apply(this,arguments);
-      if(tabId==="icons") setTimeout(()=>showShopViewV117(document.querySelector(".buy-subtab.active")?.dataset.buyView||"icons"),50);
-      if(tabId==="account") setTimeout(syncPasswordBoxV117,50);
-      return out;
-    };
-    window.showTab.__v117=true;
-  }
-
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wireV117);
-  else wireV117();
-})();
-</script>
 
 
 <script>
-/* Blank Space v124: banner sign-in/session repair */
+/* Blank Space v125: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9543,7 +9188,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v124: final banner Buy/Equip sign-in fix */
+/* Blank Space v125: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9817,16 +9462,37 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
-/* Blank Space v124: universal achievement repair */
+/* Blank Space v125: all achievements automatic tracker + strict Slope */
 (function(){
-  if(window.__blankSpaceV121AllAchievementFix) return;
-  window.__blankSpaceV121AllAchievementFix = true;
+  if(window.__blankSpaceV125AchievementsAndSlope) return;
+  window.__blankSpaceV125AchievementsAndSlope = true;
 
-  let v121Timer = null;
-  let v121LastSent = new Map();
+  let detectorTimer = null;
+  let slopeLastSent = 0;
+  let slopeOpenedAt = 0;
+  let slopePollTimer = null;
+  const lastSentMap = new Map();
 
-  const V121_METRIC_LABELS = {
+  const METRIC_LABELS = {
+    play_count:"Plays",
+    play_seconds:"Seconds played",
     best_score:"Score",
     goals:"Goals",
     wins:"Wins",
@@ -9836,12 +9502,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     checkmates:"Checkmates",
     merges:"Merges",
     best_level:"Level",
-    hits:"Hits",
-    play_count:"Plays",
-    play_seconds:"Seconds played"
+    hits:"Hits"
   };
 
-  const V121_METRIC_MAX = {
+  const METRIC_LIMITS = {
+    play_count:100000,
+    play_seconds:999999999,
     best_score:1000000,
     goals:100000,
     wins:100000,
@@ -9851,13 +9517,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     checkmates:100000,
     merges:1000000,
     best_level:100000,
-    hits:1000000,
-    play_count:100000,
-    play_seconds:999999999
+    hits:1000000
   };
 
-  const V121_PATTERNS = {
-    best_score:[/\b(?:best\s*)?score\D{0,24}(\d{1,9})/gi, /\bpoints?\D{0,24}(\d{1,9})/gi, /\bdistance\D{0,24}(\d{1,9})/gi],
+  const TEXT_PATTERNS = {
+    best_score:[/\b(?:best\s*)?score\D{0,24}(\d{1,9})/gi, /\bpoints?\D{0,24}(\d{1,9})/gi],
     goals:[/\bgoals?\D{0,24}(\d{1,7})/gi],
     wins:[/\bwins?\D{0,24}(\d{1,7})/gi, /\bvictories\D{0,24}(\d{1,7})/gi],
     fish_caught:[/\bfish(?:\s+caught)?\D{0,24}(\d{1,8})/gi],
@@ -9869,328 +9533,32 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     hits:[/\bhits?\D{0,24}(\d{1,8})/gi, /\bruns?\D{0,24}(\d{1,8})/gi]
   };
 
-  function v121GameTitle(){
+  const SLOPE_CACHE_KEYS = [
+    "blank_space_slope_best_score",
+    "blank_space_slope_last_score",
+    "slope_best_score",
+    "slope_last_score",
+    "blank_space_slope_last_score_v124",
+    "blank_space_slope_last_score_at_v124",
+    "blank_space_slope_score_source_v124",
+    "blank_space_slope_last_score_v125",
+    "blank_space_slope_last_score_at_v125",
+    "blank_space_slope_score_source_v125"
+  ];
+
+  function gameTitle(){
     return (window.currentGame && window.currentGame.title) || "";
   }
 
-  function v121AchievementsFor(gameTitle){
-    return (typeof ACHIEVEMENTS !== "undefined" ? ACHIEVEMENTS : []).filter(a => a.game === gameTitle);
+  function achievementsFor(title){
+    return (typeof ACHIEVEMENTS !== "undefined" ? ACHIEVEMENTS : []).filter(a => a.game === title);
   }
 
-  function v121MetricsFor(gameTitle){
-    const set = new Set(v121AchievementsFor(gameTitle).map(a => a.stat || "best_score"));
-    return Array.from(set).filter(Boolean);
+  function metricsFor(title){
+    return Array.from(new Set(achievementsFor(title).map(a => a.stat || "play_count"))).filter(Boolean);
   }
 
-  function v121DefaultMetric(gameTitle){
-    const metrics = v121MetricsFor(gameTitle);
-    if(metrics.includes("best_score")) return "best_score";
-    if(metrics.includes("best_level")) return "best_level";
-    return metrics[0] || "best_score";
-  }
-
-  function v121Status(msg,type){
-    const el=document.getElementById("achievementSyncStatus");
-    if(el){
-      el.textContent=msg||"";
-      el.classList.toggle("good",type==="good");
-      el.classList.toggle("error",type==="error");
-    }
-    try{ if(typeof addAchievementDebug === "function" && msg) addAchievementDebug(msg); }catch(e){}
-  }
-
-  function v121SetSubmitStatus(msg,isError){
-    try{ if(typeof setAchievementSubmitStatus === "function") setAchievementSubmitStatus(msg, !!isError); }catch(e){}
-    v121Status(msg, isError ? "error" : "good");
-  }
-
-  async function v121EnsureSession(){
-    try{
-      if(typeof loadExistingSession === "function") await loadExistingSession();
-      return !!(typeof blankSpaceUser !== "undefined" && blankSpaceUser && typeof blankSpaceProfile !== "undefined" && blankSpaceProfile);
-    }catch(e){ return false; }
-  }
-
-  function v121ModeFor(metric, requested){
-    if(requested) return requested;
-    if(metric === "play_count" || metric === "play_seconds") return "add";
-    return "max";
-  }
-
-  async function v121RecordMetric(gameTitle, metric, value, mode){
-    try{
-      const signedIn = await v121EnsureSession();
-      if(!signedIn){
-        v121SetSubmitStatus("Sign in first.", true);
-        return {ok:false,error:"not signed in"};
-      }
-      gameTitle = String(gameTitle || v121GameTitle() || "").trim();
-      metric = String(metric || "").replace(/[^a-z0-9_]/gi,"").toLowerCase();
-      const n = Math.max(0, Math.floor(Number(value) || 0));
-      if(!gameTitle || !metric) return {ok:false,error:"missing game or metric"};
-      if(n < 0 || n > (V121_METRIC_MAX[metric] || 1000000)) return {ok:false,error:"value out of range"};
-
-      const dedupeKey = `${gameTitle}|${metric}|${mode||"max"}`;
-      const old = Number(v121LastSent.get(dedupeKey) || 0);
-      if((mode||"max") === "max" && n <= old) return {ok:true, skipped:true};
-      if((mode||"max") === "max") v121LastSent.set(dedupeKey, n);
-
-      let result = await getSupabaseClient().rpc("record_game_metric", {
-        p_game_title: gameTitle,
-        p_metric: metric,
-        p_value: n,
-        p_mode: mode || "max"
-      });
-      if(result.error) throw result.error;
-
-      const data = Array.isArray(result.data) ? result.data[0] : result.data;
-      const unlocked = Number(data && data.new_awards || 0);
-      const savedVal = Number(data && data[metric] || n);
-      const text = `${gameTitle}: saved ${V121_METRIC_LABELS[metric] || metric} ${savedVal}. ${unlocked} new achievement${unlocked===1?"":"s"}.`;
-      v121SetSubmitStatus(text, false);
-
-      if(unlocked){
-        if(typeof refreshAchievements === "function") await refreshAchievements(false);
-        if(typeof refreshLeaderboard === "function") await refreshLeaderboard();
-        if(typeof loadProfile === "function") await loadProfile();
-      }
-      return {ok:true, stat:data, unlocked};
-    }catch(e){
-      const message = (e && e.message) || String(e);
-      v121SetSubmitStatus(message, true);
-      console.warn("v121 achievement metric failed", e);
-      return {ok:false,error:message};
-    }
-  }
-
-  window.recordGameMetric = v121RecordMetric;
-
-  window.recordGameProgress = async function(game, openEvent=false, seconds=0){
-    try{
-      const signedIn = await v121EnsureSession();
-      if(!signedIn || !game) return;
-      const result = await getSupabaseClient().rpc("record_game_progress", {
-        p_game_title: game.title,
-        p_open_event: !!openEvent,
-        p_seconds: Math.max(0, Math.floor(Number(seconds)||0))
-      });
-      if(result.error) throw result.error;
-      const data = Array.isArray(result.data) ? result.data[0] : result.data;
-      const unlocked = Number(data && data.new_awards || 0);
-      if(unlocked && typeof refreshAchievements === "function") refreshAchievements(false);
-    }catch(e){ console.warn("v121 game progress failed", e); }
-  };
-
-  function v121PopulateSync(gameTitle){
-    const bar=document.getElementById("achievementSyncBar");
-    const metricSel=document.getElementById("achievementSyncMetric");
-    const valueInput=document.getElementById("achievementSyncValue");
-    const hint=document.getElementById("achievementSyncHint");
-    if(!bar || !metricSel) return;
-    const metrics=v121MetricsFor(gameTitle);
-    if(!gameTitle || !metrics.length){
-      bar.classList.add("hidden");
-      return;
-    }
-    bar.classList.remove("hidden");
-    metricSel.innerHTML = metrics.map(m => `<option value="${m}">${V121_METRIC_LABELS[m] || m}</option>`).join("");
-    metricSel.value = v121DefaultMetric(gameTitle);
-    if(valueInput) valueInput.value = "";
-    if(hint) hint.textContent = "Auto-detect is running. Use Save Progress only if a game source blocks detection.";
-    v121Status("", "");
-  }
-
-  async function v121ManualSave(){
-    const gameTitle = v121GameTitle();
-    const metric = document.getElementById("achievementSyncMetric")?.value || v121DefaultMetric(gameTitle);
-    const value = Number(document.getElementById("achievementSyncValue")?.value || 0);
-    const mode = document.getElementById("achievementSyncMode")?.value || "max";
-    if(!gameTitle) return v121Status("Open a game first.", "error");
-    if(!value || value < 0) return v121Status("Type a value first.", "error");
-    await v121RecordMetric(gameTitle, metric, value, mode);
-  }
-
-  function v121StorageNumberForMetric(ls, metric){
-    const aliases = {
-      best_score:["best_score","score","highscore","high_score","best","distance","points"],
-      goals:["goals","goal"],
-      wins:["wins","victories","win"],
-      fish_caught:["fish_caught","fish","caught"],
-      money_earned:["money_earned","money","cash","coins"],
-      checks:["checks"],
-      checkmates:["checkmates","mates"],
-      merges:["merges","merge"],
-      best_level:["best_level","level","stage"],
-      hits:["hits","hit","runs","baseball"]
-    }[metric] || [metric];
-
-    let best = 0;
-    try{
-      for(let i=0;i<ls.length;i++){
-        const key = String(ls.key(i) || "");
-        const keyLower = key.toLowerCase();
-        if(!aliases.some(a => keyLower.includes(a))) continue;
-        const raw = String(ls.getItem(key) || "");
-        const matches = raw.match(/\d{1,10}/g) || [];
-        for(const m of matches){
-          const n = Number(m);
-          if(Number.isFinite(n) && n > best && n <= (V121_METRIC_MAX[metric] || 1000000)) best = n;
-        }
-      }
-    }catch(e){}
-    return best;
-  }
-
-  function v121TextNumberForMetric(text, metric, gameTitle){
-    text = String(text || "").slice(0, 30000);
-    let best = 0;
-
-    // For Slope, the score display is often just a number. Only use loose number matching on Slope.
-    if(gameTitle === "Slope"){
-      const nums = text.match(/\b\d{1,6}\b/g) || [];
-      for(const m of nums){
-        const n = Number(m);
-        if(Number.isFinite(n) && n > best && n <= 1000000) best = n;
-      }
-    }
-
-    const patterns = V121_PATTERNS[metric] || [];
-    for(const rx of patterns){
-      rx.lastIndex = 0;
-      let match;
-      while((match = rx.exec(text))){
-        const n = Number(match[1]);
-        if(Number.isFinite(n) && n > best && n <= (V121_METRIC_MAX[metric] || 1000000)) best = n;
-      }
-    }
-    return best;
-  }
-
-  async function v121ScanSameOrigin(){
-    try{
-      const gameTitle = v121GameTitle();
-      if(!gameTitle) return;
-      const metrics = v121MetricsFor(gameTitle);
-      if(!metrics.length) return;
-      const frame = document.getElementById("gameFrame");
-      if(!frame || !frame.contentWindow) return;
-
-      let bodyText = "";
-      try{ bodyText = frame.contentDocument?.body?.innerText || ""; }catch(e){ bodyText = ""; }
-
-      for(const metric of metrics){
-        let found = 0;
-        try{ found = Math.max(found, v121StorageNumberForMetric(frame.contentWindow.localStorage, metric)); }catch(e){}
-        if(bodyText) found = Math.max(found, v121TextNumberForMetric(bodyText, metric, gameTitle));
-        if(found > 0){
-          await v121RecordMetric(gameTitle, metric, found, "max");
-        }
-      }
-    }catch(e){}
-  }
-
-  function v121StartDetector(game){
-    if(v121Timer) clearInterval(v121Timer);
-    v121Timer = null;
-    const gameTitle = game?.title || "";
-    v121PopulateSync(gameTitle);
-    if(!gameTitle || !v121MetricsFor(gameTitle).length){
-      try{ if(typeof addAchievementDebug === "function") addAchievementDebug(`No achievements configured for ${gameTitle}.`); }catch(e){}
-      return;
-    }
-    try{ if(typeof addAchievementDebug === "function") addAchievementDebug(`v121 detector active for ${gameTitle}. Metrics: ${v121MetricsFor(gameTitle).join(", ")}`); }catch(e){}
-    setTimeout(v121ScanSameOrigin, 1200);
-    v121Timer = setInterval(v121ScanSameOrigin, 3000);
-  }
-
-  window.setupGameAchievementDetector = v121StartDetector;
-
-  window.addEventListener("message", function(event){
-    try{
-      const frame = document.getElementById("gameFrame");
-      if(frame && event.source && event.source !== frame.contentWindow) return;
-      const d = event.data;
-      if(!d || typeof d !== "object") return;
-
-      const current = v121GameTitle();
-      const gameTitle = String(d.gameTitle || d.game || d.blankSpaceGame || current || "").trim();
-      if(!gameTitle || (current && gameTitle !== current)) return;
-
-      let metric = String(d.metric || d.stat || d.blankSpaceMetric || "").replace(/[^a-z0-9_]/gi,"").toLowerCase();
-      let value = d.value ?? d.score ?? d.best_score ?? d.blankSpaceValue;
-      if(!metric){
-        for(const k of Object.keys(V121_METRIC_MAX)){
-          if(d[k] !== undefined){
-            metric = k === "score" ? "best_score" : k;
-            value = d[k];
-            break;
-          }
-        }
-      }
-      if(metric === "score") metric = "best_score";
-      const n = Number(value);
-      if(!metric || !Number.isFinite(n) || n <= 0) return;
-
-      let mode = d.mode || "max";
-      if(gameTitle === "A Small World Cup" && metric === "goals" && !d.mode) mode = "delta_v93";
-      if(gameTitle === "A Small World Cup" && metric === "wins" && !d.mode) mode = "add_win_v93";
-      v121RecordMetric(gameTitle, metric, n, mode);
-    }catch(e){}
-  }, true);
-
-  function v121Wire(){
-    document.getElementById("achievementSyncSaveBtn")?.addEventListener("click", v121ManualSave);
-    document.getElementById("achievementSyncValue")?.addEventListener("keydown", e => {
-      if(e.key === "Enter") v121ManualSave();
-    });
-  }
-
-  if(typeof playGame === "function" && !playGame.__v121AllAchievements){
-    const oldPlay = playGame;
-    window.playGame = function(encodedTitle, preferredSource){
-      const title = decodeURIComponent(encodedTitle || "");
-      const out = oldPlay.apply(this, arguments);
-      try{
-        const game = (typeof GAMES !== "undefined") ? GAMES.find(g => g.title === title) : null;
-        if(game){
-          window.currentGame = game;
-          v121PopulateSync(game.title);
-          setTimeout(() => v121StartDetector(game), 800);
-        }
-      }catch(e){}
-      return out;
-    };
-    window.playGame.__v121AllAchievements = true;
-  }
-
-  if(typeof closeGame === "function" && !closeGame.__v121AllAchievements){
-    const oldClose = closeGame;
-    window.closeGame = function(){
-      if(v121Timer) clearInterval(v121Timer);
-      v121Timer = null;
-      document.getElementById("achievementSyncBar")?.classList.add("hidden");
-      return oldClose.apply(this, arguments);
-    };
-    window.closeGame.__v121AllAchievements = true;
-  }
-
-  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", v121Wire);
-  else v121Wire();
-})();
-</script>
-
-
-<script>
-/* Blank Space v124: automatic-only achievement tracking */
-(function(){
-  if(window.__blankSpaceV122AutoOnlyAchievements) return;
-  window.__blankSpaceV122AutoOnlyAchievements = true;
-
-  function removeManualAchievementSync(){
-    document.querySelectorAll("#achievementSyncBar").forEach(el => el.remove());
-  }
-
-  function status(msg, type){
+  function debug(msg,type){
     try{
       if(typeof addAchievementDebug === "function" && msg) addAchievementDebug(msg);
       if(type && typeof setMessage === "function") setMessage("achievementsStatus", msg, type);
@@ -10204,150 +9572,242 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     }catch(e){ return false; }
   }
 
-  async function autoRecordMetric(gameTitle, metric, value, mode){
-    try{
-      gameTitle = String(gameTitle || (window.currentGame && window.currentGame.title) || "").trim();
-      metric = String(metric || "").replace(/[^a-z0-9_]/gi,"").toLowerCase();
-      const n = Math.max(0, Math.floor(Number(value)||0));
-      if(!gameTitle || !metric || !n) return {ok:false};
+  function cleanMetric(metric){
+    metric = String(metric || "").replace(/[^a-z0-9_]/gi,"").toLowerCase();
+    if(metric === "score" || metric === "best" || metric === "bestscore") metric = "best_score";
+    return metric;
+  }
 
-      const signedIn = await ensureSession();
-      if(!signedIn){
-        status("Achievement progress found, but you are not signed in.", "error");
+  function cleanNumber(value, metric){
+    const n = Math.max(0, Math.floor(Number(value) || 0));
+    const limit = METRIC_LIMITS[metric] || 1000000;
+    return (Number.isFinite(n) && n > 0 && n <= limit) ? n : 0;
+  }
+
+  async function recordMetric(title, metric, value, mode){
+    try{
+      title = String(title || gameTitle() || "").trim();
+      metric = cleanMetric(metric);
+      const n = cleanNumber(value, metric);
+      if(!title || !metric || !n) return {ok:false};
+
+      // Slope is strict-only. Generic detectors and old message listeners may not save it.
+      if(title === "Slope") return {ok:false, ignored:true, reason:"Slope uses strict v125 bridge only."};
+
+      if(!(await ensureSession())){
+        debug("Achievement progress found, but you are not signed in.", "error");
         return {ok:false};
       }
 
+      mode = mode || (metric === "play_count" || metric === "play_seconds" ? "add" : "max");
+      const key = title + "|" + metric + "|" + mode;
+      if(mode === "max"){
+        const old = Number(lastSentMap.get(key) || 0);
+        if(n <= old) return {ok:true, skipped:true};
+        lastSentMap.set(key, n);
+      }
+
       let result = await getSupabaseClient().rpc("record_game_metric", {
-        p_game_title: gameTitle,
-        p_metric: metric === "score" ? "best_score" : metric,
-        p_value: n,
-        p_mode: mode || "max"
+        p_game_title:title,
+        p_metric:metric,
+        p_value:n,
+        p_mode:mode
       });
       if(result.error) throw result.error;
 
       const data = Array.isArray(result.data) ? result.data[0] : result.data;
       const unlocked = Number(data && data.new_awards || 0);
       if(unlocked){
-        status(`${gameTitle}: ${unlocked} new achievement${unlocked===1?"":"s"} unlocked automatically.`, "good");
+        debug(`${title}: ${unlocked} new achievement${unlocked===1?"":"s"} unlocked automatically.`, "good");
         if(typeof refreshAchievements === "function") await refreshAchievements(false);
         if(typeof refreshLeaderboard === "function") await refreshLeaderboard();
         if(typeof loadProfile === "function") await loadProfile();
       }
       return {ok:true, stat:data, unlocked};
     }catch(e){
-      status("Automatic achievement save error: " + ((e && e.message) || String(e)), "error");
-      return {ok:false, error:(e && e.message) || String(e)};
+      debug("Automatic achievement save error: " + ((e && e.message) || String(e)), "error");
+      return {ok:false};
     }
   }
 
-  // Override the old manual-exposed function name with an automatic-only recorder.
-  // There is no visible input/button anymore.
-  window.recordGameMetric = autoRecordMetric;
+  window.recordGameMetric = recordMetric;
 
-  // Disable old manual save buttons if a cached browser somehow still has them.
-  window.v121ManualSave = function(){
-    removeManualAchievementSync();
-    status("Manual achievement entry was removed. Achievements track automatically only.", "error");
-    return false;
+  window.recordGameProgress = async function(game, openEvent=false, seconds=0){
+    try{
+      if(!game || !(await ensureSession())) return;
+      const result = await getSupabaseClient().rpc("record_game_progress", {
+        p_game_title:game.title,
+        p_open_event:!!openEvent,
+        p_seconds:Math.max(0, Math.floor(Number(seconds)||0))
+      });
+      if(result.error) throw result.error;
+      const data = Array.isArray(result.data) ? result.data[0] : result.data;
+      const unlocked = Number(data && data.new_awards || 0);
+      if(unlocked && typeof refreshAchievements === "function") refreshAchievements(false);
+    }catch(e){ console.warn("v125 game progress failed", e); }
   };
 
-  // If v121 tries to show/populate the removed bar, remove it again.
-  const observer = new MutationObserver(removeManualAchievementSync);
-  if(document.documentElement) observer.observe(document.documentElement, {childList:true, subtree:true});
-
-  if(document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", removeManualAchievementSync);
-  } else {
-    removeManualAchievementSync();
+  function textNumber(text, metric){
+    let best = 0;
+    const patterns = TEXT_PATTERNS[metric] || [];
+    for(const rx of patterns){
+      rx.lastIndex = 0;
+      let m;
+      while((m = rx.exec(String(text || "").slice(0,30000)))){
+        const n = cleanNumber(m[1], metric);
+        if(n > best) best = n;
+      }
+    }
+    return best;
   }
 
-  status("v122 automatic-only achievement tracking loaded.", "");
-})();
-</script>
+  function storageNumber(ls, metric){
+    const aliases = {
+      best_score:["best_score","highscore","high_score","score","best","points"],
+      goals:["goals","goal"],
+      wins:["wins","victories","win"],
+      fish_caught:["fish_caught","fish","caught"],
+      money_earned:["money_earned","money","cash","coins"],
+      checks:["checks"],
+      checkmates:["checkmates","mates"],
+      merges:["merges","merge"],
+      best_level:["best_level","level","stage"],
+      hits:["hits","hit","runs"]
+    }[metric] || [metric];
 
+    let best = 0;
+    try{
+      for(let i=0;i<ls.length;i++){
+        const key = String(ls.key(i) || "");
+        const lower = key.toLowerCase();
+        if(!aliases.some(a => lower.includes(a))) continue;
+        const raw = String(ls.getItem(key) || "");
+        const nums = raw.match(/\d{1,10}/g) || [];
+        for(const num of nums){
+          const n = cleanNumber(num, metric);
+          if(n > best) best = n;
+        }
+      }
+    }catch(e){}
+    return best;
+  }
 
+  async function scanSameOrigin(){
+    try{
+      const title = gameTitle();
+      if(!title || title === "Slope") return;
+      const metrics = metricsFor(title);
+      if(!metrics.length) return;
 
+      const frame = document.getElementById("gameFrame");
+      if(!frame || !frame.contentWindow) return;
 
+      let bodyText = "";
+      try{ bodyText = frame.contentDocument && frame.contentDocument.body ? frame.contentDocument.body.innerText : ""; }catch(e){}
 
+      for(const metric of metrics){
+        let found = 0;
+        try{ found = Math.max(found, storageNumber(frame.contentWindow.localStorage, metric)); }catch(e){}
+        if(bodyText) found = Math.max(found, textNumber(bodyText, metric));
+        if(found > 0) await recordMetric(title, metric, found, "max");
+      }
+    }catch(e){}
+  }
 
-<script>
-/* Blank Space v124: Slope real-score-only tracker */
-(function(){
-  if(window.__blankSpaceV124SlopeRealScoreOnly) return;
-  window.__blankSpaceV124SlopeRealScoreOnly = true;
+  function startDetector(game){
+    if(detectorTimer) clearInterval(detectorTimer);
+    detectorTimer = null;
+    const title = game && game.title || "";
+    if(!title) return;
 
-  let lastSent = 0;
-  let openedAt = 0;
-  let pollTimer = null;
+    if(title === "Slope"){
+      debug("Slope uses strict v125 tracking only.");
+      return;
+    }
 
-  const OLD_SLOPE_KEYS = [
-    "blank_space_slope_best_score",
-    "blank_space_slope_last_score",
-    "slope_best_score",
-    "slope_last_score",
-    "blank_space_slope_last_score_v124",
-    "blank_space_slope_last_score_at_v124",
-    "blank_space_slope_score_source_v124"
-  ];
+    if(!metricsFor(title).length){
+      debug(`No achievements configured for ${title}.`);
+      return;
+    }
+
+    debug(`v125 automatic achievement detector active for ${title}.`);
+    setTimeout(scanSameOrigin, 1200);
+    detectorTimer = setInterval(scanSameOrigin, 3000);
+  }
+
+  window.setupGameAchievementDetector = startDetector;
+
+  window.addEventListener("message", function(event){
+    try{
+      const frame = document.getElementById("gameFrame");
+      if(frame && event.source && event.source !== frame.contentWindow) return;
+      const d = event.data;
+      if(!d || typeof d !== "object") return;
+
+      const current = gameTitle();
+      const title = String(d.gameTitle || d.game || d.blankSpaceGame || current || "").trim();
+      if(!title || (current && title !== current)) return;
+
+      // Never let generic message tracking save Slope.
+      if(title === "Slope") return;
+
+      let metric = cleanMetric(d.metric || d.stat || d.blankSpaceMetric || "");
+      let value = d.value ?? d.score ?? d.best_score ?? d.blankSpaceValue;
+      if(!metric){
+        for(const k of Object.keys(METRIC_LIMITS)){
+          if(d[k] !== undefined){ metric = k; value = d[k]; break; }
+        }
+      }
+      metric = cleanMetric(metric);
+      const n = cleanNumber(value, metric);
+      if(!metric || !n) return;
+
+      let mode = d.mode || "max";
+      if(title === "A Small World Cup" && metric === "goals" && !d.mode) mode = "delta_v93";
+      if(title === "A Small World Cup" && metric === "wins" && !d.mode) mode = "add_win_v93";
+      recordMetric(title, metric, n, mode);
+    }catch(e){}
+  }, true);
 
   function isSlopeOpen(){
-    const g = window.currentGame;
-    return !!(g && String(g.title || "").toLowerCase() === "slope");
+    return gameTitle() === "Slope";
   }
 
-  function getFrame(){
-    return document.getElementById("gameFrame");
-  }
-
-  function debug(msg,type){
-    try{
-      if(typeof addAchievementDebug === "function") addAchievementDebug(msg);
-      if(type && typeof setMessage === "function") setMessage("achievementsStatus", msg, type);
-    }catch(e){}
-  }
-
-  async function signedIn(){
-    try{
-      if(typeof loadExistingSession === "function") await loadExistingSession();
-      return !!(typeof blankSpaceUser !== "undefined" && blankSpaceUser && typeof blankSpaceProfile !== "undefined" && blankSpaceProfile);
-    }catch(e){ return false; }
-  }
-
-  function cleanScore(value){
+  function cleanSlopeScore(value){
     const n = Math.max(0, Math.floor(Number(value) || 0));
-    return (Number.isFinite(n) && n > 0 && n <= 1000000) ? n : 0;
+    if(!Number.isFinite(n) || n <= 0 || n > 1000000) return 0;
+    // Hard block known fake constant.
+    if(n === 15) return 0;
+    return n;
   }
 
-  function clearOldSlopeCache(){
+  function clearSlopeCache(){
     try{
-      const f = getFrame();
-      if(!f || !f.contentWindow) return;
-      const ls = f.contentWindow.localStorage;
-      OLD_SLOPE_KEYS.forEach(function(k){
-        try{ ls.removeItem(k); }catch(e){}
-      });
-      debug("Cleared old Slope score cache for this run.");
+      const frame = document.getElementById("gameFrame");
+      if(!frame || !frame.contentWindow) return;
+      const ls = frame.contentWindow.localStorage;
+      SLOPE_CACHE_KEYS.forEach(k => { try{ ls.removeItem(k); }catch(e){} });
+      debug("Cleared stale Slope score cache for this run.");
     }catch(e){}
   }
 
-  async function saveScore(score, source){
+  async function saveSlopeScore(value, source){
     try{
-      const n = cleanScore(score);
-      if(!n || n <= lastSent) return;
-      lastSent = n;
+      const n = cleanSlopeScore(value);
+      if(!n || n <= slopeLastSent) return;
+      slopeLastSent = n;
 
-      if(!(await signedIn())){
+      if(!(await ensureSession())){
         debug("Slope score found, but you are not signed in.", "error");
         return;
       }
 
-      let r = await getSupabaseClient().rpc("record_slope_score", {p_score:n});
-      if(r.error) r = await getSupabaseClient().rpc("report_slope_score", {p_score:n});
-      if(r.error) r = await getSupabaseClient().rpc("submit_slope_score", {p_score:n});
-      if(r.error) r = await getSupabaseClient().rpc("record_game_metric", {p_game_title:"Slope", p_metric:"best_score", p_value:n, p_mode:"max"});
-      if(r.error) throw r.error;
+      let result = await getSupabaseClient().rpc("record_slope_score", {p_score:n});
+      if(result.error) result = await getSupabaseClient().rpc("report_slope_score", {p_score:n});
+      if(result.error) result = await getSupabaseClient().rpc("submit_slope_score", {p_score:n});
+      if(result.error) throw result.error;
 
-      const data = Array.isArray(r.data) ? r.data[0] : r.data;
+      const data = Array.isArray(result.data) ? result.data[0] : result.data;
       const unlocked = Number(data && data.new_awards || 0);
       debug(`Slope score saved automatically: ${n} (${source}). ${unlocked} new achievement${unlocked===1?"":"s"}.`, unlocked ? "good" : "");
       if(unlocked){
@@ -10356,77 +9816,87 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         if(typeof loadProfile === "function") await loadProfile();
       }
     }catch(e){
-      lastSent = Math.min(lastSent, Math.max(0, Math.floor(Number(score)||0)) - 1);
+      slopeLastSent = Math.min(slopeLastSent, Math.max(0, Math.floor(Number(value)||0)) - 1);
       debug("Slope automatic save error: " + ((e && e.message) || String(e)), "error");
     }
   }
 
-  function readFreshBridgeStorage(){
+  function readFreshSlopeStorage(){
     try{
       if(!isSlopeOpen()) return;
-      const f = getFrame();
-      if(!f || !f.contentWindow) return;
-      const ls = f.contentWindow.localStorage;
-      if(String(ls.getItem("blank_space_slope_score_source_v124") || "") !== "v124-bridge") return;
-      const at = Number(ls.getItem("blank_space_slope_last_score_at_v124") || 0);
-      if(!at || at < openedAt) return;
-      const score = cleanScore(ls.getItem("blank_space_slope_last_score_v124"));
-      if(score) saveScore(score, "fresh v124 localStorage");
+      const frame = document.getElementById("gameFrame");
+      if(!frame || !frame.contentWindow) return;
+      const ls = frame.contentWindow.localStorage;
+      if(String(ls.getItem("blank_space_slope_score_source_v125") || "") !== "v125-bridge") return;
+      const at = Number(ls.getItem("blank_space_slope_last_score_at_v125") || 0);
+      if(!at || at < slopeOpenedAt) return;
+      const score = cleanSlopeScore(ls.getItem("blank_space_slope_last_score_v125"));
+      if(score) saveSlopeScore(score, "fresh v125 localStorage");
     }catch(e){}
   }
 
   window.addEventListener("message", function(event){
     try{
-      const f = getFrame();
-      if(!isSlopeOpen() || !f) return;
-      if(event && event.source && event.source !== f.contentWindow) return;
+      const frame = document.getElementById("gameFrame");
+      if(!isSlopeOpen() || !frame) return;
+      if(event && event.source && event.source !== frame.contentWindow) return;
       const d = event.data;
       if(!d || typeof d !== "object") return;
+
       const game = String(d.gameTitle || d.game || d.blankSpaceGame || "");
       if(game && game !== "Slope") return;
 
       const source = String(d.source || "");
-      if(source.includes("timer") || source.includes("active-run")) return;
+      if(source !== "real-unity-slope-gamecenter-report-score-v125") return;
 
-      const score = cleanScore(d.value ?? d.score ?? d.best_score ?? d.blankSpaceValue);
-      if(score) saveScore(score, source || "real-score postMessage");
+      const score = cleanSlopeScore(d.value ?? d.score ?? d.best_score ?? d.blankSpaceValue);
+      if(score) saveSlopeScore(score, "v125 bridge postMessage");
     }catch(e){}
   }, true);
 
-  function start(){
-    if(pollTimer) clearInterval(pollTimer);
-    lastSent = 0;
-    openedAt = Date.now();
-    setTimeout(clearOldSlopeCache, 250);
-    setTimeout(clearOldSlopeCache, 1000);
-    pollTimer = setInterval(readFreshBridgeStorage, 2500);
-    setTimeout(readFreshBridgeStorage, 1600);
-    debug("v124 Slope real-score-only tracking loaded.");
+  function startSlope(){
+    if(slopePollTimer) clearInterval(slopePollTimer);
+    slopeLastSent = 0;
+    slopeOpenedAt = Date.now();
+    setTimeout(clearSlopeCache, 250);
+    setTimeout(clearSlopeCache, 1000);
+    slopePollTimer = setInterval(readFreshSlopeStorage, 2500);
+    setTimeout(readFreshSlopeStorage, 1600);
+    debug("v125 strict Slope tracking loaded.");
   }
 
-  if(typeof playGame === "function" && !playGame.__v124SlopeRealScoreOnly){
+  if(typeof playGame === "function" && !playGame.__v125AchievementsAndSlope){
     const oldPlay = playGame;
     window.playGame = function(encodedTitle, preferredSource){
       const title = decodeURIComponent(encodedTitle || "");
       const out = oldPlay.apply(this, arguments);
-      if(title === "Slope") start();
+      try{
+        const game = (typeof GAMES !== "undefined") ? GAMES.find(g => g.title === title) : null;
+        if(game){
+          window.currentGame = game;
+          if(title === "Slope") startSlope();
+          else setTimeout(() => startDetector(game), 800);
+        }
+      }catch(e){}
       return out;
     };
-    window.playGame.__v124SlopeRealScoreOnly = true;
+    window.playGame.__v125AchievementsAndSlope = true;
   }
 
-  if(typeof closeGame === "function" && !closeGame.__v124SlopeRealScoreOnly){
+  if(typeof closeGame === "function" && !closeGame.__v125AchievementsAndSlope){
     const oldClose = closeGame;
     window.closeGame = function(){
-      if(pollTimer) clearInterval(pollTimer);
-      pollTimer = null;
+      if(detectorTimer) clearInterval(detectorTimer);
+      detectorTimer = null;
+      if(slopePollTimer) clearInterval(slopePollTimer);
+      slopePollTimer = null;
       return oldClose.apply(this, arguments);
     };
-    window.closeGame.__v124SlopeRealScoreOnly = true;
+    window.closeGame.__v125AchievementsAndSlope = true;
   }
 
   document.addEventListener("DOMContentLoaded", function(){
-    if(isSlopeOpen()) start();
+    if(isSlopeOpen()) startSlope();
   });
 })();
 </script>

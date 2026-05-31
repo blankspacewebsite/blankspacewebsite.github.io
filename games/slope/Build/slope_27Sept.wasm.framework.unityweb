@@ -8120,16 +8120,16 @@ function copyTempDouble(ptr) {
 
       for (var i = 0; i < arguments.length; i++) addCandidate(arguments[i]);
 
-      // In this Slope build, 15 can be a plugin constant, not the player's score.
-      // v124 ignores 15 entirely so a real score of 1 cannot be saved as 15.
+      // 15 is a known fake plugin constant in this Slope build.
+      // Never report 15 as score. If another candidate exists, use that.
       var filtered = candidates.filter(function(n){ return n !== 15; });
       var score = filtered.length ? filtered[0] : 0;
 
       if (score > 0 && score <= 1000000) {
         try {
-          localStorage.setItem('blank_space_slope_last_score_v124', String(score));
-          localStorage.setItem('blank_space_slope_last_score_at_v124', String(Date.now()));
-          localStorage.setItem('blank_space_slope_score_source_v124', 'v124-bridge');
+          localStorage.setItem('blank_space_slope_last_score_v125', String(score));
+          localStorage.setItem('blank_space_slope_last_score_at_v125', String(Date.now()));
+          localStorage.setItem('blank_space_slope_score_source_v125', 'v125-bridge');
         } catch (storageError) {}
 
         try {
@@ -8142,7 +8142,7 @@ function copyTempDouble(ptr) {
               value: score,
               score: score,
               mode: 'max',
-              source: 'real-unity-slope-gamecenter-report-score-v124'
+              source: 'real-unity-slope-gamecenter-report-score-v125'
             }, '*');
           }
         } catch (postError) {}
