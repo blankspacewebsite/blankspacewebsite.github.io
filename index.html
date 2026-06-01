@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v136: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v137: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -881,12 +881,96 @@ header{
 .v136-response-meta { color:#9ca3af; font-size:12px; font-weight:800; margin-bottom:6px; }
 .v136-message-box textarea { width:100%; min-height:88px; text-align:left; }
 
+
+/* v137 true multiple-choice dropdown for Pause Website */
+.v137-multi-dropdown {
+  position: relative;
+  width: 100%;
+  margin: 8px 0 10px;
+}
+.v137-multi-dropdown > button {
+  width: 100%;
+  justify-content: space-between;
+  text-align: left;
+}
+.v137-multi-menu {
+  display: none;
+  position: relative;
+  margin-top: 8px;
+  border: 1px solid #2b2f3a;
+  border-radius: 16px;
+  background: #08090d;
+  padding: 10px;
+  gap: 8px;
+}
+.v137-multi-dropdown.open .v137-multi-menu {
+  display: grid;
+}
+.v137-multi-menu label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.03);
+  font-weight: 900;
+}
+.v137-multi-menu input {
+  width: auto !important;
+}
+
 </style>
+
+<script>
+/* Blank Space v137: protect number typing in inputs before tab shortcuts can steal it */
+(function(){
+  if(window.__blankSpaceV137NumberTypingGuard) return;
+  window.__blankSpaceV137NumberTypingGuard = true;
+
+  function isEditing(el){
+    if(!el) return false;
+    if(el.isContentEditable) return true;
+    const tag = String(el.tagName || "").toLowerCase();
+    if(tag === "textarea") return true;
+    if(tag !== "input") return false;
+    const type = String(el.getAttribute("type") || "text").toLowerCase();
+    return ["text","password","email","search","url","tel","number","date","datetime-local","month","time","week"].includes(type);
+  }
+
+  function protect(e){
+    if(!isEditing(e.target)) return;
+    if(/^[0-9]$/.test(e.key) || /^[0-9]$/.test(e.code || "") || e.key === "Backspace" || e.key === "Delete" || e.key === "ArrowLeft" || e.key === "ArrowRight"){
+      // Let the input receive the key normally, but stop global website shortcut handlers.
+      e.stopImmediatePropagation();
+    }
+  }
+
+  window.addEventListener("keydown", protect, true);
+  window.addEventListener("keypress", protect, true);
+  window.addEventListener("keyup", protect, true);
+
+  // Older code may have inline handlers. Add direct protection to every input too.
+  function wireInputs(){
+    document.querySelectorAll("input, textarea, [contenteditable='true']").forEach(el => {
+      if(el.dataset.v137NumberGuard) return;
+      el.dataset.v137NumberGuard = "1";
+      ["keydown","keypress","keyup"].forEach(type => {
+        el.addEventListener(type, protect, true);
+      });
+    });
+  }
+
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", wireInputs);
+  else wireInputs();
+  setInterval(wireInputs, 1500);
+})();
+</script>
+
 </head>
 <body>
 
 <script>
-/* Blank Space v136: allow Backspace inside website text boxes */
+/* Blank Space v137: allow Backspace inside website text boxes */
 (function(){
   if(window.__blankSpaceV135BackspaceFix) return;
   window.__blankSpaceV135BackspaceFix = true;
@@ -938,7 +1022,7 @@ header{
 
 
 <script>
-/* Blank Space v136: simple lock-screen keypad repair */
+/* Blank Space v137: simple lock-screen keypad repair */
 (function(){
   if(window.__blankSpaceV132SimpleUnlock) return;
   window.__blankSpaceV132SimpleUnlock = true;
@@ -1226,7 +1310,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v136</span>
+        <span class="update-version-badge">Blank Space v137</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -9208,7 +9292,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136 repair layer */
+/* Blank Space v137 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9407,7 +9491,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: banner sign-in/session repair */
+/* Blank Space v137: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9635,7 +9719,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: final banner Buy/Equip sign-in fix */
+/* Blank Space v137: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9926,7 +10010,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: all achievements automatic tracker + strict Slope */
+/* Blank Space v137: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10350,7 +10434,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: owner leaderboard delete + full leaderboard */
+/* Blank Space v137: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10522,7 +10606,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v137: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -10801,7 +10885,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v137: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -11171,7 +11255,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v137: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11405,7 +11489,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: exact about:blank helper under Blocking Settings */
+/* Blank Space v137: exact about:blank helper under Blocking Settings */
 (function(){
   if(window.__blankSpaceV133BlockingHelper) return;
   window.__blankSpaceV133BlockingHelper = true;
@@ -11532,7 +11616,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v136: final repair set */
+/* Blank Space v137: final repair set */
 (function(){
   if(window.__blankSpaceV136Patch) return;
   window.__blankSpaceV136Patch = true;
@@ -11920,6 +12004,108 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     setTimeout(ensurePauseUI,150);
     setTimeout(ensureMessageUI,150);
   },true);
+})();
+</script>
+
+
+<script>
+/* Blank Space v137: replace Pause Website multi-select with checkbox dropdown */
+(function(){
+  if(window.__blankSpaceV137PauseDropdown) return;
+  window.__blankSpaceV137PauseDropdown = true;
+
+  function selectedExceptV137(){
+    const boxes = document.querySelectorAll("[data-v137-pause-except]:checked");
+    const vals = Array.from(boxes).map(b => b.value).filter(Boolean);
+    if(vals.includes("none")) return [];
+    return vals;
+  }
+
+  function updateDropdownText(){
+    const btn = document.getElementById("v137PauseExceptButton");
+    if(!btn) return;
+    const vals = selectedExceptV137();
+    if(!vals.length) btn.textContent = "Except... No one";
+    else btn.textContent = "Except... " + vals.map(v => v[0].toUpperCase() + v.slice(1)).join(", ");
+  }
+
+  function installDropdown(){
+    const oldSelect = document.getElementById("pauseExceptRanksV136");
+    if(!oldSelect || document.getElementById("v137PauseExceptDropdown")) return;
+
+    const wrap = document.createElement("div");
+    wrap.className = "v137-multi-dropdown";
+    wrap.id = "v137PauseExceptDropdown";
+    wrap.innerHTML = `
+      <button class="mini-btn" type="button" id="v137PauseExceptButton">Except... No one</button>
+      <div class="v137-multi-menu" id="v137PauseExceptMenu">
+        <label><input type="checkbox" value="none" data-v137-pause-except checked> No one</label>
+        <label><input type="checkbox" value="testers" data-v137-pause-except> Testers</label>
+        <label><input type="checkbox" value="managers" data-v137-pause-except> Managers</label>
+        <label><input type="checkbox" value="admins" data-v137-pause-except> Admins</label>
+      </div>
+    `;
+
+    oldSelect.insertAdjacentElement("afterend", wrap);
+    oldSelect.style.display = "none";
+    oldSelect.setAttribute("aria-hidden", "true");
+
+    const btn = wrap.querySelector("#v137PauseExceptButton");
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      wrap.classList.toggle("open");
+    });
+
+    wrap.querySelectorAll("[data-v137-pause-except]").forEach(box => {
+      box.addEventListener("change", function(){
+        const none = wrap.querySelector('input[value="none"]');
+        if(box.value === "none" && box.checked){
+          wrap.querySelectorAll("[data-v137-pause-except]").forEach(b => { if(b !== none) b.checked = false; });
+        }else if(box.checked && none){
+          none.checked = false;
+        }
+        if(!Array.from(wrap.querySelectorAll("[data-v137-pause-except]")).some(b => b.checked) && none){
+          none.checked = true;
+        }
+        updateDropdownText();
+      });
+    });
+
+    updateDropdownText();
+  }
+
+  // Override the v136 selector function used by Pause Website.
+  window.selectedPauseExcept = selectedExceptV137;
+
+  // Override the pause button too, in case the old function closed over the old select.
+  window.v136PauseWebsite = async function(){
+    try{
+      const p = (typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) ? blankSpaceProfile : window.blankSpaceProfile;
+      const u = (typeof blankSpaceUser !== "undefined" && blankSpaceUser) ? blankSpaceUser : window.blankSpaceUser;
+      const meta = (u && (u.user_metadata || u.raw_user_meta_data)) || {};
+      const isOwner = String((p && (p.rank || p.username)) || meta.rank || meta.username || "").toLowerCase().includes("owner");
+      if(!isOwner) return alert("Owner only.");
+
+      const r = await getSupabaseClient().rpc("set_website_pause_v136", {
+        p_paused: true,
+        p_except_ranks: selectedExceptV137()
+      });
+      if(r.error) throw r.error;
+      alert("Website paused.");
+      if(typeof checkPause === "function") await checkPause();
+    }catch(e){
+      alert((e && e.message) || "Could not pause website.");
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(installDropdown, 500);
+    setTimeout(installDropdown, 1200);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(installDropdown, 150);
+  }, true);
 })();
 </script>
 
