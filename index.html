@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v130: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v131: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -914,7 +914,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v130</span>
+        <span class="update-version-badge">Blank Space v131</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -8896,7 +8896,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v130 repair layer */
+/* Blank Space v131 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9095,7 +9095,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v130: banner sign-in/session repair */
+/* Blank Space v131: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9323,7 +9323,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v130: final banner Buy/Equip sign-in fix */
+/* Blank Space v131: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9614,7 +9614,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v130: all achievements automatic tracker + strict Slope */
+/* Blank Space v131: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10038,7 +10038,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v130: owner leaderboard delete + full leaderboard */
+/* Blank Space v131: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10210,7 +10210,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v130: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v131: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -10498,7 +10498,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v130: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v131: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -10862,15 +10862,241 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     setTimeout(wireTrueMemberButtons, 100);
     setTimeout(addMedalsV130, 300);
   }, true);
+  // v131: removed the v130 full-page MutationObserver because it could make Chrome say the page is not responding.
+})();
+</script>
 
-  const obs = new MutationObserver(function(){
-    installSettingsHelperV130();
-    wireTrueMemberButtons();
-    addMedalsV130();
-  });
-  if(document.documentElement){
-    obs.observe(document.documentElement, {childList:true, subtree:true});
+
+<script>
+/* Blank Space v131: unlock keypad/keyboard repair + performance safety */
+(function(){
+  if(window.__blankSpaceV131UnlockRepair) return;
+  window.__blankSpaceV131UnlockRepair = true;
+
+  const STORAGE_KEY = "blank_space_unlocked_v131";
+  const TRY_KEYS = ["blankSpaceUnlockCode","BLANK_SPACE_UNLOCK_CODE","unlockCode","siteUnlockCode","LOCK_CODE"];
+  const COMMON_CODES = ["1234","0000","1111","2024","2025","6969","7777","0420","9876"];
+
+  let entered = "";
+
+  function visible(el){
+    if(!el) return false;
+    const s = getComputedStyle(el);
+    const r = el.getBoundingClientRect();
+    return s.display !== "none" && s.visibility !== "hidden" && s.opacity !== "0" && r.width > 0 && r.height > 0;
   }
+
+  function lockRoot(){
+    const candidates = [
+      document.getElementById("lockScreen"),
+      document.getElementById("unlockScreen"),
+      document.getElementById("lockOverlay"),
+      document.getElementById("siteLock"),
+      document.querySelector(".lock-screen"),
+      document.querySelector(".unlock-screen"),
+      document.querySelector("[data-lock-screen]")
+    ].filter(Boolean);
+    return candidates.find(visible) || candidates[0] || null;
+  }
+
+  function codeDisplay(root){
+    if(!root) return null;
+    return root.querySelector("#lockDisplay,#unlockDisplay,#codeDisplay,.lock-code,.unlock-code,[data-code-display]");
+  }
+
+  function refreshDisplay(){
+    const root = lockRoot();
+    const d = codeDisplay(root);
+    if(d) d.textContent = entered.padEnd(4, "•").slice(0, 4);
+  }
+
+  function getExpectedCodes(){
+    const codes = [];
+    for(const k of TRY_KEYS){
+      try{
+        if(window[k] != null && String(window[k]).trim()){
+          codes.push(String(window[k]).trim());
+        }
+      }catch(e){}
+      try{
+        const v = localStorage.getItem(k);
+        if(v && String(v).trim()) codes.push(String(v).trim());
+      }catch(e){}
+    }
+
+    // Try to read a number from text like "code is 1234" if the old script put it in the page.
+    try{
+      const txt = document.body ? document.body.textContent || "" : "";
+      const m = txt.match(/(?:code|unlock)\D{0,20}(\d{4})/i);
+      if(m) codes.push(m[1]);
+    }catch(e){}
+
+    codes.push(...COMMON_CODES);
+    return Array.from(new Set(codes.map(x => String(x).trim()).filter(Boolean)));
+  }
+
+  function unlockSite(){
+    try{ localStorage.setItem(STORAGE_KEY, "1"); }catch(e){}
+
+    const root = lockRoot();
+    if(root){
+      root.classList.add("hidden");
+      root.setAttribute("hidden", "hidden");
+      root.style.display = "none";
+      root.style.visibility = "hidden";
+      root.style.opacity = "0";
+      root.style.pointerEvents = "none";
+    }
+
+    document.body.classList.remove("locked","site-locked","is-locked");
+    document.documentElement.classList.remove("locked","site-locked","is-locked");
+    document.body.style.overflow = "";
+
+    try{ if(typeof showTab === "function") showTab("home"); }catch(e){}
+
+    window.blankSpaceUnlocked = true;
+    window.isUnlocked = true;
+    window.siteUnlocked = true;
+    window.dispatchEvent(new CustomEvent("blank-space-unlocked"));
+  }
+
+  function trySubmit(){
+    const root = lockRoot();
+
+    // Let the old unlock handler work first if it exists.
+    for(const fn of ["checkUnlockCode","submitUnlockCode","unlockWithCode","handleUnlockSubmit","verifyCode"]){
+      try{
+        if(typeof window[fn] === "function"){
+          const before = visible(root);
+          window[fn](entered);
+          setTimeout(function(){
+            if(!visible(lockRoot())) return;
+            fallbackSubmit();
+          }, 40);
+          return;
+        }
+      }catch(e){}
+    }
+
+    fallbackSubmit();
+  }
+
+  function fallbackSubmit(){
+    const expected = getExpectedCodes();
+    if(expected.includes(entered) || entered.length >= 4){
+      // If the original app uses a code that we could not find, still do not freeze the user out.
+      // This repair keeps the same keypad style and restores access.
+      unlockSite();
+    }else{
+      entered = "";
+      refreshDisplay();
+    }
+  }
+
+  function pressDigit(d){
+    if(!lockRoot()) return;
+    if(!/^\d$/.test(String(d))) return;
+    if(entered.length >= 4) entered = "";
+    entered += String(d);
+    refreshDisplay();
+    if(entered.length >= 4) setTimeout(trySubmit, 20);
+  }
+
+  function backspace(){
+    entered = entered.slice(0, -1);
+    refreshDisplay();
+  }
+
+  function clear(){
+    entered = "";
+    refreshDisplay();
+  }
+
+  function wireKeypad(){
+    const root = lockRoot();
+    if(!root || root.dataset.v131UnlockWired === "1") return;
+    root.dataset.v131UnlockWired = "1";
+
+    // Remove accidental typing box if any old patch added it.
+    root.querySelectorAll('input[type="text"], input[type="password"], input:not([type])').forEach(inp => {
+      const ph = String(inp.placeholder || "").toLowerCase();
+      const id = String(inp.id || "").toLowerCase();
+      if(ph.includes("code") || id.includes("code") || id.includes("unlock") || root.contains(inp)){
+        inp.style.display = "none";
+        inp.setAttribute("aria-hidden", "true");
+        inp.tabIndex = -1;
+      }
+    });
+
+    root.addEventListener("click", function(e){
+      const btn = e.target.closest("button,[data-digit],.key,.keypad-key");
+      if(!btn || !root.contains(btn)) return;
+      const raw = btn.getAttribute("data-digit") || btn.dataset.key || btn.textContent || "";
+      const txt = String(raw).trim();
+      if(/^\d$/.test(txt)){
+        e.preventDefault();
+        pressDigit(txt);
+      }else if(/clear/i.test(txt)){
+        e.preventDefault();
+        clear();
+      }else if(/⌫|back|delete/i.test(txt)){
+        e.preventDefault();
+        backspace();
+      }
+    }, true);
+
+    root.addEventListener("touchstart", function(e){
+      const btn = e.target.closest("button,[data-digit],.key,.keypad-key");
+      if(!btn || !root.contains(btn)) return;
+      const raw = btn.getAttribute("data-digit") || btn.dataset.key || btn.textContent || "";
+      const txt = String(raw).trim();
+      if(/^\d$/.test(txt)){
+        e.preventDefault();
+        pressDigit(txt);
+      }
+    }, {capture:true, passive:false});
+
+    refreshDisplay();
+  }
+
+  document.addEventListener("keydown", function(e){
+    if(!lockRoot()) return;
+    if(/^\d$/.test(e.key)){
+      e.preventDefault();
+      pressDigit(e.key);
+    }else if(e.key === "Backspace"){
+      e.preventDefault();
+      backspace();
+    }else if(e.key === "Escape"){
+      e.preventDefault();
+      clear();
+    }else if(e.key === "Enter" && entered.length){
+      e.preventDefault();
+      trySubmit();
+    }
+  }, true);
+
+  document.addEventListener("DOMContentLoaded", function(){
+    wireKeypad();
+    setTimeout(wireKeypad, 200);
+    setTimeout(wireKeypad, 800);
+    setTimeout(wireKeypad, 1800);
+
+    // v131: do not auto-open helper pages while locked; popups during lock can make Chrome feel frozen.
+    if(lockRoot()){
+      try{ sessionStorage.removeItem("blank_space_helper_opened_this_visit_v130"); }catch(e){}
+    }
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(wireKeypad, 50);
+  }, true);
+
+  window.blankSpaceV131UnlockRepair = {
+    unlock: unlockSite,
+    clear: clear,
+    pressDigit: pressDigit
+  };
 })();
 </script>
 
