@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v125: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v128: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -611,6 +611,33 @@ header{
 }
 
 
+
+/* v128 owner-only leaderboard delete */
+.leaderboard-item.v128-owner-row {
+  grid-template-columns: 62px 58px minmax(0,1fr) auto auto !important;
+}
+.v128-owner-delete-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+  border: 1px solid rgba(248,113,113,.55);
+  background: rgba(127,29,29,.26);
+  color: #fecaca;
+  display: inline-grid;
+  place-items: center;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: 900;
+}
+.v128-owner-delete-btn:hover {
+  background: rgba(127,29,29,.46);
+  border-color: rgba(248,113,113,.9);
+}
+.v128-owner-delete-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
 </style>
 </head>
 <body>
@@ -779,7 +806,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v125</span>
+        <span class="update-version-badge">Blank Space v128</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -8761,7 +8788,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v125 repair layer */
+/* Blank Space v128 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -8960,7 +8987,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v125: banner sign-in/session repair */
+/* Blank Space v128: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9188,7 +9215,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v125: final banner Buy/Equip sign-in fix */
+/* Blank Space v128: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9479,7 +9506,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v125: all achievements automatic tracker + strict Slope */
+/* Blank Space v128: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -9897,6 +9924,178 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   document.addEventListener("DOMContentLoaded", function(){
     if(isSlopeOpen()) startSlope();
+  });
+})();
+</script>
+
+
+<script>
+/* Blank Space v128: owner leaderboard delete + full leaderboard */
+(function(){
+  if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
+  window.__blankSpaceV128LeaderboardOwnerDelete = true;
+
+  function norm(v){ return String(v || "").trim().toLowerCase(); }
+
+  function profileObj(){
+    try{ if(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) return blankSpaceProfile; }catch(e){}
+    return window.blankSpaceProfile || null;
+  }
+
+  function userObj(){
+    try{ if(typeof blankSpaceUser !== "undefined" && blankSpaceUser) return blankSpaceUser; }catch(e){}
+    return window.blankSpaceUser || null;
+  }
+
+  function isOwner(){
+    const p = profileObj() || {};
+    const u = userObj() || {};
+    const meta = u.user_metadata || u.raw_user_meta_data || {};
+    const rank = norm(p.rank || meta.rank);
+    const username = norm(p.username || p.display_name || meta.username || meta.name || meta.display_name);
+    return rank === "owner" || username === "owner";
+  }
+
+  function escapeHtml(v){
+    return String(v ?? "").replace(/[&<>"']/g, ch => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[ch]));
+  }
+
+  function pointsText(points){
+    points = Number(points || 0);
+    return `${points} point${points === 1 ? "" : "s"}`;
+  }
+
+  function rankLabel(row){
+    const rank = norm(row.rank || "member");
+    if(rank === "owner") return `<span class="rank-badge owner-badge">OWNER</span>`;
+    if(rank === "admin") return `<span class="rank-badge admin-badge">ADMIN</span>`;
+    if(rank === "manager") return `<span class="rank-badge manager-badge">MANAGER</span>`;
+    if(rank === "tester") return `<span class="rank-badge tester-badge">TESTER</span>`;
+    return "";
+  }
+
+  function iconHtml(row){
+    const icon = row.equipped_icon || "";
+    if(!icon) return "";
+    return `<span class="profile-equipped-icon" title="Equipped icon">${escapeHtml(icon)}</span>`;
+  }
+
+  function avatarHtml(row){
+    if(row.avatar_url){
+      return `<div class="leader-avatar"><img src="${escapeHtml(row.avatar_url)}" alt=""></div>`;
+    }
+    const initial = escapeHtml((row.username || "?").slice(0,1).toUpperCase());
+    return `<div class="leader-avatar">${initial}</div>`;
+  }
+
+  function ownerDeleteButton(row){
+    if(!isOwner()) return "";
+    const myId = (profileObj() && profileObj().id) || (userObj() && userObj().id) || "";
+    const rowRank = norm(row.rank);
+    const rowName = norm(row.username);
+    if(row.id === myId || rowRank === "owner" || rowName === "owner" || rowName === "admin"){
+      return `<button class="v128-owner-delete-btn" disabled title="Protected account">🛡️</button>`;
+    }
+    return `<button class="v128-owner-delete-btn" title="Remove account" data-v128-delete-user="${escapeHtml(row.id)}" data-v128-delete-name="${escapeHtml(row.username || "this account")}">🗑️</button>`;
+  }
+
+  function renderRow(row, idx){
+    const place = idx + 1;
+    const placeText = place === 1 ? "1st place" : place === 2 ? "2nd place" : place === 3 ? "3rd place" : `${place}th place`;
+    return `<div class="leaderboard-item ${isOwner() ? "v128-owner-row" : ""}">
+      <div class="leader-rank">#${place}</div>
+      ${avatarHtml(row)}
+      <div class="leader-main">
+        <div class="leader-name">${escapeHtml(row.username || "Unknown")} ${iconHtml(row)} ${rankLabel(row)}</div>
+        <div class="friend-meta">${placeText}</div>
+      </div>
+      <div class="leader-points"><span>${pointsText(row.points)}</span></div>
+      ${ownerDeleteButton(row)}
+    </div>`;
+  }
+
+  window.ownerDeleteLeaderboardAccountV128 = async function(userId, username){
+    try{
+      if(!isOwner()){
+        alert("Owner only.");
+        return;
+      }
+      if(!userId){
+        alert("Missing account ID.");
+        return;
+      }
+
+      const name = username || "this account";
+      const warning = `Remove account "${name}"?\n\nThis will remove their profile and try to remove their login account. This cannot be undone unless you have a Supabase backup.\n\nType DELETE to confirm.`;
+      const typed = prompt(warning);
+      if(typed !== "DELETE") return;
+
+      const result = await getSupabaseClient().rpc("owner_delete_account", {
+        p_target_user_id: userId
+      });
+
+      if(result.error) throw result.error;
+
+      alert(`Removed account: ${name}`);
+      if(typeof refreshLeaderboard === "function") await refreshLeaderboard();
+    }catch(err){
+      alert((err && err.message) || "Could not remove account.");
+    }
+  };
+
+  async function fetchLeaderboardRows(){
+    const client = getSupabaseClient();
+
+    // Prefer RPC because it can be SECURITY DEFINER and include restored profile rows.
+    try{
+      const rpc = await client.rpc("get_public_leaderboard", { max_rows: 10000 });
+      if(!rpc.error && Array.isArray(rpc.data)) return rpc.data;
+    }catch(e){}
+
+    const fallback = await client
+      .from("profiles")
+      .select("id, username, display_name, avatar_url, points, equipped_icon, rank, true_member, last_seen_at, equipped_banner_id, equipped_banner_name, equipped_banner_gradient")
+      .order("points", { ascending:false })
+      .order("username", { ascending:true })
+      .limit(10000);
+
+    if(fallback.error) throw fallback.error;
+    return fallback.data || [];
+  }
+
+  window.refreshLeaderboard = async function(){
+    const listEl = document.getElementById("leaderboardList");
+    try{
+      if(!listEl) return;
+      const rows = await fetchLeaderboardRows();
+      window.accountRankCache = rows;
+
+      listEl.innerHTML = rows.length
+        ? rows.map(renderRow).join("")
+        : `<div class="empty-state">No accounts yet.</div>`;
+
+      setMessage("leaderboardStatus", rows.length ? `Showing ${rows.length} account${rows.length === 1 ? "" : "s"}.` : "No accounts yet.", rows.length ? "good" : "");
+
+      try{ if(typeof renderAccountRank === "function") renderAccountRank(); }catch(e){}
+    }catch(err){
+      if(listEl) listEl.innerHTML = `<div class="empty-state">Could not load leaderboard.</div>`;
+      setMessage("leaderboardStatus", (err && err.message) || "Could not load leaderboard.", "error");
+    }
+  };
+
+  document.addEventListener("click", function(e){
+    const btn = e.target && e.target.closest && e.target.closest("[data-v128-delete-user]");
+    if(!btn) return;
+    e.preventDefault();
+    ownerDeleteLeaderboardAccountV128(btn.getAttribute("data-v128-delete-user"), btn.getAttribute("data-v128-delete-name"));
+  }, true);
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){
+      if(document.getElementById("leaderboardList")) refreshLeaderboard();
+    }, 800);
   });
 })();
 </script>
