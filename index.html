@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v128: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v130: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -638,6 +638,114 @@ header{
   cursor: not-allowed;
 }
 
+
+/* v129 banners, true member, medals, and blocking settings */
+.v129-medal {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:28px;
+  height:28px;
+  border-radius:999px;
+  font-size:17px;
+  margin-right:7px;
+  vertical-align:middle;
+}
+.v129-medal.gold { background:rgba(250,204,21,.18); border:1px solid rgba(250,204,21,.55); }
+.v129-medal.silver { background:rgba(226,232,240,.16); border:1px solid rgba(226,232,240,.45); }
+.v129-medal.bronze { background:rgba(251,146,60,.16); border:1px solid rgba(251,146,60,.45); }
+.true-member-check-v129 {
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:999px;
+  background:#16a34a;
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  margin-left:7px;
+  box-shadow:0 0 0 2px rgba(22,163,74,.24);
+  vertical-align:middle;
+}
+.v129-banner-bg {
+  background:var(--v129-banner-gradient, linear-gradient(135deg,#0b0c10,#151821)) !important;
+  background-size:cover !important;
+}
+.v129-blocking-extra {
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.v129-check-row {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:10px;
+  color:#d1d5db;
+  font-weight:700;
+}
+.v129-check-row input {
+  width:18px;
+  height:18px;
+}
+
+
+/* v130 banner/true-member/medal/settings repair */
+.v130-medal {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:7px;
+  font-size:18px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.35));
+}
+.v130-banner-card {
+  border:1px solid #2b2f3a;
+  border-radius:18px;
+  padding:12px;
+  background:#0b0c10;
+  display:grid;
+  gap:10px;
+}
+.v130-banner-preview {
+  height:74px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.18);
+  display:grid;
+  place-items:center;
+  font-weight:1000;
+  color:white;
+  text-shadow:0 2px 9px rgba(0,0,0,.75);
+  overflow:hidden;
+}
+.v130-equipped-pill {
+  display:inline-flex;
+  width:max-content;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(34,197,94,.16);
+  border:1px solid rgba(74,222,128,.38);
+  color:#bbf7d0;
+  font-size:12px;
+  font-weight:1000;
+}
+.v130-blocking-extra {
+  margin-top:12px;
+  display:grid;
+  gap:10px;
+  align-items:start;
+}
+.v130-check-row {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-weight:900;
+}
+.v130-check-row input {
+  width:auto !important;
+}
+
 </style>
 </head>
 <body>
@@ -806,7 +914,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v128</span>
+        <span class="update-version-badge">Blank Space v130</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -824,7 +932,7 @@ header{
         <li><b>Navigation:</b> made the top tab bar a bit bigger than v104 while keeping it compact enough for school Chromebooks while keeping the gift tab and all existing tabs.</li>
         <li><b>Tab Cloak:</b> fixed custom tab icons so website URLs, favicon links, and direct image/icon URLs work correctly.</li>
         <li><b>Safety:</b> added a Settings toggle for the accidental close/refresh warning. It is on by default and can be turned off per browser.</li>
-        <li><b>Owner Panel:</b> added a tool to rename the Block Protection setting label for everyone.</li>
+        <li><b>Owner Panel:</b> added a tool to rename the Blocking Settings setting label for everyone.</li>
         <li><b>Chat safety warning:</b> the warning now appears under the Chat title for 10 seconds with no close button whenever the Chat tab loads after a refresh or new tab.</li>
         <li><b>True Member:</b> Owner Panel can mark users as True Members with a green verified check next to their rank.</li>
         <li><b>Buy:</b> renamed Icons to Buy and added Icons/Banners sub-tabs with banner packs for leaderboard card backgrounds.</li>
@@ -1307,10 +1415,10 @@ header{
         <button class="mini-btn primary" id="settingsSaveComfortBtn">Save Comfort Settings</button>
       </div>
       <div class="panel suggestion-card settings-card">
-        <h2 id="settingsCloseWarningSectionTitle">Block Protection</h2>
+        <h2 id="settingsCloseWarningSectionTitle">Blocking Settings</h2>
         <p class="small-note">Controls the Chrome close, refresh, or leave-site warning. This is saved only on this browser.</p>
-        <label class="settings-check"><input id="settingsCloseWarning" type="checkbox" /> <span id="settingsCloseWarningLabel">Block Protection</span></label>
-        <button class="mini-btn primary" id="settingsSaveProtectionBtn">Save Block Protection</button>
+        <label class="settings-check"><input id="settingsCloseWarning" type="checkbox" /> <span id="settingsCloseWarningLabel">Blocking Settings</span></label>
+        <button class="mini-btn primary" id="settingsSaveProtectionBtn">Save Blocking Settings</button>
       </div>
 
       <div class="panel suggestion-card settings-card">
@@ -1373,7 +1481,7 @@ header{
           <div class="admin-tile"><h3>Timed Message</h3><input id="adminMessageUsername" placeholder="Username, or use Send to everyone"/><label class="send-all-row"><input id="adminMessageAll" type="checkbox"/> Send to everyone</label><textarea id="adminMessageText" placeholder="Message they must see" maxlength="500"></textarea><input id="adminMessageSeconds" type="number" placeholder="Seconds visible" value="20" min="5" max="3600"/><select id="adminMessageStyle"><option value="notice">Notice</option><option value="warning">Warning</option><option value="danger">Danger</option></select><button class="mini-btn primary" id="adminSendUserMessageBtn">Send Message</button><p class="small-note">The user cannot close it. It disappears only when the timer expires. Owner/Admin can send to one user or everyone.</p></div>
           <div class="admin-tile"><h3>Other Commands</h3><input id="adminOtherUsername" placeholder="Username"/><select id="adminOtherAction"><option value="mute_chat">Mute Chat</option><option value="unmute_chat">Unmute Chat</option><option value="ban_chat">Ban From Chat</option><option value="unban_chat">Unban Chat</option><option value="ban_site">Ban From Website</option><option value="unban_site">Unban From Website</option><option value="ban_device">Ban This User's Device</option><option value="unban_device">Unban This User's Last Device</option><option value="force_sign_out">Force Sign Out</option><option value="clear_equipped_icon">Clear Equipped Icon</option><option value="reset_avatar">Reset Avatar</option><option value="reset_all_achievements_keep_points">Reset All Achievements, Keep Points</option><option value="clear_messages">Clear User Messages</option></select><input id="adminOtherValue" placeholder="Optional value, minutes, or device id"/><input id="adminOtherReason" placeholder="Reason"/><button class="mini-btn danger-btn" id="adminRunOtherCommandBtn">Run Command</button><p class="small-note">Website bans block the account. Device bans use the registered browser device ID and are best-effort for that browser/device.</p></div>
           <div class="admin-tile"><h3>Moderation Queue</h3><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='pending';refreshSuggestions();">Open Pending</button><button class="mini-btn" onclick="document.querySelector('[data-tab=suggestions]').click();document.getElementById('suggestionFilter').value='in_works';refreshSuggestions();">Open In the works</button></div>
-          <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div><div class="admin-tile"><h3>Rename Block Protection</h3><input id="ownerBlockProtectionName" placeholder="New setting name, like Block Protection" maxlength="40"/><button class="mini-btn primary" id="ownerSaveBlockProtectionNameBtn">Save Setting Name</button><button class="mini-btn" id="ownerResetBlockProtectionNameBtn">Reset Name</button><p class="small-note">This changes the Settings toggle name for everyone. It does not change what the toggle does.</p></div>
+          <div class="admin-tile"><h3>Safety Tools</h3><input id="adminBlockedTerm" placeholder="Blocked word or phrase"/><button class="mini-btn" id="adminAddBlockedTermBtn">Add Blocked Term</button><button class="mini-btn" id="adminReloadSchemaBtn">Reload Profile</button></div><div class="admin-tile"><h3>Rename Blocking Settings</h3><input id="ownerBlockProtectionName" placeholder="New setting name, like Blocking Settings" maxlength="40"/><button class="mini-btn primary" id="ownerSaveBlockProtectionNameBtn">Save Setting Name</button><button class="mini-btn" id="ownerResetBlockProtectionNameBtn">Reset Name</button><p class="small-note">This changes the Settings toggle name for everyone. It does not change what the toggle does.</p></div>
           <div class="admin-tile"><h3>Recent Admin Actions</h3><button class="mini-btn" id="adminLoadActionsBtn">Load Recent Actions</button><div id="adminActionLog" class="admin-action-log"><div class="empty-state">Click Load Recent Actions.</div></div></div><div class="admin-tile"><h3>Owner Chat View</h3><input id="ownerChatUsername" placeholder="Username to review"/><button class="mini-btn primary" id="ownerLoadChatViewBtn">Load Chat View</button><p class="owner-only-note">Owner view is read-only. It shows what the user has been chatting; the owner cannot type from this viewer.</p><div id="ownerChatViewer" class="owner-chat-viewer"><div class="empty-state">Type a username and load their chat view.</div></div></div>        </div>
         <p id="adminPanelStatus" class="form-message"></p>
       </div>
@@ -8148,7 +8256,7 @@ function applyLocalSettings(){
   updateFaviconPreview(s.faviconUrl||"");
 }
 
-const DEFAULT_BLOCK_PROTECTION_LABEL = "Block Protection";
+const DEFAULT_BLOCK_PROTECTION_LABEL = "Blocking Settings";
 let blockProtectionLabelLoaded = false;
 
 function cleanBlockProtectionLabel(value){
@@ -8220,7 +8328,7 @@ async function ownerResetBlockProtectionLabel(){
     if (result.error) throw result.error;
     const saved = applyBlockProtectionLabel(DEFAULT_BLOCK_PROTECTION_LABEL);
     localStorage.setItem("blankspace_block_protection_label_v110", saved);
-    setMessage("adminPanelStatus", "Setting name reset to Block Protection.", "good");
+    setMessage("adminPanelStatus", "Setting name reset to Blocking Settings.", "good");
   }catch(err){
     alert((err && err.message) ? err.message : String(err));
   }
@@ -8278,7 +8386,7 @@ function saveProtectionSettings(){
   s.closeWarningEnabled = !!document.getElementById("settingsCloseWarning")?.checked;
   saveLocalSettings(s);
   applyLocalSettings();
-  settingsStatus("Block Protection saved.");
+  settingsStatus("Blocking Settings saved.");
 }
 
 
@@ -8654,7 +8762,7 @@ setTimeout(wireV101Fixes,900);
 </script>
 
 <script>
-/* v112 main-page Block Protection close/refresh warning */
+/* v112 main-page Blocking Settings close/refresh warning */
 (function(){
   if(window.__blankSpaceMainCloseWarningInstalled) return;
   window.__blankSpaceMainCloseWarningInstalled = true;
@@ -8788,7 +8896,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v128 repair layer */
+/* Blank Space v130 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -8987,7 +9095,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v128: banner sign-in/session repair */
+/* Blank Space v130: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9215,7 +9323,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v128: final banner Buy/Equip sign-in fix */
+/* Blank Space v130: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9506,7 +9614,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v128: all achievements automatic tracker + strict Slope */
+/* Blank Space v130: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -9930,7 +10038,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v128: owner leaderboard delete + full leaderboard */
+/* Blank Space v130: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10097,6 +10205,672 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       if(document.getElementById("leaderboardList")) refreshLeaderboard();
     }, 800);
   });
+})();
+</script>
+
+
+<script>
+/* Blank Space v130: banners, True Member, medals, and Blocking Settings */
+(function(){
+  if(window.__blankSpaceV129Fixes) return;
+  window.__blankSpaceV129Fixes = true;
+
+  const BANNER_PACKS_V129 = [
+    {id:"starter", name:"Starter Pack", cost:10, banners:[
+      {id:"midnight", name:"Midnight", gradient:"linear-gradient(135deg,#020617,#1e293b)"},
+      {id:"ocean", name:"Ocean", gradient:"linear-gradient(135deg,#0f172a,#0369a1,#22d3ee)"},
+      {id:"forest", name:"Forest", gradient:"linear-gradient(135deg,#052e16,#16a34a,#bbf7d0)"}
+    ]},
+    {id:"neon", name:"Neon Pack", cost:25, banners:[
+      {id:"neon-pink", name:"Neon Pink", gradient:"linear-gradient(135deg,#111827,#db2777,#f0abfc)"},
+      {id:"electric", name:"Electric", gradient:"linear-gradient(135deg,#020617,#2563eb,#67e8f9)"},
+      {id:"toxic", name:"Toxic", gradient:"linear-gradient(135deg,#111827,#65a30d,#d9f99d)"}
+    ]},
+    {id:"royal", name:"Royal Pack", cost:40, banners:[
+      {id:"gold", name:"Gold", gradient:"linear-gradient(135deg,#422006,#ca8a04,#fef08a)"},
+      {id:"purple", name:"Purple", gradient:"linear-gradient(135deg,#2e1065,#7e22ce,#e9d5ff)"},
+      {id:"ruby", name:"Ruby", gradient:"linear-gradient(135deg,#450a0a,#dc2626,#fecaca)"}
+    ]}
+  ];
+
+  function norm(v){ return String(v || "").trim().toLowerCase(); }
+  function esc(v){ return String(v ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch])); }
+  function profile(){ try{ if(typeof blankSpaceProfile !== "undefined") return blankSpaceProfile; }catch(e){} return window.blankSpaceProfile || null; }
+  function user(){ try{ if(typeof blankSpaceUser !== "undefined") return blankSpaceUser; }catch(e){} return window.blankSpaceUser || null; }
+  function isOwner(){
+    const p = profile() || {};
+    const u = user() || {};
+    const meta = u.user_metadata || u.raw_user_meta_data || {};
+    const rank = norm(p.rank || meta.rank);
+    const name = norm(p.username || p.display_name || meta.username || meta.name);
+    return rank === "owner" || name === "owner";
+  }
+
+  function setMsg(id,msg,type){
+    try{ if(typeof setMessage === "function") setMessage(id,msg,type); }catch(e){}
+    const el=document.getElementById(id);
+    if(el){ el.textContent=msg; el.className="form-message "+(type||""); }
+  }
+
+  async function ensureSession(){
+    try{ if(typeof loadExistingSession === "function") await loadExistingSession(); }catch(e){}
+    if(!profile() && typeof loadProfile === "function"){
+      try{ await loadProfile(); }catch(e){}
+    }
+    return !!profile();
+  }
+
+  async function rpc(name,args){
+    const result = await getSupabaseClient().rpc(name,args || {});
+    if(result.error) throw result.error;
+    return result.data;
+  }
+
+  window.v129LoadBannerCollection = async function(){
+    const holder = document.getElementById("bannerCollection") || document.getElementById("yourBannerCollection") || document.getElementById("bannerCollectionList") || document.querySelector("#bannersPanel .collection-grid, #bannersPanel .grid");
+    try{
+      if(!(await ensureSession())){
+        if(holder) holder.innerHTML = `<div class="empty-state">Sign in and press refresh to load your banners.</div>`;
+        return;
+      }
+      const data = await rpc("get_my_banners_v129", {});
+      const banners = Array.isArray(data) ? data : [];
+      if(holder){
+        holder.innerHTML = banners.length ? banners.map(b => `
+          <div class="panel v129-banner-bg" style="--v129-banner-gradient:${esc(b.banner_gradient)}">
+            <h3>${esc(b.banner_name)}</h3>
+            <p class="small-note">Banner</p>
+            <button class="mini-btn" data-v129-equip-banner="${esc(b.banner_id)}">Equip</button>
+          </div>
+        `).join("") : `<div class="empty-state">No banners yet. Buy a banner pack first.</div>`;
+      }
+    }catch(e){
+      if(holder) holder.innerHTML = `<div class="empty-state">Could not load banners: ${esc(e.message || e)}</div>`;
+    }
+  };
+
+  window.v129BuyBannerPack = async function(packId){
+    try{
+      if(!(await ensureSession())) return alert("Sign in first.");
+      const pack = BANNER_PACKS_V129.find(p => p.id === packId);
+      if(!pack) return alert("Pack not found.");
+      await rpc("buy_banner_pack_v129", {p_pack_id:pack.id});
+      alert(`Bought ${pack.name}.`);
+      await v129LoadBannerCollection();
+      try{ if(typeof loadProfile === "function") await loadProfile(); }catch(e){}
+    }catch(e){ alert(e.message || "Could not buy banner pack."); }
+  };
+
+  window.v129EquipBanner = async function(bannerId){
+    try{
+      if(!(await ensureSession())) return alert("Sign in first.");
+      await rpc("equip_banner_v129", {p_banner_id:bannerId});
+      alert("Banner equipped.");
+      await v129LoadBannerCollection();
+      try{ if(typeof loadProfile === "function") await loadProfile(); }catch(e){}
+      try{ if(typeof refreshLeaderboard === "function") await refreshLeaderboard(); }catch(e){}
+    }catch(e){ alert(e.message || "Could not equip banner."); }
+  };
+
+  function ensureBannerShopUI(){
+    const candidates = [
+      document.getElementById("bannersPanel"),
+      document.getElementById("bannersSubTab"),
+      document.getElementById("bannerShop"),
+      document.querySelector('[data-shop-panel="banners"]')
+    ].filter(Boolean);
+    const panel = candidates[0];
+    if(!panel || panel.__v129BannerUI) return;
+    panel.__v129BannerUI = true;
+
+    const wrap = document.createElement("div");
+    wrap.className = "panel";
+    wrap.innerHTML = `
+      <h3>Banner Packs</h3>
+      <p class="small-note">Buy packs, then equip banners for your leaderboard card.</p>
+      <div class="settings-grid">
+        ${BANNER_PACKS_V129.map(p => `<button class="mini-btn" data-v129-buy-banner-pack="${esc(p.id)}">Buy ${esc(p.name)} - ${p.cost} pts</button>`).join("")}
+      </div>
+      <div class="suggestions-toolbar" style="margin-top:14px">
+        <h3>Your Banner Collection</h3>
+        <button class="mini-btn" id="v129RefreshBannersBtn">Refresh</button>
+      </div>
+      <div id="bannerCollection" class="settings-grid"></div>
+    `;
+    panel.appendChild(wrap);
+    setTimeout(v129LoadBannerCollection, 300);
+  }
+
+  window.v129MakeTrueMember = async function(username){
+    try{
+      if(!isOwner()) return alert("Owner only.");
+      username = username || document.getElementById("trueMemberUsernameInput")?.value || document.getElementById("trueMemberInput")?.value || "";
+      username = String(username).trim();
+      if(!username) return alert("Type a username.");
+      const data = await rpc("owner_make_true_member_v129", {p_username:username});
+      alert(`Made ${data.username || username} a True Member.`);
+      try{ if(typeof refreshLeaderboard === "function") await refreshLeaderboard(); }catch(e){}
+      try{ if(typeof loadProfile === "function") await loadProfile(); }catch(e){}
+    }catch(e){ alert(e.message || "Could not make True Member."); }
+  };
+
+  function ensureTrueMemberUI(){
+    const panel = document.getElementById("accountAdminPanel") || document.getElementById("ownerPanel") || document.getElementById("adminPanel");
+    if(!panel || panel.__v129TrueMemberUI) return;
+    panel.__v129TrueMemberUI = true;
+    if(!isOwner()) return;
+
+    const card = document.createElement("div");
+    card.className = "panel owner-only";
+    card.innerHTML = `
+      <h3>True Member</h3>
+      <p class="small-note">Give a user the green checkmark.</p>
+      <div class="username-change-row">
+        <input id="trueMemberUsernameInput" type="text" placeholder="Username">
+        <button class="mini-btn" id="v129MakeTrueMemberBtn">Make a True Member</button>
+      </div>
+    `;
+    panel.appendChild(card);
+  }
+
+  function medalFor(i){
+    if(i === 0) return `<span class="v129-medal gold" title="1st place">🥇</span>`;
+    if(i === 1) return `<span class="v129-medal silver" title="2nd place">🥈</span>`;
+    if(i === 2) return `<span class="v129-medal bronze" title="3rd place">🥉</span>`;
+    return "";
+  }
+
+  function trueMemberMark(row){
+    return row && row.true_member ? `<span class="true-member-check-v129" title="True Member">✓</span>` : "";
+  }
+
+  // Patch existing leaderboard row renderer if present.
+  function enhanceLeaderboard(){
+    document.querySelectorAll("#leaderboardList .leaderboard-item").forEach((item, idx) => {
+      if(item.__v129Enhanced) return;
+      item.__v129Enhanced = true;
+      const name = item.querySelector(".leader-name");
+      if(name){
+        name.insertAdjacentHTML("afterbegin", medalFor(idx));
+      }
+    });
+  }
+
+  const oldRefresh = window.refreshLeaderboard;
+  if(typeof oldRefresh === "function" && !oldRefresh.__v129Enhanced){
+    window.refreshLeaderboard = async function(){
+      const out = await oldRefresh.apply(this, arguments);
+      setTimeout(enhanceLeaderboard, 50);
+      return out;
+    };
+    window.refreshLeaderboard.__v129Enhanced = true;
+  }
+
+  // If v128 override exists, patch it by post-processing.
+  document.addEventListener("click", function(e){
+    const buy = e.target.closest("[data-v129-buy-banner-pack]");
+    if(buy){ e.preventDefault(); v129BuyBannerPack(buy.getAttribute("data-v129-buy-banner-pack")); return; }
+    const equip = e.target.closest("[data-v129-equip-banner]");
+    if(equip){ e.preventDefault(); v129EquipBanner(equip.getAttribute("data-v129-equip-banner")); return; }
+    if(e.target && e.target.id === "v129RefreshBannersBtn"){ e.preventDefault(); v129LoadBannerCollection(); return; }
+    if(e.target && e.target.id === "v129MakeTrueMemberBtn"){ e.preventDefault(); v129MakeTrueMember(); return; }
+  }, true);
+
+  function openBlankSpaceNewTab(){
+    // Safe normal new-tab open. No about:blank iframe/cloaking.
+    window.open("https://blankspaceweb.com/", "_blank", "noopener,noreferrer");
+  }
+
+  function ensureBlockingSettings(){
+    let settings = document.getElementById("settings") || document.querySelector("section#settings");
+    if(!settings) return;
+
+    settings.querySelectorAll("h2,h3,.settings-section-title").forEach(el => {
+      if(String(el.textContent || "").includes("Block Protection")){
+        el.textContent = String(el.textContent).replace("Block Protection","Blocking Settings");
+      }
+    });
+
+    let target = Array.from(settings.querySelectorAll(".panel, .settings-card, section, div")).find(el => /Blocking Settings|Block Protection/i.test(el.textContent || ""));
+    if(!target) target = settings;
+
+    if(target.__v129BlockingUI) return;
+    target.__v129BlockingUI = true;
+
+    const box = document.createElement("div");
+    box.className = "v129-blocking-extra";
+    box.innerHTML = `
+      <button class="mini-btn" id="v129OpenBlankSpaceTabBtn">Go to about:blank</button>
+      <label class="v129-check-row">
+        <input type="checkbox" id="v129ReopenNextVisitCheck">
+        <span>Re-open on next visit.</span>
+      </label>
+      <p class="small-note">This opens Blank Space in a normal new tab.</p>
+    `;
+    target.appendChild(box);
+
+    const check = box.querySelector("#v129ReopenNextVisitCheck");
+    check.checked = localStorage.getItem("blank_space_reopen_next_visit_v129") === "1";
+    check.addEventListener("change", () => {
+      localStorage.setItem("blank_space_reopen_next_visit_v129", check.checked ? "1" : "0");
+    });
+    box.querySelector("#v129OpenBlankSpaceTabBtn").addEventListener("click", openBlankSpaceNewTab);
+  }
+
+  function maybeReopen(){
+    if(localStorage.getItem("blank_space_reopen_next_visit_v129") !== "1") return;
+    if(sessionStorage.getItem("blank_space_reopened_this_session_v129") === "1") return;
+    sessionStorage.setItem("blank_space_reopened_this_session_v129", "1");
+    setTimeout(openBlankSpaceNewTab, 700);
+  }
+
+  function applyBannersToLeaderboardRows(){
+    // Add medals/true member marks when row data is rendered by existing code where possible.
+    enhanceLeaderboard();
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(ensureBannerShopUI, 600);
+    setTimeout(ensureTrueMemberUI, 700);
+    setTimeout(ensureBlockingSettings, 800);
+    setTimeout(enhanceLeaderboard, 1000);
+    setTimeout(maybeReopen, 1200);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(ensureBannerShopUI, 200);
+    setTimeout(ensureTrueMemberUI, 200);
+    setTimeout(ensureBlockingSettings, 200);
+    setTimeout(enhanceLeaderboard, 250);
+  }, true);
+
+  const mo = new MutationObserver(function(){
+    ensureBannerShopUI();
+    ensureTrueMemberUI();
+    ensureBlockingSettings();
+    applyBannersToLeaderboardRows();
+  });
+  if(document.documentElement){
+    mo.observe(document.documentElement, {childList:true, subtree:true});
+  }
+})();
+</script>
+
+
+<script>
+/* Blank Space v130: banner equip repair, True Member repair, medals, and Settings helper page */
+(function(){
+  if(window.__blankSpaceV130Repairs) return;
+  window.__blankSpaceV130Repairs = true;
+
+  const HELPER_PAGE_V130 = "about-blank-helper.html";
+
+  const BANNER_PACKS_V130 = [
+    {id:"starter", name:"Starter Pack", cost:10, banners:[
+      {id:"midnight", name:"Midnight", gradient:"linear-gradient(135deg,#020617,#1e293b)"},
+      {id:"ocean", name:"Ocean", gradient:"linear-gradient(135deg,#0f172a,#0369a1,#22d3ee)"},
+      {id:"forest", name:"Forest", gradient:"linear-gradient(135deg,#052e16,#16a34a,#bbf7d0)"}
+    ]},
+    {id:"neon", name:"Neon Pack", cost:25, banners:[
+      {id:"neon-pink", name:"Neon Pink", gradient:"linear-gradient(135deg,#111827,#db2777,#f0abfc)"},
+      {id:"electric", name:"Electric", gradient:"linear-gradient(135deg,#020617,#2563eb,#67e8f9)"},
+      {id:"toxic", name:"Toxic", gradient:"linear-gradient(135deg,#111827,#65a30d,#d9f99d)"}
+    ]},
+    {id:"royal", name:"Royal Pack", cost:40, banners:[
+      {id:"gold", name:"Gold", gradient:"linear-gradient(135deg,#422006,#ca8a04,#fef08a)"},
+      {id:"purple", name:"Purple", gradient:"linear-gradient(135deg,#2e1065,#7e22ce,#e9d5ff)"},
+      {id:"ruby", name:"Ruby", gradient:"linear-gradient(135deg,#450a0a,#dc2626,#fecaca)"}
+    ]}
+  ];
+
+  function esc(v){
+    return String(v ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+  }
+  function norm(v){ return String(v || "").trim().toLowerCase(); }
+  function msg(id, text, type){
+    try{ if(typeof setMessage === "function") setMessage(id, text, type || ""); }catch(e){}
+  }
+  function client(){ return getSupabaseClient(); }
+  function getProfile(){ try{ if(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) return blankSpaceProfile; }catch(e){} return window.blankSpaceProfile || null; }
+  function getUser(){ try{ if(typeof blankSpaceUser !== "undefined" && blankSpaceUser) return blankSpaceUser; }catch(e){} return window.blankSpaceUser || null; }
+
+  async function refreshSessionV130(){
+    try{ if(typeof loadExistingSession === "function") await loadExistingSession(); }catch(e){}
+    try{
+      const s = await client().auth.getSession();
+      const u = s && s.data && s.data.session && s.data.session.user;
+      if(u){
+        try{ window.blankSpaceUser = u; }catch(e){}
+        if(typeof blankSpaceUser !== "undefined") blankSpaceUser = u;
+      }
+    }catch(e){}
+    return !!getUser();
+  }
+
+  function isOwnerV130(){
+    const p = getProfile() || {};
+    const u = getUser() || {};
+    const meta = u.user_metadata || u.raw_user_meta_data || {};
+    return norm(p.rank || meta.rank) === "owner" || norm(p.username || p.display_name || meta.username || meta.name) === "owner";
+  }
+
+  function normalizeBanner(row){
+    if(!row) return null;
+    const id = row.banner_id || row.id || row.equipped_banner_id;
+    if(!id) return null;
+    return {
+      banner_id: String(id),
+      banner_name: row.banner_name || row.name || row.equipped_banner_name || String(id),
+      banner_gradient: row.banner_gradient || row.gradient || row.equipped_banner_gradient || "linear-gradient(135deg,#111827,#22c55e)",
+      unlocked_at: row.unlocked_at || row.acquired_at || row.created_at || null,
+      equipped: !!row.equipped
+    };
+  }
+
+  async function callRpcNames(names, args){
+    let lastErr = null;
+    for(const name of names){
+      try{
+        const r = await client().rpc(name, args || {});
+        if(!r.error) return r.data;
+        lastErr = r.error;
+      }catch(e){ lastErr = e; }
+    }
+    if(lastErr) throw lastErr;
+    throw new Error("RPC failed.");
+  }
+
+  async function getMyBannersV130(){
+    await refreshSessionV130();
+    const u = getUser();
+    if(!u) throw new Error("Sign in first.");
+
+    try{
+      const rows = await callRpcNames(["get_my_banners_v130","get_my_banners","get_my_banners_v129","get_my_banners_v118","get_my_banners_v117"], {});
+      return (Array.isArray(rows) ? rows : []).map(normalizeBanner).filter(Boolean);
+    }catch(e){
+      const direct = await client()
+        .from("user_banners")
+        .select("*")
+        .eq("user_id", u.id)
+        .order("unlocked_at", {ascending:false});
+      if(direct.error){
+        const direct2 = await client()
+          .from("user_banners")
+          .select("*")
+          .eq("user_id", u.id)
+          .order("acquired_at", {ascending:false});
+        if(direct2.error) throw e;
+        return (direct2.data || []).map(normalizeBanner).filter(Boolean);
+      }
+      return (direct.data || []).map(normalizeBanner).filter(Boolean);
+    }
+  }
+
+  function renderBannerCollectionV130(rows){
+    const targets = [
+      document.getElementById("ownedBannersGrid"),
+      document.getElementById("bannerCollection")
+    ].filter(Boolean);
+
+    for(const owned of targets){
+      if(!rows.length){
+        owned.innerHTML = '<div class="empty-state">No banners yet. Buy a pack.</div>';
+        continue;
+      }
+      owned.innerHTML = rows.map(b => `
+        <div class="v130-banner-card">
+          <div class="v130-banner-preview" style="background:${esc(b.banner_gradient)}"><span>${esc(b.banner_name)}</span></div>
+          ${b.equipped ? '<span class="v130-equipped-pill">Equipped</span>' : ''}
+          <button class="mini-btn" data-v130-equip-banner="${esc(b.banner_id)}">${b.equipped ? "Equipped" : "Equip"}</button>
+        </div>
+      `).join("");
+      owned.querySelectorAll("[data-v130-equip-banner]").forEach(btn => {
+        btn.addEventListener("click", function(e){
+          e.preventDefault();
+          v130EquipBanner(btn.getAttribute("data-v130-equip-banner"));
+        });
+      });
+    }
+  }
+
+  function renderBannerPacksV130(){
+    const packTargets = [
+      document.getElementById("bannerPackGrid"),
+      document.getElementById("v130BannerPackGrid")
+    ].filter(Boolean);
+
+    for(const packs of packTargets){
+      packs.innerHTML = BANNER_PACKS_V130.map(p => `
+        <div class="pack-card">
+          <h3>${esc(p.name)}</h3>
+          <p><span class="pack-price">${p.cost} points</span></p>
+          <p class="small-note">Includes: ${p.banners.map(b => esc(b.name)).join(", ")}</p>
+          <button class="mini-btn primary" data-v130-buy-banner-pack="${esc(p.id)}">Buy Banner Pack</button>
+        </div>
+      `).join("");
+      packs.querySelectorAll("[data-v130-buy-banner-pack]").forEach(btn => {
+        btn.addEventListener("click", function(e){
+          e.preventDefault();
+          v130BuyBannerPack(btn.getAttribute("data-v130-buy-banner-pack"));
+        });
+      });
+    }
+  }
+
+  window.v130LoadBannerCollection = async function(){
+    try{
+      renderBannerPacksV130();
+      const rows = await getMyBannersV130();
+      renderBannerCollectionV130(rows);
+      msg("bannersStatus", `${rows.length} banner${rows.length === 1 ? "" : "s"} owned.`, "good");
+    }catch(e){
+      msg("bannersStatus", (e && e.message) || "Could not load banners.", "error");
+    }
+  };
+
+  window.v130BuyBannerPack = async function(packId){
+    try{
+      await refreshSessionV130();
+      if(!getUser()) return alert("Sign in first.");
+      const pack = BANNER_PACKS_V130.find(p => p.id === packId);
+      if(!pack) return alert("Pack not found.");
+
+      await callRpcNames(["buy_banner_pack_v130","buy_banner_pack","buy_banner_pack_v129"], {p_pack_id:pack.id});
+      alert(`Bought ${pack.name}.`);
+      try{ if(typeof loadProfile === "function") await loadProfile(); }catch(e){}
+      await v130LoadBannerCollection();
+      try{ if(typeof refreshLeaderboard === "function") await refreshLeaderboard(); }catch(e){}
+    }catch(e){
+      alert((e && e.message) || "Could not buy banner pack.");
+    }
+  };
+
+  window.v130EquipBanner = async function(bannerId){
+    try{
+      await refreshSessionV130();
+      const u = getUser();
+      if(!u) return alert("Sign in first.");
+      const rows = await getMyBannersV130();
+      const owned = rows.find(b => b.banner_id === bannerId);
+      if(!owned) return alert("You do not own this banner.");
+
+      try{
+        await callRpcNames(["equip_banner_v130","equip_banner","equip_banner_v129","equip_banner_v118","equip_banner_v117","equip_banner_v115"], {p_banner_id:bannerId});
+      }catch(rpcErr){
+        const upd = await client().from("profiles").update({
+          equipped_banner_id: owned.banner_id,
+          equipped_banner_name: owned.banner_name,
+          equipped_banner_gradient: owned.banner_gradient,
+          updated_at: new Date().toISOString()
+        }).eq("id", u.id);
+        if(upd.error) throw rpcErr;
+      }
+
+      alert("Banner equipped.");
+      try{ if(typeof loadProfile === "function") await loadProfile(); }catch(e){}
+      await v130LoadBannerCollection();
+      try{ if(typeof refreshLeaderboard === "function") await refreshLeaderboard(); }catch(e){}
+    }catch(e){
+      alert((e && e.message) || "Could not equip banner.");
+    }
+  };
+
+  async function trueMemberV130(username){
+    await refreshSessionV130();
+    if(!isOwnerV130()) throw new Error("Owner only.");
+    username = String(username || document.getElementById("trueMemberUsernameInput")?.value || document.getElementById("trueMemberInput")?.value || "").trim();
+    if(!username) throw new Error("Type a username.");
+    return await callRpcNames(["owner_make_true_member_v130","owner_make_true_member","owner_make_true_member_v129"], {p_username:username});
+  }
+
+  window.v130MakeTrueMember = async function(username){
+    try{
+      const data = await trueMemberV130(username);
+      alert(`Made ${data.username || username} a True Member.`);
+      try{ if(typeof refreshLeaderboard === "function") await refreshLeaderboard(); }catch(e){}
+      try{ if(typeof loadProfile === "function") await loadProfile(); }catch(e){}
+    }catch(e){
+      alert((e && e.message) || "Could not make True Member.");
+    }
+  };
+
+  function wireTrueMemberButtons(){
+    document.querySelectorAll("button").forEach(btn => {
+      const txt = String(btn.textContent || "").trim().toLowerCase();
+      if(!txt.includes("make") || !txt.includes("true member")) return;
+      if(btn.dataset.v130TrueMemberWired) return;
+      btn.dataset.v130TrueMemberWired = "1";
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        v130MakeTrueMember();
+      }, true);
+    });
+  }
+
+  function addMedalsV130(){
+    const list = document.getElementById("leaderboardList");
+    if(!list) return;
+    const medals = ["🥇","🥈","🥉"];
+    Array.from(list.querySelectorAll(".leaderboard-item")).forEach((row, idx) => {
+      const name = row.querySelector(".leader-name");
+      if(!name) return;
+      name.querySelectorAll(".v130-medal").forEach(m => m.remove());
+      if(idx < 3){
+        const span = document.createElement("span");
+        span.className = "v130-medal";
+        span.textContent = medals[idx];
+        span.title = idx === 0 ? "1st place" : idx === 1 ? "2nd place" : "3rd place";
+        name.appendChild(span);
+      }
+    });
+  }
+
+  function installMedalPatch(){
+    if(typeof refreshLeaderboard === "function" && !refreshLeaderboard.__v130Medals){
+      const old = refreshLeaderboard;
+      window.refreshLeaderboard = async function(){
+        const out = await old.apply(this, arguments);
+        setTimeout(addMedalsV130, 0);
+        setTimeout(addMedalsV130, 300);
+        return out;
+      };
+      window.refreshLeaderboard.__v130Medals = true;
+    }
+    setTimeout(addMedalsV130, 500);
+  }
+
+  function openHelperV130(){
+    const w = window.open(HELPER_PAGE_V130, "_blank");
+    if(!w) alert("Please allow pop-ups for this site, then click the button again.");
+  }
+
+  function installSettingsHelperV130(){
+    const settings = document.getElementById("settings") || document.querySelector("section#settings");
+    if(!settings) return;
+
+    settings.querySelectorAll("h2,h3,.settings-section-title").forEach(el => {
+      if(String(el.textContent || "").includes("Block Protection")){
+        el.textContent = String(el.textContent || "").replace("Block Protection", "Blocking Settings");
+      }
+    });
+
+    let target = Array.from(settings.querySelectorAll(".panel,.settings-card,section,div"))
+      .find(el => /Blocking Settings|Block Protection/i.test(el.textContent || ""));
+    if(!target) target = settings;
+    if(target.__v130HelperInstalled) return;
+    target.__v130HelperInstalled = true;
+
+    const box = document.createElement("div");
+    box.className = "v130-blocking-extra";
+    box.innerHTML = `
+      <button class="mini-btn" id="v130OpenHelperPageBtn">Go to about:blank</button>
+      <label class="v130-check-row">
+        <input type="checkbox" id="v130ReopenHelperCheck">
+        <span>Re-open on next visit.</span>
+      </label>
+      <p class="small-note">Opens the uploaded helper page in a new tab.</p>
+    `;
+    target.appendChild(box);
+
+    const check = box.querySelector("#v130ReopenHelperCheck");
+    check.checked = localStorage.getItem("blank_space_reopen_helper_page_v130") === "1";
+    check.addEventListener("change", () => {
+      localStorage.setItem("blank_space_reopen_helper_page_v130", check.checked ? "1" : "0");
+    });
+    box.querySelector("#v130OpenHelperPageBtn").addEventListener("click", openHelperV130);
+  }
+
+  function maybeReopenHelperV130(){
+    if(localStorage.getItem("blank_space_reopen_helper_page_v130") !== "1") return;
+    if(sessionStorage.getItem("blank_space_helper_opened_this_visit_v130") === "1") return;
+    sessionStorage.setItem("blank_space_helper_opened_this_visit_v130", "1");
+    setTimeout(openHelperV130, 900);
+  }
+
+  // Function aliases for older inline buttons.
+  window.refreshBanners = window.v130LoadBannerCollection;
+  window.refreshBannersV115 = window.v130LoadBannerCollection;
+  window.refreshBannersV117 = window.v130LoadBannerCollection;
+  window.refreshBannersV118 = window.v130LoadBannerCollection;
+  window.refreshBannersV119 = window.v130LoadBannerCollection;
+  window.refreshBannersV129 = window.v130LoadBannerCollection;
+  window.buyBannerPackV115 = window.v130BuyBannerPack;
+  window.buyBannerPackV117 = window.v130BuyBannerPack;
+  window.buyBannerPackV118 = window.v130BuyBannerPack;
+  window.buyBannerPackV119 = window.v130BuyBannerPack;
+  window.v129BuyBannerPack = window.v130BuyBannerPack;
+  window.equipBannerV115 = window.v130EquipBanner;
+  window.equipBannerV117 = window.v130EquipBanner;
+  window.equipBannerV118 = window.v130EquipBanner;
+  window.equipBannerV119 = window.v130EquipBanner;
+  window.v129EquipBanner = window.v130EquipBanner;
+  window.v129MakeTrueMember = window.v130MakeTrueMember;
+
+  document.addEventListener("DOMContentLoaded", function(){
+    installSettingsHelperV130();
+    maybeReopenHelperV130();
+    installMedalPatch();
+    wireTrueMemberButtons();
+    setTimeout(v130LoadBannerCollection, 900);
+    setTimeout(addMedalsV130, 1200);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(installSettingsHelperV130, 100);
+    setTimeout(wireTrueMemberButtons, 100);
+    setTimeout(addMedalsV130, 300);
+  }, true);
+
+  const obs = new MutationObserver(function(){
+    installSettingsHelperV130();
+    wireTrueMemberButtons();
+    addMedalsV130();
+  });
+  if(document.documentElement){
+    obs.observe(document.documentElement, {childList:true, subtree:true});
+  }
 })();
 </script>
 

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch Link</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Clickable element to safely trigger window.open() -->
+    <button onclick="launchCloakedSite()">Open Website</button>
+
+    <script>
+        function launchCloakedSite() {
+            // Target website destination
+            const targetUrl = "https://blankspaceweb.com/";
+
+            // Open a completely clean, empty tab
+            const win = window.open("about:blank", "_blank");
+
+            if (win) {
+                // Ensure the new window's document is reset and available
+                const doc = win.document;
+                doc.open();
+                
+                // Inject an full-screen iframe into the new tab
+                doc.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Blank Space</title>
+                        <style>
+                            html, body {
+                                margin: 0;
+                                padding: 0;
+                                width: 100%;
+                                height: 100%;
+                                overflow: hidden;
+                            }
+                            iframe {
+                                width: 100%;
+                                height: 100%;
+                                border: none;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe src="${targetUrl}"></iframe>
+                    </body>
+                    </html>
+                `);
+                doc.close();
+            } else {
+                alert("Please allow pop-ups for this site to open the tab.");
+            }
+        }
+    </script>
+
+</body>
+</html>
