@@ -1,86 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Launch Link</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #1a1a1a;
-            font-family: Arial, sans-serif;
-        }
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background 0.2s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
+<div class="control-widget">
+  <!-- Immediate action button -->
+  <button class="action-btn" onclick="launchCloakedSite()">Launch Now</button>
 
-    <!-- Clickable element to safely trigger window.open() -->
-    <button onclick="launchCloakedSite()">Open Website</button>
+  <hr class="divider">
 
-    <script>
-        function launchCloakedSite() {
-            // Target website destination
-            const targetUrl = "https://blankspaceweb.com/";
+  <!-- Persistent preference toggle -->
+  <label class="switch-label">
+    <input type="checkbox" id="autoLaunchToggle">
+    <span class="slider"></span>
+    <span class="toggle-text">Auto-Open on Next Visit</span>
+  </label>
+</div>
 
-            // Open a completely clean, empty tab
-            const win = window.open("about:blank", "_blank");
+<style>
+  .control-widget {
+    padding: 20px;
+    background: #222;
+    border-radius: 8px;
+    width: 260px;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  .action-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.2s;
+  }
+  .action-btn:hover {
+    background-color: #0056b3;
+  }
+  .divider {
+    border: 0;
+    height: 1px;
+    background: #444;
+    margin: 15px 0;
+  }
+  .switch-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .switch-label input {
+    display: none;
+  }
+  .slider {
+    position: relative;
+    width: 46px;
+    height: 24px;
+    background-color: #555;
+    border-radius: 24px;
+    transition: background-color 0.3s;
+    flex-shrink: 0;
+  }
+  .slider::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  .switch-label input:checked + .slider {
+    background-color: #28a745; /* Green to indicate a saved/active state */
+  }
+  .switch-label input:checked + .slider::before {
+    transform: translateX(22px);
+  }
+  .toggle-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+</style>
 
-            if (win) {
-                // Ensure the new window's document is reset and available
-                const doc = win.document;
-                doc.open();
-                
-                // Inject an full-screen iframe into the new tab
-                doc.write(`
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>Blank Space</title>
-                        <style>
-                            html, body {
-                                margin: 0;
-                                padding: 0;
-                                width: 100%;
-                                height: 100%;
-                                overflow: hidden;
-                            }
-                            iframe {
-                                width: 100%;
-                                height: 100%;
-                                border: none;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <iframe src="${targetUrl}"></iframe>
-                    </body>
-                    </html>
-                `);
-                doc.close();
-            } else {
-                alert("Please allow pop-ups for this site to open the tab.");
-            }
-        }
-    </script>
+<script>
+  const targetUrl = "https://blankspaceweb.com";
+  const toggle = document.getElementById('autoLaunchToggle');
 
-</body>
-</html>
+  // Core execution script to build and render the frame
+  function launchCloakedSite() {
+    const win = window.open("about:blank", "_blank");
+    if (win) {
+      const doc = win.document;
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>Classes</title>
+          <style>
+            html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+            iframe { width: 100%; height: 100%; border: none; }
+          </style>
+        </head>
+        <body>
+          <iframe src="${targetUrl}"></iframe>
+        </body>
+        </html>
+      `);
+      doc.close();
+    }
+  }
+
+  // Monitor modifications to save layout choices to browser memory
+  toggle.addEventListener('change', (e) => {
+    localStorage.setItem('autoLaunchGame', e.target.checked ? 'true' : 'false');
+  });
+
+  // Evaluate state and run automatically when initialization completes
+  window.addEventListener('DOMContentLoaded', () => {
+    const isEnabled = localStorage.getItem('autoLaunchGame') === 'true';
+    if (isEnabled) {
+      toggle.checked = true;
+      // Brief execution delay to let page lifecycles fully initialize
+      setTimeout(() => {
+        launchCloakedSite();
+      }, 500);
+    }
+  });
+</script>
