@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v131: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v133: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -746,6 +746,32 @@ header{
   width:auto !important;
 }
 
+
+/* v132 lock-screen safety */
+#lockScreen.unlocked { display:none !important; visibility:hidden !important; pointer-events:none !important; opacity:0 !important; }
+
+
+/* v133 exact Blocking Settings helper placement */
+.v133-blocking-helper-box {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.12);
+  display: grid;
+  gap: 10px;
+}
+.v133-blocking-helper-box .mini-btn {
+  width: max-content;
+}
+.v133-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 900;
+}
+.v133-check-row input {
+  width: auto !important;
+}
+
 </style>
 </head>
 <body>
@@ -772,6 +798,155 @@ header{
     <p id="lockMessage" class="lock-message"></p>
   </div>
 </div>
+
+
+<script>
+/* Blank Space v133: simple lock-screen keypad repair */
+(function(){
+  if(window.__blankSpaceV132SimpleUnlock) return;
+  window.__blankSpaceV132SimpleUnlock = true;
+
+  var CODE = "1213";
+  var typed = "";
+
+  function lock(){
+    return document.getElementById("lockScreen");
+  }
+
+  function isLocked(){
+    var l = lock();
+    return !!(l && !l.classList.contains("unlocked") && l.style.display !== "none");
+  }
+
+  function show(){
+    var d = document.getElementById("codeDisplay");
+    if(d) d.textContent = (typed.replace(/./g,"•") + "----").slice(0,4);
+  }
+
+  function message(text){
+    var m = document.getElementById("lockMessage");
+    if(m) m.textContent = text || "";
+  }
+
+  function unlock(){
+    var l = lock();
+    if(l){
+      l.classList.add("unlocked");
+      l.style.pointerEvents = "none";
+    }
+    window.__blankSpaceLockUnlocked = true;
+    window.blankSpaceUnlocked = true;
+    typed = "";
+    show();
+  }
+
+  function wrong(){
+    message("Wrong code");
+    setTimeout(function(){
+      typed = "";
+      show();
+      message("");
+    }, 550);
+  }
+
+  function press(k){
+    if(!isLocked()) return;
+    k = String(k || "").trim();
+
+    if(k === "clear" || k === "Escape"){
+      typed = "";
+      show();
+      message("");
+      return;
+    }
+
+    if(k === "back" || k === "Backspace"){
+      typed = typed.slice(0,-1);
+      show();
+      message("");
+      return;
+    }
+
+    if(!/^[0-9]$/.test(k)) return;
+
+    if(typed.length >= 4) typed = "";
+    typed += k;
+    show();
+
+    if(typed.length === 4){
+      if(typed === CODE) unlock();
+      else wrong();
+    }
+  }
+
+  function keyHandler(e){
+    if(!isLocked()) return;
+    if(e.ctrlKey || e.metaKey || e.altKey) return;
+
+    if(/^[0-9]$/.test(e.key)){
+      e.preventDefault();
+      e.stopPropagation();
+      press(e.key);
+      return;
+    }
+
+    if(e.key === "Backspace" || e.key === "Escape"){
+      e.preventDefault();
+      e.stopPropagation();
+      press(e.key);
+      return;
+    }
+  }
+
+  function buttonHandler(e){
+    var btn = e.target && e.target.closest ? e.target.closest("#lockScreen .key,#lockScreen [data-key]") : null;
+    if(!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    press(btn.getAttribute("data-key") || btn.textContent || "");
+  }
+
+  function wire(){
+    show();
+
+    var l = lock();
+    if(!l) return;
+
+    // Keep the original style: no typing box.
+    l.querySelectorAll("input").forEach(function(inp){
+      inp.style.display = "none";
+      inp.tabIndex = -1;
+      inp.setAttribute("aria-hidden","true");
+    });
+
+    if(!window.__blankSpaceV132KeydownWired){
+      window.__blankSpaceV132KeydownWired = true;
+      document.addEventListener("keydown", keyHandler, true);
+    }
+
+    if(!l.__blankSpaceV132ButtonsWired){
+      l.__blankSpaceV132ButtonsWired = true;
+      l.addEventListener("click", buttonHandler, true);
+      l.addEventListener("pointerdown", buttonHandler, true);
+      l.addEventListener("touchstart", buttonHandler, {capture:true, passive:false});
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", wire);
+  }else{
+    wire();
+  }
+  setTimeout(wire, 100);
+  setTimeout(wire, 500);
+  setTimeout(wire, 1200);
+
+  window.blankSpaceUnlockV132 = {
+    press: press,
+    unlock: unlock
+  };
+})();
+</script>
 
 <script>
 /* v113 hard unlock fallback: runs even if another script later has a problem */
@@ -914,7 +1089,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v131</span>
+        <span class="update-version-badge">Blank Space v133</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -8896,7 +9071,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v131 repair layer */
+/* Blank Space v133 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9095,7 +9270,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v131: banner sign-in/session repair */
+/* Blank Space v133: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9323,7 +9498,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v131: final banner Buy/Equip sign-in fix */
+/* Blank Space v133: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9614,7 +9789,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v131: all achievements automatic tracker + strict Slope */
+/* Blank Space v133: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10038,7 +10213,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v131: owner leaderboard delete + full leaderboard */
+/* Blank Space v133: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10210,7 +10385,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v131: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v133: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -10483,22 +10658,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     setTimeout(ensureBlockingSettings, 200);
     setTimeout(enhanceLeaderboard, 250);
   }, true);
-
-  const mo = new MutationObserver(function(){
-    ensureBannerShopUI();
-    ensureTrueMemberUI();
-    ensureBlockingSettings();
-    applyBannersToLeaderboardRows();
-  });
-  if(document.documentElement){
-    mo.observe(document.documentElement, {childList:true, subtree:true});
-  }
+  // v132: removed a full-page MutationObserver that could freeze the tab.
 })();
 </script>
 
 
 <script>
-/* Blank Space v131: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v133: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -10849,8 +11015,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   window.v129MakeTrueMember = window.v130MakeTrueMember;
 
   document.addEventListener("DOMContentLoaded", function(){
-    installSettingsHelperV130();
-    maybeReopenHelperV130();
+    // v133: replaced by exact Blocking Settings placement.
+    // v132: disabled automatic helper-tab opening during page load to prevent freezes.
     installMedalPatch();
     wireTrueMemberButtons();
     setTimeout(v130LoadBannerCollection, 900);
@@ -10858,7 +11024,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   });
 
   document.addEventListener("click", function(){
-    setTimeout(installSettingsHelperV130, 100);
+    // v133: replaced by exact Blocking Settings placement.
     setTimeout(wireTrueMemberButtons, 100);
     setTimeout(addMedalsV130, 300);
   }, true);
@@ -10868,7 +11034,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v131: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v133: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11097,6 +11263,133 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     clear: clear,
     pressDigit: pressDigit
   };
+})();
+</script>
+
+
+<script>
+/* Blank Space v133: exact about:blank helper under Blocking Settings */
+(function(){
+  if(window.__blankSpaceV133BlockingHelper) return;
+  window.__blankSpaceV133BlockingHelper = true;
+
+  const HELPER_PAGE = "about-blank-helper.html";
+
+  function openHelper(){
+    const w = window.open(HELPER_PAGE, "_blank");
+    if(!w) alert("Please allow pop-ups for this site, then click Go to about:blank again.");
+  }
+
+  function normalizeTitle(text){
+    return String(text || "").replace(/\s+/g, " ").trim().toLowerCase();
+  }
+
+  function findBlockingSettingsSection(){
+    const settings = document.getElementById("settings") || document.querySelector("section#settings");
+    if(!settings) return null;
+
+    // Rename visible headings first.
+    settings.querySelectorAll("h1,h2,h3,h4,.settings-section-title,.section-title,.panel-title").forEach(el => {
+      if(/block protection/i.test(el.textContent || "")){
+        el.textContent = String(el.textContent || "").replace(/Block Protection/ig, "Blocking Settings");
+      }
+    });
+
+    // Find a heading named exactly/mostly Blocking Settings.
+    const headings = Array.from(settings.querySelectorAll("h1,h2,h3,h4,.settings-section-title,.section-title,.panel-title,strong,b"));
+    let heading = headings.find(el => /blocking settings/i.test(el.textContent || ""));
+    if(!heading) heading = headings.find(el => /block protection/i.test(el.textContent || ""));
+
+    if(heading){
+      // Prefer the card/panel containing that heading.
+      const panel = heading.closest(".settings-card,.panel,.suggestion-card,.card,section,fieldset,div");
+      if(panel && settings.contains(panel)) return {settings, heading, panel};
+    }
+
+    // Fallback: find card text that contains Block Protection / Blocking Settings.
+    const cards = Array.from(settings.querySelectorAll(".settings-card,.panel,.suggestion-card,.card,section,fieldset,div"));
+    const card = cards.find(el => /Blocking Settings|Block Protection/i.test(el.textContent || ""));
+    if(card) return {settings, heading:null, panel:card};
+
+    return {settings, heading:null, panel:settings};
+  }
+
+  function removeOldHelperDuplicates(scope){
+    (scope || document).querySelectorAll(".v129-blocking-extra,.v130-blocking-extra,.v133-blocking-helper-box").forEach(el => {
+      if(!el.classList.contains("v133-keep")) el.remove();
+    });
+  }
+
+  function install(){
+    const found = findBlockingSettingsSection();
+    if(!found) return;
+
+    const {settings, heading, panel} = found;
+    removeOldHelperDuplicates(settings);
+
+    if(panel.querySelector(".v133-blocking-helper-box")) return;
+
+    const box = document.createElement("div");
+    box.className = "v133-blocking-helper-box v133-keep";
+    box.innerHTML = `
+      <button class="mini-btn" id="v133OpenAboutBlankHelperBtn" type="button">Go to about:blank</button>
+      <label class="v133-check-row">
+        <input type="checkbox" id="v133ReopenAboutBlankHelperCheck">
+        <span>Re-open on next visit.</span>
+      </label>
+      <p class="small-note">Opens the uploaded helper page in a new tab.</p>
+    `;
+
+    // Put it directly under the Blocking Settings heading if possible.
+    if(heading && heading.parentElement === panel){
+      heading.insertAdjacentElement("afterend", box);
+    }else{
+      panel.appendChild(box);
+    }
+
+    const check = box.querySelector("#v133ReopenAboutBlankHelperCheck");
+    check.checked = localStorage.getItem("blank_space_reopen_about_blank_helper_v133") === "1";
+    check.addEventListener("change", function(){
+      localStorage.setItem("blank_space_reopen_about_blank_helper_v133", check.checked ? "1" : "0");
+    });
+
+    box.querySelector("#v133OpenAboutBlankHelperBtn").addEventListener("click", function(e){
+      e.preventDefault();
+      openHelper();
+    });
+  }
+
+  function maybeReopen(){
+    if(localStorage.getItem("blank_space_reopen_about_blank_helper_v133") !== "1") return;
+    if(sessionStorage.getItem("blank_space_about_blank_helper_opened_v133") === "1") return;
+    sessionStorage.setItem("blank_space_about_blank_helper_opened_v133", "1");
+
+    // Do not open while the lock screen is still active.
+    const lock = document.getElementById("lockScreen");
+    const locked = lock && !lock.classList.contains("unlocked") && lock.style.display !== "none";
+    if(locked) return;
+
+    setTimeout(openHelper, 600);
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(install, 200);
+    setTimeout(install, 800);
+    setTimeout(maybeReopen, 1200);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(install, 100);
+  }, true);
+
+  // Re-check after tabs/settings render, but avoid heavy full-page MutationObservers.
+  setInterval(function(){
+    const settings = document.getElementById("settings");
+    if(settings && (settings.classList.contains("active") || settings.offsetParent !== null)) install();
+  }, 2000);
+
+  window.openAboutBlankHelperV133 = openHelper;
+  window.installBlockingSettingsHelperV133 = install;
 })();
 </script>
 
