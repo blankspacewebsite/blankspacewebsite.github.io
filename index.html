@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v135: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v136: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -772,12 +772,121 @@ header{
   width: auto !important;
 }
 
+
+/* v136 repairs */
+.v130-medal, .v129-medal, .leader-medal-extra { display:none !important; }
+
+#blankSpacePauseOverlayV136 {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  background: rgba(0,0,0,.94);
+  color: #fff;
+  display: none;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+}
+#blankSpacePauseOverlayV136.active { display: grid; }
+#blankSpacePauseOverlayV136 .pause-card {
+  max-width: 620px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 28px;
+  background: linear-gradient(180deg,#111827,#050505);
+  box-shadow: 0 30px 90px rgba(0,0,0,.65);
+  padding: 42px 34px;
+}
+#blankSpacePauseOverlayV136 h1 {
+  margin: 0 0 12px;
+  font-size: clamp(44px, 7vw, 78px);
+  line-height: .95;
+}
+#blankSpacePauseOverlayV136 p {
+  margin: 0;
+  color: #d1d5db;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.v136-owner-card select[multiple] {
+  width: 100%;
+  min-height: 118px;
+  text-align: left;
+}
+.v136-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.v136-check { display:flex; gap:10px; align-items:center; font-weight:900; margin:10px 0; }
+.v136-check input { width:auto !important; }
+
+.v136-banner-card {
+  border: 1px solid #2b2f3a;
+  border-radius: 18px;
+  padding: 12px;
+  background: #0b0c10;
+  display: grid;
+  gap: 10px;
+}
+.v136-banner-preview {
+  height: 74px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.18);
+  display: grid;
+  place-items: center;
+  font-weight: 1000;
+  color: white;
+  text-shadow: 0 2px 9px rgba(0,0,0,.75);
+  overflow: hidden;
+}
+.v136-equipped-pill {
+  display:inline-flex;
+  width:max-content;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(34,197,94,.16);
+  border:1px solid rgba(74,222,128,.38);
+  color:#bbf7d0;
+  font-size:12px;
+  font-weight:1000;
+}
+
+#v136OwnerModalBackdrop, #v136MessagePromptBackdrop {
+  position:fixed;
+  inset:0;
+  z-index:2147483645;
+  background:rgba(0,0,0,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+#v136OwnerModalBackdrop.active, #v136MessagePromptBackdrop.active { display:flex; }
+.v136-modal {
+  width:min(760px, 96vw);
+  max-height:86vh;
+  overflow:auto;
+  border:1px solid #2b2f3a;
+  border-radius:24px;
+  background:#0b0c10;
+  color:#fff;
+  padding:18px;
+  box-shadow:0 30px 90px rgba(0,0,0,.7);
+}
+.v136-modal-head { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:12px; }
+.v136-response-item {
+  border:1px solid #242936;
+  border-radius:18px;
+  padding:12px;
+  background:#090a0d;
+  margin:10px 0;
+}
+.v136-response-meta { color:#9ca3af; font-size:12px; font-weight:800; margin-bottom:6px; }
+.v136-message-box textarea { width:100%; min-height:88px; text-align:left; }
+
 </style>
 </head>
 <body>
 
 <script>
-/* Blank Space v135: allow Backspace inside website text boxes */
+/* Blank Space v136: allow Backspace inside website text boxes */
 (function(){
   if(window.__blankSpaceV135BackspaceFix) return;
   window.__blankSpaceV135BackspaceFix = true;
@@ -829,7 +938,7 @@ header{
 
 
 <script>
-/* Blank Space v135: simple lock-screen keypad repair */
+/* Blank Space v136: simple lock-screen keypad repair */
 (function(){
   if(window.__blankSpaceV132SimpleUnlock) return;
   window.__blankSpaceV132SimpleUnlock = true;
@@ -1117,7 +1226,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v135</span>
+        <span class="update-version-badge">Blank Space v136</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -9099,7 +9208,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135 repair layer */
+/* Blank Space v136 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9298,7 +9407,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: banner sign-in/session repair */
+/* Blank Space v136: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9526,7 +9635,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: final banner Buy/Equip sign-in fix */
+/* Blank Space v136: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -9817,7 +9926,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: all achievements automatic tracker + strict Slope */
+/* Blank Space v136: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10241,7 +10350,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: owner leaderboard delete + full leaderboard */
+/* Blank Space v136: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10413,7 +10522,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v136: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -10692,7 +10801,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v136: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -11062,7 +11171,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v136: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11296,7 +11405,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v135: exact about:blank helper under Blocking Settings */
+/* Blank Space v136: exact about:blank helper under Blocking Settings */
 (function(){
   if(window.__blankSpaceV133BlockingHelper) return;
   window.__blankSpaceV133BlockingHelper = true;
@@ -11418,6 +11527,399 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   window.openAboutBlankHelperV133 = openHelper;
   window.installBlockingSettingsHelperV133 = install;
+})();
+</script>
+
+
+<script>
+/* Blank Space v136: final repair set */
+(function(){
+  if(window.__blankSpaceV136Patch) return;
+  window.__blankSpaceV136Patch = true;
+
+  const BANNER_PACKS = [
+    {id:"starter", name:"Starter Pack", cost:10, banners:[
+      {id:"midnight", name:"Midnight", rarity:"common", gradient:"linear-gradient(135deg,#020617,#1e293b)"},
+      {id:"ocean", name:"Ocean", rarity:"common", gradient:"linear-gradient(135deg,#0f172a,#0369a1,#22d3ee)"},
+      {id:"forest", name:"Forest", rarity:"common", gradient:"linear-gradient(135deg,#052e16,#16a34a,#bbf7d0)"}
+    ]},
+    {id:"neon", name:"Neon Pack", cost:25, banners:[
+      {id:"neon-pink", name:"Neon Pink", rarity:"rare", gradient:"linear-gradient(135deg,#111827,#db2777,#f0abfc)"},
+      {id:"electric", name:"Electric", rarity:"rare", gradient:"linear-gradient(135deg,#020617,#2563eb,#67e8f9)"},
+      {id:"toxic", name:"Toxic", rarity:"rare", gradient:"linear-gradient(135deg,#111827,#65a30d,#d9f99d)"}
+    ]},
+    {id:"royal", name:"Royal Pack", cost:40, banners:[
+      {id:"gold", name:"Gold", rarity:"epic", gradient:"linear-gradient(135deg,#422006,#ca8a04,#fef08a)"},
+      {id:"purple", name:"Purple", rarity:"epic", gradient:"linear-gradient(135deg,#2e1065,#7e22ce,#e9d5ff)"},
+      {id:"ruby", name:"Ruby", rarity:"epic", gradient:"linear-gradient(135deg,#450a0a,#dc2626,#fecaca)"}
+    ]}
+  ];
+
+  function esc(v){ return String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function norm(v){ return String(v || "").trim().toLowerCase(); }
+  function client(){ return getSupabaseClient(); }
+  function msg(id,text,type){ try{ if(typeof setMessage === "function") setMessage(id,text,type || ""); }catch(e){} }
+  function profile(){ try{ if(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) return blankSpaceProfile; }catch(e){} return window.blankSpaceProfile || null; }
+  function user(){ try{ if(typeof blankSpaceUser !== "undefined" && blankSpaceUser) return blankSpaceUser; }catch(e){} return window.blankSpaceUser || null; }
+  function isOwner(){ const p=profile()||{}, u=user()||{}, m=u.user_metadata||u.raw_user_meta_data||{}; return norm(p.rank||m.rank)==="owner" || norm(p.username||p.display_name||m.username||m.name)==="owner"; }
+
+  async function session(){
+    try{ if(typeof loadExistingSession === "function") await loadExistingSession(); }catch(e){}
+    try{
+      const s = await client().auth.getSession();
+      const u = s?.data?.session?.user;
+      if(u){ window.blankSpaceUser = u; try{ blankSpaceUser = u; }catch(e){} }
+    }catch(e){}
+    return !!user();
+  }
+
+  async function rpcAny(names,args){
+    let last=null;
+    for(const n of names){
+      try{
+        const r=await client().rpc(n,args||{});
+        if(!r.error) return r.data;
+        last=r.error;
+      }catch(e){ last=e; }
+    }
+    if(last) throw last;
+    throw new Error("Request failed.");
+  }
+
+  // Stop old tab shortcuts/global handlers from stealing number keys/backspace inside boxes.
+  function isEditing(el){
+    if(!el) return false;
+    if(el.isContentEditable) return true;
+    const tag=String(el.tagName||"").toLowerCase();
+    if(tag==="textarea") return true;
+    if(tag!=="input") return false;
+    const type=String(el.getAttribute("type")||"text").toLowerCase();
+    return ["text","password","email","search","url","tel","number","date","datetime-local","month","time","week"].includes(type);
+  }
+  document.addEventListener("keydown", function(e){
+    if(isEditing(e.target) && (/^[0-9]$/.test(e.key) || e.key==="Backspace" || e.key==="Delete" || e.key==="ArrowLeft" || e.key==="ArrowRight")){
+      e.stopImmediatePropagation();
+    }
+  }, true);
+
+  // Remove extra medals added beside names.
+  function removeExtraMedals(){
+    document.querySelectorAll(".v130-medal,.v129-medal,.leader-medal-extra").forEach(el=>el.remove());
+    document.querySelectorAll("#leaderboardList .leader-name").forEach(name=>{
+      Array.from(name.childNodes).forEach(node=>{
+        if(node.nodeType===3 && /[🥇🥈🥉]/u.test(node.textContent||"")) node.textContent=(node.textContent||"").replace(/[🥇🥈🥉]/gu,"");
+        if(node.nodeType===1 && /[🥇🥈🥉]/u.test(node.textContent||"") && !node.classList.contains("rank-badge")) node.remove();
+      });
+    });
+  }
+  window.addMedalsV130 = removeExtraMedals;
+  window.addMedalsV129 = removeExtraMedals;
+  function patchLeaderboard(){
+    if(typeof refreshLeaderboard==="function" && !refreshLeaderboard.__v136NoMedals){
+      const old=refreshLeaderboard;
+      window.refreshLeaderboard=async function(){
+        const out=await old.apply(this,arguments);
+        setTimeout(removeExtraMedals,0);
+        setTimeout(removeExtraMedals,250);
+        return out;
+      };
+      window.refreshLeaderboard.__v136NoMedals=true;
+    }
+    removeExtraMedals();
+  }
+
+  function normalBanner(row){
+    if(!row) return null;
+    const id=row.banner_id||row.id||row.equipped_banner_id;
+    if(!id) return null;
+    return {
+      banner_id:String(id),
+      banner_name:row.banner_name||row.name||row.equipped_banner_name||String(id),
+      banner_gradient:row.banner_gradient||row.gradient||row.equipped_banner_gradient||"linear-gradient(135deg,#111827,#22c55e)",
+      rarity:row.rarity||"common",
+      unlocked_at:row.unlocked_at||row.acquired_at||row.created_at||null,
+      equipped:!!row.equipped
+    };
+  }
+
+  async function getMyBanners(){
+    await session();
+    const u=user();
+    if(!u) throw new Error("Sign in first.");
+    try{
+      const rows=await rpcAny(["get_my_banners_v136","get_my_banners","get_my_banners_v130","get_my_banners_v129"],{});
+      return (Array.isArray(rows)?rows:[]).map(normalBanner).filter(Boolean);
+    }catch(e){
+      const r=await client().from("user_banners").select("*").eq("user_id",u.id);
+      if(r.error) throw e;
+      return (r.data||[]).map(normalBanner).filter(Boolean);
+    }
+  }
+
+  function renderPacks(){
+    const targets=[document.getElementById("bannerPackGrid"), document.getElementById("v130BannerPackGrid"), document.getElementById("v129BannerPackGrid")].filter(Boolean);
+    for(const packs of targets){
+      packs.innerHTML=BANNER_PACKS.map(p=>`
+        <div class="pack-card">
+          <h3>${esc(p.name)}</h3>
+          <p><span class="pack-price">${p.cost} points</span></p>
+          <p class="small-note">Includes: ${p.banners.map(b=>esc(b.name)).join(", ")}</p>
+          <button class="mini-btn primary" data-v136-buy-banner-pack="${esc(p.id)}">Buy Banner Pack</button>
+        </div>`).join("");
+      packs.querySelectorAll("[data-v136-buy-banner-pack]").forEach(btn=>btn.addEventListener("click",e=>{e.preventDefault(); v136BuyBannerPack(btn.getAttribute("data-v136-buy-banner-pack"));}));
+    }
+  }
+
+  function renderBanners(rows){
+    const targets=[document.getElementById("ownedBannersGrid"), document.getElementById("bannerCollection")].filter(Boolean);
+    for(const owned of targets){
+      owned.innerHTML = rows.length ? rows.map(b=>`
+        <div class="v136-banner-card">
+          <div class="v136-banner-preview" style="background:${esc(b.banner_gradient)}"><span>${esc(b.banner_name)}</span></div>
+          <p class="rarity-${esc(b.rarity||"common")}">${esc(b.rarity||"common")}</p>
+          ${b.equipped ? '<span class="v136-equipped-pill">Equipped</span>' : ''}
+          <button class="mini-btn" data-v136-equip-banner="${esc(b.banner_id)}">${b.equipped ? "Equipped" : "Equip"}</button>
+        </div>`).join("") : '<div class="empty-state">No banners yet. Buy a pack.</div>';
+      owned.querySelectorAll("[data-v136-equip-banner]").forEach(btn=>btn.addEventListener("click",e=>{e.preventDefault(); v136EquipBanner(btn.getAttribute("data-v136-equip-banner"));}));
+    }
+  }
+
+  window.v136LoadBanners = async function(){
+    try{
+      renderPacks();
+      const rows=await getMyBanners();
+      renderBanners(rows);
+      msg("bannersStatus",`${rows.length} banner${rows.length===1?"":"s"} owned.`,"good");
+    }catch(e){ msg("bannersStatus",e.message||"Could not load banners.","error"); }
+  };
+  window.v136BuyBannerPack = async function(packId){
+    try{
+      await session();
+      if(!user()) return alert("Sign in first.");
+      const pack=BANNER_PACKS.find(p=>p.id===packId);
+      if(!pack) return alert("Pack not found.");
+      await rpcAny(["buy_banner_pack_v136","buy_banner_pack","buy_banner_pack_v130"],{p_pack_id:pack.id});
+      alert(`Bought ${pack.name}.`);
+      try{ if(typeof loadProfile==="function") await loadProfile(); }catch(e){}
+      await v136LoadBanners();
+      try{ if(typeof refreshLeaderboard==="function") await refreshLeaderboard(); }catch(e){}
+    }catch(e){ alert(e.message||"Could not buy banner pack."); }
+  };
+  window.v136EquipBanner = async function(id){
+    try{
+      await session();
+      const u=user();
+      if(!u) return alert("Sign in first.");
+      const rows=await getMyBanners();
+      const owned=rows.find(b=>b.banner_id===id);
+      if(!owned) return alert("You do not own this banner.");
+      try{
+        await rpcAny(["equip_banner_v136","equip_banner","equip_banner_v130"],{p_banner_id:id});
+      }catch(rpcErr){
+        const upd=await client().from("profiles").update({
+          equipped_banner_id:owned.banner_id,
+          equipped_banner_name:owned.banner_name,
+          equipped_banner_gradient:owned.banner_gradient,
+          updated_at:new Date().toISOString()
+        }).eq("id",u.id);
+        if(upd.error) throw rpcErr;
+      }
+      msg("bannersStatus","Banner equipped.","good");
+      try{ if(typeof loadProfile==="function") await loadProfile(); }catch(e){}
+      await v136LoadBanners();
+      try{ if(typeof refreshLeaderboard==="function") await refreshLeaderboard(); }catch(e){}
+    }catch(e){ alert(e.message||"Could not equip banner."); }
+  };
+
+  ["refreshBanners","refreshBannersV115","refreshBannersV117","refreshBannersV118","refreshBannersV119","refreshBannersV129","refreshBannersV130"].forEach(n=>window[n]=window.v136LoadBanners);
+  ["buyBannerPackV115","buyBannerPackV117","buyBannerPackV118","buyBannerPackV119","v129BuyBannerPack","v130BuyBannerPack"].forEach(n=>window[n]=window.v136BuyBannerPack);
+  ["equipBannerV115","equipBannerV117","equipBannerV118","equipBannerV119","v129EquipBanner","v130EquipBanner"].forEach(n=>window[n]=window.v136EquipBanner);
+
+  function ensurePauseOverlay(){
+    let overlay=document.getElementById("blankSpacePauseOverlayV136");
+    if(overlay) return overlay;
+    overlay=document.createElement("div");
+    overlay.id="blankSpacePauseOverlayV136";
+    overlay.innerHTML='<div class="pause-card"><h1>Website Paused</h1><p>This website has been temporarily paused by the owner.</p></div>';
+    document.body.appendChild(overlay);
+    return overlay;
+  }
+  async function getPause(){ try{return await rpcAny(["get_website_pause_status_v136","get_website_pause_status"],{});}catch(e){return null;} }
+  function rankNow(){ const p=profile()||{}, u=user()||{}, m=u.user_metadata||u.raw_user_meta_data||{}; return norm(p.rank||m.rank||"member"); }
+  function userNow(){ const p=profile()||{}, u=user()||{}, m=u.user_metadata||u.raw_user_meta_data||{}; return norm(p.username||p.display_name||m.username||m.name); }
+  async function checkPause(){
+    const overlay=ensurePauseOverlay();
+    const st=await getPause();
+    if(!st || st.paused!==true){ overlay.classList.remove("active"); return; }
+    const r=rankNow(), un=userNow();
+    const except=(Array.isArray(st.except_ranks)?st.except_ranks:[]).map(norm);
+    const exempt=(r==="owner" || un==="owner" || except.includes(r) || (r==="admin"&&except.includes("admins")) || (r==="manager"&&except.includes("managers")) || (r==="tester"&&except.includes("testers")));
+    overlay.classList.toggle("active",!exempt);
+  }
+  function selectedExcept(){
+    const sel=document.getElementById("pauseExceptRanksV136");
+    if(!sel) return [];
+    const vals=Array.from(sel.selectedOptions).map(o=>o.value).filter(Boolean);
+    if(vals.includes("none")) return [];
+    return vals;
+  }
+  window.v136PauseWebsite=async function(){
+    try{ if(!isOwner()) return alert("Owner only."); await rpcAny(["set_website_pause_v136","set_website_pause"],{p_paused:true,p_except_ranks:selectedExcept()}); alert("Website paused."); await checkPause(); }
+    catch(e){ alert(e.message||"Could not pause website."); }
+  };
+  window.v136UnpauseWebsite=async function(){
+    try{ if(!isOwner()) return alert("Owner only."); await rpcAny(["set_website_pause_v136","set_website_pause"],{p_paused:false,p_except_ranks:[]}); alert("Website unpaused."); await checkPause(); }
+    catch(e){ alert(e.message||"Could not unpause website."); }
+  };
+
+  function ensurePauseUI(){
+    const panel=document.getElementById("accountAdminPanel")||document.getElementById("ownerPanel")||document.getElementById("adminPanel");
+    if(!panel || panel.__v136PauseUI || !isOwner()) return;
+    panel.__v136PauseUI=true;
+    const card=document.createElement("div");
+    card.className="admin-tile v136-owner-card owner-only";
+    card.innerHTML=`
+      <h3>Pause Website</h3>
+      <p class="small-note">Show a paused message to everyone except selected ranks. Owner is always allowed.</p>
+      <label class="small-note" for="pauseExceptRanksV136"><b>Except...</b></label>
+      <select id="pauseExceptRanksV136" multiple>
+        <option value="none">No one</option>
+        <option value="testers">Testers</option>
+        <option value="managers">Managers</option>
+        <option value="admins">Admins</option>
+      </select>
+      <p class="small-note">Hold Ctrl/Command to pick more than one.</p>
+      <div class="v136-actions">
+        <button class="mini-btn danger-btn" id="pauseWebsiteBtnV136">Pause Website</button>
+        <button class="mini-btn" id="unpauseWebsiteBtnV136">Unpause Website</button>
+      </div>`;
+    (panel.querySelector(".admin-grid")||panel).appendChild(card);
+    card.querySelector("#pauseWebsiteBtnV136").addEventListener("click",v136PauseWebsite);
+    card.querySelector("#unpauseWebsiteBtnV136").addEventListener("click",v136UnpauseWebsite);
+  }
+
+  function ensureMessageModal(){
+    if(document.getElementById("v136OwnerModalBackdrop")) return;
+    const modal=document.createElement("div");
+    modal.id="v136OwnerModalBackdrop";
+    modal.innerHTML='<div class="v136-modal"><div class="v136-modal-head"><h2 id="v136OwnerModalTitle">Responses</h2><button class="mini-btn" id="v136OwnerModalClose">X</button></div><div id="v136OwnerModalBody"></div></div>';
+    document.body.appendChild(modal);
+    modal.querySelector("#v136OwnerModalClose").addEventListener("click",()=>modal.classList.remove("active"));
+  }
+
+  window.v136ViewResponses=async function(){
+    try{
+      ensureMessageModal();
+      const rows=await rpcAny(["get_message_responses_v136","get_message_responses"],{});
+      const body=document.getElementById("v136OwnerModalBody");
+      body.innerHTML=(Array.isArray(rows)&&rows.length)?rows.map(r=>`
+        <div class="v136-response-item">
+          <div class="v136-response-meta">${esc(r.username||"Unknown")} • ${esc(new Date(r.created_at).toLocaleString())}</div>
+          <div>${esc(r.response_text||"")}</div>
+          <div class="small-note">Question: ${esc(r.message_text||"")}</div>
+        </div>`).join(""):'<div class="empty-state">No responses yet.</div>';
+      document.getElementById("v136OwnerModalBackdrop").classList.add("active");
+    }catch(e){ alert(e.message||"Could not load responses."); }
+  };
+
+  window.v136SendOwnerMessage=async function(){
+    try{
+      if(!isOwner()) return alert("Owner only.");
+      const box=document.getElementById("v136OwnerMessageText");
+      const text=String(box?.value||"").trim();
+      if(!text) return alert("Type a message.");
+      const response=document.getElementById("v136OwnerMessageResponse")?.checked === true;
+      await rpcAny(["send_owner_message_v136","send_owner_message"],{p_message:text,p_requires_response:response});
+      alert(response ? "Question sent." : "Message sent.");
+      if(box) box.value="";
+    }catch(e){ alert(e.message||"Could not send message."); }
+  };
+
+  function ensureMessageUI(){
+    const panel=document.getElementById("accountAdminPanel")||document.getElementById("ownerPanel")||document.getElementById("adminPanel");
+    if(!panel || panel.__v136MessageUI || !isOwner()) return;
+    panel.__v136MessageUI=true;
+
+    // Rename visible Timed Message headings to Message.
+    panel.querySelectorAll("h2,h3,h4").forEach(h=>{
+      if(/Timed Message/i.test(h.textContent||"")) h.textContent=String(h.textContent||"").replace(/Timed Message/ig,"Message");
+    });
+
+    const card=document.createElement("div");
+    card.className="admin-tile v136-owner-card v136-message-box owner-only";
+    card.innerHTML=`
+      <h3>Message</h3>
+      <p class="small-note">Send a message, or ask a question and collect responses.</p>
+      <textarea id="v136OwnerMessageText" placeholder="Message or question"></textarea>
+      <label class="v136-check"><input type="checkbox" id="v136OwnerMessageResponse"><span>Response</span></label>
+      <div class="v136-actions">
+        <button class="mini-btn primary" id="v136SendOwnerMessageBtn">Send Message</button>
+        <button class="mini-btn" id="v136ViewResponsesBtn">View Responses</button>
+      </div>`;
+    (panel.querySelector(".admin-grid")||panel).appendChild(card);
+    card.querySelector("#v136SendOwnerMessageBtn").addEventListener("click",v136SendOwnerMessage);
+    card.querySelector("#v136ViewResponsesBtn").addEventListener("click",v136ViewResponses);
+  }
+
+  function ensurePromptModal(){
+    if(document.getElementById("v136MessagePromptBackdrop")) return;
+    const modal=document.createElement("div");
+    modal.id="v136MessagePromptBackdrop";
+    modal.innerHTML='<div class="v136-modal"><div class="v136-modal-head"><h2>Message</h2><button class="mini-btn" id="v136PromptClose">X</button></div><div id="v136PromptBody"></div></div>';
+    document.body.appendChild(modal);
+    modal.querySelector("#v136PromptClose").addEventListener("click",()=>modal.classList.remove("active"));
+  }
+
+  async function checkOwnerMessages(){
+    try{
+      await session();
+      const rows=await rpcAny(["get_active_owner_messages_v136","get_active_owner_messages"],{});
+      if(!Array.isArray(rows) || !rows.length) return;
+      const m=rows[0];
+      if(localStorage.getItem("blank_space_seen_owner_message_"+m.id)==="1") return;
+      ensurePromptModal();
+      const body=document.getElementById("v136PromptBody");
+      if(m.requires_response){
+        body.innerHTML=`
+          <p class="small-note">${esc(m.message_text)}</p>
+          <textarea id="v136PromptResponseText" placeholder="Type your response"></textarea>
+          <div class="v136-actions"><button class="mini-btn primary" id="v136SubmitPromptResponse">Submit Response</button></div>`;
+        body.querySelector("#v136SubmitPromptResponse").addEventListener("click",async()=>{
+          const text=String(document.getElementById("v136PromptResponseText")?.value||"").trim();
+          if(!text) return alert("Type a response.");
+          await rpcAny(["submit_message_response_v136","submit_message_response"],{p_message_id:m.id,p_response:text});
+          localStorage.setItem("blank_space_seen_owner_message_"+m.id,"1");
+          document.getElementById("v136MessagePromptBackdrop").classList.remove("active");
+        });
+      }else{
+        body.innerHTML=`<p>${esc(m.message_text)}</p><button class="mini-btn primary" id="v136AcknowledgePrompt">OK</button>`;
+        body.querySelector("#v136AcknowledgePrompt").addEventListener("click",()=>{
+          localStorage.setItem("blank_space_seen_owner_message_"+m.id,"1");
+          document.getElementById("v136MessagePromptBackdrop").classList.remove("active");
+        });
+      }
+      document.getElementById("v136MessagePromptBackdrop").classList.add("active");
+    }catch(e){}
+  }
+
+  document.addEventListener("DOMContentLoaded",function(){
+    patchLeaderboard();
+    ensurePauseOverlay();
+    ensureMessageModal();
+    ensurePromptModal();
+    setTimeout(v136LoadBanners,700);
+    setTimeout(ensurePauseUI,1000);
+    setTimeout(ensureMessageUI,1100);
+    setTimeout(checkPause,1300);
+    setTimeout(checkOwnerMessages,1800);
+    setInterval(checkPause,30000);
+    setInterval(checkOwnerMessages,60000);
+  });
+  document.addEventListener("click",function(){
+    setTimeout(patchLeaderboard,100);
+    setTimeout(ensurePauseUI,150);
+    setTimeout(ensureMessageUI,150);
+  },true);
 })();
 </script>
 
