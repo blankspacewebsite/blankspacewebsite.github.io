@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v139: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v140: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -1029,10 +1029,85 @@ header{
   }
 }
 
+
+/* v140 leaderboard sizing + owner delete button */
+#leaderboardList .leaderboard-item {
+  grid-template-columns: 72px 64px minmax(0, 1fr) auto 48px !important;
+  gap: 14px !important;
+  min-height: 96px !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  border-radius: 24px !important;
+}
+#leaderboardList .leader-rank {
+  font-size: 29px !important;
+}
+#leaderboardList .leader-avatar {
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 18px !important;
+}
+#leaderboardList .leader-name {
+  font-size: 24px !important;
+  gap: 8px !important;
+}
+#leaderboardList .friend-meta {
+  font-size: 15px !important;
+}
+#leaderboardList .leader-points {
+  font-size: 21px !important;
+  gap: 8px !important;
+}
+#leaderboardList .rank-badge,
+#leaderboardList .v138-presence-pill,
+#leaderboardList .online-pill {
+  font-size: 10px !important;
+  padding: 4px 8px !important;
+}
+#leaderboardList .profile-equipped-icon {
+  transform: scale(.92);
+}
+.v140-owner-delete-btn {
+  grid-column: 5 !important;
+  justify-self: end !important;
+  align-self: center !important;
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+  border: 1px solid rgba(248,113,113,.65);
+  background: rgba(127,29,29,.28);
+  color: #fecaca;
+  display: inline-grid;
+  place-items: center;
+  font-size: 19px;
+  cursor: pointer;
+  font-weight: 1000;
+}
+.v140-owner-delete-btn:hover {
+  background: rgba(127,29,29,.52);
+  border-color: rgba(248,113,113,.95);
+}
+.v140-owner-delete-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+@media (max-width: 720px) {
+  #leaderboardList .leaderboard-item {
+    grid-template-columns: 50px 52px minmax(0, 1fr) !important;
+    min-height: 92px !important;
+  }
+  .v140-owner-delete-btn {
+    grid-column: 3 !important;
+    justify-self: end !important;
+    width: 36px;
+    height: 36px;
+  }
+}
+
 </style>
 
 <script>
-/* Blank Space v139: protect number typing in inputs before tab shortcuts can steal it */
+/* Blank Space v140: protect number typing in inputs before tab shortcuts can steal it */
 (function(){
   if(window.__blankSpaceV137NumberTypingGuard) return;
   window.__blankSpaceV137NumberTypingGuard = true;
@@ -1080,7 +1155,7 @@ header{
 <body>
 
 <script>
-/* Blank Space v139: allow Backspace inside website text boxes */
+/* Blank Space v140: allow Backspace inside website text boxes */
 (function(){
   if(window.__blankSpaceV135BackspaceFix) return;
   window.__blankSpaceV135BackspaceFix = true;
@@ -1132,7 +1207,7 @@ header{
 
 
 <script>
-/* Blank Space v139: simple lock-screen keypad repair */
+/* Blank Space v140: simple lock-screen keypad repair */
 (function(){
   if(window.__blankSpaceV132SimpleUnlock) return;
   window.__blankSpaceV132SimpleUnlock = true;
@@ -1420,7 +1495,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v139</span>
+        <span class="update-version-badge">Blank Space v140</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -9402,7 +9477,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139 repair layer */
+/* Blank Space v140 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9601,7 +9676,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: banner sign-in/session repair */
+/* Blank Space v140: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9829,7 +9904,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: final banner Buy/Equip sign-in fix */
+/* Blank Space v140: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -10120,7 +10195,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: all achievements automatic tracker + strict Slope */
+/* Blank Space v140: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10544,7 +10619,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: owner leaderboard delete + full leaderboard */
+/* Blank Space v140: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10716,7 +10791,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v140: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -10995,7 +11070,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v140: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -11365,7 +11440,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v140: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11599,7 +11674,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: exact about:blank helper under Blocking Settings */
+/* Blank Space v140: exact about:blank helper under Blocking Settings */
 (function(){
   if(window.__blankSpaceV133BlockingHelper) return;
   window.__blankSpaceV133BlockingHelper = true;
@@ -11726,7 +11801,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: final repair set */
+/* Blank Space v140: final repair set */
 (function(){
   if(window.__blankSpaceV136Patch) return;
   window.__blankSpaceV136Patch = true;
@@ -12119,7 +12194,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: replace Pause Website multi-select with checkbox dropdown */
+/* Blank Space v140: replace Pause Website multi-select with checkbox dropdown */
 (function(){
   if(window.__blankSpaceV137PauseDropdown) return;
   window.__blankSpaceV137PauseDropdown = true;
@@ -12221,7 +12296,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: presence, rank colors, banner display/equip, and unified owner Message panel */
+/* Blank Space v140: presence, rank colors, banner display/equip, and unified owner Message panel */
 (function(){
   if(window.__blankSpaceV138Patch) return;
   window.__blankSpaceV138Patch = true;
@@ -12261,7 +12336,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v139: keep leaderboard rows horizontal with presence beside points */
+/* Blank Space v140: keep leaderboard rows horizontal with presence beside points */
 (function(){
   if(window.__blankSpaceV139LeaderboardLayout) return;
   window.__blankSpaceV139LeaderboardLayout = true;
@@ -12334,6 +12409,129 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }, true);
 
   window.fixLeaderboardLayoutV139 = ensurePresenceInPoints;
+})();
+</script>
+
+
+<script>
+/* Blank Space v140: Owner-only trash can to right of leaderboard points */
+(function(){
+  if(window.__blankSpaceV140LeaderboardTrash) return;
+  window.__blankSpaceV140LeaderboardTrash = true;
+
+  function norm(v){ return String(v || "").trim().toLowerCase(); }
+
+  function profile(){
+    try{ if(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) return blankSpaceProfile; }catch(e){}
+    return window.blankSpaceProfile || null;
+  }
+
+  function user(){
+    try{ if(typeof blankSpaceUser !== "undefined" && blankSpaceUser) return blankSpaceUser; }catch(e){}
+    return window.blankSpaceUser || null;
+  }
+
+  function isOwner(){
+    const p = profile() || {};
+    const u = user() || {};
+    const meta = u.user_metadata || u.raw_user_meta_data || {};
+    return norm(p.rank || meta.rank) === "owner" || norm(p.username || p.display_name || meta.username || meta.name) === "owner";
+  }
+
+  function ownerId(){
+    const p = profile() || {};
+    const u = user() || {};
+    return p.id || u.id || "";
+  }
+
+  function getRowName(row){
+    const nameEl = row.querySelector(".leader-name");
+    if(!nameEl) return "this account";
+    const clone = nameEl.cloneNode(true);
+    clone.querySelectorAll(".rank-badge,.true-member-badge,.profile-equipped-icon,.v130-medal,.v129-medal").forEach(el => el.remove());
+    return String(clone.textContent || "this account").trim() || "this account";
+  }
+
+  function isProtectedRow(row){
+    const name = norm(getRowName(row));
+    const rankText = norm(row.querySelector(".rank-badge")?.textContent || "");
+    const id = row.getAttribute("data-user-id") || row.dataset.userId || "";
+    return !id || id === ownerId() || name === "owner" || name === "admin" || rankText === "owner" || rankText === "admin";
+  }
+
+  async function deleteAccount(userId, username){
+    try{
+      if(!isOwner()) return alert("Owner only.");
+      if(!userId) return alert("Missing account ID.");
+
+      const typed = prompt(
+        `Remove account "${username}"?\n\nThis removes their profile and tries to remove their login account. This cannot be undone unless you have a Supabase backup.\n\nType DELETE to confirm.`
+      );
+      if(typed !== "DELETE") return;
+
+      const r = await getSupabaseClient().rpc("owner_delete_account", {
+        p_target_user_id: userId
+      });
+      if(r.error) throw r.error;
+
+      alert(`Removed account: ${username}`);
+      if(typeof refreshLeaderboard === "function") await refreshLeaderboard();
+    }catch(e){
+      alert((e && e.message) || "Could not remove account.");
+    }
+  }
+
+  function addTrashButtons(){
+    const list = document.getElementById("leaderboardList");
+    if(!list) return;
+
+    list.querySelectorAll(".leaderboard-item").forEach(row => {
+      row.querySelectorAll(".v140-owner-delete-btn").forEach(btn => btn.remove());
+
+      if(!isOwner()) return;
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "v140-owner-delete-btn";
+      const protectedRow = isProtectedRow(row);
+      btn.innerHTML = protectedRow ? "🛡️" : "🗑️";
+      btn.title = protectedRow ? "Protected account" : "Remove account";
+      btn.disabled = protectedRow;
+
+      if(!protectedRow){
+        btn.addEventListener("click", function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          const id = row.getAttribute("data-user-id") || row.dataset.userId || "";
+          deleteAccount(id, getRowName(row));
+        });
+      }
+
+      row.appendChild(btn);
+    });
+  }
+
+  if(typeof refreshLeaderboard === "function" && !refreshLeaderboard.__v140Trash){
+    const old = refreshLeaderboard;
+    window.refreshLeaderboard = async function(){
+      const out = await old.apply(this, arguments);
+      setTimeout(addTrashButtons, 0);
+      setTimeout(addTrashButtons, 250);
+      return out;
+    };
+    window.refreshLeaderboard.__v140Trash = true;
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(addTrashButtons, 600);
+    setTimeout(addTrashButtons, 1500);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(addTrashButtons, 150);
+  }, true);
+
+  window.addOwnerTrashButtonsV140 = addTrashButtons;
 })();
 </script>
 
