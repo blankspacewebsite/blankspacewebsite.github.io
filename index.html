@@ -4,37 +4,37 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v141: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
-<!-- Blank Space v68: replaced paper-error games with local playable versions -->
-<!-- Blank Space v47: changed verified badge to generated blue check seal -->
-<!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
-<!-- Blank Space v40: restored actual game sources from v38; removed v39 built-in mini-game replacement -->
-<!-- Blank Space v76: hides admins from leaderboard and adds matte black admin badge on Account page -->
-<!-- Blank Space v75: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
-<!-- Blank Space v74: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
-<!-- Blank Space v73: added Supabase username accounts and on-site suggestions database -->
-<!-- Blank Space v87 strict patch: manual achievement submissions use exact values, disable all automatic game messages, and prevent mass unlocks -->
-<!-- Blank Space v87: disables unsafe automatic achievement detectors, fixes manual-only unlocks, resets Admin achievement stats, and keeps achievements points-only -->
-<!-- Blank Space v86: fixed achievement thresholds/progress, reset Admin achievements, leaderboard admin visibility, and hideable score submitter -->
-<!-- Blank Space v85: achievement reliability fix, manual score submit fallback, and corrected Supabase achievement SQL -->
-<!-- Blank Space v84: admin-only main Admin Panel tab, achievement debug/testing, detector patch, and stable achievement schema -->
-<!-- Blank Space v82: added Chess-AI, Stick Merge, deeper achievements, Chat tab, game quick chat, and browser polish -->
-<!-- Blank Space v81: added achievements, equipped icons, Google Doodle Baseball, suggestion filters, and thumbnail fixes -->
-<!-- Blank Space v80: iframe browser searches restored, with fallback for sites that block embedding -->
-<!-- Blank Space v77: self-hosted selected Popular Games and Big Shot Boxing fallback source fix -->
-<!-- Blank Space v37: Browser opens tabs, Geometry Dash source changed, added requested games to Reliable -->
-<!-- Blank Space v36: added Links tab, updated Escape Road thumbnails, cleaned Popular Games -->
-<!-- Blank Space v35: improved built-in thumbnails for Escape Road 2 and Escape Road 3 -->
-<!-- Blank Space v34: added keypad lock and Reliable/Regular game tabs -->
-<!-- Blank Space v33: kept only the four best Bros games and updated their sources -->
-<!-- Blank Space v29: updated Bros and Escape Road thumbnails; fixed Escape Road source -->
-<!-- Blank Space v28: fixed Escape Road, Escape Road 2, and Escape Road 3 sources -->
-<!-- Blank Space v27: fixed black game frames by clearing iframe srcdoc before loading external sources -->
-<!-- Blank Space v24: added Bros games and Escape Road 1/2/3 -->
-<!-- Blank Space v23: Basketball Stars and Moto X3M changed to 3kh0/nb-ga GitHub Pages game builds -->
-<!-- Blank Space v22: Basketball Stars and Moto X3M changed to direct webglmath game URLs -->
-<!-- Blank Space v21: Basketball Stars and Moto X3M changed to GameDistribution direct game pages -->
-<!-- Blank Space v20: fixed Basketball Stars, Moto X3M, BitLife, and Stickman Hook sources -->
+<!-- Blank Space v143: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v143: replaced paper-error games with local playable versions -->
+<!-- Blank Space v143: changed verified badge to generated blue check seal -->
+<!-- Blank Space v143: added self-hosted Escape Road 3 with gold badge -->
+<!-- Blank Space v143: restored actual game sources from v38; removed v39 built-in mini-game replacement -->
+<!-- Blank Space v143: hides admins from leaderboard and adds matte black admin badge on Account page -->
+<!-- Blank Space v143: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
+<!-- Blank Space v143: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
+<!-- Blank Space v143: added Supabase username accounts and on-site suggestions database -->
+<!-- Blank Space v143 strict patch: manual achievement submissions use exact values, disable all automatic game messages, and prevent mass unlocks -->
+<!-- Blank Space v143: disables unsafe automatic achievement detectors, fixes manual-only unlocks, resets Admin achievement stats, and keeps achievements points-only -->
+<!-- Blank Space v143: fixed achievement thresholds/progress, reset Admin achievements, leaderboard admin visibility, and hideable score submitter -->
+<!-- Blank Space v143: achievement reliability fix, manual score submit fallback, and corrected Supabase achievement SQL -->
+<!-- Blank Space v143: admin-only main Admin Panel tab, achievement debug/testing, detector patch, and stable achievement schema -->
+<!-- Blank Space v143: added Chess-AI, Stick Merge, deeper achievements, Chat tab, game quick chat, and browser polish -->
+<!-- Blank Space v143: added achievements, equipped icons, Google Doodle Baseball, suggestion filters, and thumbnail fixes -->
+<!-- Blank Space v143: iframe browser searches restored, with fallback for sites that block embedding -->
+<!-- Blank Space v143: self-hosted selected Popular Games and Big Shot Boxing fallback source fix -->
+<!-- Blank Space v143: Browser opens tabs, Geometry Dash source changed, added requested games to Reliable -->
+<!-- Blank Space v143: added Links tab, updated Escape Road thumbnails, cleaned Popular Games -->
+<!-- Blank Space v143: improved built-in thumbnails for Escape Road 2 and Escape Road 3 -->
+<!-- Blank Space v143: added keypad lock and Reliable/Regular game tabs -->
+<!-- Blank Space v143: kept only the four best Bros games and updated their sources -->
+<!-- Blank Space v143: updated Bros and Escape Road thumbnails; fixed Escape Road source -->
+<!-- Blank Space v143: fixed Escape Road, Escape Road 2, and Escape Road 3 sources -->
+<!-- Blank Space v143: fixed black game frames by clearing iframe srcdoc before loading external sources -->
+<!-- Blank Space v143: added Bros games and Escape Road 1/2/3 -->
+<!-- Blank Space v143: Basketball Stars and Moto X3M changed to 3kh0/nb-ga GitHub Pages game builds -->
+<!-- Blank Space v143: Basketball Stars and Moto X3M changed to direct webglmath game URLs -->
+<!-- Blank Space v143: Basketball Stars and Moto X3M changed to GameDistribution direct game pages -->
+<!-- Blank Space v143: fixed Basketball Stars, Moto X3M, BitLife, and Stickman Hook sources -->
 <style>
 :root{--bg:#050505;--text:#fff;--muted:#b5b5b5;--line:#24262e;--panel:#0d0e12}
 *{box-sizing:border-box}
@@ -1124,10 +1124,29 @@ header{
   pointer-events: auto !important;
 }
 
+
+/* v143 Pause Website custom message hard placement */
+.v143-pause-message-wrap {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 14px;
+}
+.v143-pause-message-wrap label {
+  font-weight: 1000;
+  color: #d1d5db;
+}
+#v143PauseMessageText {
+  width: 100% !important;
+  min-height: 92px !important;
+  resize: vertical !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+}
+
 </style>
 
 <script>
-/* Blank Space v141: protect number typing in inputs before tab shortcuts can steal it */
+/* Blank Space v143: protect number typing in inputs before tab shortcuts can steal it */
 (function(){
   if(window.__blankSpaceV137NumberTypingGuard) return;
   window.__blankSpaceV137NumberTypingGuard = true;
@@ -1175,7 +1194,7 @@ header{
 <body>
 
 <script>
-/* Blank Space v141: allow Backspace inside website text boxes */
+/* Blank Space v143: allow Backspace inside website text boxes */
 (function(){
   if(window.__blankSpaceV135BackspaceFix) return;
   window.__blankSpaceV135BackspaceFix = true;
@@ -1227,7 +1246,7 @@ header{
 
 
 <script>
-/* Blank Space v141: simple lock-screen keypad repair */
+/* Blank Space v143: simple lock-screen keypad repair */
 (function(){
   if(window.__blankSpaceV132SimpleUnlock) return;
   window.__blankSpaceV132SimpleUnlock = true;
@@ -1515,7 +1534,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v141</span>
+        <span class="update-version-badge">Blank Space v143</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -9497,7 +9516,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141 repair layer */
+/* Blank Space v143 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9696,7 +9715,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: banner sign-in/session repair */
+/* Blank Space v143: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9924,7 +9943,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: final banner Buy/Equip sign-in fix */
+/* Blank Space v143: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -10215,7 +10234,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: all achievements automatic tracker + strict Slope */
+/* Blank Space v143: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10639,7 +10658,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: owner leaderboard delete + full leaderboard */
+/* Blank Space v143: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10811,7 +10830,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v143: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -11090,7 +11109,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v143: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -11460,7 +11479,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v143: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11694,7 +11713,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: exact about:blank helper under Blocking Settings */
+/* Blank Space v143: exact about:blank helper under Blocking Settings */
 (function(){
   if(window.__blankSpaceV133BlockingHelper) return;
   window.__blankSpaceV133BlockingHelper = true;
@@ -11821,7 +11840,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: final repair set */
+/* Blank Space v143: final repair set */
 (function(){
   if(window.__blankSpaceV136Patch) return;
   window.__blankSpaceV136Patch = true;
@@ -12214,7 +12233,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: replace Pause Website multi-select with checkbox dropdown */
+/* Blank Space v143: replace Pause Website multi-select with checkbox dropdown */
 (function(){
   if(window.__blankSpaceV137PauseDropdown) return;
   window.__blankSpaceV137PauseDropdown = true;
@@ -12316,7 +12335,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: presence, rank colors, banner display/equip, and unified owner Message panel */
+/* Blank Space v143: presence, rank colors, banner display/equip, and unified owner Message panel */
 (function(){
   if(window.__blankSpaceV138Patch) return;
   window.__blankSpaceV138Patch = true;
@@ -12356,7 +12375,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: keep leaderboard rows horizontal with presence beside points */
+/* Blank Space v143: keep leaderboard rows horizontal with presence beside points */
 (function(){
   if(window.__blankSpaceV139LeaderboardLayout) return;
   window.__blankSpaceV139LeaderboardLayout = true;
@@ -12434,7 +12453,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: Owner-only trash can to right of leaderboard points */
+/* Blank Space v143: Owner-only trash can to right of leaderboard points */
 (function(){
   if(window.__blankSpaceV140LeaderboardTrash) return;
   window.__blankSpaceV140LeaderboardTrash = true;
@@ -12557,7 +12576,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v141: stop Owner Panel fields from being wiped while typing/clicking */
+/* Blank Space v143: stop Owner Panel fields from being wiped while typing/clicking */
 (function(){
   if(window.__blankSpaceV141OwnerPanelInputFix) return;
   window.__blankSpaceV141OwnerPanelInputFix = true;
@@ -12628,6 +12647,211 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   window.blankSpaceV141SaveOwnerPanelDraft = saveDraft;
   window.blankSpaceV141RestoreOwnerPanelDraft = restoreDraft;
+})();
+</script>
+
+
+<script>
+/* Blank Space v143: force Pause Website custom message box into the Pause Website card */
+(function(){
+  if(window.__blankSpaceV143PauseMessageFix) return;
+  window.__blankSpaceV143PauseMessageFix = true;
+
+  const DEFAULT_MESSAGE = "This website has been temporarily paused by the owner.";
+
+  function norm(v){ return String(v || "").trim().toLowerCase(); }
+  function sb(){ return getSupabaseClient(); }
+
+  function profile(){
+    try{ if(typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) return blankSpaceProfile; }catch(e){}
+    return window.blankSpaceProfile || null;
+  }
+  function user(){
+    try{ if(typeof blankSpaceUser !== "undefined" && blankSpaceUser) return blankSpaceUser; }catch(e){}
+    return window.blankSpaceUser || null;
+  }
+  function isOwner(){
+    const p = profile() || {};
+    const u = user() || {};
+    const meta = u.user_metadata || u.raw_user_meta_data || {};
+    return norm(p.rank || meta.rank) === "owner" || norm(p.username || p.display_name || meta.username || meta.name) === "owner";
+  }
+
+  async function rpcAny(names,args){
+    let last = null;
+    for(const name of names){
+      try{
+        const r = await sb().rpc(name,args || {});
+        if(!r.error) return r.data;
+        last = r.error;
+      }catch(e){ last = e; }
+    }
+    if(last) throw last;
+    throw new Error("Request failed.");
+  }
+
+  function findPauseCard(){
+    const cards = Array.from(document.querySelectorAll(".admin-tile,.v136-owner-card,.owner-only,.panel,.card,section,div"));
+    return cards.find(el => {
+      const title = el.querySelector("h2,h3,h4");
+      const text = (title ? title.textContent : el.textContent) || "";
+      return /Pause Website/i.test(text) && (
+        el.querySelector("#pauseWebsiteBtnV136") ||
+        el.querySelector("#unpauseWebsiteBtnV136") ||
+        el.querySelector("#v137PauseExceptDropdown") ||
+        el.querySelector("#pauseExceptRanksV136")
+      );
+    });
+  }
+
+  function installBox(){
+    const card = findPauseCard();
+    if(!card) return;
+
+    // Remove old failed v142 box if it was inserted in the wrong place.
+    document.querySelectorAll(".v142-pause-message-label,#v142PauseMessageText").forEach(el => el.remove());
+
+    let wrap = card.querySelector("#v143PauseMessageWrap");
+    if(!wrap){
+      wrap = document.createElement("div");
+      wrap.id = "v143PauseMessageWrap";
+      wrap.className = "v143-pause-message-wrap";
+      wrap.innerHTML = `
+        <label for="v143PauseMessageText">Pause message</label>
+        <textarea id="v143PauseMessageText" placeholder="${DEFAULT_MESSAGE}"></textarea>
+        <p class="small-note">Leave blank to use the default pause message.</p>
+      `;
+
+      const actions = card.querySelector(".v136-pause-actions,.v136-actions") || card.querySelector("#pauseWebsiteBtnV136")?.parentElement;
+      if(actions) actions.insertAdjacentElement("beforebegin", wrap);
+      else card.appendChild(wrap);
+    }
+
+    const box = wrap.querySelector("#v143PauseMessageText");
+    if(box && localStorage.getItem("blank_space_v143_pause_message_draft") && !box.value){
+      box.value = localStorage.getItem("blank_space_v143_pause_message_draft");
+    }
+    if(box && !box.dataset.v143Wired){
+      box.dataset.v143Wired = "1";
+      box.addEventListener("input", () => {
+        localStorage.setItem("blank_space_v143_pause_message_draft", box.value);
+      });
+      ["keydown","keypress","keyup","click","pointerdown","mousedown","mouseup"].forEach(type => {
+        box.addEventListener(type, e => e.stopPropagation(), true);
+      });
+    }
+  }
+
+  function selectedExcept(){
+    const boxes = document.querySelectorAll("[data-v137-pause-except]:checked");
+    if(boxes.length){
+      const vals = Array.from(boxes).map(b => b.value).filter(Boolean);
+      return vals.includes("none") ? [] : vals;
+    }
+    const sel = document.getElementById("pauseExceptRanksV136");
+    if(!sel) return [];
+    const vals = Array.from(sel.selectedOptions).map(o => o.value).filter(Boolean);
+    return vals.includes("none") ? [] : vals;
+  }
+
+  function pauseMessage(){
+    const v = String(document.getElementById("v143PauseMessageText")?.value || "").trim();
+    return v || DEFAULT_MESSAGE;
+  }
+
+  function setOverlayMessage(message){
+    const overlay = document.getElementById("blankSpacePauseOverlayV136");
+    const p = overlay && overlay.querySelector(".pause-card p");
+    if(p) p.textContent = String(message || DEFAULT_MESSAGE);
+  }
+
+  window.v143PauseWebsite = async function(){
+    try{
+      if(!isOwner()) return alert("Owner only.");
+      const message = pauseMessage();
+      await rpcAny(["set_website_pause_v143","set_website_pause_v142","set_website_pause"], {
+        p_paused: true,
+        p_except_ranks: selectedExcept(),
+        p_message: message
+      });
+      setOverlayMessage(message);
+      alert("Website paused.");
+      try{ if(typeof checkPause === "function") await checkPause(); }catch(e){}
+    }catch(e){
+      alert((e && e.message) || "Could not pause website.");
+    }
+  };
+
+  window.v143UnpauseWebsite = async function(){
+    try{
+      if(!isOwner()) return alert("Owner only.");
+      await rpcAny(["set_website_pause_v143","set_website_pause_v142","set_website_pause"], {
+        p_paused: false,
+        p_except_ranks: [],
+        p_message: DEFAULT_MESSAGE
+      });
+      setOverlayMessage(DEFAULT_MESSAGE);
+      alert("Website unpaused.");
+      try{ if(typeof checkPause === "function") await checkPause(); }catch(e){}
+    }catch(e){
+      alert((e && e.message) || "Could not unpause website.");
+    }
+  };
+
+  // Override all older pause functions.
+  window.v136PauseWebsite = window.v143PauseWebsite;
+  window.v142PauseWebsite = window.v143PauseWebsite;
+  window.v136UnpauseWebsite = window.v143UnpauseWebsite;
+  window.v142UnpauseWebsite = window.v143UnpauseWebsite;
+
+  function wireButtons(){
+    installBox();
+    const pauseBtn = document.getElementById("pauseWebsiteBtnV136");
+    if(pauseBtn){
+      pauseBtn.onclick = null;
+      if(!pauseBtn.dataset.v143Wired){
+        pauseBtn.dataset.v143Wired = "1";
+        pauseBtn.addEventListener("click", function(e){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.v143PauseWebsite();
+        }, true);
+      }
+    }
+    const unpauseBtn = document.getElementById("unpauseWebsiteBtnV136");
+    if(unpauseBtn){
+      unpauseBtn.onclick = null;
+      if(!unpauseBtn.dataset.v143Wired){
+        unpauseBtn.dataset.v143Wired = "1";
+        unpauseBtn.addEventListener("click", function(e){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.v143UnpauseWebsite();
+        }, true);
+      }
+    }
+  }
+
+  async function syncOverlay(){
+    try{
+      const status = await rpcAny(["get_website_pause_status_v143","get_website_pause_status_v142","get_website_pause_status"], {});
+      setOverlayMessage(status && status.pause_message ? status.pause_message : DEFAULT_MESSAGE);
+    }catch(e){}
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(wireButtons, 250);
+    setTimeout(wireButtons, 900);
+    setTimeout(wireButtons, 1800);
+    setTimeout(syncOverlay, 1200);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(wireButtons, 80);
+  }, true);
+
+  setInterval(wireButtons, 2500);
+  setInterval(syncOverlay, 12000);
 })();
 </script>
 
