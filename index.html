@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v138: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v139: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -940,10 +940,99 @@ header{
 .v138-check-row input{width:auto!important}
 .v138-message-time-row.hidden{display:none!important}
 
+
+/* v139 leaderboard left-to-right layout repair */
+#leaderboardList .leaderboard-item {
+  display: grid !important;
+  grid-template-columns: 86px 74px minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 18px !important;
+  min-height: 110px !important;
+}
+#leaderboardList .leader-rank {
+  grid-column: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  font-size: 34px !important;
+  font-weight: 1000 !important;
+}
+#leaderboardList .leader-avatar {
+  grid-column: 2 !important;
+  justify-self: center !important;
+  align-self: center !important;
+}
+#leaderboardList .leader-main {
+  grid-column: 3 !important;
+  display: grid !important;
+  gap: 6px !important;
+  align-content: center !important;
+  justify-items: start !important;
+  min-width: 0 !important;
+}
+#leaderboardList .leader-name {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  font-size: 28px !important;
+  line-height: 1.05 !important;
+  min-width: 0 !important;
+}
+#leaderboardList .friend-meta {
+  margin-top: 0 !important;
+  font-size: 17px !important;
+}
+#leaderboardList .leader-points {
+  grid-column: 4 !important;
+  justify-self: end !important;
+  align-self: center !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  white-space: nowrap !important;
+  font-size: 24px !important;
+  font-weight: 1000 !important;
+}
+#leaderboardList .v138-presence-pill,
+#leaderboardList .online-pill {
+  order: 0 !important;
+  margin: 0 8px 0 0 !important;
+  flex: 0 0 auto !important;
+}
+#leaderboardList .leader-points > span:not(.v138-presence-pill):not(.online-pill) {
+  order: 1 !important;
+}
+#leaderboardList .v128-owner-delete-btn {
+  grid-column: 5 !important;
+  justify-self: end !important;
+  align-self: center !important;
+}
+#leaderboardList .rank-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: max-content !important;
+}
+@media (max-width: 720px) {
+  #leaderboardList .leaderboard-item {
+    grid-template-columns: 54px 56px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+  #leaderboardList .leader-points {
+    grid-column: 3 !important;
+    justify-self: start !important;
+    font-size: 18px !important;
+  }
+  #leaderboardList .leader-name {
+    font-size: 22px !important;
+  }
+}
+
 </style>
 
 <script>
-/* Blank Space v138: protect number typing in inputs before tab shortcuts can steal it */
+/* Blank Space v139: protect number typing in inputs before tab shortcuts can steal it */
 (function(){
   if(window.__blankSpaceV137NumberTypingGuard) return;
   window.__blankSpaceV137NumberTypingGuard = true;
@@ -991,7 +1080,7 @@ header{
 <body>
 
 <script>
-/* Blank Space v138: allow Backspace inside website text boxes */
+/* Blank Space v139: allow Backspace inside website text boxes */
 (function(){
   if(window.__blankSpaceV135BackspaceFix) return;
   window.__blankSpaceV135BackspaceFix = true;
@@ -1043,7 +1132,7 @@ header{
 
 
 <script>
-/* Blank Space v138: simple lock-screen keypad repair */
+/* Blank Space v139: simple lock-screen keypad repair */
 (function(){
   if(window.__blankSpaceV132SimpleUnlock) return;
   window.__blankSpaceV132SimpleUnlock = true;
@@ -1331,7 +1420,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v138</span>
+        <span class="update-version-badge">Blank Space v139</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -9313,7 +9402,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138 repair layer */
+/* Blank Space v139 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9512,7 +9601,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: banner sign-in/session repair */
+/* Blank Space v139: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9740,7 +9829,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: final banner Buy/Equip sign-in fix */
+/* Blank Space v139: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -10031,7 +10120,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: all achievements automatic tracker + strict Slope */
+/* Blank Space v139: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10455,7 +10544,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: owner leaderboard delete + full leaderboard */
+/* Blank Space v139: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10627,7 +10716,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v139: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -10906,7 +10995,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v139: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -11276,7 +11365,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v139: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11510,7 +11599,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: exact about:blank helper under Blocking Settings */
+/* Blank Space v139: exact about:blank helper under Blocking Settings */
 (function(){
   if(window.__blankSpaceV133BlockingHelper) return;
   window.__blankSpaceV133BlockingHelper = true;
@@ -11637,7 +11726,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: final repair set */
+/* Blank Space v139: final repair set */
 (function(){
   if(window.__blankSpaceV136Patch) return;
   window.__blankSpaceV136Patch = true;
@@ -12030,7 +12119,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: replace Pause Website multi-select with checkbox dropdown */
+/* Blank Space v139: replace Pause Website multi-select with checkbox dropdown */
 (function(){
   if(window.__blankSpaceV137PauseDropdown) return;
   window.__blankSpaceV137PauseDropdown = true;
@@ -12132,7 +12221,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v138: presence, rank colors, banner display/equip, and unified owner Message panel */
+/* Blank Space v139: presence, rank colors, banner display/equip, and unified owner Message panel */
 (function(){
   if(window.__blankSpaceV138Patch) return;
   window.__blankSpaceV138Patch = true;
@@ -12167,6 +12256,84 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   function patchChatWarning(){document.querySelectorAll("#chatSafetyWarning,.chat-safety-warning,#chatWarning,.chat-warning").forEach(el=>{el.style.marginTop="8px";});}
   document.addEventListener("DOMContentLoaded",function(){setTimeout(heartbeat,800);setInterval(heartbeat,45000);setTimeout(refreshLeaderboard,1200);setTimeout(ensureMessageUI,1400);setTimeout(patchChatWarning,800);});
   document.addEventListener("click",function(){setTimeout(ensureMessageUI,150);setTimeout(patchChatWarning,150);},true);
+})();
+</script>
+
+
+<script>
+/* Blank Space v139: keep leaderboard rows horizontal with presence beside points */
+(function(){
+  if(window.__blankSpaceV139LeaderboardLayout) return;
+  window.__blankSpaceV139LeaderboardLayout = true;
+
+  function norm(v){ return String(v || "").trim().toLowerCase(); }
+
+  function ensurePresenceInPoints(){
+    const list = document.getElementById("leaderboardList");
+    if(!list) return;
+
+    list.querySelectorAll(".leaderboard-item").forEach(row => {
+      const points = row.querySelector(".leader-points");
+      if(!points) return;
+
+      // If an older renderer put Online/Offline somewhere else, move it into points.
+      let pill = row.querySelector(".v138-presence-pill, .online-pill");
+      if(pill && pill.parentElement !== points){
+        points.insertBefore(pill, points.firstChild);
+      }
+
+      // If no pill exists, add Offline by default. The v138 refresh replaces it with real status.
+      if(!pill){
+        pill = document.createElement("span");
+        pill.className = "v138-presence-pill offline";
+        pill.textContent = "Offline";
+        points.insertBefore(pill, points.firstChild);
+      }
+
+      points.style.display = "flex";
+      points.style.flexDirection = "row";
+      points.style.alignItems = "center";
+      points.style.justifyContent = "flex-end";
+      points.style.gap = "10px";
+
+      const main = row.querySelector(".leader-main");
+      if(main){
+        main.style.display = "grid";
+        main.style.alignContent = "center";
+        main.style.justifyItems = "start";
+      }
+
+      const name = row.querySelector(".leader-name");
+      if(name){
+        name.style.display = "flex";
+        name.style.alignItems = "center";
+        name.style.gap = "10px";
+        name.style.flexWrap = "wrap";
+      }
+    });
+  }
+
+  if(typeof refreshLeaderboard === "function" && !refreshLeaderboard.__v139Layout){
+    const old = refreshLeaderboard;
+    window.refreshLeaderboard = async function(){
+      const out = await old.apply(this, arguments);
+      setTimeout(ensurePresenceInPoints, 0);
+      setTimeout(ensurePresenceInPoints, 250);
+      return out;
+    };
+    window.refreshLeaderboard.__v139Layout = true;
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(ensurePresenceInPoints, 500);
+    setTimeout(ensurePresenceInPoints, 1500);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(ensurePresenceInPoints, 150);
+  }, true);
+
+  window.fixLeaderboardLayoutV139 = ensurePresenceInPoints;
 })();
 </script>
 
