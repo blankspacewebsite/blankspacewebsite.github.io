@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v137: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v138: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -919,10 +919,31 @@ header{
   width: auto !important;
 }
 
+
+/* v138 presence, rank colors, banner display, and unified message panel */
+.rank-badge.member-badge, .rank-member, [data-rank="member"]{background:rgba(148,163,184,.16)!important;color:#e5e7eb!important;border-color:rgba(148,163,184,.45)!important}
+.rank-badge.tester-badge, .rank-tester, [data-rank="tester"]{background:rgba(59,130,246,.16)!important;color:#93c5fd!important;border-color:rgba(59,130,246,.45)!important}
+.rank-badge.manager-badge, .rank-manager, [data-rank="manager"]{background:rgba(168,85,247,.16)!important;color:#d8b4fe!important;border-color:rgba(168,85,247,.45)!important}
+.rank-badge.admin-badge, .rank-admin, [data-rank="admin"]{background:rgba(249,115,22,.16)!important;color:#fdba74!important;border-color:rgba(249,115,22,.55)!important}
+.rank-badge.owner-badge, .rank-owner, [data-rank="owner"]{background:rgba(234,179,8,.18)!important;color:#fde68a!important;border-color:rgba(234,179,8,.65)!important}
+.v138-presence-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:1000;text-transform:uppercase;border:1px solid rgba(255,255,255,.12);white-space:nowrap;margin-right:8px}
+.v138-presence-pill.online{background:rgba(34,197,94,.14);color:#86efac;border-color:rgba(34,197,94,.5)}
+.v138-presence-pill.offline{background:rgba(239,68,68,.13);color:#fca5a5;border-color:rgba(239,68,68,.48)}
+.leaderboard-item.v138-bannered{position:relative;overflow:hidden;background:var(--v138-banner-bg)!important}
+.leaderboard-item.v138-bannered::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72),rgba(0,0,0,.34),rgba(0,0,0,.72));pointer-events:none;z-index:1}
+.leaderboard-item.v138-bannered>*{position:relative;z-index:2}
+.leaderboard-item.v138-bannered .leader-name,.leaderboard-item.v138-bannered .leader-points,.leaderboard-item.v138-bannered .friend-meta{text-shadow:0 2px 8px rgba(0,0,0,.92)}
+#chatSafetyWarning,.chat-safety-warning,#chatWarning,.chat-warning{margin-top:8px!important}
+.v138-message-card textarea{width:100%;min-height:90px;text-align:left}
+.v138-message-card .v138-field-label{display:block;margin:10px 0 6px;color:#d1d5db;font-weight:900}
+.v138-check-row{display:flex;gap:10px;align-items:center;margin:10px 0;font-weight:900}
+.v138-check-row input{width:auto!important}
+.v138-message-time-row.hidden{display:none!important}
+
 </style>
 
 <script>
-/* Blank Space v137: protect number typing in inputs before tab shortcuts can steal it */
+/* Blank Space v138: protect number typing in inputs before tab shortcuts can steal it */
 (function(){
   if(window.__blankSpaceV137NumberTypingGuard) return;
   window.__blankSpaceV137NumberTypingGuard = true;
@@ -970,7 +991,7 @@ header{
 <body>
 
 <script>
-/* Blank Space v137: allow Backspace inside website text boxes */
+/* Blank Space v138: allow Backspace inside website text boxes */
 (function(){
   if(window.__blankSpaceV135BackspaceFix) return;
   window.__blankSpaceV135BackspaceFix = true;
@@ -1022,7 +1043,7 @@ header{
 
 
 <script>
-/* Blank Space v137: simple lock-screen keypad repair */
+/* Blank Space v138: simple lock-screen keypad repair */
 (function(){
   if(window.__blankSpaceV132SimpleUnlock) return;
   window.__blankSpaceV132SimpleUnlock = true;
@@ -1310,7 +1331,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v137</span>
+        <span class="update-version-badge">Blank Space v138</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -9292,7 +9313,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137 repair layer */
+/* Blank Space v138 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9491,7 +9512,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: banner sign-in/session repair */
+/* Blank Space v138: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9719,7 +9740,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: final banner Buy/Equip sign-in fix */
+/* Blank Space v138: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -10010,7 +10031,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: all achievements automatic tracker + strict Slope */
+/* Blank Space v138: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10434,7 +10455,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: owner leaderboard delete + full leaderboard */
+/* Blank Space v138: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10606,7 +10627,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v138: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -10885,7 +10906,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v138: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -11255,7 +11276,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v138: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11489,7 +11510,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: exact about:blank helper under Blocking Settings */
+/* Blank Space v138: exact about:blank helper under Blocking Settings */
 (function(){
   if(window.__blankSpaceV133BlockingHelper) return;
   window.__blankSpaceV133BlockingHelper = true;
@@ -11616,7 +11637,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: final repair set */
+/* Blank Space v138: final repair set */
 (function(){
   if(window.__blankSpaceV136Patch) return;
   window.__blankSpaceV136Patch = true;
@@ -12009,7 +12030,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v137: replace Pause Website multi-select with checkbox dropdown */
+/* Blank Space v138: replace Pause Website multi-select with checkbox dropdown */
 (function(){
   if(window.__blankSpaceV137PauseDropdown) return;
   window.__blankSpaceV137PauseDropdown = true;
@@ -12106,6 +12127,46 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   document.addEventListener("click", function(){
     setTimeout(installDropdown, 150);
   }, true);
+})();
+</script>
+
+
+<script>
+/* Blank Space v138: presence, rank colors, banner display/equip, and unified owner Message panel */
+(function(){
+  if(window.__blankSpaceV138Patch) return;
+  window.__blankSpaceV138Patch = true;
+  function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  function norm(v){return String(v||"").trim().toLowerCase();}
+  function client(){return getSupabaseClient();}
+  function profile(){try{if(typeof blankSpaceProfile!=="undefined"&&blankSpaceProfile)return blankSpaceProfile;}catch(e){} return window.blankSpaceProfile||null;}
+  function user(){try{if(typeof blankSpaceUser!=="undefined"&&blankSpaceUser)return blankSpaceUser;}catch(e){} return window.blankSpaceUser||null;}
+  function isOwner(){const p=profile()||{},u=user()||{},m=u.user_metadata||u.raw_user_meta_data||{};return norm(p.rank||m.rank)==="owner"||norm(p.username||p.display_name||m.username||m.name)==="owner";}
+  function msg(id,text,type){try{if(typeof setMessage==="function")setMessage(id,text,type||"");}catch(e){}}
+  async function session(){try{if(typeof loadExistingSession==="function")await loadExistingSession();}catch(e){} try{const s=await client().auth.getSession();const u=s?.data?.session?.user;if(u){window.blankSpaceUser=u;try{blankSpaceUser=u;}catch(e){}}}catch(e){} return !!user();}
+  async function rpcAny(names,args){let last=null;for(const n of names){try{const r=await client().rpc(n,args||{});if(!r.error)return r.data;last=r.error;}catch(e){last=e;}} if(last)throw last;throw new Error("Request failed.");}
+  function onlineFrom(row){const raw=row?.last_seen_at||row?.last_online_at||row?.updated_at;if(!raw)return false;const t=new Date(raw).getTime();return Number.isFinite(t)&&(Date.now()-t)<2*60*1000;}
+  function rankBadge(row){const rank=norm(row?.rank||"member");return `<span class="rank-badge ${rank}-badge" data-rank="${rank}">${esc(rank.toUpperCase())}</span>`;}
+  function trueBadge(row){return row?.true_member?`<span class="true-member-badge" title="True Member"></span>`:"";}
+  function iconHtml(row){return row?.equipped_icon?`<span class="profile-equipped-icon" title="Equipped icon">${esc(row.equipped_icon)}</span>`:"";}
+  function avatarHtml(row){if(row?.avatar_url)return `<div class="leader-avatar"><img src="${esc(row.avatar_url)}" alt=""></div>`;return `<div class="leader-avatar">${esc((row?.username||"?").slice(0,1).toUpperCase())}</div>`;}
+  function presencePill(row){const on=onlineFrom(row);return `<span class="v138-presence-pill ${on?"online":"offline"}">${on?"Online":"Offline"}</span>`;}
+  function pointsText(points){const n=Number(points||0);return `${n} point${n===1?"":"s"}`;}
+  function applyBanner(el,row){const g=row?.equipped_banner_gradient||row?.banner_gradient||"";if(g){el.classList.add("v138-bannered");el.style.setProperty("--v138-banner-bg",g);}}
+  async function rows(){try{const r=await rpcAny(["get_public_leaderboard_v138","get_public_leaderboard"],{max_rows:10000});return Array.isArray(r)?r:[];}catch(e){const r=await client().from("profiles").select("id,username,display_name,avatar_url,points,equipped_icon,rank,true_member,last_seen_at,equipped_banner_id,equipped_banner_name,equipped_banner_gradient").order("points",{ascending:false}).order("username",{ascending:true}).limit(10000);if(r.error)throw e;return r.data||[];}}
+  window.refreshLeaderboard=async function(){const list=document.getElementById("leaderboardList");if(!list)return;try{const data=await rows();window.accountRankCache=data;list.innerHTML=data.length?data.map((row,idx)=>{const place=idx+1;return `<div class="leaderboard-item" data-user-id="${esc(row.id)}"><div class="leader-rank">#${place}</div>${avatarHtml(row)}<div class="leader-main"><div class="leader-name">${esc(row.username||"Unknown")} ${iconHtml(row)} ${rankBadge(row)} ${trueBadge(row)}</div><div class="friend-meta">${place===1?"1st":place===2?"2nd":place===3?"3rd":place+"th"} place</div></div><div class="leader-points">${presencePill(row)}<span>${pointsText(row.points)}</span></div></div>`;}).join(""):'<div class="empty-state">No accounts yet.</div>';data.forEach((row,idx)=>{const el=list.querySelectorAll(".leaderboard-item")[idx];if(el)applyBanner(el,row);});try{if(typeof renderAccountRank==="function")renderAccountRank();}catch(e){} msg("leaderboardStatus",`Showing ${data.length} account${data.length===1?"":"s"}.`,"good");}catch(e){list.innerHTML='<div class="empty-state">Could not load leaderboard.</div>';msg("leaderboardStatus",e.message||"Could not load leaderboard.","error");}};
+  async function heartbeat(){try{await session();if(!user())return;await rpcAny(["touch_presence_v138","touch_presence"],{});}catch(e){try{await client().from("profiles").update({last_seen_at:new Date().toISOString()}).eq("id",user()?.id);}catch(_){}}}
+  async function loadBanners(){if(typeof v136LoadBanners==="function")return await v136LoadBanners();if(typeof refreshBanners==="function")return await refreshBanners();}
+  async function equipBanner(id){try{await session();const b=await rpcAny(["get_my_banners_v138","get_my_banners_v136","get_my_banners"],{});const owned=(Array.isArray(b)?b:[]).find(x=>String(x.banner_id)===String(id));if(!owned)return alert("You do not own this banner.");await rpcAny(["equip_banner_v138","equip_banner_v136","equip_banner"],{p_banner_id:id});msg("bannersStatus","Banner equipped.","good");try{if(typeof loadProfile==="function")await loadProfile();}catch(e){} try{await loadBanners();}catch(e){} try{await refreshLeaderboard();}catch(e){}}catch(e){alert(e.message||"Could not equip banner.");}}
+  window.v138EquipBanner=window.equipBannerV138=window.equipBannerV136=window.equipBanner=window.v136EquipBanner=window.v130EquipBanner=window.v129EquipBanner=window.equipBannerV119=window.equipBannerV118=window.equipBannerV117=window.equipBannerV115=equipBanner;
+  function cleanOldMessages(){const panel=document.getElementById("accountAdminPanel")||document.getElementById("ownerPanel")||document.getElementById("adminPanel");if(!panel)return null;panel.querySelectorAll(".v136-message-box,.v138-message-card").forEach(el=>el.remove());Array.from(panel.querySelectorAll(".admin-tile,.panel,.owner-only")).forEach(el=>{const t=el.querySelector("h3,h2,h4");if(t&&/^(Timed Message|Message)$/i.test(String(t.textContent||"").trim()))el.remove();});return panel;}
+  function ensureMessageUI(){const panel=cleanOldMessages();if(!panel||!isOwner())return;if(document.getElementById("v138UnifiedMessageCard"))return;const card=document.createElement("div");card.className="admin-tile v138-message-card owner-only";card.id="v138UnifiedMessageCard";card.innerHTML=`<h3>Message</h3><p class="small-note">Send a normal timed message, or check Response to ask a question and collect answers.</p><label class="v138-field-label" for="v138MessageRecipient">Send to</label><input id="v138MessageRecipient" type="text" placeholder="Username, or leave blank for everyone"><label class="v138-check-row"><input type="checkbox" id="v138SendEveryone"><span>Send to everyone</span></label><label class="v138-field-label" for="v138OwnerMessageText">Message/question</label><textarea id="v138OwnerMessageText" placeholder="Type the message or question"></textarea><label class="v138-check-row"><input type="checkbox" id="v138RequiresResponse"><span>Response</span></label><div id="v138MessageTimeRow" class="v138-message-time-row"><label class="v138-field-label" for="v138MessageMinutes">Time</label><input id="v138MessageMinutes" type="number" min="1" placeholder="Minutes"></div><div class="v136-actions"><button class="mini-btn primary" id="v138SendMessageBtn">Send Message</button><button class="mini-btn" id="v138ViewResponsesBtn">View Responses</button></div>`;(panel.querySelector(".admin-grid")||panel).appendChild(card);const resp=card.querySelector("#v138RequiresResponse"),timeRow=card.querySelector("#v138MessageTimeRow");resp.addEventListener("change",()=>timeRow.classList.toggle("hidden",resp.checked));card.querySelector("#v138SendMessageBtn").addEventListener("click",sendUnifiedMessage);card.querySelector("#v138ViewResponsesBtn").addEventListener("click",viewResponses);}
+  async function sendUnifiedMessage(){try{if(!isOwner())return alert("Owner only.");const text=String(document.getElementById("v138OwnerMessageText")?.value||"").trim();if(!text)return alert("Type a message.");const response=document.getElementById("v138RequiresResponse")?.checked===true;const everyone=document.getElementById("v138SendEveryone")?.checked===true;const recipient=String(document.getElementById("v138MessageRecipient")?.value||"").trim();const minutes=response?null:(Number(document.getElementById("v138MessageMinutes")?.value||0)||null);await rpcAny(["send_owner_message_v138","send_owner_message_v136","send_owner_message"],{p_message:text,p_requires_response:response,p_send_to_everyone:everyone,p_target_username:recipient||null,p_minutes:minutes});alert(response?"Question sent.":"Message sent.");document.getElementById("v138OwnerMessageText").value="";}catch(e){alert(e.message||"Could not send message.");}}
+  function ensureModal(){let m=document.getElementById("v136OwnerModalBackdrop");if(m)return m;m=document.createElement("div");m.id="v136OwnerModalBackdrop";m.innerHTML='<div class="v136-modal"><div class="v136-modal-head"><h2>Responses</h2><button class="mini-btn" id="v138CloseResponses">X</button></div><div id="v136OwnerModalBody"></div></div>';document.body.appendChild(m);m.querySelector("#v138CloseResponses").addEventListener("click",()=>m.classList.remove("active"));return m;}
+  async function viewResponses(){try{const modal=ensureModal();const rs=await rpcAny(["get_message_responses_v138","get_message_responses_v136","get_message_responses"],{});const body=document.getElementById("v136OwnerModalBody");body.innerHTML=(Array.isArray(rs)&&rs.length)?rs.map(r=>`<div class="v136-response-item"><div class="v136-response-meta">${esc(r.username||"Unknown")} • ${esc(new Date(r.created_at).toLocaleString())}</div><div>${esc(r.response_text||"")}</div><div class="small-note">Question: ${esc(r.message_text||"")}</div></div>`).join(""):'<div class="empty-state">No responses yet.</div>';modal.classList.add("active");}catch(e){alert(e.message||"Could not load responses.");}}
+  function patchChatWarning(){document.querySelectorAll("#chatSafetyWarning,.chat-safety-warning,#chatWarning,.chat-warning").forEach(el=>{el.style.marginTop="8px";});}
+  document.addEventListener("DOMContentLoaded",function(){setTimeout(heartbeat,800);setInterval(heartbeat,45000);setTimeout(refreshLeaderboard,1200);setTimeout(ensureMessageUI,1400);setTimeout(patchChatWarning,800);});
+  document.addEventListener("click",function(){setTimeout(ensureMessageUI,150);setTimeout(patchChatWarning,150);},true);
 })();
 </script>
 
