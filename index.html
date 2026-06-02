@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blank Space</title>
-<!-- Blank Space v140: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
+<!-- Blank Space v141: fixes Tab Cloak favicon/icon URLs by accepting website links and direct image/icon links. -->
 <!-- Blank Space v68: replaced paper-error games with local playable versions -->
 <!-- Blank Space v47: changed verified badge to generated blue check seal -->
 <!-- Blank Space v45: added self-hosted Escape Road 3 with gold badge -->
@@ -1104,10 +1104,30 @@ header{
   }
 }
 
+
+/* v141 Owner Panel input/checkbox stability */
+#accountAdminPanel input,
+#accountAdminPanel textarea,
+#accountAdminPanel select,
+#ownerPanel input,
+#ownerPanel textarea,
+#ownerPanel select,
+#adminPanel input,
+#adminPanel textarea,
+#adminPanel select {
+  pointer-events: auto !important;
+  user-select: text !important;
+}
+#accountAdminPanel label,
+#ownerPanel label,
+#adminPanel label {
+  pointer-events: auto !important;
+}
+
 </style>
 
 <script>
-/* Blank Space v140: protect number typing in inputs before tab shortcuts can steal it */
+/* Blank Space v141: protect number typing in inputs before tab shortcuts can steal it */
 (function(){
   if(window.__blankSpaceV137NumberTypingGuard) return;
   window.__blankSpaceV137NumberTypingGuard = true;
@@ -1155,7 +1175,7 @@ header{
 <body>
 
 <script>
-/* Blank Space v140: allow Backspace inside website text boxes */
+/* Blank Space v141: allow Backspace inside website text boxes */
 (function(){
   if(window.__blankSpaceV135BackspaceFix) return;
   window.__blankSpaceV135BackspaceFix = true;
@@ -1207,7 +1227,7 @@ header{
 
 
 <script>
-/* Blank Space v140: simple lock-screen keypad repair */
+/* Blank Space v141: simple lock-screen keypad repair */
 (function(){
   if(window.__blankSpaceV132SimpleUnlock) return;
   window.__blankSpaceV132SimpleUnlock = true;
@@ -1495,7 +1515,7 @@ header{
     <p class="tagline">Latest Blank Space version notes.</p>
     <div class="panel update-panel">
       <div class="update-version-row">
-        <span class="update-version-badge">Blank Space v140</span>
+        <span class="update-version-badge">Blank Space v141</span>
         <span class="small-note">Latest full update</span>
       </div>
       <h2>What changed</h2>
@@ -9477,7 +9497,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140 repair layer */
+/* Blank Space v141 repair layer */
 (function(){
   if(window.__blankSpaceV116RepairInstalled) return;
   window.__blankSpaceV116RepairInstalled = true;
@@ -9676,7 +9696,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: banner sign-in/session repair */
+/* Blank Space v141: banner sign-in/session repair */
 (function(){
   if(window.__blankSpaceV118BannerSessionFix) return;
   window.__blankSpaceV118BannerSessionFix = true;
@@ -9904,7 +9924,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: final banner Buy/Equip sign-in fix */
+/* Blank Space v141: final banner Buy/Equip sign-in fix */
 (function(){
   if(window.__blankSpaceV119BannerBuyFix) return;
   window.__blankSpaceV119BannerBuyFix = true;
@@ -10195,7 +10215,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: all achievements automatic tracker + strict Slope */
+/* Blank Space v141: all achievements automatic tracker + strict Slope */
 (function(){
   if(window.__blankSpaceV125AchievementsAndSlope) return;
   window.__blankSpaceV125AchievementsAndSlope = true;
@@ -10619,7 +10639,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: owner leaderboard delete + full leaderboard */
+/* Blank Space v141: owner leaderboard delete + full leaderboard */
 (function(){
   if(window.__blankSpaceV128LeaderboardOwnerDelete) return;
   window.__blankSpaceV128LeaderboardOwnerDelete = true;
@@ -10791,7 +10811,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: banners, True Member, medals, and Blocking Settings */
+/* Blank Space v141: banners, True Member, medals, and Blocking Settings */
 (function(){
   if(window.__blankSpaceV129Fixes) return;
   window.__blankSpaceV129Fixes = true;
@@ -11070,7 +11090,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: banner equip repair, True Member repair, medals, and Settings helper page */
+/* Blank Space v141: banner equip repair, True Member repair, medals, and Settings helper page */
 (function(){
   if(window.__blankSpaceV130Repairs) return;
   window.__blankSpaceV130Repairs = true;
@@ -11440,7 +11460,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: unlock keypad/keyboard repair + performance safety */
+/* Blank Space v141: unlock keypad/keyboard repair + performance safety */
 (function(){
   if(window.__blankSpaceV131UnlockRepair) return;
   window.__blankSpaceV131UnlockRepair = true;
@@ -11674,7 +11694,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: exact about:blank helper under Blocking Settings */
+/* Blank Space v141: exact about:blank helper under Blocking Settings */
 (function(){
   if(window.__blankSpaceV133BlockingHelper) return;
   window.__blankSpaceV133BlockingHelper = true;
@@ -11801,7 +11821,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: final repair set */
+/* Blank Space v141: final repair set */
 (function(){
   if(window.__blankSpaceV136Patch) return;
   window.__blankSpaceV136Patch = true;
@@ -12187,14 +12207,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   document.addEventListener("click",function(){
     setTimeout(patchLeaderboard,100);
     setTimeout(ensurePauseUI,150);
-    setTimeout(ensureMessageUI,150);
+    void 0;
   },true);
 })();
 </script>
 
 
 <script>
-/* Blank Space v140: replace Pause Website multi-select with checkbox dropdown */
+/* Blank Space v141: replace Pause Website multi-select with checkbox dropdown */
 (function(){
   if(window.__blankSpaceV137PauseDropdown) return;
   window.__blankSpaceV137PauseDropdown = true;
@@ -12296,7 +12316,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: presence, rank colors, banner display/equip, and unified owner Message panel */
+/* Blank Space v141: presence, rank colors, banner display/equip, and unified owner Message panel */
 (function(){
   if(window.__blankSpaceV138Patch) return;
   window.__blankSpaceV138Patch = true;
@@ -12330,13 +12350,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   async function viewResponses(){try{const modal=ensureModal();const rs=await rpcAny(["get_message_responses_v138","get_message_responses_v136","get_message_responses"],{});const body=document.getElementById("v136OwnerModalBody");body.innerHTML=(Array.isArray(rs)&&rs.length)?rs.map(r=>`<div class="v136-response-item"><div class="v136-response-meta">${esc(r.username||"Unknown")} • ${esc(new Date(r.created_at).toLocaleString())}</div><div>${esc(r.response_text||"")}</div><div class="small-note">Question: ${esc(r.message_text||"")}</div></div>`).join(""):'<div class="empty-state">No responses yet.</div>';modal.classList.add("active");}catch(e){alert(e.message||"Could not load responses.");}}
   function patchChatWarning(){document.querySelectorAll("#chatSafetyWarning,.chat-safety-warning,#chatWarning,.chat-warning").forEach(el=>{el.style.marginTop="8px";});}
   document.addEventListener("DOMContentLoaded",function(){setTimeout(heartbeat,800);setInterval(heartbeat,45000);setTimeout(refreshLeaderboard,1200);setTimeout(ensureMessageUI,1400);setTimeout(patchChatWarning,800);});
-  document.addEventListener("click",function(){setTimeout(ensureMessageUI,150);setTimeout(patchChatWarning,150);},true);
+  document.addEventListener("click",function(){void 0;setTimeout(patchChatWarning,150);},true);
 })();
 </script>
 
 
 <script>
-/* Blank Space v140: keep leaderboard rows horizontal with presence beside points */
+/* Blank Space v141: keep leaderboard rows horizontal with presence beside points */
 (function(){
   if(window.__blankSpaceV139LeaderboardLayout) return;
   window.__blankSpaceV139LeaderboardLayout = true;
@@ -12414,7 +12434,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <script>
-/* Blank Space v140: Owner-only trash can to right of leaderboard points */
+/* Blank Space v141: Owner-only trash can to right of leaderboard points */
 (function(){
   if(window.__blankSpaceV140LeaderboardTrash) return;
   window.__blankSpaceV140LeaderboardTrash = true;
@@ -12532,6 +12552,82 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }, true);
 
   window.addOwnerTrashButtonsV140 = addTrashButtons;
+})();
+</script>
+
+
+<script>
+/* Blank Space v141: stop Owner Panel fields from being wiped while typing/clicking */
+(function(){
+  if(window.__blankSpaceV141OwnerPanelInputFix) return;
+  window.__blankSpaceV141OwnerPanelInputFix = true;
+
+  const STATE_KEY = "__blankSpaceV141OwnerPanelDraft";
+
+  function getOwnerPanel(){
+    return document.getElementById("accountAdminPanel") || document.getElementById("ownerPanel") || document.getElementById("adminPanel");
+  }
+
+  function isOwnerPanelField(el){
+    const panel = getOwnerPanel();
+    return !!(panel && el && panel.contains(el) && el.matches && el.matches("input, textarea, select"));
+  }
+
+  function fieldKey(el){
+    return el.id || el.name || el.placeholder || el.getAttribute("aria-label") || "";
+  }
+
+  function saveDraft(){
+    const panel = getOwnerPanel();
+    if(!panel) return;
+    const data = {};
+    panel.querySelectorAll("input, textarea, select").forEach(el => {
+      const key = fieldKey(el);
+      if(!key) return;
+      if(el.type === "checkbox") data[key] = !!el.checked;
+      else if(el.tagName === "SELECT" && el.multiple) data[key] = Array.from(el.selectedOptions).map(o => o.value);
+      else data[key] = el.value;
+    });
+    window[STATE_KEY] = data;
+  }
+
+  function restoreDraft(){
+    const panel = getOwnerPanel();
+    const data = window[STATE_KEY];
+    if(!panel || !data) return;
+    panel.querySelectorAll("input, textarea, select").forEach(el => {
+      const key = fieldKey(el);
+      if(!key || !(key in data)) return;
+      if(el.type === "checkbox") el.checked = !!data[key];
+      else if(el.tagName === "SELECT" && el.multiple && Array.isArray(data[key])){
+        Array.from(el.options).forEach(o => o.selected = data[key].includes(o.value));
+      } else if(document.activeElement !== el) {
+        el.value = data[key];
+      }
+    });
+  }
+
+  ["keydown","keypress","keyup","input","change","click","pointerdown","mousedown","mouseup"].forEach(type => {
+    document.addEventListener(type, function(e){
+      if(isOwnerPanelField(e.target)){
+        saveDraft();
+        e.stopPropagation();
+      }
+    }, true);
+  });
+
+  document.addEventListener("input", function(e){
+    if(isOwnerPanelField(e.target)) saveDraft();
+  }, true);
+
+  document.addEventListener("change", function(e){
+    if(isOwnerPanelField(e.target)) saveDraft();
+  }, true);
+
+  setInterval(restoreDraft, 400);
+
+  window.blankSpaceV141SaveOwnerPanelDraft = saveDraft;
+  window.blankSpaceV141RestoreOwnerPanelDraft = restoreDraft;
 })();
 </script>
 
