@@ -8384,6 +8384,32 @@ window.addEventListener("keydown", function(e) {
 })();
 </script>
 
+
+<script>
+/* Blank Space v152 false ban-screen repair
+   - Removes the broken Website banned overlay that printed ${escapeHTML(...)} literally.
+   - Prevents the old register_device_v99 check from locking users out on a fresh Supabase project.
+   - Leaves normal account creation/sign-in/profile repair code alone.
+*/
+(function(){
+  function removeFalseBanScreens(){
+    try{
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = (el.textContent || '');
+        if (txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) {
+          el.remove();
+        }
+      });
+    }catch(e){}
+  }
+  window.registerAndCheckDeviceV99 = async function(){ removeFalseBanScreens(); return null; };
+  removeFalseBanScreens();
+  setTimeout(removeFalseBanScreens, 50);
+  setTimeout(removeFalseBanScreens, 500);
+  setInterval(removeFalseBanScreens, 1500);
+})();
+</script>
+
 </body>
 </html>`;
 }
@@ -8625,6 +8651,32 @@ try{
 })();
 </script>
 
+
+<script>
+/* Blank Space v152 false ban-screen repair
+   - Removes the broken Website banned overlay that printed ${escapeHTML(...)} literally.
+   - Prevents the old register_device_v99 check from locking users out on a fresh Supabase project.
+   - Leaves normal account creation/sign-in/profile repair code alone.
+*/
+(function(){
+  function removeFalseBanScreens(){
+    try{
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = (el.textContent || '');
+        if (txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) {
+          el.remove();
+        }
+      });
+    }catch(e){}
+  }
+  window.registerAndCheckDeviceV99 = async function(){ removeFalseBanScreens(); return null; };
+  removeFalseBanScreens();
+  setTimeout(removeFalseBanScreens, 50);
+  setTimeout(removeFalseBanScreens, 500);
+  setInterval(removeFalseBanScreens, 1500);
+})();
+</script>
+
 </body>
 </html>`;
 }
@@ -8763,7 +8815,33 @@ function showTab(tabId) {
   if (tabId === "account") initAccountPage();
   if (tabId === "adminpanel") initAdminPanelPage();
 }
-const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:800;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Type a search or URL. v93 fixes the black-screen loading bug by clearing the old home page before loading the iframe. Some outside sites still block iframes, but iframe-friendly pages and searches can display here.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div></body></html>`;
+const browserHomeHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:grid;place-items:center;text-align:center}.card{max-width:780px;padding:26px}.title{font-size:42px;font-weight:800;letter-spacing:-.04em;margin-bottom:10px}.text{color:#c7c7c7;line-height:1.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.chip{border:1px solid #343946;border-radius:999px;padding:8px 12px;background:#111522;color:#fff;font-weight:900}</style></head><body><div class="card"><div class="title">Blank Browser</div><div class="text">Type a search or URL. v93 fixes the black-screen loading bug by clearing the old home page before loading the iframe. Some outside sites still block iframes, but iframe-friendly pages and searches can display here.</div><div class="chips"><span class="chip">iframe search</span><span class="chip">back / forward</span><span class="chip">new-tab fallback</span></div></div>
+<script>
+/* Blank Space v152 false ban-screen repair
+   - Removes the broken Website banned overlay that printed ${escapeHTML(...)} literally.
+   - Prevents the old register_device_v99 check from locking users out on a fresh Supabase project.
+   - Leaves normal account creation/sign-in/profile repair code alone.
+*/
+(function(){
+  function removeFalseBanScreens(){
+    try{
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = (el.textContent || '');
+        if (txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) {
+          el.remove();
+        }
+      });
+    }catch(e){}
+  }
+  window.registerAndCheckDeviceV99 = async function(){ removeFalseBanScreens(); return null; };
+  removeFalseBanScreens();
+  setTimeout(removeFalseBanScreens, 50);
+  setTimeout(removeFalseBanScreens, 500);
+  setInterval(removeFalseBanScreens, 1500);
+})();
+</script>
+
+</body></html>`;
 let browserLastURL = "";
 const browserHistory = [];
 let browserHistoryIndex = -1;
@@ -8805,7 +8883,33 @@ function browserSearchSrcdoc(query) {
   const google = "https://www.google.com/search?igu=1&q=" + enc;
   const bing = "https://www.bing.com/search?q=" + enc;
   const duck = "https://duckduckgo.com/html/?q=" + enc;
-  return `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.browser-search-page{height:100%;display:grid;grid-template-rows:auto 1fr}.browser-search-top{padding:12px;border-bottom:1px solid #303542;background:#0d0f14;display:flex;gap:9px;align-items:center;flex-wrap:wrap}.browser-search-link{border:1px solid #343946;border-radius:999px;background:#151821;color:#fff;padding:8px 11px;text-decoration:none;font-weight:900}.browser-search-link.primary{background:#fff;color:#000;border-color:#fff}.browser-search-frame{width:100%;height:100%;border:0;background:#fff}</style></head><body><div class="browser-search-page"><div class="browser-search-top"><b>Search: ${esc(q)}</b><a class="browser-search-link primary" href="${google}" target="results">Google in frame</a><a class="browser-search-link" href="${bing}" target="results">Bing in frame</a><a class="browser-search-link" href="${duck}" target="results">DuckDuckGo in frame</a><a class="browser-search-link" href="${google}" target="_blank" rel="noopener">Open tab</a></div><iframe class="browser-search-frame" name="results" src="${google}" referrerpolicy="no-referrer"></iframe></div></body></html>`;
+  return `<!doctype html><html><head><meta charset="utf-8"><style>html,body{height:100%;margin:0;background:#050505;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.browser-search-page{height:100%;display:grid;grid-template-rows:auto 1fr}.browser-search-top{padding:12px;border-bottom:1px solid #303542;background:#0d0f14;display:flex;gap:9px;align-items:center;flex-wrap:wrap}.browser-search-link{border:1px solid #343946;border-radius:999px;background:#151821;color:#fff;padding:8px 11px;text-decoration:none;font-weight:900}.browser-search-link.primary{background:#fff;color:#000;border-color:#fff}.browser-search-frame{width:100%;height:100%;border:0;background:#fff}</style></head><body><div class="browser-search-page"><div class="browser-search-top"><b>Search: ${esc(q)}</b><a class="browser-search-link primary" href="${google}" target="results">Google in frame</a><a class="browser-search-link" href="${bing}" target="results">Bing in frame</a><a class="browser-search-link" href="${duck}" target="results">DuckDuckGo in frame</a><a class="browser-search-link" href="${google}" target="_blank" rel="noopener">Open tab</a></div><iframe class="browser-search-frame" name="results" src="${google}" referrerpolicy="no-referrer"></iframe></div>
+<script>
+/* Blank Space v152 false ban-screen repair
+   - Removes the broken Website banned overlay that printed ${escapeHTML(...)} literally.
+   - Prevents the old register_device_v99 check from locking users out on a fresh Supabase project.
+   - Leaves normal account creation/sign-in/profile repair code alone.
+*/
+(function(){
+  function removeFalseBanScreens(){
+    try{
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = (el.textContent || '');
+        if (txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) {
+          el.remove();
+        }
+      });
+    }catch(e){}
+  }
+  window.registerAndCheckDeviceV99 = async function(){ removeFalseBanScreens(); return null; };
+  removeFalseBanScreens();
+  setTimeout(removeFalseBanScreens, 50);
+  setTimeout(removeFalseBanScreens, 500);
+  setInterval(removeFalseBanScreens, 1500);
+})();
+</script>
+
+</body></html>`;
 }
 
 function pushBrowserHistory(url) {
@@ -9404,7 +9508,15 @@ document.addEventListener("DOMContentLoaded",()=>{
 /* v99 feature patch */
 const DAILY_REWARD_POINTS_V99=[1,2,3,4,5,8,10];
 function getDeviceIdV99(){ let id=localStorage.getItem('blankspace_device_id_v99'); if(!id){ id='dev_'+Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('blankspace_device_id_v99',id); } return id; }
-async function registerAndCheckDeviceV99(){ try{ if(!window.supabase||!blankSpaceUser) return; const r=await getSupabaseClient().rpc('register_device_v99',{p_device_id:getDeviceIdV99(),p_user_agent:navigator.userAgent||''}); if(r.error) return; if(r.data&&r.data.banned){ document.body.insertAdjacentHTML('beforeend',`<div class="device-ban-screen"><div><h1>Website banned</h1><p>This account or device has been banned from Blank Space.</p><p>${escapeHTML(r.data.reason||'')}</p></div></div>`); } }catch(e){} }
+async function registerAndCheckDeviceV99(){
+  // v152: Disabled the old device-ban overlay because it can false-trigger on a new Supabase project
+  // and one broken template could print raw JavaScript on screen. Account/chat bans can still be
+  // handled from the Owner Panel after the auth/profile system is stable.
+  try{
+    document.querySelectorAll('.device-ban-screen').forEach(function(el){ el.remove(); });
+  }catch(e){}
+  return;
+}
 function renderDailyRewardGrid(day){ const box=document.getElementById('dailyRewardGrid'); if(!box)return; box.innerHTML=DAILY_REWARD_POINTS_V99.map((pts,i)=>`<div class="daily-reward-day ${day===i+1?'active':''}"><b>Day ${i+1}</b><br><span>${pts} point${pts===1?'':'s'}</span></div>`).join(''); }
 async function refreshDailyReward(){ await loadExistingSession(); if(!blankSpaceUser){renderDailyRewardGrid(1);return setMessage('dailyRewardStatus','Sign in to claim daily rewards.','error');} try{ const r=await getSupabaseClient().rpc('get_daily_reward_status_v99'); if(r.error) throw r.error; const d=r.data||{}; renderDailyRewardGrid(d.next_day||1); setMessage('dailyRewardStatus', d.can_claim?`Ready to claim Day ${d.next_day||1}.`:`Already claimed today. Next claim: ${d.next_day||1}.`); }catch(e){setMessage('dailyRewardStatus',e.message||'Could not load daily reward. Run supabase_v99_update.sql.','error'); renderDailyRewardGrid(1);} }
 async function claimDailyReward(){ await loadExistingSession(); if(!blankSpaceUser)return setMessage('dailyRewardStatus','Sign in first.','error'); try{ const r=await getSupabaseClient().rpc('claim_daily_reward_v99'); if(r.error) throw r.error; const d=r.data||{}; setMessage('dailyRewardStatus',`Claimed Day ${d.day} for ${d.points_awarded} point${d.points_awarded===1?'':'s'}!`,'good'); await loadProfile(); renderProfile(); await refreshLeaderboard(); await refreshDailyReward(); }catch(e){setMessage('dailyRewardStatus',e.message||'Could not claim reward.','error');} }
@@ -13540,6 +13652,32 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   document.addEventListener("DOMContentLoaded", function(){
     setTimeout(function(){ loadProfileV150().catch(function(e){ debug(PATCH + " startup profile load skipped: " + (e?.message || e)); }); }, 600);
   });
+})();
+</script>
+
+
+<script>
+/* Blank Space v152 false ban-screen repair
+   - Removes the broken Website banned overlay that printed ${escapeHTML(...)} literally.
+   - Prevents the old register_device_v99 check from locking users out on a fresh Supabase project.
+   - Leaves normal account creation/sign-in/profile repair code alone.
+*/
+(function(){
+  function removeFalseBanScreens(){
+    try{
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = (el.textContent || '');
+        if (txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) {
+          el.remove();
+        }
+      });
+    }catch(e){}
+  }
+  window.registerAndCheckDeviceV99 = async function(){ removeFalseBanScreens(); return null; };
+  removeFalseBanScreens();
+  setTimeout(removeFalseBanScreens, 50);
+  setTimeout(removeFalseBanScreens, 500);
+  setInterval(removeFalseBanScreens, 1500);
 })();
 </script>
 
