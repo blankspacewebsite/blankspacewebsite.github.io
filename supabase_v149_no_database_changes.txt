@@ -1,0 +1,5 @@
+Blank Space v149 requires no new Supabase SQL.
+
+This update is front-end only. It fixes create-account on new Supabase projects by changing the hidden generated login email domain from @blankspace.invalid to @blankspaceweb.com, because Supabase Auth rejected the .invalid email address.
+
+Run supabase_v148_new_project_core_setup_FIXED.sql first if you have not already run it successfully.

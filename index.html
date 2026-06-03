@@ -6367,7 +6367,7 @@ function randomLoginToken() {
 }
 
 function makeLoginEmail() {
-  return "blankspace-" + randomLoginToken().replace(/[^a-zA-Z0-9-]/g, "") + "@blankspace.invalid";
+  return "blankspace-" + randomLoginToken().replace(/[^a-zA-Z0-9-]/g, "") + "@blankspaceweb.com";
 }
 
 async function lookupLoginEmail(username) {
@@ -8219,6 +8219,8 @@ window.addEventListener("keydown", function(e) {
 <script src="scripts/offlineclient.js"><\/script>
 <script src="scripts/main.f.js"><\/script>
 <script src="scripts/register-sw.js"><\/script>
+
+<!-- Blank Space v149: fixes Supabase Auth generated-email domain. The old .invalid domain was rejected by Supabase Auth on new projects. -->
 </body>
 </html>`;
 }
@@ -12997,7 +12999,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         msg("usernameMessage", "Checking username...");
         var existingLogin = await lookupLoginEmail(username);
         if (existingLogin !== null) return msg("usernameMessage", "That username is already taken. Try another one.", "error");
-        var loginEmail = (typeof makeLoginEmail === "function") ? makeLoginEmail() : ("blankspace-" + Date.now() + Math.random().toString(36).slice(2) + "@blankspace.invalid");
+        var loginEmail = (typeof makeLoginEmail === "function") ? makeLoginEmail() : ("blankspace-" + Date.now() + Math.random().toString(36).slice(2) + "@blankspaceweb.com");
         msg("usernameMessage", "Creating account...");
         var authResult = await timeoutPromise(client().auth.signUp({ email: loginEmail, password: password, options: { data: { username: username } } }), 30000, "Create account");
         if (authResult.error) throw authResult.error;
