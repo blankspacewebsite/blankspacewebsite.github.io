@@ -1,8 +1,0 @@
-Blank Space v154 does not need Supabase SQL.
-
-This update is a front-end repair only:
-- restores the top tab bar to left-aligned layout
-- restores normal tab font weight
-- fixes tab buttons not opening sections
-- keeps Admin Confetti disabled
-- keeps the false device-ban overlay disabled

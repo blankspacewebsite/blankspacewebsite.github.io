@@ -1,0 +1,5 @@
+Blank Space v155
+
+No Supabase database changes are required for this repair.
+
+This version is a clean rollback/repair based on the last stable pre-corruption website file, keeping the new Supabase URL/key while removing the broken injected scripts that caused JavaScript source code to appear on every page.

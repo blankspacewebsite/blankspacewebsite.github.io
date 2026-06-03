@@ -1,3 +1,0 @@
-Blank Space v153 does not require Supabase SQL changes.
-
-This emergency repair is front-end only. It restores tab navigation, removes the false/persistent Admin Confetti toast, keeps the top tabs left-aligned with normal font weight, and disables the false device-ban overlay safely.
