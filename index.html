@@ -8221,6 +8221,169 @@ window.addEventListener("keydown", function(e) {
 <script src="scripts/register-sw.js"><\/script>
 
 <!-- Blank Space v149: fixes Supabase Auth generated-email domain. The old .invalid domain was rejected by Supabase Auth on new projects. -->
+
+<script>
+/* Blank Space v150: finish signed-in layout and repair missing profile rows.
+   Fixes the state where Supabase Auth signs in, but the page still shows Create Account / Sign In. */
+(function(){
+  "use strict";
+  var PATCH = "v150";
+  function c(){ return (typeof getSupabaseClient === "function") ? getSupabaseClient() : window.supabaseClient; }
+  function val(id){ return (document.getElementById(id)?.value || "").trim(); }
+  function pass(id){ return document.getElementById(id)?.value || ""; }
+  function clear(id){ var el=document.getElementById(id); if(el) el.value=""; }
+  function message(id,text,type){
+    try { if (typeof setMessage === "function") return setMessage(id, text || "", type || ""); } catch(e) {}
+    var el=document.getElementById(id); if(el){ el.textContent=text||""; el.className="form-message " + (type||""); }
+  }
+  function debug(text){ try { if (typeof addAchievementDebug === "function") addAchievementDebug(String(text || "")); } catch(e) {} }
+  function timeout(p, ms, label){
+    return Promise.race([Promise.resolve(p), new Promise(function(_, reject){ setTimeout(function(){ reject(new Error((label||"Request") + " timed out. Refresh and try again.")); }, ms||25000); })]);
+  }
+  function duplicate(err){ return String(err?.message || err || "").toLowerCase().includes("duplicate") || String(err?.message || err || "").toLowerCase().includes("taken"); }
+
+  async function loadProfileV150(){
+    var client=c();
+    var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+    var user=sessionRes?.data?.session?.user || null;
+    if(!user){
+      try { blankSpaceUser=null; blankSpaceProfile=null; blankSpaceIsAdmin=false; } catch(e) {}
+      try { renderProfile(); } catch(e) {}
+      return null;
+    }
+    try { blankSpaceUser=user; window.blankSpaceUser=user; } catch(e) { window.blankSpaceUser=user; }
+    var prof=await timeout(client.from("profiles").select("*").eq("id", user.id).maybeSingle(), 12000, "Profile load");
+    if(prof.error) throw prof.error;
+    try { blankSpaceProfile=prof.data || null; window.blankSpaceProfile=prof.data || null; } catch(e) { window.blankSpaceProfile=prof.data || null; }
+    if (prof.data) {
+      try { if (typeof checkAdmin === "function") await timeout(checkAdmin(), 10000, "Admin check"); } catch(e) { debug(PATCH + " admin check skipped: " + (e?.message || e)); }
+    }
+    try { renderProfile(); } catch(e) {}
+    try { if (typeof renderSuggestionGate === "function") renderSuggestionGate(); } catch(e) {}
+    return prof.data || null;
+  }
+
+  async function repairProfileV150(username){
+    var client=c();
+    var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+    var user=sessionRes?.data?.session?.user || null;
+    if(!user) throw new Error("Sign in first.");
+    var loginEmail=user.email || null;
+
+    var rpc=await timeout(client.rpc("ensure_own_profile_v150", { p_username: username, p_login_email: loginEmail }), 15000, "Profile repair");
+    if(rpc.error){
+      var m=String(rpc.error.message || "").toLowerCase();
+      if(m.includes("ensure_own_profile_v150")){
+        var insert=await timeout(client.from("profiles").insert({ id:user.id, username:username, login_email:loginEmail }).select("*").maybeSingle(), 15000, "Profile creation");
+        if(insert.error){
+          if(duplicate(insert.error)) throw new Error("That username is already taken. Try another one.");
+          throw insert.error;
+        }
+      } else {
+        if(duplicate(rpc.error)) throw new Error("That username is already taken. Try another one.");
+        throw rpc.error;
+      }
+    }
+    await loadProfileV150();
+    return true;
+  }
+
+  async function finishAuthV150(username, successText){
+    var profile=await loadProfileV150();
+    if(!profile && username){
+      await repairProfileV150(username);
+      profile=await loadProfileV150();
+    }
+    if(profile){
+      message("usernameMessage", successText || ("Signed in as " + profile.username + "."), "good");
+      ["createPasswordInput","createPasswordConfirmInput","loginPasswordInput"].forEach(clear);
+      setTimeout(function(){
+        try { renderProfile(); } catch(e) {}
+        try { if (typeof refreshLeaderboard === "function") refreshLeaderboard(); } catch(e) {}
+        try { if (typeof refreshFriends === "function") refreshFriends(); } catch(e) {}
+        try { if (typeof refreshSuggestions === "function") refreshSuggestions(); } catch(e) {}
+        try { if (typeof refreshMySuggestions === "function") refreshMySuggestions(); } catch(e) {}
+        try { if (typeof refreshAchievements === "function") refreshAchievements(false); } catch(e) {}
+      }, 100);
+      return true;
+    }
+    message("usernameMessage", "Signed in, but the profile row is still missing. Run supabase_v150_account_profile_repair.sql, refresh, and click Create Account once.", "error");
+    return false;
+  }
+
+  window.loadExistingSession = loadProfileV150;
+
+  window.signInWithPasswordAccount = async function(){
+    try{
+      message("usernameMessage", "");
+      var username=val("loginUsernameInput");
+      var password=pass("loginPasswordInput");
+      var ue=(typeof validateUsername === "function") ? validateUsername(username) : "";
+      if(ue) return message("usernameMessage", ue, "error");
+      var pe=(typeof validatePassword === "function") ? validatePassword(password) : "";
+      if(pe) return message("usernameMessage", pe, "error");
+      message("usernameMessage", "Looking up username...");
+      var loginEmail=await lookupLoginEmail(username);
+      if(loginEmail === null) return message("usernameMessage", "No account with that username was found.", "error");
+      if(!loginEmail) return message("usernameMessage", "That account does not have password login yet. Create/repair the account on this device first.", "error");
+      message("usernameMessage", "Signing in...");
+      var result=await timeout(c().auth.signInWithPassword({ email:loginEmail, password:password }), 30000, "Sign in");
+      if(result.error) throw result.error;
+      await finishAuthV150(username, "Signed in as " + username + ".");
+    }catch(err){
+      debug(PATCH + " sign-in error: " + (err?.message || err));
+      message("usernameMessage", err?.message || "Could not sign in.", "error");
+    }
+  };
+
+  window.createUsername = async function(){
+    try{
+      message("usernameMessage", "");
+      var username=val("usernameInput");
+      var password=pass("createPasswordInput");
+      var confirm=pass("createPasswordConfirmInput");
+      var ue=(typeof validateUsername === "function") ? validateUsername(username) : "";
+      if(ue) return message("usernameMessage", ue, "error");
+      var pe=(typeof validatePassword === "function") ? validatePassword(password) : "";
+      if(pe) return message("usernameMessage", pe, "error");
+      if(password !== confirm) return message("usernameMessage", "Passwords do not match.", "error");
+
+      var client=c();
+      var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+      var existingUser=sessionRes?.data?.session?.user || null;
+      if(existingUser){
+        message("usernameMessage", "Finishing your signed-in profile...");
+        try { await timeout(client.auth.updateUser({ password: password }), 15000, "Password update"); } catch(e) { debug(PATCH + " password update skipped: " + (e?.message || e)); }
+        await repairProfileV150(username);
+        return finishAuthV150(username, "Account finished. Signed in as " + username + ".");
+      }
+
+      message("usernameMessage", "Checking username...");
+      var existingLogin=await lookupLoginEmail(username);
+      if(existingLogin !== null) return message("usernameMessage", "That username is already taken. Try another one.", "error");
+      var loginEmail=(typeof makeLoginEmail === "function") ? makeLoginEmail() : ("blankspace-" + Date.now() + Math.random().toString(36).slice(2) + "@blankspaceweb.com");
+      message("usernameMessage", "Creating account...");
+      var authResult=await timeout(client.auth.signUp({ email:loginEmail, password:password, options:{ data:{ username:username } } }), 30000, "Create account");
+      if(authResult.error) throw authResult.error;
+      if(!authResult.data?.session){
+        return message("usernameMessage", "Supabase created the login but did not return a session. Turn off email confirmation, then sign in with this username/password.", "error");
+      }
+      await repairProfileV150(username);
+      await finishAuthV150(username, "Account created. Signed in as " + username + ".");
+    }catch(err){
+      debug(PATCH + " create-account error: " + (err?.message || err));
+      var text=err?.message || "Could not create account.";
+      if(String(text).toLowerCase().includes("rate limit")) text="Supabase email/auth rate limit was hit. Wait a few minutes, then try once. If you are already signed in and see Choose a username, run the v150 SQL and click Create Account once.";
+      message("usernameMessage", text, "error");
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){ loadProfileV150().catch(function(e){ debug(PATCH + " startup profile load skipped: " + (e?.message || e)); }); }, 600);
+  });
+})();
+</script>
+
 </body>
 </html>`;
 }
@@ -8299,6 +8462,169 @@ try{
   console.error(e);
 }
 <\/script>
+
+<script>
+/* Blank Space v150: finish signed-in layout and repair missing profile rows.
+   Fixes the state where Supabase Auth signs in, but the page still shows Create Account / Sign In. */
+(function(){
+  "use strict";
+  var PATCH = "v150";
+  function c(){ return (typeof getSupabaseClient === "function") ? getSupabaseClient() : window.supabaseClient; }
+  function val(id){ return (document.getElementById(id)?.value || "").trim(); }
+  function pass(id){ return document.getElementById(id)?.value || ""; }
+  function clear(id){ var el=document.getElementById(id); if(el) el.value=""; }
+  function message(id,text,type){
+    try { if (typeof setMessage === "function") return setMessage(id, text || "", type || ""); } catch(e) {}
+    var el=document.getElementById(id); if(el){ el.textContent=text||""; el.className="form-message " + (type||""); }
+  }
+  function debug(text){ try { if (typeof addAchievementDebug === "function") addAchievementDebug(String(text || "")); } catch(e) {} }
+  function timeout(p, ms, label){
+    return Promise.race([Promise.resolve(p), new Promise(function(_, reject){ setTimeout(function(){ reject(new Error((label||"Request") + " timed out. Refresh and try again.")); }, ms||25000); })]);
+  }
+  function duplicate(err){ return String(err?.message || err || "").toLowerCase().includes("duplicate") || String(err?.message || err || "").toLowerCase().includes("taken"); }
+
+  async function loadProfileV150(){
+    var client=c();
+    var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+    var user=sessionRes?.data?.session?.user || null;
+    if(!user){
+      try { blankSpaceUser=null; blankSpaceProfile=null; blankSpaceIsAdmin=false; } catch(e) {}
+      try { renderProfile(); } catch(e) {}
+      return null;
+    }
+    try { blankSpaceUser=user; window.blankSpaceUser=user; } catch(e) { window.blankSpaceUser=user; }
+    var prof=await timeout(client.from("profiles").select("*").eq("id", user.id).maybeSingle(), 12000, "Profile load");
+    if(prof.error) throw prof.error;
+    try { blankSpaceProfile=prof.data || null; window.blankSpaceProfile=prof.data || null; } catch(e) { window.blankSpaceProfile=prof.data || null; }
+    if (prof.data) {
+      try { if (typeof checkAdmin === "function") await timeout(checkAdmin(), 10000, "Admin check"); } catch(e) { debug(PATCH + " admin check skipped: " + (e?.message || e)); }
+    }
+    try { renderProfile(); } catch(e) {}
+    try { if (typeof renderSuggestionGate === "function") renderSuggestionGate(); } catch(e) {}
+    return prof.data || null;
+  }
+
+  async function repairProfileV150(username){
+    var client=c();
+    var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+    var user=sessionRes?.data?.session?.user || null;
+    if(!user) throw new Error("Sign in first.");
+    var loginEmail=user.email || null;
+
+    var rpc=await timeout(client.rpc("ensure_own_profile_v150", { p_username: username, p_login_email: loginEmail }), 15000, "Profile repair");
+    if(rpc.error){
+      var m=String(rpc.error.message || "").toLowerCase();
+      if(m.includes("ensure_own_profile_v150")){
+        var insert=await timeout(client.from("profiles").insert({ id:user.id, username:username, login_email:loginEmail }).select("*").maybeSingle(), 15000, "Profile creation");
+        if(insert.error){
+          if(duplicate(insert.error)) throw new Error("That username is already taken. Try another one.");
+          throw insert.error;
+        }
+      } else {
+        if(duplicate(rpc.error)) throw new Error("That username is already taken. Try another one.");
+        throw rpc.error;
+      }
+    }
+    await loadProfileV150();
+    return true;
+  }
+
+  async function finishAuthV150(username, successText){
+    var profile=await loadProfileV150();
+    if(!profile && username){
+      await repairProfileV150(username);
+      profile=await loadProfileV150();
+    }
+    if(profile){
+      message("usernameMessage", successText || ("Signed in as " + profile.username + "."), "good");
+      ["createPasswordInput","createPasswordConfirmInput","loginPasswordInput"].forEach(clear);
+      setTimeout(function(){
+        try { renderProfile(); } catch(e) {}
+        try { if (typeof refreshLeaderboard === "function") refreshLeaderboard(); } catch(e) {}
+        try { if (typeof refreshFriends === "function") refreshFriends(); } catch(e) {}
+        try { if (typeof refreshSuggestions === "function") refreshSuggestions(); } catch(e) {}
+        try { if (typeof refreshMySuggestions === "function") refreshMySuggestions(); } catch(e) {}
+        try { if (typeof refreshAchievements === "function") refreshAchievements(false); } catch(e) {}
+      }, 100);
+      return true;
+    }
+    message("usernameMessage", "Signed in, but the profile row is still missing. Run supabase_v150_account_profile_repair.sql, refresh, and click Create Account once.", "error");
+    return false;
+  }
+
+  window.loadExistingSession = loadProfileV150;
+
+  window.signInWithPasswordAccount = async function(){
+    try{
+      message("usernameMessage", "");
+      var username=val("loginUsernameInput");
+      var password=pass("loginPasswordInput");
+      var ue=(typeof validateUsername === "function") ? validateUsername(username) : "";
+      if(ue) return message("usernameMessage", ue, "error");
+      var pe=(typeof validatePassword === "function") ? validatePassword(password) : "";
+      if(pe) return message("usernameMessage", pe, "error");
+      message("usernameMessage", "Looking up username...");
+      var loginEmail=await lookupLoginEmail(username);
+      if(loginEmail === null) return message("usernameMessage", "No account with that username was found.", "error");
+      if(!loginEmail) return message("usernameMessage", "That account does not have password login yet. Create/repair the account on this device first.", "error");
+      message("usernameMessage", "Signing in...");
+      var result=await timeout(c().auth.signInWithPassword({ email:loginEmail, password:password }), 30000, "Sign in");
+      if(result.error) throw result.error;
+      await finishAuthV150(username, "Signed in as " + username + ".");
+    }catch(err){
+      debug(PATCH + " sign-in error: " + (err?.message || err));
+      message("usernameMessage", err?.message || "Could not sign in.", "error");
+    }
+  };
+
+  window.createUsername = async function(){
+    try{
+      message("usernameMessage", "");
+      var username=val("usernameInput");
+      var password=pass("createPasswordInput");
+      var confirm=pass("createPasswordConfirmInput");
+      var ue=(typeof validateUsername === "function") ? validateUsername(username) : "";
+      if(ue) return message("usernameMessage", ue, "error");
+      var pe=(typeof validatePassword === "function") ? validatePassword(password) : "";
+      if(pe) return message("usernameMessage", pe, "error");
+      if(password !== confirm) return message("usernameMessage", "Passwords do not match.", "error");
+
+      var client=c();
+      var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+      var existingUser=sessionRes?.data?.session?.user || null;
+      if(existingUser){
+        message("usernameMessage", "Finishing your signed-in profile...");
+        try { await timeout(client.auth.updateUser({ password: password }), 15000, "Password update"); } catch(e) { debug(PATCH + " password update skipped: " + (e?.message || e)); }
+        await repairProfileV150(username);
+        return finishAuthV150(username, "Account finished. Signed in as " + username + ".");
+      }
+
+      message("usernameMessage", "Checking username...");
+      var existingLogin=await lookupLoginEmail(username);
+      if(existingLogin !== null) return message("usernameMessage", "That username is already taken. Try another one.", "error");
+      var loginEmail=(typeof makeLoginEmail === "function") ? makeLoginEmail() : ("blankspace-" + Date.now() + Math.random().toString(36).slice(2) + "@blankspaceweb.com");
+      message("usernameMessage", "Creating account...");
+      var authResult=await timeout(client.auth.signUp({ email:loginEmail, password:password, options:{ data:{ username:username } } }), 30000, "Create account");
+      if(authResult.error) throw authResult.error;
+      if(!authResult.data?.session){
+        return message("usernameMessage", "Supabase created the login but did not return a session. Turn off email confirmation, then sign in with this username/password.", "error");
+      }
+      await repairProfileV150(username);
+      await finishAuthV150(username, "Account created. Signed in as " + username + ".");
+    }catch(err){
+      debug(PATCH + " create-account error: " + (err?.message || err));
+      var text=err?.message || "Could not create account.";
+      if(String(text).toLowerCase().includes("rate limit")) text="Supabase email/auth rate limit was hit. Wait a few minutes, then try once. If you are already signed in and see Choose a username, run the v150 SQL and click Create Account once.";
+      message("usernameMessage", text, "error");
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){ loadProfileV150().catch(function(e){ debug(PATCH + " startup profile load skipped: " + (e?.message || e)); }); }, 600);
+  });
+})();
+</script>
+
 </body>
 </html>`;
 }
@@ -13050,6 +13376,169 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       }, true);
     });
     msg("profileMessage", "You can use the main tabs without signing in. Sign in only for account features like chat, friends, saving progress, shop, and achievements.", "");
+  });
+})();
+</script>
+
+
+<script>
+/* Blank Space v150: finish signed-in layout and repair missing profile rows.
+   Fixes the state where Supabase Auth signs in, but the page still shows Create Account / Sign In. */
+(function(){
+  "use strict";
+  var PATCH = "v150";
+  function c(){ return (typeof getSupabaseClient === "function") ? getSupabaseClient() : window.supabaseClient; }
+  function val(id){ return (document.getElementById(id)?.value || "").trim(); }
+  function pass(id){ return document.getElementById(id)?.value || ""; }
+  function clear(id){ var el=document.getElementById(id); if(el) el.value=""; }
+  function message(id,text,type){
+    try { if (typeof setMessage === "function") return setMessage(id, text || "", type || ""); } catch(e) {}
+    var el=document.getElementById(id); if(el){ el.textContent=text||""; el.className="form-message " + (type||""); }
+  }
+  function debug(text){ try { if (typeof addAchievementDebug === "function") addAchievementDebug(String(text || "")); } catch(e) {} }
+  function timeout(p, ms, label){
+    return Promise.race([Promise.resolve(p), new Promise(function(_, reject){ setTimeout(function(){ reject(new Error((label||"Request") + " timed out. Refresh and try again.")); }, ms||25000); })]);
+  }
+  function duplicate(err){ return String(err?.message || err || "").toLowerCase().includes("duplicate") || String(err?.message || err || "").toLowerCase().includes("taken"); }
+
+  async function loadProfileV150(){
+    var client=c();
+    var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+    var user=sessionRes?.data?.session?.user || null;
+    if(!user){
+      try { blankSpaceUser=null; blankSpaceProfile=null; blankSpaceIsAdmin=false; } catch(e) {}
+      try { renderProfile(); } catch(e) {}
+      return null;
+    }
+    try { blankSpaceUser=user; window.blankSpaceUser=user; } catch(e) { window.blankSpaceUser=user; }
+    var prof=await timeout(client.from("profiles").select("*").eq("id", user.id).maybeSingle(), 12000, "Profile load");
+    if(prof.error) throw prof.error;
+    try { blankSpaceProfile=prof.data || null; window.blankSpaceProfile=prof.data || null; } catch(e) { window.blankSpaceProfile=prof.data || null; }
+    if (prof.data) {
+      try { if (typeof checkAdmin === "function") await timeout(checkAdmin(), 10000, "Admin check"); } catch(e) { debug(PATCH + " admin check skipped: " + (e?.message || e)); }
+    }
+    try { renderProfile(); } catch(e) {}
+    try { if (typeof renderSuggestionGate === "function") renderSuggestionGate(); } catch(e) {}
+    return prof.data || null;
+  }
+
+  async function repairProfileV150(username){
+    var client=c();
+    var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+    var user=sessionRes?.data?.session?.user || null;
+    if(!user) throw new Error("Sign in first.");
+    var loginEmail=user.email || null;
+
+    var rpc=await timeout(client.rpc("ensure_own_profile_v150", { p_username: username, p_login_email: loginEmail }), 15000, "Profile repair");
+    if(rpc.error){
+      var m=String(rpc.error.message || "").toLowerCase();
+      if(m.includes("ensure_own_profile_v150")){
+        var insert=await timeout(client.from("profiles").insert({ id:user.id, username:username, login_email:loginEmail }).select("*").maybeSingle(), 15000, "Profile creation");
+        if(insert.error){
+          if(duplicate(insert.error)) throw new Error("That username is already taken. Try another one.");
+          throw insert.error;
+        }
+      } else {
+        if(duplicate(rpc.error)) throw new Error("That username is already taken. Try another one.");
+        throw rpc.error;
+      }
+    }
+    await loadProfileV150();
+    return true;
+  }
+
+  async function finishAuthV150(username, successText){
+    var profile=await loadProfileV150();
+    if(!profile && username){
+      await repairProfileV150(username);
+      profile=await loadProfileV150();
+    }
+    if(profile){
+      message("usernameMessage", successText || ("Signed in as " + profile.username + "."), "good");
+      ["createPasswordInput","createPasswordConfirmInput","loginPasswordInput"].forEach(clear);
+      setTimeout(function(){
+        try { renderProfile(); } catch(e) {}
+        try { if (typeof refreshLeaderboard === "function") refreshLeaderboard(); } catch(e) {}
+        try { if (typeof refreshFriends === "function") refreshFriends(); } catch(e) {}
+        try { if (typeof refreshSuggestions === "function") refreshSuggestions(); } catch(e) {}
+        try { if (typeof refreshMySuggestions === "function") refreshMySuggestions(); } catch(e) {}
+        try { if (typeof refreshAchievements === "function") refreshAchievements(false); } catch(e) {}
+      }, 100);
+      return true;
+    }
+    message("usernameMessage", "Signed in, but the profile row is still missing. Run supabase_v150_account_profile_repair.sql, refresh, and click Create Account once.", "error");
+    return false;
+  }
+
+  window.loadExistingSession = loadProfileV150;
+
+  window.signInWithPasswordAccount = async function(){
+    try{
+      message("usernameMessage", "");
+      var username=val("loginUsernameInput");
+      var password=pass("loginPasswordInput");
+      var ue=(typeof validateUsername === "function") ? validateUsername(username) : "";
+      if(ue) return message("usernameMessage", ue, "error");
+      var pe=(typeof validatePassword === "function") ? validatePassword(password) : "";
+      if(pe) return message("usernameMessage", pe, "error");
+      message("usernameMessage", "Looking up username...");
+      var loginEmail=await lookupLoginEmail(username);
+      if(loginEmail === null) return message("usernameMessage", "No account with that username was found.", "error");
+      if(!loginEmail) return message("usernameMessage", "That account does not have password login yet. Create/repair the account on this device first.", "error");
+      message("usernameMessage", "Signing in...");
+      var result=await timeout(c().auth.signInWithPassword({ email:loginEmail, password:password }), 30000, "Sign in");
+      if(result.error) throw result.error;
+      await finishAuthV150(username, "Signed in as " + username + ".");
+    }catch(err){
+      debug(PATCH + " sign-in error: " + (err?.message || err));
+      message("usernameMessage", err?.message || "Could not sign in.", "error");
+    }
+  };
+
+  window.createUsername = async function(){
+    try{
+      message("usernameMessage", "");
+      var username=val("usernameInput");
+      var password=pass("createPasswordInput");
+      var confirm=pass("createPasswordConfirmInput");
+      var ue=(typeof validateUsername === "function") ? validateUsername(username) : "";
+      if(ue) return message("usernameMessage", ue, "error");
+      var pe=(typeof validatePassword === "function") ? validatePassword(password) : "";
+      if(pe) return message("usernameMessage", pe, "error");
+      if(password !== confirm) return message("usernameMessage", "Passwords do not match.", "error");
+
+      var client=c();
+      var sessionRes=await timeout(client.auth.getSession(), 12000, "Session check");
+      var existingUser=sessionRes?.data?.session?.user || null;
+      if(existingUser){
+        message("usernameMessage", "Finishing your signed-in profile...");
+        try { await timeout(client.auth.updateUser({ password: password }), 15000, "Password update"); } catch(e) { debug(PATCH + " password update skipped: " + (e?.message || e)); }
+        await repairProfileV150(username);
+        return finishAuthV150(username, "Account finished. Signed in as " + username + ".");
+      }
+
+      message("usernameMessage", "Checking username...");
+      var existingLogin=await lookupLoginEmail(username);
+      if(existingLogin !== null) return message("usernameMessage", "That username is already taken. Try another one.", "error");
+      var loginEmail=(typeof makeLoginEmail === "function") ? makeLoginEmail() : ("blankspace-" + Date.now() + Math.random().toString(36).slice(2) + "@blankspaceweb.com");
+      message("usernameMessage", "Creating account...");
+      var authResult=await timeout(client.auth.signUp({ email:loginEmail, password:password, options:{ data:{ username:username } } }), 30000, "Create account");
+      if(authResult.error) throw authResult.error;
+      if(!authResult.data?.session){
+        return message("usernameMessage", "Supabase created the login but did not return a session. Turn off email confirmation, then sign in with this username/password.", "error");
+      }
+      await repairProfileV150(username);
+      await finishAuthV150(username, "Account created. Signed in as " + username + ".");
+    }catch(err){
+      debug(PATCH + " create-account error: " + (err?.message || err));
+      var text=err?.message || "Could not create account.";
+      if(String(text).toLowerCase().includes("rate limit")) text="Supabase email/auth rate limit was hit. Wait a few minutes, then try once. If you are already signed in and see Choose a username, run the v150 SQL and click Create Account once.";
+      message("usernameMessage", text, "error");
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){ loadProfileV150().catch(function(e){ debug(PATCH + " startup profile load skipped: " + (e?.message || e)); }); }, 600);
   });
 })();
 </script>
