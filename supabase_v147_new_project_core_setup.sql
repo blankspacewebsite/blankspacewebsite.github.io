@@ -1,0 +1,1 @@
+-- Replaced by supabase_v148_new_project_core_setup_FIXED.sql. Use that file instead.
