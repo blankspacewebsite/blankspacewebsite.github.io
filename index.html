@@ -8392,6 +8392,160 @@ window.addEventListener("keydown", function(e) {
 })();
 </script>
 
+
+<style id="blank-space-v154-real-tab-repair-css">
+/* v154: hard restore the original top tab behavior after the v152/v153 emergency patches. */
+html body header nav.topbar,
+html body .topbar{
+  display:flex!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:8px!important;
+  flex-wrap:wrap!important;
+  text-align:left!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  width:100%!important;
+}
+html body header nav.topbar .tab,
+html body .topbar .tab{
+  font-weight:400!important;
+  text-align:center!important;
+  justify-content:center!important;
+}
+html body header nav.topbar .tab.active,
+html body .topbar .tab.active{
+  font-weight:400!important;
+}
+.metric-toast.admin-confetti-toast,
+.metric-toast[data-admin-confetti],
+#adminConfetti,
+#adminConfettiToast{
+  display:none!important;
+}
+</style>
+<script id="blank-space-v154-real-tab-repair-js">
+/* v154: fixes tabs that would not open because an older capture listener was stopping clicks. */
+(function(){
+  'use strict';
+  if(window.__blankSpaceV154RealTabRepair) return;
+  window.__blankSpaceV154RealTabRepair = true;
+
+  var INIT_BY_TAB = {
+    suggestions: 'initSupabaseSuggestions',
+    achievements: 'initAchievementsPage',
+    leaderboard: 'initLeaderboardPage',
+    chat: 'initChatPage',
+    friends: 'initFriendsPage',
+    settings: 'initSettingsPage',
+    account: 'initAccountPage',
+    adminpanel: 'initAdminPanelPage',
+    dailyrewards: 'refreshDailyRewardV101'
+  };
+
+  function removeBadExtras(){
+    try{
+      document.querySelectorAll('.metric-toast, .admin-confetti-toast, #adminConfetti, #adminConfettiToast').forEach(function(el){
+        var txt = (el.textContent || '').toLowerCase();
+        if(txt.indexOf('admin confetti') !== -1 || el.classList.contains('admin-confetti-toast') || el.id === 'adminConfetti' || el.id === 'adminConfettiToast') el.remove();
+      });
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = el.textContent || '';
+        if(txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) el.remove();
+      });
+    }catch(e){}
+  }
+
+  function restoreTopbar(){
+    try{
+      var bar = document.querySelector('header nav.topbar, nav.topbar, .topbar');
+      if(bar){
+        bar.style.setProperty('display','flex','important');
+        bar.style.setProperty('justify-content','flex-start','important');
+        bar.style.setProperty('align-items','center','important');
+        bar.style.setProperty('flex-wrap','wrap','important');
+        bar.style.setProperty('text-align','left','important');
+        bar.style.setProperty('margin-left','0','important');
+        bar.style.setProperty('margin-right','auto','important');
+        bar.style.setProperty('width','100%','important');
+      }
+      document.querySelectorAll('.topbar .tab').forEach(function(btn){
+        btn.style.setProperty('font-weight','400','important');
+      });
+    }catch(e){}
+  }
+
+  function hardShowTab(tabId){
+    try{
+      if(!tabId) tabId = 'home';
+      document.querySelectorAll('.tab[data-tab]').forEach(function(btn){
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      document.querySelectorAll('section').forEach(function(section){
+        section.classList.remove('active-section');
+      });
+      var target = document.getElementById(tabId);
+      if(target) target.classList.add('active-section');
+
+      var fnName = INIT_BY_TAB[tabId];
+      if(fnName && typeof window[fnName] === 'function'){
+        try{ window[fnName](); }catch(e){}
+      }
+      try{ localStorage.setItem('blankspace_last_tab_v99', tabId); }catch(e){}
+      restoreTopbar();
+      removeBadExtras();
+    }catch(e){
+      try{ console.warn('Blank Space v154 tab repair failed', e); }catch(_e){}
+    }
+  }
+
+  window.showTab = hardShowTab;
+  window.registerAndCheckDeviceV99 = async function(){ removeBadExtras(); return null; };
+  window.adminFun = function(kind){
+    var out = document.getElementById('adminFunOutput');
+    if(kind === 'confetti'){
+      if(out) out.textContent = 'Confetti test disabled.';
+      removeBadExtras();
+      return;
+    }
+    if(kind === 'toast' && typeof window.showChatToast === 'function') window.showChatToast('Admin test','This is what a notification looks like.');
+    if(kind === 'icon' && out){
+      var icons = ['🚀','🛸','👑','🐉','🌌','💎','⚡'];
+      out.textContent = 'Random icon idea: ' + icons[Math.floor(Math.random()*icons.length)];
+    }
+  };
+
+  document.addEventListener('click', function(ev){
+    var btn = ev.target && ev.target.closest ? ev.target.closest('.topbar .tab[data-tab], header .tab[data-tab]') : null;
+    if(!btn) return;
+    var tabId = btn.dataset.tab;
+    if(!tabId) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    if(typeof ev.stopImmediatePropagation === 'function') ev.stopImmediatePropagation();
+    hardShowTab(tabId);
+  }, true);
+
+  function boot(){
+    restoreTopbar();
+    removeBadExtras();
+    document.querySelectorAll('.topbar .tab[data-tab]').forEach(function(btn){
+      btn.onclick = function(ev){
+        if(ev){ ev.preventDefault(); if(typeof ev.stopImmediatePropagation === 'function') ev.stopImmediatePropagation(); }
+        hardShowTab(btn.dataset.tab);
+        return false;
+      };
+    });
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+  setTimeout(boot, 300);
+  setTimeout(boot, 1000);
+  setInterval(function(){ restoreTopbar(); removeBadExtras(); }, 2000);
+})();
+</script>
+
 </body>
 </html>`;
 }
@@ -8630,6 +8784,160 @@ try{
   document.addEventListener("DOMContentLoaded", function(){
     setTimeout(function(){ loadProfileV150().catch(function(e){ debug(PATCH + " startup profile load skipped: " + (e?.message || e)); }); }, 600);
   });
+})();
+</script>
+
+
+<style id="blank-space-v154-real-tab-repair-css">
+/* v154: hard restore the original top tab behavior after the v152/v153 emergency patches. */
+html body header nav.topbar,
+html body .topbar{
+  display:flex!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:8px!important;
+  flex-wrap:wrap!important;
+  text-align:left!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  width:100%!important;
+}
+html body header nav.topbar .tab,
+html body .topbar .tab{
+  font-weight:400!important;
+  text-align:center!important;
+  justify-content:center!important;
+}
+html body header nav.topbar .tab.active,
+html body .topbar .tab.active{
+  font-weight:400!important;
+}
+.metric-toast.admin-confetti-toast,
+.metric-toast[data-admin-confetti],
+#adminConfetti,
+#adminConfettiToast{
+  display:none!important;
+}
+</style>
+<script id="blank-space-v154-real-tab-repair-js">
+/* v154: fixes tabs that would not open because an older capture listener was stopping clicks. */
+(function(){
+  'use strict';
+  if(window.__blankSpaceV154RealTabRepair) return;
+  window.__blankSpaceV154RealTabRepair = true;
+
+  var INIT_BY_TAB = {
+    suggestions: 'initSupabaseSuggestions',
+    achievements: 'initAchievementsPage',
+    leaderboard: 'initLeaderboardPage',
+    chat: 'initChatPage',
+    friends: 'initFriendsPage',
+    settings: 'initSettingsPage',
+    account: 'initAccountPage',
+    adminpanel: 'initAdminPanelPage',
+    dailyrewards: 'refreshDailyRewardV101'
+  };
+
+  function removeBadExtras(){
+    try{
+      document.querySelectorAll('.metric-toast, .admin-confetti-toast, #adminConfetti, #adminConfettiToast').forEach(function(el){
+        var txt = (el.textContent || '').toLowerCase();
+        if(txt.indexOf('admin confetti') !== -1 || el.classList.contains('admin-confetti-toast') || el.id === 'adminConfetti' || el.id === 'adminConfettiToast') el.remove();
+      });
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = el.textContent || '';
+        if(txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) el.remove();
+      });
+    }catch(e){}
+  }
+
+  function restoreTopbar(){
+    try{
+      var bar = document.querySelector('header nav.topbar, nav.topbar, .topbar');
+      if(bar){
+        bar.style.setProperty('display','flex','important');
+        bar.style.setProperty('justify-content','flex-start','important');
+        bar.style.setProperty('align-items','center','important');
+        bar.style.setProperty('flex-wrap','wrap','important');
+        bar.style.setProperty('text-align','left','important');
+        bar.style.setProperty('margin-left','0','important');
+        bar.style.setProperty('margin-right','auto','important');
+        bar.style.setProperty('width','100%','important');
+      }
+      document.querySelectorAll('.topbar .tab').forEach(function(btn){
+        btn.style.setProperty('font-weight','400','important');
+      });
+    }catch(e){}
+  }
+
+  function hardShowTab(tabId){
+    try{
+      if(!tabId) tabId = 'home';
+      document.querySelectorAll('.tab[data-tab]').forEach(function(btn){
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      document.querySelectorAll('section').forEach(function(section){
+        section.classList.remove('active-section');
+      });
+      var target = document.getElementById(tabId);
+      if(target) target.classList.add('active-section');
+
+      var fnName = INIT_BY_TAB[tabId];
+      if(fnName && typeof window[fnName] === 'function'){
+        try{ window[fnName](); }catch(e){}
+      }
+      try{ localStorage.setItem('blankspace_last_tab_v99', tabId); }catch(e){}
+      restoreTopbar();
+      removeBadExtras();
+    }catch(e){
+      try{ console.warn('Blank Space v154 tab repair failed', e); }catch(_e){}
+    }
+  }
+
+  window.showTab = hardShowTab;
+  window.registerAndCheckDeviceV99 = async function(){ removeBadExtras(); return null; };
+  window.adminFun = function(kind){
+    var out = document.getElementById('adminFunOutput');
+    if(kind === 'confetti'){
+      if(out) out.textContent = 'Confetti test disabled.';
+      removeBadExtras();
+      return;
+    }
+    if(kind === 'toast' && typeof window.showChatToast === 'function') window.showChatToast('Admin test','This is what a notification looks like.');
+    if(kind === 'icon' && out){
+      var icons = ['🚀','🛸','👑','🐉','🌌','💎','⚡'];
+      out.textContent = 'Random icon idea: ' + icons[Math.floor(Math.random()*icons.length)];
+    }
+  };
+
+  document.addEventListener('click', function(ev){
+    var btn = ev.target && ev.target.closest ? ev.target.closest('.topbar .tab[data-tab], header .tab[data-tab]') : null;
+    if(!btn) return;
+    var tabId = btn.dataset.tab;
+    if(!tabId) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    if(typeof ev.stopImmediatePropagation === 'function') ev.stopImmediatePropagation();
+    hardShowTab(tabId);
+  }, true);
+
+  function boot(){
+    restoreTopbar();
+    removeBadExtras();
+    document.querySelectorAll('.topbar .tab[data-tab]').forEach(function(btn){
+      btn.onclick = function(ev){
+        if(ev){ ev.preventDefault(); if(typeof ev.stopImmediatePropagation === 'function') ev.stopImmediatePropagation(); }
+        hardShowTab(btn.dataset.tab);
+        return false;
+      };
+    });
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+  setTimeout(boot, 300);
+  setTimeout(boot, 1000);
+  setInterval(function(){ restoreTopbar(); removeBadExtras(); }, 2000);
 })();
 </script>
 
@@ -13615,5 +13923,159 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   setInterval(removeBadOverlays, 1500);
 })();
 </script>
+
+<style id="blank-space-v154-real-tab-repair-css">
+/* v154: hard restore the original top tab behavior after the v152/v153 emergency patches. */
+html body header nav.topbar,
+html body .topbar{
+  display:flex!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:8px!important;
+  flex-wrap:wrap!important;
+  text-align:left!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  width:100%!important;
+}
+html body header nav.topbar .tab,
+html body .topbar .tab{
+  font-weight:400!important;
+  text-align:center!important;
+  justify-content:center!important;
+}
+html body header nav.topbar .tab.active,
+html body .topbar .tab.active{
+  font-weight:400!important;
+}
+.metric-toast.admin-confetti-toast,
+.metric-toast[data-admin-confetti],
+#adminConfetti,
+#adminConfettiToast{
+  display:none!important;
+}
+</style>
+<script id="blank-space-v154-real-tab-repair-js">
+/* v154: fixes tabs that would not open because an older capture listener was stopping clicks. */
+(function(){
+  'use strict';
+  if(window.__blankSpaceV154RealTabRepair) return;
+  window.__blankSpaceV154RealTabRepair = true;
+
+  var INIT_BY_TAB = {
+    suggestions: 'initSupabaseSuggestions',
+    achievements: 'initAchievementsPage',
+    leaderboard: 'initLeaderboardPage',
+    chat: 'initChatPage',
+    friends: 'initFriendsPage',
+    settings: 'initSettingsPage',
+    account: 'initAccountPage',
+    adminpanel: 'initAdminPanelPage',
+    dailyrewards: 'refreshDailyRewardV101'
+  };
+
+  function removeBadExtras(){
+    try{
+      document.querySelectorAll('.metric-toast, .admin-confetti-toast, #adminConfetti, #adminConfettiToast').forEach(function(el){
+        var txt = (el.textContent || '').toLowerCase();
+        if(txt.indexOf('admin confetti') !== -1 || el.classList.contains('admin-confetti-toast') || el.id === 'adminConfetti' || el.id === 'adminConfettiToast') el.remove();
+      });
+      document.querySelectorAll('.device-ban-screen').forEach(function(el){
+        var txt = el.textContent || '';
+        if(txt.indexOf('Website banned') !== -1 || txt.indexOf('${') !== -1 || txt.indexOf('escapeHTML') !== -1) el.remove();
+      });
+    }catch(e){}
+  }
+
+  function restoreTopbar(){
+    try{
+      var bar = document.querySelector('header nav.topbar, nav.topbar, .topbar');
+      if(bar){
+        bar.style.setProperty('display','flex','important');
+        bar.style.setProperty('justify-content','flex-start','important');
+        bar.style.setProperty('align-items','center','important');
+        bar.style.setProperty('flex-wrap','wrap','important');
+        bar.style.setProperty('text-align','left','important');
+        bar.style.setProperty('margin-left','0','important');
+        bar.style.setProperty('margin-right','auto','important');
+        bar.style.setProperty('width','100%','important');
+      }
+      document.querySelectorAll('.topbar .tab').forEach(function(btn){
+        btn.style.setProperty('font-weight','400','important');
+      });
+    }catch(e){}
+  }
+
+  function hardShowTab(tabId){
+    try{
+      if(!tabId) tabId = 'home';
+      document.querySelectorAll('.tab[data-tab]').forEach(function(btn){
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      document.querySelectorAll('section').forEach(function(section){
+        section.classList.remove('active-section');
+      });
+      var target = document.getElementById(tabId);
+      if(target) target.classList.add('active-section');
+
+      var fnName = INIT_BY_TAB[tabId];
+      if(fnName && typeof window[fnName] === 'function'){
+        try{ window[fnName](); }catch(e){}
+      }
+      try{ localStorage.setItem('blankspace_last_tab_v99', tabId); }catch(e){}
+      restoreTopbar();
+      removeBadExtras();
+    }catch(e){
+      try{ console.warn('Blank Space v154 tab repair failed', e); }catch(_e){}
+    }
+  }
+
+  window.showTab = hardShowTab;
+  window.registerAndCheckDeviceV99 = async function(){ removeBadExtras(); return null; };
+  window.adminFun = function(kind){
+    var out = document.getElementById('adminFunOutput');
+    if(kind === 'confetti'){
+      if(out) out.textContent = 'Confetti test disabled.';
+      removeBadExtras();
+      return;
+    }
+    if(kind === 'toast' && typeof window.showChatToast === 'function') window.showChatToast('Admin test','This is what a notification looks like.');
+    if(kind === 'icon' && out){
+      var icons = ['🚀','🛸','👑','🐉','🌌','💎','⚡'];
+      out.textContent = 'Random icon idea: ' + icons[Math.floor(Math.random()*icons.length)];
+    }
+  };
+
+  document.addEventListener('click', function(ev){
+    var btn = ev.target && ev.target.closest ? ev.target.closest('.topbar .tab[data-tab], header .tab[data-tab]') : null;
+    if(!btn) return;
+    var tabId = btn.dataset.tab;
+    if(!tabId) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    if(typeof ev.stopImmediatePropagation === 'function') ev.stopImmediatePropagation();
+    hardShowTab(tabId);
+  }, true);
+
+  function boot(){
+    restoreTopbar();
+    removeBadExtras();
+    document.querySelectorAll('.topbar .tab[data-tab]').forEach(function(btn){
+      btn.onclick = function(ev){
+        if(ev){ ev.preventDefault(); if(typeof ev.stopImmediatePropagation === 'function') ev.stopImmediatePropagation(); }
+        hardShowTab(btn.dataset.tab);
+        return false;
+      };
+    });
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+  setTimeout(boot, 300);
+  setTimeout(boot, 1000);
+  setInterval(function(){ restoreTopbar(); removeBadExtras(); }, 2000);
+})();
+</script>
+
 </body>
 </html>
