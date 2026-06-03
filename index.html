@@ -13,6 +13,7 @@
 <!-- Blank Space v143: added profile pictures, username changes, points, leaderboard, and suggestion awards -->
 <!-- Blank Space v143: moved account tools to Account tab, added Friends tab, public suggestion browsing, and admin setup helper -->
 <!-- Blank Space v143: added Supabase username accounts and on-site suggestions database -->
+<!-- Blank Space v146: fast auth repair, achievement-not-defined fix, and public tab access -->
 <!-- Blank Space v143 strict patch: manual achievement submissions use exact values, disable all automatic game messages, and prevent mass unlocks -->
 <!-- Blank Space v143: disables unsafe automatic achievement detectors, fixes manual-only unlocks, resets Admin achievement stats, and keeps achievements points-only -->
 <!-- Blank Space v143: fixed achievement thresholds/progress, reset Admin achievements, leaderboard admin visibility, and hideable score submitter -->
@@ -6374,7 +6375,7 @@ async function lookupLoginEmail(username) {
   if (validation) throw new Error(validation);
   const result = await getSupabaseClient().rpc("lookup_login_email", { username_input: username });
   if (result.error) {
-    addAchievementDebug(`Award error for ${achievement.id}: ${result.error.message || "unknown error"}`);
+    addAchievementDebug(`Login lookup error: ${result.error.message || "unknown error"}`);
     const msg = String(result.error.message || "");
     if (msg.toLowerCase().includes("lookup_login_email")) {
       throw new Error("Run supabase_v78_update.sql in Supabase first, then refresh this site.");
@@ -7836,7 +7837,7 @@ async function awardAchievement(achievement) {
     p_reward_points: achievement.reward || 0
   });
   if (result.error) {
-    addAchievementDebug(`Award error for ${achievement.id}: ${result.error.message || "unknown error"}`);
+    addAchievementDebug(`Login lookup error: ${result.error.message || "unknown error"}`);
     const msg = String(result.error.message || "");
     if (msg.toLowerCase().includes("award_achievement")) setMessage("achievementsStatus", "Run supabase_v81_update.sql to turn on achievements.", "error");
     else console.warn("Achievement error", result.error);
@@ -8414,7 +8415,8 @@ function fullscreenGame() {
 
 const BLANK_SPACE_PUBLIC_TABS = new Set(["home", "update", "account"]);
 function requireSignInForTab(tabId) {
-  return !BLANK_SPACE_PUBLIC_TABS.has(tabId);
+  // v146: browsing the site should not require an account. Account-only actions still check sign-in where needed.
+  return false;
 }
 function showTab(tabId) {
   if (requireSignInForTab(tabId) && (!blankSpaceUser || !blankSpaceProfile)) {
@@ -12852,6 +12854,201 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   setInterval(wireButtons, 2500);
   setInterval(syncOverlay, 12000);
+})();
+</script>
+
+
+<script>
+/* Blank Space v146: fast auth repair, achievement-not-defined fix, and public tab access.
+   This patch keeps account-only actions protected, but lets unsigned users open normal tabs. */
+(function(){
+  "use strict";
+  var PATCH = "v146";
+  try { window.achievement = window.achievement || { id: "auth-safe-placeholder" }; } catch(e) {}
+
+  function msg(id, text, type){
+    try { if (typeof setMessage === "function") return setMessage(id, text || "", type || ""); } catch(e) {}
+    var el = document.getElementById(id);
+    if (el) { el.textContent = text || ""; el.className = "message " + (type || ""); }
+  }
+  function debug(text){
+    try { if (typeof addAchievementDebug === "function") addAchievementDebug(String(text || "")); } catch(e) {}
+  }
+  function timeoutPromise(promise, ms, label){
+    return Promise.race([
+      Promise.resolve(promise),
+      new Promise(function(_, reject){ setTimeout(function(){ reject(new Error((label || "Request") + " timed out. Check your Supabase settings/network, then refresh and try again.")); }, ms || 25000); })
+    ]);
+  }
+  function client(){ return (typeof getSupabaseClient === "function") ? getSupabaseClient() : window.supabaseClient; }
+  function getVal(id){ return (document.getElementById(id)?.value || "").trim(); }
+  function getPassword(id){ return document.getElementById(id)?.value || ""; }
+  function clearPassword(id){ var el = document.getElementById(id); if(el) el.value = ""; }
+  function isDuplicateError(err){ return String(err?.message || err || "").toLowerCase().includes("duplicate"); }
+  function callMaybe(name, arg){
+    try {
+      var fn = window[name];
+      if (typeof fn === "function") return arg === undefined ? fn() : fn(arg);
+    } catch(e) { debug(PATCH + " refresh skipped: " + name + " - " + (e?.message || e)); }
+  }
+  function safeRefreshAfterAuth(){
+    setTimeout(function(){
+      ["renderProfile","renderSuggestionGate","refreshSuggestions","refreshMySuggestions","refreshFriends","refreshLeaderboard"].forEach(callMaybe);
+      try { if (typeof refreshAchievements === "function") refreshAchievements(false).catch(function(e){ debug(PATCH + " achievements refresh skipped: " + (e?.message || e)); }); } catch(e) {}
+    }, 80);
+  }
+  async function quickLoadSession(){
+    var c = client();
+    var current = await timeoutPromise(c.auth.getSession(), 15000, "Session check");
+    var session = current?.data?.session;
+    if (!session) {
+      try { blankSpaceUser = null; blankSpaceProfile = null; blankSpaceIsAdmin = false; } catch(e) {}
+      try { if (typeof renderProfile === "function") renderProfile(); } catch(e) {}
+      try { if (typeof renderSuggestionGate === "function") renderSuggestionGate(); } catch(e) {}
+      return null;
+    }
+    var userResult = await timeoutPromise(c.auth.getUser(), 15000, "User check");
+    if (userResult.error) throw userResult.error;
+    try { blankSpaceUser = userResult.data.user; window.blankSpaceUser = userResult.data.user; } catch(e) { window.blankSpaceUser = userResult.data.user; }
+    try { if (typeof loadProfile === "function") await timeoutPromise(loadProfile(), 15000, "Profile load"); } catch(e) { debug(PATCH + " profile load warning: " + (e?.message || e)); }
+    try { if (typeof checkAdmin === "function") await timeoutPromise(checkAdmin(), 12000, "Admin check"); } catch(e) { debug(PATCH + " admin check warning: " + (e?.message || e)); }
+    try { if (typeof renderSuggestionGate === "function") renderSuggestionGate(); } catch(e) {}
+    try { if (typeof renderProfile === "function") renderProfile(); } catch(e) {}
+    return userResult.data.user;
+  }
+
+  try { requireSignInForTab = function(){ return false; }; } catch(e) { window.requireSignInForTab = function(){ return false; }; }
+  try {
+    showTab = function(tabId){
+      if (!tabId) tabId = "home";
+      document.querySelectorAll(".tab").forEach(function(b){ b.classList.toggle("active", b.dataset.tab === tabId); });
+      document.querySelectorAll("section").forEach(function(s){ s.classList.remove("active-section"); });
+      document.getElementById(tabId)?.classList.add("active-section");
+      try { if (tabId === "suggestions" && typeof initSupabaseSuggestions === "function") initSupabaseSuggestions(); } catch(e) {}
+      try { if (tabId === "achievements" && typeof initAchievementsPage === "function") initAchievementsPage(); } catch(e) {}
+      try { if (tabId === "leaderboard" && typeof initLeaderboardPage === "function") initLeaderboardPage(); } catch(e) {}
+      try { if (tabId === "chat" && typeof initChatPage === "function") initChatPage(); } catch(e) {}
+      try { if (tabId === "friends" && typeof initFriendsPage === "function") initFriendsPage(); } catch(e) {}
+      try { if (tabId === "settings" && typeof initSettingsPage === "function") initSettingsPage(); } catch(e) {}
+      try { if (tabId === "account" && typeof initAccountPage === "function") initAccountPage(); } catch(e) {}
+      try { if (tabId === "adminpanel" && typeof initAdminPanelPage === "function") initAdminPanelPage(); } catch(e) {}
+    };
+    showTab.__v146PublicTabs = true;
+  } catch(e) {}
+
+  try {
+    lookupLoginEmail = async function(username){
+      var validation = (typeof validateUsername === "function") ? validateUsername(username) : "";
+      if (validation) throw new Error(validation);
+      var result = await timeoutPromise(client().rpc("lookup_login_email", { username_input: username }), 20000, "Username lookup");
+      if (result.error) {
+        debug(PATCH + " login lookup error: " + (result.error.message || "unknown error"));
+        var m = String(result.error.message || "").toLowerCase();
+        if (m.includes("lookup_login_email")) throw new Error("Run the Supabase SQL update file first, then refresh this site.");
+        throw result.error;
+      }
+      return result.data;
+    };
+  } catch(e) {}
+
+  try { loadExistingSession = quickLoadSession; } catch(e) {}
+
+  try {
+    signInWithPasswordAccount = async function(){
+      try {
+        msg("usernameMessage", "");
+        var username = getVal("loginUsernameInput");
+        var password = getPassword("loginPasswordInput");
+        var usernameError = (typeof validateUsername === "function") ? validateUsername(username) : "";
+        if (usernameError) return msg("usernameMessage", usernameError, "error");
+        var passwordError = (typeof validatePassword === "function") ? validatePassword(password) : "";
+        if (passwordError) return msg("usernameMessage", passwordError, "error");
+        msg("usernameMessage", "Looking up username...");
+        var loginEmail = await lookupLoginEmail(username);
+        if (loginEmail === null) return msg("usernameMessage", "No account with that username was found.", "error");
+        if (!loginEmail) return msg("usernameMessage", "That account does not have password login yet. Open it on the original device and use Add Password Login.", "error");
+        msg("usernameMessage", "Signing in...");
+        var result = await timeoutPromise(client().auth.signInWithPassword({ email: loginEmail, password: password }), 30000, "Sign in");
+        if (result.error) throw result.error;
+        await quickLoadSession();
+        if (typeof blankSpaceProfile !== "undefined" && blankSpaceProfile) msg("usernameMessage", "Signed in as " + blankSpaceProfile.username + ".", "good");
+        else msg("usernameMessage", "Signed in. If profile info looks blank, refresh once.", "good");
+        clearPassword("loginPasswordInput");
+        safeRefreshAfterAuth();
+      } catch(err) {
+        debug(PATCH + " sign-in error: " + (err?.message || err));
+        msg("usernameMessage", err?.message || "Could not sign in.", "error");
+      }
+    };
+  } catch(e) {}
+
+  try {
+    createUsername = async function(){
+      try {
+        msg("usernameMessage", "");
+        var username = getVal("usernameInput");
+        var password = getPassword("createPasswordInput");
+        var confirm = getPassword("createPasswordConfirmInput");
+        var validation = (typeof validateUsername === "function") ? validateUsername(username) : "";
+        if (validation) return msg("usernameMessage", validation, "error");
+        var passwordError = (typeof validatePassword === "function") ? validatePassword(password) : "";
+        if (passwordError) return msg("usernameMessage", passwordError, "error");
+        if (password !== confirm) return msg("usernameMessage", "Passwords do not match.", "error");
+        msg("usernameMessage", "Checking username...");
+        var existingLogin = await lookupLoginEmail(username);
+        if (existingLogin !== null) return msg("usernameMessage", "That username is already taken. Try another one.", "error");
+        var loginEmail = (typeof makeLoginEmail === "function") ? makeLoginEmail() : ("blankspace-" + Date.now() + Math.random().toString(36).slice(2) + "@blankspace.invalid");
+        msg("usernameMessage", "Creating account...");
+        var authResult = await timeoutPromise(client().auth.signUp({ email: loginEmail, password: password, options: { data: { username: username } } }), 30000, "Create account");
+        if (authResult.error) throw authResult.error;
+        var newUser = authResult.data?.user;
+        if (!newUser) return msg("usernameMessage", "Supabase did not return a user. Turn off email confirmation in Supabase Authentication settings, then try again.", "error");
+        try { blankSpaceUser = newUser; window.blankSpaceUser = newUser; } catch(e) { window.blankSpaceUser = newUser; }
+        if (!authResult.data?.session) {
+          msg("usernameMessage", "Account login was created, but Supabase did not return a session. Turn off email confirmation, then sign in with the username/password.", "error");
+          return;
+        }
+        var insert = await timeoutPromise(client().from("profiles").insert({ id: newUser.id, username: username, login_email: loginEmail }), 25000, "Profile creation");
+        if (insert.error) {
+          try { await timeoutPromise(client().auth.signOut(), 8000, "Cleanup sign out"); } catch(e) {}
+          if (isDuplicateError(insert.error)) return msg("usernameMessage", "That username is already taken. Try another one.", "error");
+          throw insert.error;
+        }
+        clearPassword("createPasswordInput");
+        clearPassword("createPasswordConfirmInput");
+        await quickLoadSession();
+        msg("usernameMessage", "Account created. You can now sign in on other devices with this username and password.", "good");
+        safeRefreshAfterAuth();
+      } catch(err) {
+        debug(PATCH + " create-account error: " + (err?.message || err));
+        msg("usernameMessage", err?.message || "Could not create account.", "error");
+      }
+    };
+  } catch(e) {}
+
+  window.addEventListener("error", function(ev){
+    var text = String(ev?.message || "").toLowerCase();
+    if (text.includes("achievement is not defined") || text.includes("achievement not defined")) {
+      try { ev.preventDefault(); } catch(e) {}
+      debug(PATCH + " blocked stale achievement variable error during auth.");
+      msg("usernameMessage", "A stale achievement script error was blocked. Try signing in again now.", "error");
+      return false;
+    }
+  }, true);
+
+  document.addEventListener("DOMContentLoaded", function(){
+    try { requireSignInForTab = function(){ return false; }; } catch(e) {}
+    document.querySelectorAll(".tab[data-tab]").forEach(function(btn){
+      if (btn.dataset.v146PublicWired) return;
+      btn.dataset.v146PublicWired = "1";
+      btn.addEventListener("click", function(e){
+        var tab = btn.dataset.tab;
+        if (!tab || tab === "adminpanel") return;
+        try { e.preventDefault(); e.stopImmediatePropagation(); showTab(tab); } catch(err) {}
+      }, true);
+    });
+    msg("profileMessage", "You can use the main tabs without signing in. Sign in only for account features like chat, friends, saving progress, shop, and achievements.", "");
+  });
 })();
 </script>
 

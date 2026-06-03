@@ -1,0 +1,14 @@
+-- Blank Space v146 Supabase code
+-- No new database changes are required for this update.
+--
+-- What changed in v146:
+-- 1. Front-end fix for the sign-in/create-account crash caused by a stale
+--    "achievement is not defined" reference inside the username lookup error path.
+-- 2. Faster auth handling with timeouts so sign-in/create-account does not sit for minutes.
+-- 3. Tabs are no longer locked behind sign-in. Users can browse the site without an account.
+--    Account-only actions such as chat, friends, saving progress, shop ownership, and
+--    achievements still require sign-in where the existing feature code checks for it.
+--
+-- Keep your existing Supabase database as-is. If you have never run earlier SQL updates,
+-- run the latest full prior SQL update files first, especially the one that creates:
+--   public.lookup_login_email(username_input text)
